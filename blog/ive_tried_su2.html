@@ -1,0 +1,620 @@
+<!-- I've tried SU2 for a week - should you, too? -->
+<!-- https://cfd.university/blog/ive-tried-su2-for-a-week-should-you-too/ -->
+
+<!-- wp:paragraph -->
+<p>Have you ever added a CFD solver to your learning to-do list? I have, and it keeps growing! So, instead of creating a to-do list that will never be completed, I thought I'd spend some time on a solver that has been on it for quite some time and share my experiences with you. I am talking about <a href="https://su2code.github.io/" target="_blank" rel="noopener" title="">SU2</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is an open-source solver mainly focused on aeronautical applications with compressible flows, though it has expanded into other domains. People who have used it seemed to have been really happy with it, so I thought I ought to give it a try. Well, the day has come, and I have decided to spend a week with SU2 and see if I will like it just as much.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The solver is great, and I really enjoyed my week with SU2. I'm sure I will start using it from now on for additional projects in the future. There are a few issues, and we will look at them in detail as well. I have also included a section at the end to give you a quick start into SU2, in case my writing compels you to try it out for yourself.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this article</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":5,"blockClientId":"be1d28bb-a022-4a03-ac99-903807fd3ca7","content":"Introduction","level":2,"anchor":"aioseo-introduction","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":11,"blockClientId":"1ec5a0f0-f1bb-4935-81af-960a62b6e87c","content":"A week with SU2 - Here is what I've learned","level":2,"anchor":"aioseo-a-week-with-su2-here-is-what-ive-learned","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":13,"blockClientId":"41db187e-c9cc-40f1-bbdb-d4d0855d38f0","content":"Day 1 - Getting started with tutorials and testing different solver options","level":3,"anchor":"aioseo-day-1-getting-started-with-tutorials-and-playing-around","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":21,"blockClientId":"aabccf5a-706e-4dae-8f4d-8984423fdbc4","content":"Day 2 - A deeper look into advanced solver settings","level":3,"anchor":"aioseo-day-3-a-deeper-look-into-some-of-the-advanced-features","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":33,"blockClientId":"7adff427-a2a4-437f-9271-537e52b6d28d","content":"Day 3 - Setting up my own case for compressible and incompressible flows","level":3,"anchor":"aioseo-day-2-setting-up-your-own-cases","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":46,"blockClientId":"65aa19f1-0ac7-488f-a1e4-0f6a8c862ec2","content":"Day 4 - Inspecting the source code and compiling it","level":3,"anchor":"aioseo-day-4-compiling-from-source","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":103,"blockClientId":"1c154da4-6905-406f-8610-7977f3d0bdfe","content":"Day 5 - Exploring advanced features of SU2","level":3,"anchor":"aioseo-day-5-exploring-additional-features-of-su2-in-more-depth","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":118,"blockClientId":"8a208746-f25c-4ebb-8fd7-13a663f60f2f","content":"How can you get started with SU2 right now?","level":2,"anchor":"aioseo-how-can-you-get-started-with-su2-right-now","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":120,"blockClientId":"4b0ed258-9a81-4680-a342-13fc0b295142","content":"Installing SU2","level":3,"anchor":"aioseo-installing-su2","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":124,"blockClientId":"e62944b2-0006-43c8-88ec-903bcc3bad4d","content":"Your first steps with SU2","level":3,"anchor":"aioseo-your-first-steps-with-su2","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":130,"blockClientId":"c7f6811d-3c39-453d-bfcf-359573967f99","content":"Outlook","level":2,"anchor":"aioseo-outlook","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-introduction">Introduction</a></li><li><a href="#aioseo-a-week-with-su2-here-is-what-ive-learned">A week with SU2 - Here is what I&#x27;ve learned</a><ul><li><a href="#aioseo-day-1-getting-started-with-tutorials-and-playing-around">Day 1 - Getting started with tutorials and testing different solver options</a></li><li><a href="#aioseo-day-3-a-deeper-look-into-some-of-the-advanced-features">Day 2 - A deeper look into advanced solver settings</a></li><li><a href="#aioseo-day-2-setting-up-your-own-cases">Day 3 - Setting up my own case for compressible and incompressible flows</a></li><li><a href="#aioseo-day-4-compiling-from-source">Day 4 - Inspecting the source code and compiling it</a></li><li><a href="#aioseo-day-5-exploring-additional-features-of-su2-in-more-depth">Day 5 - Exploring advanced features of SU2</a></li></ul></li><li><a href="#aioseo-how-can-you-get-started-with-su2-right-now">How can you get started with SU2 right now?</a><ul><li><a href="#aioseo-installing-su2">Installing SU2</a></li><li><a href="#aioseo-your-first-steps-with-su2">Your first steps with SU2</a></li></ul></li><li><a href="#aioseo-outlook">Outlook</a></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-introduction">Introduction</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>When I started with CFD, I was under the impression that only ANSYS Fluent existed. I thought everyone was using it. How wrong I was! The somewhat dated list over at <a href="https://www.cfd-online.com/Wiki/Codes" target="_blank" rel="noopener" title="">CFD online</a> shows us that there are <em>almost</em> as many CFD solvers as stars in the Milky Way. <em>Almost</em> ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>At some point through my CFD journey, to be precise during my PhD studies, I was introduced to SU2. From what I saw, it was a very capable solver, but I was in the midst of getting my head around OpenFOAM at the time. This was a full-time job! So, I left SU2 on my CFD to-do list to be looked at at some point in the future. Well, the future has arrived!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I thought it would be good to finally give it a test drive and see if it is really as good as I was led to believe. Spoiler alert: I fell in love! SU2 is a very capable solver, but it does have some issues when it comes to its source code, and we will look at both sides. Either way, in terms of using the solver, I have gained nothing but respect for it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, for this week's article, I thought I would spend one (working) week with SU2 and see how it performs. The first part will contain my journey through SU2 and what I've learned in a week. There is more to the solver than what you can discover in such a short time frame, but I think I got the jist of it. Afterwards, I'll show you how to get started with the solver yourself, and you will see it is rather straightforward!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's get started.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-a-week-with-su2-here-is-what-ive-learned">A week with SU2 - Here is what I've learned</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The following section will reflect on my experiences, organised by days. I've tried to include a few things from running simulations to compiling the solver. I've looked at basic, as well as advanced features and tested some of them more thoroughly than others. Let's look through them together.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-day-1-getting-started-with-tutorials-and-playing-around">Day 1 - Getting started with tutorials and testing different solver options</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The best place to get started is, well, the getting starting section for any CFD solver. SU2 features a <a href="https://su2code.github.io/docs_v7/Quick-Start/" target="_blank" rel="noopener" title="">quick start guide</a>, and this is the first thing I went through. It runs you through a basic inviscid (Euler) simulation around a NACA 0012 airfoil. You even get to test some of the more advanced features at the end. The quick start finishes off with an adjoint optimisation problem, which is a nice added touch.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The quick start guide asks you to download and install the software first. Upon visiting the <a href="https://su2code.github.io/docs_v7/Installation/" target="_blank" rel="noopener" title="">installation page</a>, you realise that SU2 comes with precompiled binaries for all platforms, even Windows! No need to compile the solver, so you can simply download the binaries for your platform and get started. It couldn't be simpler.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>With SU2 available on your machine, you can follow the rest of the quick start guide. It isn't very long, so it definitly get's you up and running in a few minutes. And, to be fair, that is all you need. At a minimum, SU2 reqires two input files; one for the simulation parameters (the config file), and one for the mesh.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The config file can be as simple as a few lines of instructions, i.e. which schemes to use, what boundary conditions to apply, and so on. A list of all possible inputs are stored in the <a href="https://github.com/su2code/SU2/blob/master/config_template.cfg" target="_blank" rel="noopener" title="">template config file</a>, and you can look throught the 2000+ lines of code to see them all. There are quite a few.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For the mesh file, there are two supported formats: SU2's native <code>*.su2</code> file format and CGNS. I love that CGNS files are supported out of the box, something which not many solvers do. The native <code>*.su2</code> file format is also rather straightforward. It stores the coordinate of vertices, their connectivity, and finally, the vertices associated with boundaries.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>After I finished with the NACA 0012 quick start tutorial, I wanted to switch from a compressible to an incompressible description. This wasn't very complicated, and I wanted to see how it performs here. Well, as far as I can see, SU2 uses the artificial compressibility method, which can have slow convergence. From what I could observe, this was confirmed by running the solver in incompressible mode.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The first day got me interested in more. I really liked what I saw, and I wanted to explore some more advanced features. This is what I did next on day 2.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-day-3-a-deeper-look-into-some-of-the-advanced-features">Day 2 - A deeper look into advanced solver settings</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I started the second day, where I left off on the first. I wanted to explore some of the incompressible options further, only to realise that not all schemes were supported. You start to realise at this point that SU2 is a compressible solver, and incompressible flows were very much an afterthought.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It's not really a problem, as you can always run incompressible simulations with their compressible solvers. They have implemented low Mach number corrections, which should help with convergence. If you are unfamiliar with the problem: As you approach a Mach number of zero, your accuracy will deteriorate, and convergence will come to a halt. Several low Mach number corrections have been proposed; see <a href="https://inria.hal.science/hal-01953424" target="_blank" rel="noopener" title="">Bruel et al.</a> for a good overview.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>After that realisation, I picked a scheme that worked for incompressible flows and continued. When I first looked through the config file options, I got really excited when I saw the CFL ramping strategy. CFL ramping allows you to dynamically set the CFL number for each iteration to converge as fast as possible. You may start with a CFL number of 1, but as the iteration progresses, you may get a CFL number as high as 10,000,000,000!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This number may seem rather high, but as a simulation converges, changes between iterations become very small. We simply amplify these minute changes so they can come to a converged state much faster. And it does work rather well. Playing around with it, I got convergence within half the number of iterations compared to no CFL ramping strategy!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The other thing I got excited about was the multigrid, and in particular, the fact that different multigrid cycles were implemented. You can choose between V, W, and full multigrid cycles. You have control over the number of pre and post-smoothing steps, as well as some damping. After playing around with these parameters, you'll realise that using a multigrid in SU2 can lead to really fast convergence or divergence. Once the multigrid is tamed and combined with CFL ramping, you have a winning combination on your hands!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I can't stress enough how much I adore SU2 for having these two features implemented and working so well. For example, OpenFOAM uses exclusively semi-implicit algorithms. This means your CFL number will always be restricted, and I am typically near an average CFL number of 1 for my simulations. Having the ability to ramp up the CFL number really does make a difference.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>ANSYS Fluent used to have a solution steering algorithm where the CFL number was increased as the residuals dropped. I played around with it a few times, but it didn't seem to work as expected. In most cases, I got convergence within the same or even more iterations. It is no surprise, then, that this implementation has been quietly retired.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The next thing I did was play around with the input and output sections. I rather liked the fact that I can specify what I want printed to screen and how often during the simulation. For example, when I was using the CFL ramping strategy, I could opt to print the min, max, and average CFL numbers to screen for each iteration. This was really helpful for tuning the CFL ramping strategy parameters, as the default ones are rather conservative.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>After spending the <a href="https://cfd.university/blog/how-to-determine-the-best-stopping-criterion-for-cfd-simulations/" target="_blank" rel="noopener" title="">last article talking all about convergence</a> and how to measure it, I was rather pleased to see the options for judging convergence. This can be done either based on the residuals, or based on window-averaged quantities, such as lift or drag. And, from my experimentation, it works rather well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One thing I didn't like about the config file was that it was over-constrained. It does allow you to specify both an angle of attack, Reynolds, and Mach number, as well as the inflow velocity components in the x, y, and z directions. Depending on what inflow condition type you set, one or the other will be used. This can be confusing for the novice. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>At this point, I felt comfortable setting up my own cases, and this is what I did on my third day.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-day-2-setting-up-your-own-cases">Day 3 - Setting up my own case for compressible and incompressible flows</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>On day 3, I recreated the NACA 0012 case but using my own mesh. I used <a href="https://www.cadence.com/en_US/home/tools/system-analysis/computational-fluid-dynamics/fidelity.html#fidelity-pointwise" target="_blank" rel="noopener" title="">Pointwise</a> to generate said mesh, which has native support for writing SU2 mesh file formats. The mesh contained quad-based inflation layers to resolve the boundary layer down to a [katex]y^+[/katex] value of 1. The remainder of the mesh used triangular elements.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Using my own mesh allowed me (or required me) to set up the boundary conditions myself. I find that there are huge discrepancies between different solvers when it comes to boundary treatments. In Fluent, for example, all you have to do is provide a freestream Mach number or inlet velocity for this case. In OpenFOAM, you have to write a separate boundary file for each variable that is solved. This is <em>really</em> cumbersome (though the most general).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In SU2, we have a middle ground where we use the boundary marker concept. This is another concept I have seen used in some other compressible solvers. A boundary marker represents a specific boundary type. So, you may have an inlet marker, an outlet marker, a wall marker, and so on.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Each of these markers then expects the name of a boundary. So, if you have a boundary patch called <em>inlet</em>, you probably want to assign this to the <em>inlet</em> or <em>farfield</em> marker. If we take a look at the <a href="https://github.com/su2code/SU2/blob/master/config_template.cfg" target="_blank" rel="noopener" title="">template config file</a> and search for <code>MARKER_HEATFLUX</code>, this is what we see:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"% Navier-Stokes (no-slip), constant heat flux wall  marker(s) (NONE = no marker)\n% Format: ( marker name, constant heat flux (J/m^2), ... )\nMARKER_HEATFLUX= ( NONE )","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e% Navier-Stokes (no-slip), constant heat flux wall  marker(s) (NONE = no marker)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e% Format: ( marker name, constant heat flux (J/m^2), ... )\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003eMARKER_HEATFLUX= ( NONE )\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"latex","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":3,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="% Navier-Stokes (no-slip), constant heat flux wall  marker(s) (NONE = no marker)
+% Format: ( marker name, constant heat flux (J/m^2), ... )
+MARKER_HEATFLUX= ( NONE )" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #6A9955">% Navier-Stokes (no-slip), constant heat flux wall  marker(s) (NONE = no marker)</span></span>
+<span class="line"><span style="color: #6A9955">% Format: ( marker name, constant heat flux (J/m^2), ... )</span></span>
+<span class="line"><span style="color: #D4D4D4">MARKER_HEATFLUX= ( NONE )</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>Here, we need to specify the name of the wall and the heat flux in [katex]J/m^2[/katex]. For our airfoil case, if we have an upper and a lower wall patch in our mesh, and we want to assign a zero heat flux across the walls, then we would have</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"% Navier-Stokes (no-slip), constant heat flux wall  marker(s) (NONE = no marker)\n% Format: ( marker name, constant heat flux (J/m^2), ... )\nMARKER_HEATFLUX= ( upper, 0.0, lower, 0.0 )","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e% Navier-Stokes (no-slip), constant heat flux wall  marker(s) (NONE = no marker)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e% Format: ( marker name, constant heat flux (J/m^2), ... )\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003eMARKER_HEATFLUX= ( upper, 0.0, lower, 0.0 )\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"latex","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":3,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="% Navier-Stokes (no-slip), constant heat flux wall  marker(s) (NONE = no marker)
+% Format: ( marker name, constant heat flux (J/m^2), ... )
+MARKER_HEATFLUX= ( upper, 0.0, lower, 0.0 )" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #6A9955">% Navier-Stokes (no-slip), constant heat flux wall  marker(s) (NONE = no marker)</span></span>
+<span class="line"><span style="color: #6A9955">% Format: ( marker name, constant heat flux (J/m^2), ... )</span></span>
+<span class="line"><span style="color: #D4D4D4">MARKER_HEATFLUX= ( upper, 0.0, lower, 0.0 )</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>Here, we can specify more than one boundary patch, but we need to provide the heat flux for each marker separately. If you are dealing with a text-based input file, then I think this is an elegant solution. You don't have to specify the boundary conditions for the turbulent quantities (unlike OpenFOAM, for example). Instead, these are derived from additional inputs such as the freestream turbulence intensity and the turbulence viscosity ratio.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>After setting up the case, I was first running it with an incompressible solver. Due to the lack of available schemes that are implemented for incompressible flows, I decided to go with the Lax-Friedrichs scheme. I've had good experiences with it in the past, though in this case, my solutions were rather far away from the reference (over 10%, where I would have expected perhaps a 1% discrepancy at most).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Once I switched to the compressible solver, things were working much better again, and I got the results I was after. The NACA 0012 airfoil example isn't particularly exciting, but it is one of those examples where you know what to expect. If you have spent any time in academia validating and verifying CFD codes, you'll likely spend some time on the NACA 0012 airfoil and have an idea of what to expect.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Based on the experience I have gathered over the years with this example, I can say that the incompressible solver, while functional, is probably something that requires further work. I've seen attempts of the <a href="https://su2foundation.org/wp-content/uploads/2019/05/Pressure_based_methods_in_SU2_2019.pdf" target="_blank" rel="noopener" title="">SIMPLE algorithm being implemented into SU2</a>, but it seems that 5 years on, nothing has been done about it. It's probably fair to assume that this isn't a priority.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I did play around more with the numerical schemes and other settings, but nothing spectacular to report here. Apart from the reappearing issues around incompressible flows, SU2 is making a solid impression and again, I really like what I am seeing here.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-day-4-compiling-from-source">Day 4 - Inspecting the source code and compiling it</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Day 4 was all about the code. I didn't run any simulations; instead, I wanted to get a feel for the code. Currently, I do all my CFD development in OpenFOAM because it has a rather nice equation syntax. I wanted to see if I could extend this to SU2 as well and use it in the future to write my own extensions.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, the first part is the code compilation, and I have to say, I am impressed. SU2 comes with pretty much zero dependencies. All you need is a Python installation and a C++ compiler. With that, you can go ahead and compile the code, which currently has just over 1000 files. This will give you a very basic SU2 version.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In most cases, though, you probably want to use at least a few dependencies. You probably want to use the <a href="https://en.wikipedia.org/wiki/Message_Passing_Interface" target="_blank" rel="noopener" title="">Message Passing Interface</a> (MPI) to parallise your code, or the CGNS file format to read CGNS files. Apart from MPI, which you have to install yourself, all the other dependencies are downloaded automatically and built as part of the compilation process. This automation is really nice!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have tested that on the latest release of Ubuntu, and it is working like a charm. All you do is go into the root directory of your SU2 folder and type:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"python3 meson.py build \u0026lt;options\u003e","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003epython3\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003emeson.py\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003ebuild\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u0026lt;\u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003eoption\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003es\u0026gt;\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"bash","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":1,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="python3 meson.py build &lt;options&gt;" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #DCDCAA">python3</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">meson.py</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">build</span><span style="color: #D4D4D4"> &lt;</span><span style="color: #CE9178">option</span><span style="color: #D4D4D4">s&gt;</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>The options are listed in the <a href="https://su2code.github.io/docs_v7/Build-SU2-Linux-MacOS/#basic-configuration" target="_blank" rel="noopener" title="">compilation guide</a>. For example, to enable CGNS support, we need to write the following:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"python3 meson.py build -Denable-cgns=true","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003epython3\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003emeson.py\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003ebuild\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003e-Denable-cgns=true\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"bash","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":1,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="python3 meson.py build -Denable-cgns=true" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #DCDCAA">python3</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">meson.py</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">build</span><span style="color: #D4D4D4"> </span><span style="color: #569CD6">-Denable-cgns=true</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>CGNS support is set to true by default, so the above instruction would be redundant, but it does show how to set these options. This file will call the build script <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code/#aioseo-meson" target="_blank" rel="noopener" title="">Meson</a> in the background, and this will set up your project for compilation. I have a soft spot for Meson, and even though I believe we shouldn't use it anymore, I still enjoy working with it whenever I have a chance.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>After the project has been configured with Meson, we invoke <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code/#aioseo-ninja" target="_blank" rel="noopener" title="">Ninja</a> to compile the source files. This is done with the following command:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"ninja -C build install","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eninja\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003e-C\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003ebuild\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003einstall\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"bash","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":1,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="ninja -C build install" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #DCDCAA">ninja</span><span style="color: #D4D4D4"> </span><span style="color: #569CD6">-C</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">build</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">install</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>This will compile SU2 and install it (copy the executable files) into our installation directory. We haven't given one, so it will just install it into our current directory, but we could also give an installation directory using the <code>--prefix=/path/to/installation/directory/</code> syntax during the configuration step, e.g.:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"python3 meson.py build -Denable-cgns=true \u002d\u002dprefix=~/apps/SU2/","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003epython3\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003emeson.py\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003ebuild\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003e-Denable-cgns=true\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003e\u002d\u002dprefix=\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e~\u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003e/apps/SU2/\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"bash","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":1,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="python3 meson.py build -Denable-cgns=true --prefix=~/apps/SU2/" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #DCDCAA">python3</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">meson.py</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">build</span><span style="color: #D4D4D4"> </span><span style="color: #569CD6">-Denable-cgns=true</span><span style="color: #D4D4D4"> </span><span style="color: #569CD6">--prefix=</span><span style="color: #D4D4D4">~</span><span style="color: #569CD6">/apps/SU2/</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>This would install SU2 into our home directory (indicated by the <code>~</code>), and we ask SU2 to be installed into the <code>apps/SU2</code> directory within the home directory.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On my PC, the compilation took about 15 minutes using 12 cores (Ninja will automatically use all available cores). 15 minutes for a complex code such as SU2 isn't bad at all! And, everything is build from source, even the dependencies. This is great, and <a href="https://youtu.be/54uVTkhinDE?si=CFWJAA_eyx9OTpYS" target="_blank" rel="noopener" title="">recommended practice</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have also tried to compile SU2 on Windows. It boasts support for Windows, but after invoking the same steps as above, the compilation failed. First, it failed because it could not find my Microsoft MPI installation and executables. Looking into the issue, it seems it can't find the default names for the MPI compilers. These are named differently on Windows compared to every other operating system in the solar system. Of course, they are ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Not a problem, I switched off MPI support, but got into another issue with <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code/#aioseo-compiling-the-hdf5-librari" target="_blank" rel="noopener" title="">HDF5</a> this time. This was an issue for which there was no quick fix, so I turned off the CGNS support. Afterwards, I was able to start the compilation, but after a few hundred files were compiled, I got another compilation error. This time, it was terminal!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Microsoft's <code>cl</code> compiler wasn't able to compile the code due to an incompatible syntax. Not all C++ compilers will have implemented the C++ standard in the same way, and sometimes, you have cases where one compiler fails while others succeed. This is one of these examples, and it shows that Microsoft's <code>cl</code> compiler is not used during testing SU2. It is a shame.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Perhaps <code>clang++</code> could produce different results here, I haven't tested that, but the only other way (and recommended way by the developers), is to use <a href="https://www.mingw-w64.org/" target="_blank" rel="noopener" title="">MinGW</a>. I am not a big fan of MinGW, so I wouldn't recommend using it. It is a botched approach of desperately trying to get UNIX compilers to work on Windows. If you really need them, use <a href="https://learn.microsoft.com/en-us/windows/wsl/about" target="_blank" rel="noopener" title="">WSL</a>, which has made the MinGW project redundant.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I don't understand why all scientific tools and programs have such a bad phobia against native Windows compilers. Sure, in the past, developing on Windows was dreadful, but it got a lot better. These days, there is no reason to fear testing your code on Windows  (most people will want to run it here!). There are even <a href="https://hub.docker.com/r/dockurr/windows" target="_blank" rel="noopener" title="">Docker containers</a> available that allow you to test on Windows natively. Developers no longer have an excuse to ditch Windows!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Anyway, let's not get side tracked. The next thing I had a look at is the folder structure and some of the files. It is relatively compact, and navigating the code does not seem too difficult. But then I started to look inside some of the files. Oh boy, strap in, this is going to be wild!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's start off easy. One of the files had code like the following:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"if (wall_functions) {\n    SU2_OMP_SAFE_GLOBAL_ACCESS(SetTau_Wall_WF(geometry, solver_container, config);)\n    // nijso: we have to set this as well??\n    // seteddyviscfirstpoint\n  }","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eif\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (wall_functions) {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eSU2_OMP_SAFE_GLOBAL_ACCESS\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(\u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eSetTau_Wall_WF\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(geometry, solver_container, config);)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // nijso: we have to set this as well??\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // seteddyviscfirstpoint\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  }\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":5,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="if (wall_functions) {
+    SU2_OMP_SAFE_GLOBAL_ACCESS(SetTau_Wall_WF(geometry, solver_container, config);)
+    // nijso: we have to set this as well??
+    // seteddyviscfirstpoint
+  }" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #C586C0">if</span><span style="color: #D4D4D4"> (wall_functions) {</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #DCDCAA">SU2_OMP_SAFE_GLOBAL_ACCESS</span><span style="color: #D4D4D4">(</span><span style="color: #DCDCAA">SetTau_Wall_WF</span><span style="color: #D4D4D4">(geometry, solver_container, config);)</span></span>
+<span class="line"><span style="color: #6A9955">    // nijso: we have to set this as well??</span></span>
+<span class="line"><span style="color: #6A9955">    // seteddyviscfirstpoint</span></span>
+<span class="line"><span style="color: #D4D4D4">  }</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>Who is <code>nijso</code>? Is it a person? If so, why is the code including me in a conversation between <code>nijso</code> and whoever wrote the comment? And what is being set here? Is it the command above or below? I have no idea what is going on here, and comments in code like this are a huge red flag. These should be removed from any release.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A better (and apparently accepted) practice would be to have the following <strong>during</strong> <strong>development</strong>:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"if (wall_functions) {\n    SU2_OMP_SAFE_GLOBAL_ACCESS(SetTau_Wall_WF(geometry, solver_container, config);)\n    // TODO: we have to set this as well??\n    // seteddyviscfirstpoint\n  }","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eif\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (wall_functions) {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eSU2_OMP_SAFE_GLOBAL_ACCESS\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(\u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eSetTau_Wall_WF\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(geometry, solver_container, config);)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // TODO: we have to set this as well??\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // seteddyviscfirstpoint\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  }\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":5,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="if (wall_functions) {
+    SU2_OMP_SAFE_GLOBAL_ACCESS(SetTau_Wall_WF(geometry, solver_container, config);)
+    // TODO: we have to set this as well??
+    // seteddyviscfirstpoint
+  }" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #C586C0">if</span><span style="color: #D4D4D4"> (wall_functions) {</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #DCDCAA">SU2_OMP_SAFE_GLOBAL_ACCESS</span><span style="color: #D4D4D4">(</span><span style="color: #DCDCAA">SetTau_Wall_WF</span><span style="color: #D4D4D4">(geometry, solver_container, config);)</span></span>
+<span class="line"><span style="color: #6A9955">    // TODO: we have to set this as well??</span></span>
+<span class="line"><span style="color: #6A9955">    // seteddyviscfirstpoint</span></span>
+<span class="line"><span style="color: #D4D4D4">  }</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>Whenever we set a <code>TODO:</code> somewhere in the text, we can search for this string and work on it <strong>before</strong> we create a new release. This comment just isn't helpful!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While I almost self-destructed this website talking about documentation (see <a href="https://cfd.university/newsletter/you-participated-unknowingly-in-an-experiment-here-is-the-result/" target="_blank" rel="noopener" title="">part 1</a> and <a href="https://cfd.university/newsletter/4331/" target="_blank" rel="noopener" title="">part 2</a>, which I shared with my <a href="https://cfd.university/newsletter-signup/" target="_blank" rel="noopener" title="">email list</a>), we need to talk about it again. SU2 has adopted a type of code documentation that can only be produced by a brain-dead person. Take a look at the following code:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"/*!\n * \\brief Destructor of the class.\n */\n~CUpwFDSInc_Flow(void) override;","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e/*!\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e * \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003e\\brief\u003c/span\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e Destructor of the class.\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e */\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e~\u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eCUpwFDSInc_Flow\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(\u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003evoid\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e) \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eoverride\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":4,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="/*!
+ * \brief Destructor of the class.
+ */
+~CUpwFDSInc_Flow(void) override;" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #6A9955">/*!</span></span>
+<span class="line"><span style="color: #6A9955"> * </span><span style="color: #569CD6">\brief</span><span style="color: #6A9955"> Destructor of the class.</span></span>
+<span class="line"><span style="color: #6A9955"> */</span></span>
+<span class="line"><span style="color: #D4D4D4">~</span><span style="color: #DCDCAA">CUpwFDSInc_Flow</span><span style="color: #D4D4D4">(</span><span style="color: #569CD6">void</span><span style="color: #D4D4D4">) </span><span style="color: #569CD6">override</span><span style="color: #D4D4D4">;</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>The <code>~</code> on line 4 already clearly communicates that whatever comes next is going to be the destructor. Keywords and special C++ syntax do provide code documentation, and I believe in writing clear, self-documenting code instead of throwing around <a href="https://cfd.university/learn/keep-your-users-happy-how-to-document-code-the-right-way/how-to-annotate-c-code-for-automatic-code-documentation/#aioseo-doxygen-automated-c-code-documentation" target="_blank" rel="noopener" title="">Doxygen</a> strings.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The code documentation requires three lines of code to tell me what the <code>~</code> already communicates. Even worse, the documentation isn't adding any value here! I know this is the destructor. What I am looking for in documentation is things that are not clear. Simply writing <code>Destructor of the class</code> is as useful of a comment as <code>It's colder and darker at night</code>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thanks SU2 for these insights; perhaps someone should tell <code>nijso</code> to remove this!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Then we have an absolute abomination like this:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"CNumerics****** numerics_container;   /*!\u0026lt; \\brief Description of the numerical method (the way in which the equations\n                                           are solved). */","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003eCNumerics****** numerics_container;\u003c/span\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e   /*!\u0026lt; \\brief Description of the numerical method (the way in which the equations\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e                                           are solved). */\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":2,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="CNumerics****** numerics_container;   /*!&lt; \brief Description of the numerical method (the way in which the equations
+                                           are solved). */" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #D4D4D4">CNumerics****** numerics_container;</span><span style="color: #6A9955">   /*!&lt; \brief Description of the numerical method (the way in which the equations</span></span>
+<span class="line"><span style="color: #6A9955">                                           are solved). */</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>What the hell? I thought we are using C++, not C. Why do we have multidimensional pointers? Who is coming up with this, and who is letting this get through in a code review? Probably there isn't one ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since the C++ standard of 2014, there is absolutely no excuse for still using <code>new</code> and <code>delete</code>. Every time we have a pointer, we have a corresponding <code>new</code> and <code>delete</code> call. This is probably the single most common cause of hard-to-trace memory bugs. Instead, we ought to use smart pointers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We <a href="https://cfd.university/learn/what-every-cfd-developer-needs-to-know-about-c/reduce-memory-bugs-with-smart-pointers-in-c/" target="_blank" rel="noopener" title="">looked at smart pointers before</a>, but I won't go into detail here. Feel free to read up on why we should favour them over pointers for yourself. I'll wait here ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this case, I would encapsulate the memory management of the <code>numerics_container</code> into a class and then expose a <code>get()</code> function to obtain the information required. We see that the type of <code>numerics_container</code> is <code>CNumerics</code>, so we are already using a class. Why can't the class take care of memory management?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is really poor code design (can we even speak of a design to begin with?) and suggests a very creative academic at work, where each new line of code is a new improvisation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Can we also stop for a second and admire the naming standard in SU2? We had:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"~CUpwFDSInc_Flow\nCNumerics****** numerics_container","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e~CUpwFDSInc_Flow\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003eCNumerics****** numerics_container\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":2,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="~CUpwFDSInc_Flow
+CNumerics****** numerics_container" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #D4D4D4">~CUpwFDSInc_Flow</span></span>
+<span class="line"><span style="color: #D4D4D4">CNumerics****** numerics_container</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>We have a good mix of <a href="https://khalilstemmler.com/blogs/camel-case-snake-case-pascal-case/" target="_blank" rel="noopener" title="">Pascal case and snake case</a>, even in the same class name. While it is fine to have different naming conventions for classes and variables, pascal case and snake case are pretty much orthogonal to each other, i.e. if you use one, you don't use the other. This is at least true for most major open source projects I have looked through. SU2 likes to set a new standard here ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>And then, we have the classes themselves. I invite you to have a look at the solver base class. You can find the <a href="https://github.com/su2code/SU2/blob/master/SU2_CFD/include/solvers/CEulerSolver.hpp" target="_blank" rel="noopener" title="">header file here</a> and the <a href="https://github.com/su2code/SU2/blob/master/SU2_CFD/src/solvers/CEulerSolver.cpp" target="_blank" rel="noopener" title="">source file here</a>. The header file has about 1500 lines of code, while the implementation (source) file features nearly 10,000 lines of code!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A class should only ever have a single responsibility. This is to help not just with readability but also with maintainability. Otherwise, if your class does too many things, it becomes a nightmare <a href="https://refactoring.guru/refactoring" target="_blank" rel="noopener" title="">refactoring</a> it over time. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is a design pattern that helps us to write clean classes. It is called <a href="https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design" target="_blank" rel="noopener" title="">SOLID</a>. The S in SOLID stands for the <em>single responsibility principle</em>. This is literally the first thing we should be thinking about when designing a class. Thus, if a class only ever takes care of a single thing, you would expect a header file to not go beyond a hundred lines of code (or so). </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Do we believe SU2 is following this accepted design pattern? Let's investigate. These are some of the functions the solver base class is exposing:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"class CEulerSolver {\n  void SetTime_Step( /* arguments */ ) final;\n  inline su2double GetTotal_NetThrust() const final { /* implementation */ }\n  inline void SetOmegaOut(/* arguments */) final { /* implementation */ }\n  void PrintVerificationError( /* arguments */ ) const final;\n};","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eclass\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #4EC9B0\u0022\u003eCEulerSolver\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003evoid\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eSetTime_Step\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(\u003c/span\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e /* arguments */\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e ) \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003efinal\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003einline\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #4EC9B0\u0022\u003esu2double\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eGetTotal_NetThrust\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e() \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003econst\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003efinal\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e {\u003c/span\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e /* implementation */\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003einline\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003evoid\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eSetOmegaOut\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(\u003c/span\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e/* arguments */\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e) \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003efinal\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e {\u003c/span\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e /* implementation */\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003evoid\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003ePrintVerificationError\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(\u003c/span\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e /* arguments */\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e ) \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003econst\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003efinal\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e};\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":6,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="class CEulerSolver {
+  void SetTime_Step( /* arguments */ ) final;
+  inline su2double GetTotal_NetThrust() const final { /* implementation */ }
+  inline void SetOmegaOut(/* arguments */) final { /* implementation */ }
+  void PrintVerificationError( /* arguments */ ) const final;
+};" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #569CD6">class</span><span style="color: #D4D4D4"> </span><span style="color: #4EC9B0">CEulerSolver</span><span style="color: #D4D4D4"> {</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #569CD6">void</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">SetTime_Step</span><span style="color: #D4D4D4">(</span><span style="color: #6A9955"> /* arguments */</span><span style="color: #D4D4D4"> ) </span><span style="color: #569CD6">final</span><span style="color: #D4D4D4">;</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #569CD6">inline</span><span style="color: #D4D4D4"> </span><span style="color: #4EC9B0">su2double</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">GetTotal_NetThrust</span><span style="color: #D4D4D4">() </span><span style="color: #569CD6">const</span><span style="color: #D4D4D4"> </span><span style="color: #569CD6">final</span><span style="color: #D4D4D4"> {</span><span style="color: #6A9955"> /* implementation */</span><span style="color: #D4D4D4"> }</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #569CD6">inline</span><span style="color: #D4D4D4"> </span><span style="color: #569CD6">void</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">SetOmegaOut</span><span style="color: #D4D4D4">(</span><span style="color: #6A9955">/* arguments */</span><span style="color: #D4D4D4">) </span><span style="color: #569CD6">final</span><span style="color: #D4D4D4"> {</span><span style="color: #6A9955"> /* implementation */</span><span style="color: #D4D4D4"> }</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #569CD6">void</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">PrintVerificationError</span><span style="color: #D4D4D4">(</span><span style="color: #6A9955"> /* arguments */</span><span style="color: #D4D4D4"> ) </span><span style="color: #569CD6">const</span><span style="color: #D4D4D4"> </span><span style="color: #569CD6">final</span><span style="color: #D4D4D4">;</span></span>
+<span class="line"><span style="color: #D4D4D4">};</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>So we compute the time step within this class (line 2), we can extract the thrust of our calculation (line 3, which is only required for turbomachinery applications!), we set the specific dissipation rate omega at outlets (line 4, though you can run this solver without turbulence where this is irrelevant!), and we deal with verification errors (line 5, even though this is also not required for the simulation).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This solver is doing everything, and then a bit more. The only thing missing here is the weekly grocery shopping list of the author of this class. This is, quite frankly, horrendous, but I suppose the price you have to pay for free and open-source projects. I won't be making an effort any time soon to sift through this source code to see if I want to implement some features myself.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Finally, we have to talk about testing. Any complex software project should have some form of quality assurance practices in place. I showed you how to do proper <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications/" target="_blank" rel="noopener" title="">software testing for CFD applications</a> a while ago, and I believe each software project should have a testing strategy. There is none as far as I can see with SU2. Honestly, I am surprised that the solver is working as well as it is.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But let's look at the matter together. Within the <a href="https://github.com/su2code/SU2/tree/master/TestCases" target="_blank" rel="noopener" title="">main git repository</a>, there is a TestCases folder. This does provide some confidence. Looking through these test cases, these can be classified as <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications/how-to-get-started-with-software-testing-for-cfd-codes/#aioseo-system-or-end-to-end-tests" target="_blank" rel="noopener" title="">system tests</a>. Now I am not sure how these are used. Typically, you want to run your system test before every release to make sure the software is still working as expected. This may be the practice here, in which case, well done SU2.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, while system tests provide the best protection against software bugs (because we are exercising the entire code base), they are expensive to run. This typically results in system tests not being executed or their results not being thoroughly analysed to identify bugs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thankfully, SU2 also comes with some unit tests. I was relieved when I saw that. But then I looked at the unit tests. The <a href="https://github.com/su2code/SU2/tree/master/UnitTests" target="_blank" rel="noopener" title="">unit test folder</a>, contained in the root level directory of SU2 as well, has little to no unit tests. Counting the unit tests for the CFD solver, I can find 8 separate unit tests. Yes, 8. A unit test is supposed to check the functionality of a given function. SU2 has more than 8 functions for their CFD solver.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We have an <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications/how-to-get-started-with-software-testing-for-cfd-codes/#aioseo-the-software-testing-pyramid" target="_blank" rel="noopener">upside-down software testing pyramid</a>, with more system than unit tests. I appreciate that some effort has been spent on testing, but I think whoever was looking after the testing strategy didn't really understand software testing in the first place. This is a ticking time bomb, and poor codebase quality, coupled with little to no tests, is a recipe for disaster.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Suffice it to say that going through the source code lowered my respect for SU2. It does seem to work really well, but based on the code I have studied, it shouldn't. Unless system tests are meticulously used to prevent software bugs from appearing, it is probably just a question of time before more severe bugs make it into their solver.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Even if we don't have any software bugs to fight with, we have an unmaintainable code base, which perhaps only the original developers understand. This may work for them, but new developers wanting to contribute may be scared off looking at the code. This isn't great if you want to scale up your code development efforts or just try to get a bigger market share.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In any case, the solver as things stand seems to work quite well, but I wouldn't be surprised if I stumble upon more subtle bugs after some more usage. Only time will tell.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-day-5-exploring-additional-features-of-su2-in-more-depth">Day 5 - Exploring advanced features of SU2</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>On the final day, I wanted to explore some advanced features of SU2. Instead of picking one example and running it, I wanted to get a feel what else is possible. This means I was going through the config file again, advanced tutorials, and the user guide.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One thing I quite liked was the multiphysics capabilities and its implementation. SU2 does not only come with a CFD solver, but also with a few others. If you want to use two or more solvers, simply specify a separate config file for both of them and then create a third config file that simply glues these two together. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It does, for example, come with a structural solver to perform fluid-structure interaction. And, the structural solver does have some nice features. It has capabilities for small and large deformations, as well as multiple materials. I would love to see this extended to composite materials. Perhaps I should put it on my wish list for Santa!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have mentioned the adjoint optimisation before. While I did run a few examples for it on the first day, this is definitely something to further explore. Optimisation was always something baked into SU2, and I have seen other solvers react to that. ANSYS Fluent now has adjoint optimisation, and so does OpenFOAM.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Closely related are two additional concepts: deep neural networks (DNNs) and reduced order models (ROMs). Both can be used to optimise a given geometry, though DNNs are currently implemented in a limited capacity. DNNs can be used to predict thermodynamic properties only during the combustion process (version 8.1), but that may be generalised in the future. The ROM support is definitely something to test further.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Then, there is uncertainty quantification. This is something I haven't seen anywhere else and another signal that SU2 is setting a trend that I am sure will emerge at some point in ANSYS Fluent and OpenFOAM as well. They seem to closely monitor SU2's features and implement those they see as a thread.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have to have a closer look at the uncertainty quantification module, but essentially, you perturb the system of equations with 5 different modes, where each mode is a different simulation (so 5 simulations in total + the unperturbed simulation). What this allows you to see is the uncertainty in different plots, such as the pressure coefficient or the lift slope. Here are two examples taken from the <a href="https://su2code.github.io/tutorials/UQ_NACA0012/" target="_blank" rel="noopener" title="">tutorial case</a>:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column -->
+<div class="wp-block-column"><!-- wp:image {"id":4700,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/aoa15_cp_upper_withPert.png" alt="" class="wp-image-4700"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column"><!-- wp:image {"id":4701,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/225-65_liftCurve.png" alt="" class="wp-image-4701"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:paragraph -->
+<p>On the left, we see the pressure distribution along an airfoil. The different modes are shown as different line colours. The union of all of those lines are shown as the grey area, and we can see that around [katex]x/c\approx 0.5[/katex], we have very little uncertainty. The solver is very confident about its prediction here, whereas the same can not be said for pressures closer to [katex]x/c=0[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For the figure on the right, showing the angle of attack sweep, there is very little uncertainty for the linear lift slope but a rather large uncertainty once separation effects become important. We have a large uncertainty for the stall regime as expected. It would be interesting to test the same simulation with a transitional RANS model, which SU2 does have support for.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Another feature I spotted is support for automatic differentiation. It is not something you will use during your setup; rather, it is something that is used in the code itself. However, I have gathered positive experiences with automatic differentiation before. It allows you to evaluate the derivative of a function exactly as long as you know how the function value was computed. This can produce, for example, an exact flux Jacobian, and this can improve stability at higher CFL numbers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I also noticed the support for Discontinuous Galerkin (DG), and this went almost unnoticed. I've always wanted to have a playground to mess around with DG, and I finally seem to have found it. I have worked quite a bit with the DG method in the past, though I have never really tested it for more complex problems. Well, here is another item for the to-do list.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>And finally, let's finish day 5 by talking about parallelisation. There seems to be a move currently to implement a hybrid MPI+OpenMP parallelisation. If you move around high-performance computing circles, this approach is well established. However, in CFD circles, this is a less explored concept, but has potentially huge benefits in terms of making your parallelisation more efficient. This seems to be a work in progress, so I may wait until the next release before properly testing it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So there you have it, 5 days with SU2, packed with ups and downs. Overall I am really impressed. While I have my issues with the code, you can completely ignore that aspect and just use the solver. And the solver does work really well, and is something I will explore more of in the future for sure!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-how-can-you-get-started-with-su2-right-now">How can you get started with SU2 right now?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>So, after you heard me talking all about SU2 and what its advantages and disadvantages are, perhaps you want to give it a spin and see it for yourself. This section is intended to get you up and running with SU2 and have your first simulation performed in a few minutes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-installing-su2">Installing SU2</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Installing SU2 is pretty straight forward. I would recommend grabbing the precompiled binaries that you can find on the <a href="https://su2code.github.io/download.html">download page of SU2</a>. Download and extract the folders, and open up a terminal. You can navigate into the SU2 folder containing the binaries and then simply execute them. The executable you are looking for is called <code>SU2_CFD</code>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Alternatively, you can grab the latest release from GitHub and compile it from source yourself. It is rather straightforward. See the details above (Day 4) for how to compile and install it from the source.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In either approach, you may want to add the executable directory to your <a href="https://gist.github.com/nex3/c395b2f8fd4b02068be37c961301caa7" target="_blank" rel="noopener" title="">search path</a> so that you do not need to specify the absolute path to the executable every time you want to use it. It may make sense if you want to install it on a permanent basis, but if you are just playing around, perhaps just use the absolute path.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-your-first-steps-with-su2">Your first steps with SU2</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>OK, so SU2 is installed on your machine and you are ready to launch it. Where should you start? I would follow the <a href="https://su2code.github.io/docs_v7/Quick-Start/" target="_blank" rel="noopener" title="">quick start guide</a>, it walks you through the entire workflow of a simple simulation and you get the hang of SU2 pretty quickly. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You'll see that you have 2 files, one config file and one mesh file, and with these, you control the entire simulation. Open up the config file and start playing around with some of the parameters. It will depend on your confidence level in CFD and how much you want to experiment with these parameters. This is the part I enjoyed most in my first week with SU2.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>After that, I would recommend stopping by the <a href="https://su2code.github.io/tutorials/home/" target="_blank" rel="noopener" title="">tutorial sections</a>. It has a detailed write up for all tutorials and it provides some additional explanations that you would otherwise miss. I've learned quite a bit by just browsing through some of them. You also get a pretty good idea of what is possible.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>After you have gone through the quick start guide and some tutorials, try to set up some simulations yourself. Get a mesh in either the native <code>*.su2</code> or portable <code>*.cgns</code> format and set up your case. Play around with the schemes, Riemann solvers, boundary conditions, and other settings to improve your simulation results.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The learning curve is really not that steep, and I feel pretty comfortable running simulations after a week. Sure, I don't feel at home just yet in the config file and still need to scroll a bit, but I have a feeling that I understand what this solver can do and how I can set it up myself. I'm sure you'll find it easy to use, too!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-outlook">Outlook</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I am really excited about SU2. After playing with some of the tutorial cases, I felt comfortable setting up my own cases in no time. The multigrid works really well and I have seen it perform its magic for a few cases. In addition, the CFL ramping was a treat to explore, something which is implemented in other solvers (Fluent, OpenFOAM) but I have never seen working as expected. SU2 does seem to have an implementation that actually speeds up the computation!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have only really scratched the surface here; I feel there is a lot more to cover, and I will need some more time to learn the advanced components. But looking at some of the more advanced tutorials, I can't really see a steep increase in the learning curve. Adding multiphysics components to your simulation is as complicated as adding one additional config file.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I was rather excited about the epistemic uncertainty quantification option. I have only seen results for what is published on their <a href="https://su2code.github.io/tutorials/UQ_NACA0012/" target="_blank" rel="noopener" title="">tutorial page</a>, but these are enough for me to want to explore this feature further. Uncertainty quantification of any kind is heavily underrepresented in CFD solvers, and having a baked-in solution is rare but a good step to tackle uncertainties.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The adjoint shape optimisation is also something to explore further. Again, I have seen only the results from their <a href="https://su2code.github.io/tutorials/Inviscid_2D_Unconstrained_NACA0012/" target="_blank" rel="noopener" title="">tutorial page</a>, but I first learned about SU2 when people praised its adjoint optimisation capabilities. Adjoint optimisation is all the rage in industries around me, so I probably ought to give it a closer look to know what they are all talking about.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Are you an aerospace engineer interested in flutter or aeroelasticity, all within one solver? SU2 got you covered! I would love to see the multiple-material option pushed to support composites or even sandwich structures! For that, we would need support for anisotropic material properties (which are seemingly not supported at the time of writing), which would give SU2 a competitive advantage over even commercial fluid-structure interaction solutions.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is a lot to love about SU2, and most of that, for me anyway, is coming from years of abuse by OpenFOAM. The OpenFOAM developers don't care about you unless you pay them a hefty consultancy sum. SU2 is open-source and driven by academics with purer intentions at heart, and it shows by the love and attention to detail they have put into their homepage, documentation, and tutorials.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The programming side, however, is something which I will shy away from, for the moment at least. The code structure (if there is one to begin with!) is not very readable and classes that have 10,000 lines of code are just pure signs of <a href="https://en.wikipedia.org/wiki/Code_smell" target="_blank" rel="noopener" title="">code smell</a>. I would love to implement some of my own algorithms, but I don't think I will have the time to learn SU2's particular (lack of) code structure.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The lack of unit testing and heavy focus on system tests alone was also something which has raised some alarm bells. I'll probably have to expect some surprises if I continue to use SU2. I hope software quality control will be on the agenda at some point as well!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On the other hand, compilation of SU2 was pretty straightforward, fast, and user-friendly. All you need is a terminal with python support, and you are good to go. You can bring in additional dependencies, such as the <a href="https://cfd.university/learn/the-complete-guide-to-structured-and-unstructured-mesh-reading-using-cgns/" target="_blank" rel="noopener" title="">CGNS format</a>, or MPI, but SU2 works out of the box without any dependencies. At least they got this design right!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I'll definitely have to test it further in the future to see how it holds up against some of my more complex test cases. In the end, it is not difficult to write a solver that works for a NACA 0012 airfoil, but applying that to more complex cases is always an entirely different story. But I am optimistic that what I have seen will translate to more realistic flow problems. And who knows, perhaps we will need to have a closer look at SU2 in the future again!</p>
+<!-- /wp:paragraph -->

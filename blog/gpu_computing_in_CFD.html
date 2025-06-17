@@ -1,0 +1,738 @@
+<!-- Why is everyone switching to GPU computing in CFD? -->
+<!-- https://cfd.university/blog/why-is-everyone-switching-to-gpu-computing-in-cfd/ -->
+
+<!-- wp:paragraph -->
+<p>Any serious general-purpose CFD solver these days offers some form of support for graphics processing units (GPUs), be it accelerating the linear solver to speed up the computation of [katex]\mathbf{Ax}=\mathbf{b}[/katex], or by offering a native GPU solver where the entire CFD solver is running on the GPU. The trend is going towards having native GPU solvers, and solvers that are currently only using GPUs for some tasks see an ever-increasing tighter integration into other parts of the CFD-solving process as well. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>GPUs have a unique hardware architecture that is related to central processing units (CPUs), but they differ in a few key aspects, which makes them so powerful. In this article, we will explore what these key differences are and why they make GPUs so powerful. By the end of this article, you will understand where this power comes from, both from a hardware and coding (parallelisation) point of view. GPUs will only become more important in the future and as a serious CFD practitioner you need to understand at least the basics, see this article as your introduction.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this article</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":4,"blockClientId":"3f5e8c24-a4f5-42e8-8f79-b17c9b8f56c6","content":"The rise of graphics processing units (GPUs) in CFD","level":2,"anchor":"aioseo-introduction","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":22,"blockClientId":"8a670042-da2f-40b6-9615-efabe5de355c","content":"Hardware considerations","level":2,"anchor":"aioseo-hardware-considerations","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":24,"blockClientId":"0ec38c6f-8db6-4372-9547-62180d1da74c","content":"Clock frequency","level":3,"anchor":"aioseo-clock-frequency","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":29,"blockClientId":"8e859b97-bb20-432d-8327-5a50417a5111","content":"Power required","level":3,"anchor":"aioseo-power-required","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":39,"blockClientId":"1c3a2438-27c2-4955-bb65-9374f7023d6e","content":"Hardware architectures","level":3,"anchor":"aioseo-hardware-architectures","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":41,"blockClientId":"4e1eab8c-1ca1-48e2-aed4-21f2eef74b99","content":"CPU","level":4,"anchor":"aioseo-cpu-hardware-architecture","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":54,"blockClientId":"a82a28dc-e7b8-4549-a2c3-3f1928d95ca9","content":"GPU","level":4,"anchor":"aioseo-gpu-hardware-architecture","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":61,"blockClientId":"95940910-ea1b-4e1c-a918-5371cecf0f48","content":"Differences between CPUs and GPUs","level":3,"anchor":"aioseo-difference-of-cpus-and-gpus","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":75,"blockClientId":"c10ec745-409e-4e89-a325-bb9cbd4df42a","content":"A gentle introduction to parallel computing","level":2,"anchor":"aioseo-a-gentle-introduction-to-parallel-computing","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":79,"blockClientId":"99e15028-c8e3-49a5-a2f2-e9adf9619543","content":"Distributed memory approach","level":3,"anchor":"aioseo-distributed-memory-approach","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":94,"blockClientId":"8dabcce0-1ea7-4ecf-8248-d983fdc8a730","content":"Shared memory approach","level":3,"anchor":"aioseo-shared-memory-approach","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":99,"blockClientId":"c7ec1292-e102-4881-b12b-5232e9c27c43","content":"Common parallelisation frameworks for CFD applications","level":3,"anchor":"aioseo-common-parallelisation-frameworks","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":104,"blockClientId":"a9ac5e36-5fa6-4ca9-a24b-a356295b27b0","content":"Putting it all together: What makes GPUs so special?","level":2,"anchor":"aioseo-putting-it-all-together-what-makes-gpus-so-special","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":127,"blockClientId":"e3e593a9-e656-4eed-9967-0d23edf3eb13","content":"Summary","level":2,"anchor":"aioseo-summary","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-introduction">The rise of graphics processing units (GPUs) in CFD</a></li><li><a href="#aioseo-hardware-considerations">Hardware considerations</a><ul><li><a href="#aioseo-clock-frequency">Clock frequency</a></li><li><a href="#aioseo-power-required">Power required</a></li><li><a href="#aioseo-hardware-architectures">Hardware architectures</a><ul><li><a href="#aioseo-cpu-hardware-architecture">CPU</a></li><li><a href="#aioseo-gpu-hardware-architecture">GPU</a></li></ul></li><li><a href="#aioseo-difference-of-cpus-and-gpus">Differences between CPUs and GPUs</a></li></ul></li><li><a href="#aioseo-a-gentle-introduction-to-parallel-computing">A gentle introduction to parallel computing</a><ul><li><a href="#aioseo-distributed-memory-approach">Distributed memory approach</a></li><li><a href="#aioseo-shared-memory-approach">Shared memory approach</a></li><li><a href="#aioseo-common-parallelisation-frameworks">Common parallelisation frameworks for CFD applications</a></li></ul></li><li><a href="#aioseo-putting-it-all-together-what-makes-gpus-so-special">Putting it all together: What makes GPUs so special?</a></li><li><a href="#aioseo-summary">Summary</a></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-introduction">The rise of graphics processing units (GPUs) in CFD</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you haven't lived under a rock for the past years, then you'll have noticed a steady increase in CFD solvers trying to leverage the power of GPUs. <a href="https://www.ansys.com/blog/unleashing-the-full-power-of-gpus-for-ansys-fluent" target="_blank" rel="noopener" title="">ANSYS Fluent</a> has introduced their native GPU solver over the past years, growing in capabilities in each release, <a href="https://develop3d.com/simulation/simcenter-star-ccm-gets-nvidia-gpu-enabled/" target="_blank" rel="noopener" title="">Siemen's Star-CCM+</a> has followed and offered GPU support since its 2022 release, SimFlow has ported <a href="https://sim-flow.com/rapid-cfd-gpu/" target="_blank" rel="noopener" title="">OpenFOAM to GPUs</a> (though this development seems stagnant at the time of writing this article), and <a href="https://www.engineering.com/numeca-brings-massive-boosts-to-cfd-simulation-speeds/" target="_blank" rel="noopener" title="">Numeca</a> has started to add support for GPUs to their solvers as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So what's this sudden increase in GPUs all about? First things first, when we talk about graphics processing units (GPUs), or more generally, General purpose GPUs (GPGPUs), I am referring to graphic cards. The most well-known company in this domain is without a doubt Nvidia, and as of Summer 2024, <a href="https://www.cnbc.com/2024/06/18/nvidia-passes-microsoft-in-market-cap-is-most-valuable-public-company.html" target="_blank" rel="noopener" title="">it is the most valued public company</a>, surpassing giants such as Microsoft, Apple, Google, and, yes, even cfd.university!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But let's go back in time a bit. When I was looking to build my first PC in the mid 1990s, a high-spec, high-end PC would cost a small fortune, and even then, it would have been less powerful than any modern smartphone. I remember having a dual disk set-up, with the primary disk boosting a staggering 8 GBs of storage, with a secondary data disk of 2 GBs. My smartphone now has 1 TB of storage, how times have changed.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Back then, my first PC had a central processing unit (CPU) clock frequency of 233 MHz. Yes, this was a somewhat of a budget option, but even the most powerful chips were only reaching around 500 MHz. Back then, we needed to buy specialised magazines to stay up to date with hardware development, and if memory serves me correctly, the constant main stories were around developments to get CPUs past the 1 GHz barrier.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>CPUs were king, and it was all about getting that CPU speed up to ever larger clock frequencies. <a href="https://en.wikipedia.org/wiki/Moore's_law" target="_blank" rel="noopener" title="">Moore's law</a> stated that the number of transistors on a CPU chip would double every two years due to improved manufacturing techniques, thereby increasing the clock frequency, and this was true for a period between 1975 to approximately 2020, after which <a href="https://builtin.com/hardware/moores-law" target="_blank" rel="noopener" title="">the law has been declared as dead</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Though, while the number of transistors may no longer double, what we are seeing instead is an increase in compute power through more and more CPUs working in parallel. If we inspect the peak performance of high-performance compute (HPC) clusters, published by the <a href="https://www.top500.org/lists/top500/2024/06/" target="_blank" rel="noopener" title="">top500</a> list (listing the top 500 performing HPC clusters world-wide), we can see a steady increase in compute power. This continued increase in computing power is often seen as an extension of Moore's law, especially in the high-performance scientific computing community.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the 1990s, we were living through exciting times, witnessing the breakthrough of the 1 GHz barrier in CPUs (and, to a gaming kid like myself at the time, it was probably just as important as for some who sat through the moon landing or breaking the speed barrier). By the end of the decade, the AMD Athlon chip finally broke the 1 GHz barrier, and AMD and Intel were battling over the coming years for consumers. AMD was believed to have a far superior chip compared to Intel, but Intel had a larger marketing budget, so their battle continued.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While everyone was focusing on the CPU battle and their rise to clock frequencies of around 3 - 4 GHz (where they have stagnated), Nvidia built graphic cards specifically aimed at gamers. Having a fast CPU was just one part of the equation, but you needed to have a decent GPU to get those mouth-watering 30 frames per second (FPS) playing counter strike (or whatever else was popular at the time, I wouldn't know, I spend all of my time in Microsoft Flight Simulator 95 and 98, what a time to be alive! See for yourself):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4065,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/07/microsoft-flight-simulator-98.webp" alt="" class="wp-image-4065"/><figcaption class="wp-element-caption">Microsoft Flight Simulator 98. Reproduced from <a href="https://www.myabandonware.com/game/microsoft-flight-simulator-98-dpo" target="_blank" rel="noopener" title="">www.myabandonware.com</a></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>If you wanted to impress your friends with these stunning graphics, you had to invest in a decent graphic card, and Nvidia's GeForce series was likely the most popular one among gamers (and probably still is today!).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There was just one metric gamers cared about, and that was frames per second, i.e. how many times per second could your graphic card refresh the screen to give you a stutter-free experience? It was rather common to make compromises in the graphics settings to get somewhere between 15-30 FPS. No one cared about the hardware, really, it was all about that magic FPS number, and gaming benchmarks on different graphic cards were printed in pretty much any PC magazine at that time.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>That all changed in 2006 when Nvidia quietly released their software development toolkit (SDK), which they called the Compute Unified Device Architecture, or&nbsp;<a href="https://en.wikipedia.org/wiki/CUDA" target="_blank" rel="noopener">CUDA</a>, in short. It didn't make waves, it didn't cause people to break down walls and proclaim a revolution, it was just a piece of software that Nvidia provided to programmers to start programming on GPUs, instead of CPUs. Little did Nvidia know that this release would ultimately see them become the most valued company in the world, all through the power of code!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>CUDA provided programmers essentially with two things; copying data to and from your PC's main memory to the GPU's memory (which brings about some complication as GPU memory is different to plain CPU memory) and a way to execute code on the GPU specifying how many threads, or workers, should execute your code in parallel. If you look at CUDA programming, that is really all you need to master, and it doesn't get more complicated than that.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>All of a sudden, your average script kiddie could take a break from trying to hack the FBI and develop some code that could run on their graphic card. If you were interested in speed, then you were in for a surprise! GPUs were fast, and I mean really fast! I remember playing around with it for the first time in 2014, parallelising a simple 1D CFD solver. Running on a single CPU took about 12 seconds (not bad), but my naive CUDA implementation brought that down to 0.3 seconds! And that was without any fine-tuning of parameters or experience.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>When I first saw those results, I got a rush of adrenaline (or, perhaps, it was just a result of my lack of vitamin D thanks to the cold German December nights), but I still remember that night and how my perception of GPU computing changed. I could see how this can revolutionise CFD, and 10 years later, we are seeing big CFD companies putting their efforts into GPU computing (I am not even starting to talk about Machine Learning here, which arguably is the main driver behind uptake in GPU computing).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, in 1947 we saw the breaking of the sound barrier, in 1969 we saw the first man on the moon, in 1999 we got the first 1 GHz CPU and now, in 2024, we are living through a GPU revolution that touches many areas of lives, and increasingly the CFD community. So in this article, I want to look at this hype and explain why people are jumping on the GPU hype train to give some perspective. Hopefully, this article will give you enough appetite to try GPU computing yourself, or at least put that gaming GPU you have to use to run some CFD simulations on it!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>(and yes, I know that comparing the GPU <em>revolution</em> with the first moon landing or breaking of the sound barrier is a silly comparison, but then again, I am a silly man)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-hardware-considerations">Hardware considerations</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this section, I want to review a few key concepts so that we have a shared understanding of the hardware that goes into building a laptop, PC, or indeed a HPC cluster. There are a few components we need to understand that combined with some other concepts will reveal why GPUs are so powerful.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-clock-frequency">Clock frequency</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The most important metric a CPU is judged on is its base clock frequency. This number will tell you how many operations your CPU can perform per second. So if you have a 3 GHz CPU with 4 cores, each core can execute 3 000 000 000 operations per second. If you can utilise all 4 cores to 100% of their potential, you can see 12 000 000 000 operations per second done on your data (obviously, this isn't realistic, you still need to have some operations left for the operating system and background processes to run, but you get the idea).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>That is a large number. By operations, I mean how many instructions a CPU can do. Most CPUs will have a standard fetch-decode-execute cycle, where each of these 3 instructions is one operation. In a nutshell, fetching refers to getting an instruction on what to do, e.g. read memory, go to a function, add two numbers, set a pointer address, delete memory, etc. Decode will translate that instruction into a form that CPU understands (e.g. how to set its transistors), and execute will then perform that action.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Through clever pipelining of this fetch, decode, and execute statements, we can actually achieve three operations in parallel, further increasing speed by a factor of, well, three.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is a limit of how high your clock frequency can go, and typically 4 GHz is a good number to remember. We need to place more and more transistors on a CPU to get a higher clock frequency, and that is achieved by placing transistors closer and closer together. There is a physical limit how close these can get, which we reach at about 4 GHz. It is possible to place them closer, but that comes at an exponentially increasing price.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-power-required">Power required</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>One aspect more commonly ignored is the power required to run a CPU (or GPU) at its clock frequency. The power required is computed using the following formula</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>P=P_{dynamic}+P_{short-circuit}+P_{leakage}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>[katex]P_{dynamic}[/katex] is a direct measure of your CPU usage. If you run compute-intensive CFD tasks, [katex]P_{dynamic}[/katex] goes up. If you are browsing the internet instead, this number (and CPU usage) remains low. The other two components relate to the micro-scale effect at the transistor level, which we do not have control over, and are related to its design and manufacturing. I won't go into more detail here about these two components, as they are not relevant to our discussion, but you can read up on them using <a href="https://en.wikipedia.org/wiki/Processor_power_dissipation#Sources" target="_blank" rel="noopener" title="">this source</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's take a look, then, at [katex]P_{dynamic}[/katex], which is given as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>P_{dynamic} = CV^2f</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]V[/katex] is the voltage, [katex]f[/katex] the clock frequency of your CPU, and [katex]C[/katex] a load capacity, which typically is difficult to estimate. However, there are two important take-away messages in this equation</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>The power required varies linearly with the clock frequency</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>The power required varies quadratically with the voltage</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>There is a slight complication, though, and that is that the frequency itself is a function of the voltage as well. That makes sense. If you want to use more of your CPU's computing capability, you need to support it with more voltage to run at an elevated level of performance. Thus, increasing clock frequency also results in an increase in voltage. So, while the equation above suggests a linear increase in power with increases in the clock frequency, the hidden dependence of the clock frequency on the voltage makes that a quadratic trend instead.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is important and we will come back to that in a second, but for now, the only thing you need to take away from this is that increasing the clock frequency results in a quadratic increase in the power required. If you want to read up more on this, there is a rather nice explanation of this on the <a href="https://physics.stackexchange.com/questions/34766/how-does-power-consumption-vary-with-the-processor-frequency-in-a-typical-comput" target="_blank" rel="noopener" title="">physics' stackexchange site</a>, which also elaborates on the dependence of the clock frequency on the voltage, and how to estimate that.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-hardware-architectures">Hardware architectures</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's examine the architecture of CPUs and GPUs in more detail. We'll need this to appreciate how the different design philosophies affect the overall performance and so in this section we'll contrast CPUs with GPUs. Let's look at CPUs first.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-cpu-hardware-architecture">CPU</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The image below shows the architecture of a CPU and is likely the type of architecture your device has that you are currently using to read this article. If you are one of my few exotic readers who read this website on their mobile (hello!), you'll likely have an ARM chip instead of the more common x64/x86 architecture that I'll look at below. In that case, ignore the L1 cache and the rest of the discussion should be true for your chip as well. See, this is an inclusive community; I don't discriminate against chips!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4079,"width":"600px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="https://cfd.university/wp-content/uploads/2024/07/CPU_architecture.png" alt="" class="wp-image-4079" style="width:600px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We see that our system can (and typical does) have more than a single core. Each core operates at its own base frequency and may be utilised differently by the operating system. Each core has its own L1 and L2 cache, which are small units of storage that the core is using to fetch memory from the main memory (i.e. RAM). The RAM itself is separated from the L1 and L2 by a shared L3 cache, which all cores have access to.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As we go from hard disk to RAM, from RAM to L1/L2/L3 caches, and finally from our caches to registers sitting within each core (not shown here, but each core has its own private memory called registers), we decrease the time it takes to read and write memory, which comes at the cost of decreasing the size of each memory unit. I have talked at length about caches in my <a href="https://cfd.university/learn/what-every-cfd-developer-needs-to-know-about-c/understanding-memory-management-in-c/#aioseo-memory-caches" target="_blank" rel="noopener" title="">article on memory management</a>, which you may want to check out for additional insights. In there, you will find the following image:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":1588,"width":"600px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="http://cfd.university/wp-content/uploads/2023/10/storage-hierarchy.png" alt="" class="wp-image-1588" style="width:600px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>This image shows the access time for each storage unit, as well as the typical maximum storage capacity. We see that as storage size decreases, access time becomes faster. If you gave your car keys to a valet parking service and they parked somewhere you didn't know, how long do you think it would take you to find it yourself in a car park of 1, 10, 100, and 1000 cars? Clearly, the smaller the car park, the faster you'll find your car, and the same is true for memory. We make it smaller, and it gets easier to find the memory we are looking for.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To understand why this would be beneficial (and indeed is a necessary evil), let's take a CPU with a clock frequency of 3 GHz. If you can perform 3 000 000 000 operations per second, that means that each operation will take 1 / 3 000 000 000 seconds, or approximately 0.33 nanoseconds (ns). If we look at the registers shown in the image above, we see that the access time happens to be 0.3 ns as well. Thus, memory in registers can be read within one clock cycle.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we had to access memory directly from RAM or hard disk instead, without a cache and register hierarchy in-between, it would take approximately 62.9 ns / 0.3 ns = <strong>210</strong> or 0.1 ms / 0.3 ns = 100 ns / 0.3 ns = <strong>333</strong> clock cycles to get memory from RAM or our hard disk, respectively, every time we requested it. Thus, if we had code like:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"double a = 1.0;\ndouble b = 2.5;\ndouble c = a + b;\nstd::cout \u0026lt;\u0026lt; c \u0026lt;\u0026lt; std::endl;","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003edouble\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e a = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1.0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003edouble\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e b = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e2.5\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003edouble\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e c = a + b;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #4EC9B0\u0022\u003estd\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e::cout \u0026lt;\u0026lt; c \u0026lt;\u0026lt; \u003c/span\u003e\u003cspan style=\u0022color: #4EC9B0\u0022\u003estd\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e::endl;\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":4,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="double a = 1.0;
+double b = 2.5;
+double c = a + b;
+std::cout &lt;&lt; c &lt;&lt; std::endl;" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #569CD6">double</span><span style="color: #D4D4D4"> a = </span><span style="color: #B5CEA8">1.0</span><span style="color: #D4D4D4">;</span></span>
+<span class="line"><span style="color: #569CD6">double</span><span style="color: #D4D4D4"> b = </span><span style="color: #B5CEA8">2.5</span><span style="color: #D4D4D4">;</span></span>
+<span class="line"><span style="color: #569CD6">double</span><span style="color: #D4D4D4"> c = a + b;</span></span>
+<span class="line"><span style="color: #4EC9B0">std</span><span style="color: #D4D4D4">::cout &lt;&lt; c &lt;&lt; </span><span style="color: #4EC9B0">std</span><span style="color: #D4D4D4">::endl;</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>We would be waiting for 210 or 333 clock cycles to execute line 1 (writing memory to main memory) and the same for line 2. Line 3 involves 3 memory operations (two reads, one write), so 630 or 999 clock cycles and line 4 would be one memory reading operation, so again, 210 or 333 clock cycles. This is a somewhat simplistic view, but it gives you a rough idea of how long this would take.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we divide our 3 GHz by 210 or 333, we roughly get 0.01 GHz or 10 MHz. <a href="https://en.wikipedia.org/wiki/Microprocessor_chronology" target="_blank" rel="noopener" title="">The first 10 MHz chip was introduced in 1975</a>. Clearly, that was not a time in history we remember as being known for its fast processors, and we don't want to limit ourselves to 10 MHz computing power! So, we need caches.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Just as an aside; the combination of all of your cores plus the L1, L2, and L3 register is known as the central processing unit (i.e. the CPU). Sometimes people say that they have 4 CPUs in their PC when they really ought to be saying that they have a single CPU with 4 processors or cores. It is a small semantic distinction, but now you can pretend to be a computer science guru, you are welcome!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-gpu-hardware-architecture">GPU</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The GPU is not all that different to a CPU. A schematic of its architecture is shown below:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4081,"width":"600px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="https://cfd.university/wp-content/uploads/2024/07/GPU_architecture-1.png" alt="" class="wp-image-4081" style="width:600px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>The basic building block is a streaming multiprocessor or SM. This is somewhat akin to a CPU, i.e. we have a collection of cores (for Nvidia graphics cards, we call them CUDA cores), and all of these SMs have their own constant cache, shared memory, as well as an L1 cache. Why do we have shared memory? Well, the naming is perhaps somewhat confusing (as the other memory types are shared as well), but shared memory is shared among different SMs, while constant and L1 memory is local to each SM (as shown by the arrows).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This brings me to the next point: GPUs have a lot of streaming multi-processors, consumer graphic cards these days typically have tens of SMs (e.g. 16, 32, or 64 SM), and 128 CUDA cores per SM (you can do the calculation in your head now and see how GPUs have far more cores than CPUs).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On your GPU, you have an L2 cache, which is shared among all your SMs, as well as a global memory (which is akin to RAM) and a special texture memory space (I'll let you guess what this memory bay is used for in the context of consumer gaming graphic cards ... (but we can use it as well if we want)).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Then, the GPU is connected to the host device (i.e. your PC's or laptop's motherboard, typically through a PCIe interface. So, if you want to run code that lives on your host (which it does, as we compile our code on our PC / laptop and then store it somewhere on our hard disk), we need to copy it first to our GPU. If we are writing our GPU-enabled code, it will always run on the CPU, and we, as programmers, have to explicitly state which memory should be copied to the global GPU memory and which functions should be executed on the GPU. This is what CUDA allows us to do.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-difference-of-cpus-and-gpus">Differences between CPUs and GPUs</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Now that we understand the basic architecture of CPUs and GPUs let's look at what makes them different. Both CPUs and GPUs have a base clock frequency and an associated power required to run each core. A CPU is designed to work on single tasks sequentially, as fast as it can, while a GPU is designed to work in parallel, on a large number of points in a data set, with a lower base clock frequency. Jamie and Adam from Mythbusters have done a neat job of comparing CPUs and GPUs in a more visual manner, which is worth the 90-second watch time:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:embed {"url":"https://www.youtube.com/watch?v=-P28LKWTzrI","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=-P28LKWTzrI
+</div></figure>
+<!-- /wp:embed -->
+
+<!-- wp:paragraph -->
+<p>This design approach is on purpose; a CPU has to work on sequential tasks like opening a program, reading a text file, allowing for changes to take place, writing the changes back to memory, etc. All of these steps have to be performed one after the other, so we want them to be done as fast as possible.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A GPU, on the other hand, was designed for graphic visualisations and was initially driven by gaming needs. Your screen has a certain resolution (e.g. 1920 by 1080 pixels, or a total of approximately 2 million pixels), which means to get a smooth gaming experience, we need to have a device that can perform many costly operations in parallel and lots of them in parallel. This is what the GPU is doing. Lots of operations are in parallel, but in a direct comparison of a single core on a CPU and GPU, the CPU will always be faster.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we take a quick detour to&nbsp;<a href="https://www.opengl.org/" target="_blank" rel="noopener">OpenGL</a>, the programming framework of choice for creating 3D scenes, we will see that it allows you to draw triangles to the screen and apply either colours or textures to them. This is all you need to visualise an entire game (or CFD post-processing application, for that matter!).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Creating a 3D scene typically involves an object generated in some CAD or 3D rendering software, which has its own coordinate space. But then you place it inside a so-called world (or 3D scene), which has its own coordinate space. Then you have a camera looking at the 3D scene, which has its own coordinate system. Finally, you want to have some form of parallel or perspective projection, which will require some transformation of an existing coordinate space into a corrected one.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>All of these transformations - going from one coordinate system to another - require a vector matrix multiplication (think back to your linear algebra lessons, and you may remember coordinate transformations; if not,&nbsp;<a href="https://motion.cs.illinois.edu/RoboticSystems/CoordinateTransformations.html" target="_blank" rel="noopener">here is a handy overview</a>). We have to do this matrix-vector multiplication a few times (going from one coordinate system to another) whenever something changes for each pixel (approximately 2 million), and, for our gaming friends, we should be doing this 60 times per second. That amounts to approximately 360 million operations per second.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>That's a lot, but it also only covers the update stage. We haven't discussed computing other things in the background, which will likely take equally as much time. So, if we can offload this work to the GPU, our CPU is free to compute collisions, physics updates, handle controller input and audio cues, etc.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thanks to these gaming needs, we now have GPUs that are powerful devices, and this is the appeal for porting CFD solvers to GPUs; you are likely to have an Nvidia GPU anyways on your machine, and if you do, you may as well use it for your CFD calculations and enjoy the additional compute power available to you! So let's have a look at the main differences between CPUs and GPUs in terms of clock speed and available cores:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>CPUs</strong>: They have a clock frequency of around 3 - 4 GHz these days and typically have 4 cores per CPU. Some may have 8 - 30 cores, though these are more commonly found in workstation PCs.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>GPUs</strong>: They have a clock frequency of around 1 - 2 GHz but make up for their decreased clock frequency in the number of cores as we saw. A modern (gaming) GPU will typically have around 1000 - 2000 cores (16 SMs * 128 CUDA core/SM = 2048 CUDA cores), while high-end GPUs specifically aimed at scientific computing can have as many as 5000 - 10 000 cores.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>So, GPUs use a lower clock frequency (and thus physically smaller cores), which gives them space to put a ridiculous number of cores on their chip. But this is just one aspect of why GPU computing has become so popular. We also need to look at different parallelisation strategies to understand why GPUs have a better parallelisation characteristic, which we will look at next.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Before we do, though, I can't finish this section without talking about <a href="https://en.wikipedia.org/wiki/Xeon_Phi" target="_blank" rel="noopener" title="">Intel's Xeon Phi chip</a>, specifically the Knights Landing version (KNL), which was Intel's attempt to rival GPUs in the early 2010s. It had similar clock frequencies to a GPU, around 1 - 2 GHz, while featuring up to 72 cores (it couldn't reach 1000+ cores due to the different architectures of CPUs and GPUs).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The appeal was that you would get a similar level of performance compared to a GPU, which would allow you to run code that was already optimised (and parallelised) on the CPU to continue running without any code modifications. While this was a good idea on the drawing board, the chip lacked memory, had a limited number of applications that would actually benefit from this chip, GPUs were already doing a better job, and intel's own customers were more interested in other Intel products, which saw the Xeon Phi series being finally discontinued in 2020.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-a-gentle-introduction-to-parallel-computing">A gentle introduction to parallel computing</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Since we have reached the end of Moore's law and we can no longer increase the number of transistors (and thus clock frequency) every two years, we have to instead opt for using more cores at the same time to continue to see an increase in compute performance. If we are using more than a single core, we enter the wondrous world of parallel computing, where we have essentially two different parallelisation strategies available:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>The distributed memory approach</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>The shared memory approach</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Let's take a look at both of them to get an idea what some advantages and disadvantages are for each approach. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-distributed-memory-approach">Distributed memory approach</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's start by looking at distributed memory first. The name is derived in the way memory is partitioned, and that makes all the difference in how you have to operate your parallel code. Using the CPU architecture we saw above, I have indicated in the image below what a distributed memory approach would do:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4068,"width":"600px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="http://cfd.university/wp-content/uploads/2024/07/distributed_memory-1.png" alt="" class="wp-image-4068" style="width:600px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We now say that each core has its own L1 and L2 cache, just as before, but we create barriers on the L3 cache and RAM, which means that each core will have its own private address space on the L3 cache and RAM, which none of the other processors can access. Why is this appealing? Well, if I know how to communicate memory with my neighbouring core and I need some data from it, then it doesn't matter if the core is sitting on the same CPU, the same (or a different) compute node in a cluster, or even somewhere in a geographically different location.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As long as my parallelisation framework knows how to communicate memory across processor boundaries, and it has access to a network connection, then my application can use as many cores as I have available (on a PC, cluster, or distributed network of machines over the internet).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>That's great, if I need 2 cores to run my application, or 1 million, it doesn't make a difference. I don't need to change my code if I want to run on different types of PCs or clusters (though you probably need to optimise your code a bit more if you actually need 1 million cores, <a href="https://en.wikipedia.org/wiki/Amdahl's_law" target="_blank" rel="noopener" title="">Amdahl's law</a> will make that painfully clear). This is what all major and commercial CFD solver these days have implemented.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But there is no free lunch so what is the downside with this approach? Well, let's say we have this simplified model equation that we want to solve (linearised Navier-Stokes with no pressure or diffusion, I never claimed it is an interesting equation, but we like it enough in CFD to constantly (ab)use it):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \phi}{\partial t}+a\frac{\partial \phi}{\partial x}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we discretise this with an explicit time integration scheme and upwinding for the spatial term, we get (you can read <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-discretising-the-model-equation/#aioseo-step-2-understanding-explicit-and-implicit-contributions" target="_blank" rel="noopener" title="">my article on this equation discretisation</a> if you need some more pointers):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi_i^{n+1}=\phi_i^n-a\frac{\Delta t}{\Delta x}\left(\phi_i^{n}-\phi_{i-1}^{n}\right)=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>When we launch our parallel application, the first thing we have to do is a <a href="https://en.wikipedia.org/wiki/Domain_decomposition_methods" target="_blank" rel="noopener" title="">domain decomposition</a> step. Let's say we have a domain of 100 points (this is a 1D equation) and we split it into 2 processors, then each sub-domain will receive 50 points and will operate on that separately. Less work per core (50 points instead of 100) results in faster computation. But what if we are exactly on the boundary point?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's say we are at the first point on processor 2, which is located at [katex]i=50[/katex]. When we compute [katex]\phi_i^{n+1}[/katex], we can see from the equation above that we need [katex]\phi_{i-1}^{n}[/katex] for that, i.e. [katex]\phi_{i-1}^{n}=\phi_{49}^{n}[/katex], which is located on processor 1. However, since each processor now has its own private memory space, we can't just go to processor 1 and get it, as it may or may not be on the same physical RAM.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So how do we get this value then? Well, we politely ask processor 1 if it would like to share its values with us. This is known as inter-processor communication, and it takes time. It mainly takes time as we now need to share memory on the RAM level, and if you think back to the discussion we had above about caches and RAM, working directly on the RAM is painfully slow for the CPU. You can't do any computations on the CPU while you are exchanging data across processor boundaries, so you want to have as few as possible.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To give you an idea, a really well-optimised Navier-Stokes solver using second-order finite volume methods (e.g. Fluent, Star-CCM+, OpenFOAM, SU2, code_saturne, Numeca, Converge-CFD, etc.) can perhaps operate efficiently with as little as 50 000 - 100 000 cells per processor. If you throw more cores at your problem and you have fewer cells per processor, you are mostly waiting for communication to finish, and your compute time is insignificant compared to your communication time.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, while distributed memory is great in the flexibility it gives us (i.e. we can run on a single core, 4 cores, or 1 million cores), it doesn't scale well if we throw more and more resources (processors) at our problem. This is why <a href="https://nigam-siddhant123.medium.com/what-you-should-know-about-weak-scaling-vs-strong-scaling-in-high-performance-computing-a2441f51e438" target="_blank" rel="noopener" title="">weak scaling</a> is so important when testing CFD solvers, which allows us to establish how many cells we need per core/processor to have an efficient parallelisation approach.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-shared-memory-approach">Shared memory approach</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Shared memory, on the other hand, is saying that all of this communication is bad. It takes too much time, and we lose a lot of performance, especially if we are only interested in running simulations on a local PC or laptop. In this case, we are throwing away a lot of potential to speed up our code for communicating memory which lives on the same physical CPU. Thus, in a shared memory approach, we leave the RAM shared, and all cores have access to the same memory, as shown in the image below:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4069,"width":"600px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="https://cfd.university/wp-content/uploads/2024/07/shared_memory.png" alt="" class="wp-image-4069" style="width:600px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>This is obviously better for performance on a single CPU but it also means that you will always be limited to just that single CPU. If you want to go to an HPC cluster, you won't be able to run your code on 1 million cores, as you can with a distributed parallelisation approach. For CFD applications, this may be limiting, but there are a lot of other niches were you will never go to a cluster anyway, in this case, you want to be as efficient on your PC as possible, and this is where shared memory approaches are king.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Now, we can, of course, be savvy and say, why don't we use a shared memory approach within a CPU (or compute node) and then use a distributed memory approach to connect all of these different compute nodes with one another, i.e. we are now using a hybrid shared/distributed memory approach. Yes, we can do that (and many codes that want to stay on the CPU do exactly that). You are asking for trouble, though, as executing a hybrid shared/distributed memory code is not a trivial thing (and requires a cluster of some description).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-common-parallelisation-frameworks">Common parallelisation frameworks for CFD applications </h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this section, let's quickly review common parallelisation frameworks you may find in the wild. I do not intend to explain these in depth, but if you have heard them once, you will later be able to link them back to parallelisation and our discussion in this article.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>MPI</strong>: The Message Passing Interface (MPI) is the gold standard in distributed memory parallelisation. It pretty much enjoys a monopoly in the distributed memory category, although alternatives exist. If you are only ever going to learn one parallelisation framework, MPI should be it. Any general-purpose CFD solver that is parallelised uses MPI under the hood. MPI is just a standard (like C++), and we have many different implementations of MPI, e.g. OpenMPI, MPICH, Intel MPI, Microsoft MPI, IBM MPI, and the list goes on (just like we have many different compilers for C++).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>OpenMP</strong>: OpenMP is the king in the shared memory approach space, and while not unrivalled, you'll find it used almost exclusively in CFD codes. It is pretty easy to learn, and the best part is you can write both sequential and parallel code at the same time, as OpenMP only uses a specific syntax that will be thrown out by the compiler and thus ignored unless we tell it to interpret these special commands as OpenMP instructions. OpenMP is not to be confused with OpenMPI, which is an implementation of MPI, as seen above. OpenMP now has a mechanism to offload work to GPUs as well.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>OpenACC</strong>: OpenACC is somewhat of a clone of OpenMP, i.e. it works very similarly, but the focus was always on GPUs, not so much on CPUs (though it could parallelise on both). Since OpenMP has added GPU support, though, OpenACC has a much tougher time penetrating the CFD market, but similar to OpenMP, it enjoys a pretty user-friendly syntax, and with as little as 3 or 4 additional lines of code, you can offload a large portion of code to your GPU and benefit from its compute capabilities (OpenMP is similar in terms of number of lines required).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>CUDA</strong>: As already alluded to above, the Compute Unified Device Architecture (CUDA) is Nvidia's software development toolkit (SDK) that allows us developers to access Nvidia GPUs (of course, you can't access AMD, Intel or any other GPU with CUDA). It is a pretty low-level affair in that you have to write quite a bit of code to get things to work, and you also need to understand GPU architectures well to extract performance. OpenMP and OpenACC are much more higher-level (and at least OpenACC works on non-Nvidia GPUs as well!) and thus quicker to learn.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>There are a ton more parallelisation strategies, and originally, this list was much larger. However, I realised that most parallelisation frameworks were not really often if at all, used in a CFD context, so I thought not to bother you with that.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you have thought along the way: "Hang on, if shared memory approaches are really good within a CPU/node and distributed memory approaches can communicate across nodes, could I not combine these?". You are on to something, and yes, the combination of distributed and shared memory parallelisation strategies is known as hybrid parallelisation approaches, or MPI+X (where the X can be OpenMP, for example). In fact, when it comes to MPI+X, you'll most often find MPI and OpenMP combined together, and this can further accelerate your code.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-putting-it-all-together-what-makes-gpus-so-special">Putting it all together: What makes GPUs so special?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>To understand the power of GPUs, we almost have all the pieces of the puzzle together. The last piece I want to look at is some pseudo-code that will allow us to appreciate where some additional computational efficiency can be gained on a GPU compared to a CPU.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's say we want to solve the advection equation as seen in the previous section, then we likely would have code along the following lines:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"// include statements\n\nint main() {\n\n  // setting up simulation here\n  ...\n  \n  // loop over time\n  for (int timeStep = 0; timeStep \u0026lt; totalTimeSteps; ++timeStep) {\n    \n    // calculate solution at each point on the internal domain, ignoring boundary points\n    for (int i = 1; i \u0026lt; domainSize - 1; ++i) {\n      \n      // new value of phi at new time level n+1\n      phi[i] = phi_old[i] - a * dt / dx * (phi_old[i] - phi_old[i - 1]);\n    }\n  }\n  \n  return 0;\n}","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e// include statements\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003emain\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e() {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // setting up simulation here\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  ...\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // loop over time\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003efor\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (\u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e timeStep = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; timeStep \u0026lt; totalTimeSteps; ++timeStep) {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // calculate solution at each point on the internal domain, ignoring boundary points\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003efor\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (\u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e i = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; i \u0026lt; domainSize - \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; ++i) {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e      \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e      // new value of phi at new time level n+1\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e      \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] = \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] - a * dt / dx * (\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] - \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i - \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e]);\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ereturn\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e}\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":20,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(2 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="// include statements
+
+int main() {
+
+  // setting up simulation here
+  ...
+  
+  // loop over time
+  for (int timeStep = 0; timeStep &lt; totalTimeSteps; ++timeStep) {
+    
+    // calculate solution at each point on the internal domain, ignoring boundary points
+    for (int i = 1; i &lt; domainSize - 1; ++i) {
+      
+      // new value of phi at new time level n+1
+      phi[i] = phi_old[i] - a * dt / dx * (phi_old[i] - phi_old[i - 1]);
+    }
+  }
+  
+  return 0;
+}" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #6A9955">// include statements</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">main</span><span style="color: #D4D4D4">() {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6A9955">  // setting up simulation here</span></span>
+<span class="line"><span style="color: #D4D4D4">  ...</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #6A9955">  // loop over time</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #C586C0">for</span><span style="color: #D4D4D4"> (</span><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> timeStep = </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">; timeStep &lt; totalTimeSteps; ++timeStep) {</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span></span>
+<span class="line"><span style="color: #6A9955">    // calculate solution at each point on the internal domain, ignoring boundary points</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #C586C0">for</span><span style="color: #D4D4D4"> (</span><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> i = </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">; i &lt; domainSize - </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">; ++i) {</span></span>
+<span class="line"><span style="color: #D4D4D4">      </span></span>
+<span class="line"><span style="color: #6A9955">      // new value of phi at new time level n+1</span></span>
+<span class="line"><span style="color: #D4D4D4">      </span><span style="color: #9CDCFE">phi</span><span style="color: #D4D4D4">[i] = </span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i] - a * dt / dx * (</span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i] - </span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i - </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">]);</span></span>
+<span class="line"><span style="color: #D4D4D4">    }</span></span>
+<span class="line"><span style="color: #D4D4D4">  }</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #C586C0">return</span><span style="color: #D4D4D4"> </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">;</span></span>
+<span class="line"><span style="color: #D4D4D4">}</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>Let's look at some pseudo-code that we would have to write to parallelise this code. I am going to gloss over quite a bit of detail here as parallelising code is not difficult, but getting your head around what the code is doing if you have never seen a parallel code is rather confusing, and it would not help in the current discussion.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The following code is the same code using an MPI parallelisation strategy:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"// include statements\n\nint main() {\n\n  // setting up simulation here\n  ...\n  \n  // decompose domain into as many sub-domains as we have processors\n  ...\n  \n  // loop over time\n  for (int timeStep = 0; timeStep \u0026lt; totalTimeSteps; ++timeStep) {\n    \n    // get value of phi_old[i - 1] at processor boundary\n    double phi_processor = get_processor_boundary_values();\n    \n    // calculate solution at each point on the internal domain, ignoring boundary points\n    for (int i = 1; i \u0026lt; domainSize - 1; ++i) {\n      \n      // new value of phi at new time level n+1\n      if (i == 1)\n        phi[i] = phi_old[i] - a * dt / dx * (phi_old[i] - phi_processor);\n      else\n        phi[i] = phi_old[i] - a * dt / dx * (phi_old[i] - phi_old[i - 1]);\n    }\n  }\n  \n  return 0;\n}","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e// include statements\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003emain\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e() {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // setting up simulation here\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  ...\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // decompose domain into as many sub-domains as we have processors\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  ...\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // loop over time\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003efor\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (\u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e timeStep = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; timeStep \u0026lt; totalTimeSteps; ++timeStep) {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // get value of phi_old[i - 1] at processor boundary\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003edouble\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e phi_processor = \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eget_processor_boundary_values\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e();\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // calculate solution at each point on the internal domain, ignoring boundary points\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003efor\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (\u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e i = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; i \u0026lt; domainSize - \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; ++i) {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e      \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e      // new value of phi at new time level n+1\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e      \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eif\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (i == \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] = \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] - a * dt / dx * (\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] - phi_processor);\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e      \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eelse\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] = \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] - a * dt / dx * (\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] - \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i - \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e]);\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ereturn\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e}\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":29,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(2 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="// include statements
+
+int main() {
+
+  // setting up simulation here
+  ...
+  
+  // decompose domain into as many sub-domains as we have processors
+  ...
+  
+  // loop over time
+  for (int timeStep = 0; timeStep &lt; totalTimeSteps; ++timeStep) {
+    
+    // get value of phi_old[i - 1] at processor boundary
+    double phi_processor = get_processor_boundary_values();
+    
+    // calculate solution at each point on the internal domain, ignoring boundary points
+    for (int i = 1; i &lt; domainSize - 1; ++i) {
+      
+      // new value of phi at new time level n+1
+      if (i == 1)
+        phi[i] = phi_old[i] - a * dt / dx * (phi_old[i] - phi_processor);
+      else
+        phi[i] = phi_old[i] - a * dt / dx * (phi_old[i] - phi_old[i - 1]);
+    }
+  }
+  
+  return 0;
+}" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #6A9955">// include statements</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">main</span><span style="color: #D4D4D4">() {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6A9955">  // setting up simulation here</span></span>
+<span class="line"><span style="color: #D4D4D4">  ...</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #6A9955">  // decompose domain into as many sub-domains as we have processors</span></span>
+<span class="line"><span style="color: #D4D4D4">  ...</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #6A9955">  // loop over time</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #C586C0">for</span><span style="color: #D4D4D4"> (</span><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> timeStep = </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">; timeStep &lt; totalTimeSteps; ++timeStep) {</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span></span>
+<span class="line"><span style="color: #6A9955">    // get value of phi_old[i - 1] at processor boundary</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #569CD6">double</span><span style="color: #D4D4D4"> phi_processor = </span><span style="color: #DCDCAA">get_processor_boundary_values</span><span style="color: #D4D4D4">();</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span></span>
+<span class="line"><span style="color: #6A9955">    // calculate solution at each point on the internal domain, ignoring boundary points</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #C586C0">for</span><span style="color: #D4D4D4"> (</span><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> i = </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">; i &lt; domainSize - </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">; ++i) {</span></span>
+<span class="line"><span style="color: #D4D4D4">      </span></span>
+<span class="line"><span style="color: #6A9955">      // new value of phi at new time level n+1</span></span>
+<span class="line"><span style="color: #D4D4D4">      </span><span style="color: #C586C0">if</span><span style="color: #D4D4D4"> (i == </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">)</span></span>
+<span class="line"><span style="color: #D4D4D4">        </span><span style="color: #9CDCFE">phi</span><span style="color: #D4D4D4">[i] = </span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i] - a * dt / dx * (</span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i] - phi_processor);</span></span>
+<span class="line"><span style="color: #D4D4D4">      </span><span style="color: #C586C0">else</span></span>
+<span class="line"><span style="color: #D4D4D4">        </span><span style="color: #9CDCFE">phi</span><span style="color: #D4D4D4">[i] = </span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i] - a * dt / dx * (</span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i] - </span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i - </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">]);</span></span>
+<span class="line"><span style="color: #D4D4D4">    }</span></span>
+<span class="line"><span style="color: #D4D4D4">  }</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #C586C0">return</span><span style="color: #D4D4D4"> </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">;</span></span>
+<span class="line"><span style="color: #D4D4D4">}</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>On line 8, we would have to split our domain first into as many sub-domains as we have processes (i.e. a 1D domain with 100 nodes would have two sub-domains with 50 nodes each if we used 2 processors). On line 15, we request the value that sits on the domain just next to us so we can use this value from the other processor. This is the communication step which is so expensive. On lines 21-24, we either use this received value if <code>i</code> is equal to 1 (i.e. the first iteration, where <code>i-1</code> would be on the neighbouring processor), or we update the equation as usual otherwise.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's contrast that with an OpenMP parallelisation solution:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"// include statements\n\nint main() {\n\n  // setting up simulation here\n  ...\n  \n  // loop over time\n  for (int timeStep = 0; timeStep \u0026lt; totalTimeSteps; ++timeStep) {\n    \n    // calculate solution at each point on the internal domain, ignoring boundary points\n    // OpenMP instruction to parallelise the next spatial loop among a certain number of threads (cores)\n    for (int i = 1; i \u0026lt; domainSize - 1; ++i) {\n      \n      // new value of phi at new time level n+1\n      phi[i] = phi_old[i] - a * dt / dx * (phi_old[i] - phi_old[i - 1]);\n    }\n  }\n  \n  return 0;\n}","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e// include statements\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003emain\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e() {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // setting up simulation here\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  ...\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // loop over time\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003efor\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (\u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e timeStep = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; timeStep \u0026lt; totalTimeSteps; ++timeStep) {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // calculate solution at each point on the internal domain, ignoring boundary points\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // OpenMP instruction to parallelise the next spatial loop among a certain number of threads (cores)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003efor\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (\u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e i = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; i \u0026lt; domainSize - \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; ++i) {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e      \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e      // new value of phi at new time level n+1\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e      \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] = \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] - a * dt / dx * (\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i] - \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ephi_old\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e[i - \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e]);\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ereturn\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e}\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":21,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(2 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="// include statements
+
+int main() {
+
+  // setting up simulation here
+  ...
+  
+  // loop over time
+  for (int timeStep = 0; timeStep &lt; totalTimeSteps; ++timeStep) {
+    
+    // calculate solution at each point on the internal domain, ignoring boundary points
+    // OpenMP instruction to parallelise the next spatial loop among a certain number of threads (cores)
+    for (int i = 1; i &lt; domainSize - 1; ++i) {
+      
+      // new value of phi at new time level n+1
+      phi[i] = phi_old[i] - a * dt / dx * (phi_old[i] - phi_old[i - 1]);
+    }
+  }
+  
+  return 0;
+}" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #6A9955">// include statements</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">main</span><span style="color: #D4D4D4">() {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6A9955">  // setting up simulation here</span></span>
+<span class="line"><span style="color: #D4D4D4">  ...</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #6A9955">  // loop over time</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #C586C0">for</span><span style="color: #D4D4D4"> (</span><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> timeStep = </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">; timeStep &lt; totalTimeSteps; ++timeStep) {</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span></span>
+<span class="line"><span style="color: #6A9955">    // calculate solution at each point on the internal domain, ignoring boundary points</span></span>
+<span class="line"><span style="color: #6A9955">    // OpenMP instruction to parallelise the next spatial loop among a certain number of threads (cores)</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #C586C0">for</span><span style="color: #D4D4D4"> (</span><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> i = </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">; i &lt; domainSize - </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">; ++i) {</span></span>
+<span class="line"><span style="color: #D4D4D4">      </span></span>
+<span class="line"><span style="color: #6A9955">      // new value of phi at new time level n+1</span></span>
+<span class="line"><span style="color: #D4D4D4">      </span><span style="color: #9CDCFE">phi</span><span style="color: #D4D4D4">[i] = </span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i] - a * dt / dx * (</span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i] - </span><span style="color: #9CDCFE">phi_old</span><span style="color: #D4D4D4">[i - </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">]);</span></span>
+<span class="line"><span style="color: #D4D4D4">    }</span></span>
+<span class="line"><span style="color: #D4D4D4">  }</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #C586C0">return</span><span style="color: #D4D4D4"> </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">;</span></span>
+<span class="line"><span style="color: #D4D4D4">}</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>This looks pretty much like the sequential code, and it should, as OpenMP and sequential codes can live side by side. The only difference is the instruction on line 12. I haven't given the exact OpenMP instruction here, but the point is we issue some specific commands here, and OpenMP will then parallelise the next loop automatically. There is no need to call any costly communication function, as memory is shared, and this is visible to everyone.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok, so we have seen distributed memory (MPI) and shared memory (OpenMP) in action. But what about GPUs? Let's look at their code as well (again, in pseudo-code):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"// include statements\n\nint main() {\n\n  // setting up simulation here\n  ...\n  \n  // copy memory from host RAM into GPU RAM\n  ...\n  \n  // loop over time\n  for (int timeStep = 0; timeStep \u0026lt; totalTimeSteps; ++timeStep) {\n    \n    // calculate solution at each point on the internal domain, ignoring boundary points\n    update_phi\u0026lt;\u0026lt;\u0026lt;16,16\u003e\u003e\u003e()\n  }\n  \n  // copy memory back from GPU RAM into host RAM\n  ...\n  \n  return 0;\n}","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e// include statements\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003emain\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e() {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // setting up simulation here\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  ...\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // copy memory from host RAM into GPU RAM\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  ...\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // loop over time\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003efor\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e (\u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e timeStep = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e; timeStep \u0026lt; totalTimeSteps; ++timeStep) {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e    // calculate solution at each point on the internal domain, ignoring boundary points\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    update_phi\u0026lt;\u0026lt;\u0026lt;\u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e16\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e,\u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e16\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e\u0026gt;\u0026gt;\u0026gt;()\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e  // copy memory back from GPU RAM into host RAM\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  ...\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e  \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ereturn\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e}\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":22,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(2 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="// include statements
+
+int main() {
+
+  // setting up simulation here
+  ...
+  
+  // copy memory from host RAM into GPU RAM
+  ...
+  
+  // loop over time
+  for (int timeStep = 0; timeStep &lt; totalTimeSteps; ++timeStep) {
+    
+    // calculate solution at each point on the internal domain, ignoring boundary points
+    update_phi&lt;&lt;&lt;16,16&gt;&gt;&gt;()
+  }
+  
+  // copy memory back from GPU RAM into host RAM
+  ...
+  
+  return 0;
+}" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #6A9955">// include statements</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">main</span><span style="color: #D4D4D4">() {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6A9955">  // setting up simulation here</span></span>
+<span class="line"><span style="color: #D4D4D4">  ...</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #6A9955">  // copy memory from host RAM into GPU RAM</span></span>
+<span class="line"><span style="color: #D4D4D4">  ...</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #6A9955">  // loop over time</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #C586C0">for</span><span style="color: #D4D4D4"> (</span><span style="color: #569CD6">int</span><span style="color: #D4D4D4"> timeStep = </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">; timeStep &lt; totalTimeSteps; ++timeStep) {</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span></span>
+<span class="line"><span style="color: #6A9955">    // calculate solution at each point on the internal domain, ignoring boundary points</span></span>
+<span class="line"><span style="color: #D4D4D4">    update_phi&lt;&lt;&lt;</span><span style="color: #B5CEA8">16</span><span style="color: #D4D4D4">,</span><span style="color: #B5CEA8">16</span><span style="color: #D4D4D4">&gt;&gt;&gt;()</span></span>
+<span class="line"><span style="color: #D4D4D4">  }</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #6A9955">  // copy memory back from GPU RAM into host RAM</span></span>
+<span class="line"><span style="color: #D4D4D4">  ...</span></span>
+<span class="line"><span style="color: #D4D4D4">  </span></span>
+<span class="line"><span style="color: #D4D4D4">  </span><span style="color: #C586C0">return</span><span style="color: #D4D4D4"> </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">;</span></span>
+<span class="line"><span style="color: #D4D4D4">}</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>Here, we first copy some memory (i.e. the solution vectors like the velocity, pressure, temperature, etc.) on line 8 from the host RAM to the GPU RAM, which can then be used during the time loop. Instead of writing out the update step for phi explicitly, we capture that in a function (which would have the same content as what we saw in the examples above), only this time it will be invoked with the special <code>&lt;&lt;&lt;N,M&gt;&gt;&gt;</code> syntax, where essentially <code>N</code> and <code>M</code> will determine how many CUDA cores you will use.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is no hard and fast rule for which values should be set for <code>N</code> and <code>M</code>, and you would likely experiment with them until you get good performance on your device. This is the part I meant where I said you have to understand GPUs to know what values should go in here. It would be a bit too much to go into the details here, as it is not easily explained in a few sentences. But if you want to know more, I'd recommend the <a href="https://developer.nvidia.com/blog/even-easier-introduction-cuda/" target="_blank" rel="noopener" title="">crash course by Mark Harris</a> over at Nvidia.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, if we look at the code, we see that MPI requires costly communication during each time step, whereas OpenMP does not. In CUDA, we also only copy memory once from the host to the GPU memory, and then back once we are done with the simulation. Thus, GPUs are essentially shared memory approaches as well, which means we avoid costly communication.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This copying back and forth, though, can be done in many different ways. CUDA exposes explicit (synchronous and asynchronous), zero-copy, pinned, and unified memory management, all with their advantages and disadvantages. A good overview is given over at <a href="https://developer.codeplay.com/products/computecpp/ce/1.2.0/guides/sycl-for-cuda-developers/memory-model" target="_blank" rel="noopener" title="">codeplay</a>, and if you really want to get lost in memory management, the book <a href="https://cfd.university/blog/how-to-get-started-with-computational-fluid-dynamics-cfd/#aioseo-high-performance-computing" target="_blank" rel="noopener" title="">Professional CUDA C Programming as reviewed on my CFD reading list</a> is a really excellent book that reviews all of these different approaches along with benchmarking them against one another.  </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Having said that, the power of GPUs can be expressed by this <em>highly</em> scientific equation:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>thousands \ of \ cores \ + \ low \ power \ consumption \ + \ shared \ memory \ parallelisation \ = \ magic!</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>And, sure, let's say it is magic factorial ([katex]magic![/katex]), why not! This combination is really powerful and the reason why we see so many CFD solvers switching to GPUs as either accelerator (i.e. parallelising only parts of the code which require a lot of computation) or as a native parallelisation approach (i.e. porting the entire solver onto the GPU).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I just want to mention a few things on multi-GPU usage as well, before we close this article. If you want to use 2 or more GPUs, not sitting on the same compute node (within a HPC cluster), you'll have to go back to MPI-X, i.e. now we would have MPI-CUDA. MPI would only send information between GPUs, so they have everything they need.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We said that communicating data between MPI processors is painfully slow, as we are essentially operating directly on RAM rather than caches or registers, which takes about 200 clock cycles, and we need a good number of cells per MPI core to hide this communication cost. With GPUs, this pain is even larger, as we now have to copy memory first from the GPU (RAM) to the host RAM, then copy the data from one MPI process to another, only to then copy that data from the receiving MPI's RAM into its connected GPU's RAM again.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There are some techniques we can utilise here; for example, <a href="https://developer.nvidia.com/blog/introduction-cuda-aware-mpi/" target="_blank" rel="noopener" title="">CUDA-aware MPI</a> may help to soften the pain somewhat, but we have to keep this double memory management burden in mind. Most people, blogs, and even books don't tell you about this, so you'll be left thinking, "Why is not everyone using GPUs all the time?". They do make life more complicated and are more difficult to program, and this gets only worse once we have multiple GPUs. It is worth the pain, though, and this is why we are living through the GPU revolution at the moment. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-summary">Summary</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We looked at a broad overview of why GPUs are so powerful, and it comes down to raw compute power, low(er) power consumption (compared to CPUs), and an excellent parallelisation approach. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you are serious about CFD, you owe it to yourself to be at least aware of the power of GPU computing. If you get your hands dirty and actually code up some GPU code, you will get an even better understanding of how GPUs work, what their strengths are, but also where they may not be as good as everyone is making them out to be. You will only ever truly learn how CFD concepts are working (and what their limitations are) if you sit down and code it up. Who knows, we may look at it in more depth again in the future if there is an interest.</p>
+<!-- /wp:paragraph -->

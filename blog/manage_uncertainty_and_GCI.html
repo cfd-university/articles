@@ -1,0 +1,1121 @@
+<!-- How to manage uncertainty in CFD: the grid convergence index -->
+<!-- https://cfd.university/blog/how-to-manage-uncertainty-in-cfd-the-grid-convergence-index/ -->
+
+<!-- wp:paragraph -->
+<p>CFD simulations are riddled with errors and uncertainties that we have to manage as CFD practitioners. The most commonly used technique to establish trust in our simulations is a grid convergence study, where the so-called grid convergence index is calculated. This value provides us with a measure of the mesh-induced uncertainty and, in many cases, is the best line of defence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, the grid convergence index has attracted an almost cult-like following and religious belief among CFD users, and this has led to an abuse of this metric, attributing it to some kind of superpowers it does not possess. So, in this article, we will first review common types of errors and uncertainties that exist in every CFD simulation and then narrow down on the grid convergence index and how it can help us to quantify mesh-induced uncertainties.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We will end this article by looking at common misuses of the grid convergence index and how we can spot them. We will also review a Python package and a Chrome browser extension that can help you compute this quantity. If you have never used the grid convergence index in the past, or you have used it without giving it too much thought, then this article is for you.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this article</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":5,"blockClientId":"8a2436b2-b7c5-4e3d-90cf-6ed4b0530da5","content":"Introduction","level":2,"anchor":"aioseo-introduction","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":14,"blockClientId":"93985af8-a62f-4635-9f01-ee6c512a31a7","content":"Uncertainties and errors in CFD","level":2,"anchor":"aioseo-uncertainties-in-cfd","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":19,"blockClientId":"112706fa-6fee-43b2-ae2e-c8b919d95ba9","content":"Sources of uncertainty in CFD modelling","level":3,"anchor":"aioseo-sources-of-errors-in-cfd-modelling","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":27,"blockClientId":"3dbe0c28-f9a3-4f3a-bd8e-750f104c83c3","content":"Measurement uncertainty","level":4,"anchor":"aioseo-experimental","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":38,"blockClientId":"83d8349c-113c-45d6-9d7a-25942dbd091e","content":"Mesh-induced uncertainty","level":4,"anchor":"aioseo-mesh-induced-uncertainty-the-grid-convergence-index-gci","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":52,"blockClientId":"a8020f07-29ab-41fc-baa9-ed8917cca0c1","content":"Iterative uncertainty","level":4,"anchor":"aioseo-iterative-uncertainty","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":63,"blockClientId":"a5756dab-a512-4849-88b1-a5e75de4d763","content":"Sources of errors in CFD modelling","level":3,"anchor":"aioseo-other-sources-of-uncertainties","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":65,"blockClientId":"5586d55b-5186-4bad-b093-42c1cb93e46a","content":"Numerical scheme errors","level":4,"anchor":"aioseo-softwar","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":76,"blockClientId":"e962e80d-e481-4257-b277-038ca7366b17","content":"Physical modelling errors","level":4,"anchor":"aioseo-physical-modelling-errors","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":80,"blockClientId":"baae4987-7f72-415e-ba59-b094b16845c1","content":"Programming errors","level":4,"anchor":"aioseo-software","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":84,"blockClientId":"62c7b0ca-b56a-47a6-815a-d022b4e2cdd0","content":"Usage errors","level":4,"anchor":"aioseo-usage-errors","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":87,"blockClientId":"71e1cb9f-3dc1-4cf9-a533-9bf5f22ef9fe","content":"Post-processing errors","level":4,"anchor":"aioseo-post-processing-errors","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]},{"id":91,"blockClientId":"7ff1ac2a-ea73-4794-8002-9ae79c2e475d","content":"The Grid convergence index (GCI)","level":2,"anchor":"aioseo-the-grid-convergence-index-gci","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":101,"blockClientId":"5234c05a-ec7d-4840-8bd2-30e1f528c25d","content":"How to calculate the grid convergence index","level":3,"anchor":"aioseo-how-to-calculate-the-grid-convergence-index","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":104,"blockClientId":"d1dd00f5-e872-4682-95b6-deb3b0399c86","content":"Step 1: Calculate the mesh refinement","level":4,"anchor":"aioseo-step-1-calculate-a-representative-volume","order":14,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":121,"blockClientId":"6854f24d-5025-48b6-b988-69ee805d986d","content":"Step 2: Calculate the observed order of approximation","level":4,"anchor":"aioseo-step-2-calculate","order":15,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":128,"blockClientId":"80b83a82-e0f0-4204-b4f2-b1ea4fb33b4a","content":"Step 3: Calculate the convergence condition","level":4,"anchor":"aioseo-step-4-calculate-the-convergence-condition","order":16,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":138,"blockClientId":"236b44f8-d4ca-47ed-aa9b-3b50555c81a2","content":"Step 4: Calculate the Richardson extrapolated value","level":4,"anchor":"aioseo-step-3-calculate-the-richardson-extrapolated-value","order":17,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":145,"blockClientId":"da879125-379e-4209-bb5f-5aaf87d0e470","content":"Step 5: Calculate the errors","level":4,"anchor":"aioseo-step-4-calculate-the-errors","order":18,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":151,"blockClientId":"8a2abaaf-e67f-4111-98d7-20938051fa29","content":"Step 6: Calculate the Grid Convergence Index (GCI)","level":4,"anchor":"aioseo-step-5-calculate-the-grid-convergence-index-gci","order":19,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":161,"blockClientId":"64d65937-8b21-4278-984f-a9a491a3fb28","content":"Step 7: Calculate the asymptotic range","level":4,"anchor":"aioseo-step-6-calculate-the-asymptotic-range","order":20,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":166,"blockClientId":"945b9c8b-549f-48bb-996e-e42455e48731","content":"Step 8: Estimate the optimal number of grid points","level":4,"anchor":"aioseo-step-7-estimate-the-optimal-number-of-grid-points","order":21,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":171,"blockClientId":"f601e034-7572-4c56-8e47-272805dd7378","content":"Pitfalls: Avoid these common mistakes","level":3,"anchor":"aioseo-pitfalls-avoid-these-common-mistakes","order":22,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":174,"blockClientId":"41ec5bcf-849d-475e-aa1e-1e3446946a44","content":"Refining your grid not uniformly","level":4,"anchor":"aioseo-use-uniform-refinement-where-possible","order":23,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":188,"blockClientId":"2a3e56f1-1303-43e7-b7a8-e2adf98a556f","content":"Believing the grid convergence index applies equally to structured and unstructured grids","level":4,"anchor":"aioseo-believing-the-grid-convergence-index-applies-equally-to-structured-and-unstructured-grids","order":24,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":190,"blockClientId":"d0fb1f77-1d4a-401d-b182-edead6e239b7","content":"Refining your grids too little between coarse, medium, and fine grids","level":4,"anchor":"aioseo-makin","order":25,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":204,"blockClientId":"f7b86272-ee40-4053-a329-bccdff79c58f","content":"Using single-point measurements instead of integral quantities","level":4,"anchor":"aioseo-using-integral-quantities","order":26,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":212,"blockClientId":"0740c690-d107-4be6-9708-9f33453348a0","content":"Calculating the grid convergence index because you can","level":4,"anchor":"aioseo-calculating-the-grid-convergence-index-because-you-can","order":27,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]},{"id":220,"blockClientId":"b95a8fdf-0bdd-4170-9bff-e25494b9b7db","content":"Tools to calculate the grid convergence index","level":2,"anchor":"aioseo-tools-to-calculate-the-grid-convergence-index","order":28,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":222,"blockClientId":"b20973e1-6ad7-453f-9836-cb27dbeb0d3d","content":"pyGCS: A Python-based grid convergence index calculator","level":3,"anchor":"aioseo-pygcs-a-python-based-grid-convergence-calculator","order":29,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":232,"blockClientId":"2cfdf0c6-0b8c-43fb-b067-9fcbe048ed99","content":"CFD Toolbox: A chrome extension for the grid convergence index","level":3,"anchor":"aioseo-cfd-toolbox-a-chrome-extension-for-the-grid-convergence","order":30,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":234,"blockClientId":"c8295732-2607-46d9-af38-0353e29aa514","content":"Summary","level":2,"anchor":"aioseo-summary","order":31,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-introduction">Introduction</a></li><li><a href="#aioseo-uncertainties-in-cfd">Uncertainties and errors in CFD</a><ul><li><a href="#aioseo-sources-of-errors-in-cfd-modelling">Sources of uncertainty in CFD modelling</a><ul><li><a href="#aioseo-experimental">Measurement uncertainty</a></li><li><a href="#aioseo-mesh-induced-uncertainty-the-grid-convergence-index-gci">Mesh-induced uncertainty</a></li><li><a href="#aioseo-iterative-uncertainty">Iterative uncertainty</a></li></ul></li><li><a href="#aioseo-other-sources-of-uncertainties">Sources of errors in CFD modelling</a><ul><li><a href="#aioseo-softwar">Numerical scheme errors</a></li><li><a href="#aioseo-physical-modelling-errors">Physical modelling errors</a></li><li><a href="#aioseo-software">Programming errors</a></li><li><a href="#aioseo-usage-errors">Usage errors</a></li><li><a href="#aioseo-post-processing-errors">Post-processing errors</a></li></ul></li></ul></li><li><a href="#aioseo-the-grid-convergence-index-gci">The Grid convergence index (GCI)</a><ul><li><a href="#aioseo-how-to-calculate-the-grid-convergence-index">How to calculate the grid convergence index</a><ul><li><a href="#aioseo-step-1-calculate-a-representative-volume">Step 1: Calculate the mesh refinement</a></li><li><a href="#aioseo-step-2-calculate">Step 2: Calculate the observed order of approximation</a></li><li><a href="#aioseo-step-4-calculate-the-convergence-condition">Step 3: Calculate the convergence condition</a></li><li><a href="#aioseo-step-3-calculate-the-richardson-extrapolated-value">Step 4: Calculate the Richardson extrapolated value</a></li><li><a href="#aioseo-step-4-calculate-the-errors">Step 5: Calculate the errors</a></li><li><a href="#aioseo-step-5-calculate-the-grid-convergence-index-gci">Step 6: Calculate the Grid Convergence Index (GCI)</a></li><li><a href="#aioseo-step-6-calculate-the-asymptotic-range">Step 7: Calculate the asymptotic range</a></li><li><a href="#aioseo-step-7-estimate-the-optimal-number-of-grid-points">Step 8: Estimate the optimal number of grid points</a></li></ul></li><li><a href="#aioseo-pitfalls-avoid-these-common-mistakes">Pitfalls: Avoid these common mistakes</a><ul><li><a href="#aioseo-use-uniform-refinement-where-possible">Refining your grid not uniformly</a></li><li><a href="#aioseo-believing-the-grid-convergence-index-applies-equally-to-structured-and-unstructured-grids">Believing the grid convergence index applies equally to structured and unstructured grids</a></li><li><a href="#aioseo-makin">Refining your grids too little between coarse, medium, and fine grids</a></li><li><a href="#aioseo-using-integral-quantities">Using single-point measurements instead of integral quantities</a></li><li><a href="#aioseo-calculating-the-grid-convergence-index-because-you-can">Calculating the grid convergence index because you can</a></li></ul></li></ul></li><li><a href="#aioseo-tools-to-calculate-the-grid-convergence-index">Tools to calculate the grid convergence index</a><ul><li><a href="#aioseo-pygcs-a-python-based-grid-convergence-calculator">pyGCS: A Python-based grid convergence index calculator</a></li><li><a href="#aioseo-cfd-toolbox-a-chrome-extension-for-the-grid-convergence">CFD Toolbox: A chrome extension for the grid convergence index</a></li></ul></li><li><a href="#aioseo-summary">Summary</a></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-introduction">Introduction</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Mesh generation seems to be a polarising issue in the CFD community. Either you love it, or you hate it (I think I have a flashback; didn't we just <a href="https://cfd.university/blog/learn-openfoam-the-good-the-bad-and-the-evil/" target="_blank" rel="noopener" title="">talk about polarising software in our last article</a>?! Anyways ...). I find mesh generation to be an almost zen-like meditation; it is very relaxing, and when you get a mesh for a complex geometry but with acceptable quality metrics, it is an incredibly satisfying feeling. But I seem to stand among a group of only a few who share this passion. Most people hate this step, and I don't blame them.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Mesh generation is hard; it is a process entirely driven by the software you are using and the software you are using will dictate the type of mesh you can generate. You have Pointwise, which can generate structured and unstructured grids with standard elements types, but it does not know about polyhedral elements (which I find weird), then you have GridPro, only understanding structured grids.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ansys Fluent's, StarCCM+'s, Numeca's, and OpenFOAM's meshing algorithms will give you a hex-dominant mesh in the farfield, which is merged through some transitional elements (typically polyhedral elements) towards the inflation layers at boundaries. ConvergeCFD's meshing is rather pleasant, but the support of inflation layers seems to be an afterthought and it does not integrate as well as I have seen in other software.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>And then we have the open-source community. Gmsh is commonly stated as a good alternative, though it does not support inflation layers. I am not sure what use a mesh generator is if it can't support inflation layers, but sure, for solids, I can see the appeal of this simple tool. I've heard others talking about Salome as an alternative, but I have never used it. However, looking up some features and capabilities, <a href="https://cfdmonkey.com/introduction-to-salome/" target="_blank" rel="noopener" title="">it certainly can generate inflation layers</a>, and it is probably a software I need to put on my learning list.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, first, you have to select the right tool to generate a mesh that satisfies your requirements. Next, you have to hope that the algorithms your mesh generator uses are not going to limit you in the future. And then you have to spend a lot of time to become a pro at meshing. So I can see why most people are very happy to throw an automated solution at the problem, hoping to get some kind of grid that will not diverge the simulation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The output, i.e. the grid that your meshing tool will give you, will be unique. The spacings that you have chosen will determine your mesh and its quality, and if you used the same spacings in another meshing software, you will likely end up with a different mesh. So how do you know if the mesh you have generated is good enough or woefully inadequate? This is what we will discuss in this article, and we will eventually end up with the grid convergence index, which gives us a numerical measure of how suitable our mesh is to capture the quantities we are interested in.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Before we jump into the nitty gritty details, I wanted to highlight the article over at GridPro, where the developers have taken a semi-serious approach to answering the question: <a href="https://blog.gridpro.com/grid-generation-an-art-or-science/" target="_blank" rel="noopener" title="">Is mesh generation an art or science?</a> I really enjoyed reading this article; I never considered mesh generation to be an art, but I do agree with the points they are making about the art element in mesh generation. In a nutshell, a mesh that looks visually appealing is one that likely has good quality, and the opposite is true for poor-quality grids as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, there is a hard science behind mesh generation as well. Things like the spacing of the first element based on your y+ requirements is hardly an art, but rooted in sound physical principles. The same is true of determining mesh-induced uncertainties with the grid convergence index (GCI), but we are getting ahead of ourselves. Let us first have a quick review of uncertainties and errors that we have to battle with in CFD and then look at how the grid convergence index (GCI) can lift some of that uncertainty (or, at least, quantify it).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-uncertainties-in-cfd">Uncertainties and errors in CFD</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A common misconception novice CFD users have is that CFD is an exact science. This misunderstanding is entirely understandable, after all, we solve the Navier-Stokes equations in CFD and if you see the derivation of these equations (as you most likely will if you take an introductory course on CFD), you will get a sense of mathematical elegance and preciseness, and may thing that this also translates to the rest of the CFD workflow. Nothing could be further from the truth.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we want to have an analogy, think of a bird. Let's say that the ease and elegance birds have when flying through the air is akin to the elegance we see in deriving the Navier-Stokes equations. On the other hand, solving the Navier-Stokes equations with CFD would be equivalent to a rock thrown into the air. Sure, it'll fly, at least for a bit, before it crashes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>CFD is full of uncertainties and errors, and what separates a good CFD practitioner from someone that knows how to press the right buttons based on watching a few YouTube tutorials is that a good practitioner is able to manage, and in some cases quantify, uncertainties and errors. A central part to this discussion is the grid convergence index (GCI) that we will look at in this article.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But before we do, let us review typical sources of uncertainties and errors in CFD. On this topic, my <a href="https://www.cambridge.org/core/books/verification-and-validation-in-scientific-computing/05CA1F8F3CCB5AE5445FDF55239A0183" target="_blank" rel="noopener" title="">favourite book</a> for verification and validation purposes is the one by Oberkampf, which you can find on <a href="https://cfd.university/blog/how-to-get-started-with-computational-fluid-dynamics-cfd/#aioseo-verification-and-validation" target="_blank" rel="noopener" title="">my reading list</a> as well. It is well worth a read if you are just starting out with CFD or a seasoned practitioner and want to get a more in-depth understanding of uncertainty management. But with that out of the way, let us have a look at sources of uncertainties and errors next.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-sources-of-errors-in-cfd-modelling">Sources of uncertainty in CFD modelling</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The grid convergence index is just one method of many to quantify and manage uncertainties. But there are other types of uncertainties and errors that we need to be aware of at least, to have a feeling for how good, or bad, our simulation results are. The more we can discuss our results in light of known limitations, the better we can cmmunicate the usefulness of our results.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We should keep in mind that all CFD simulations will be limited. Running a steady-state RANS simulation to extract an acoustic signal for noise predictions is useless. Even switching to an unsteady RANS (URANS) approach will not resolve the small-scale turbulent features we need to get an accurate reading of the acoustic footprint. You may run an incompressible DES or LES simulation, but even then, you may get challenged if you were, for example, to use an incompressible description with a constant density assumption.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The models, schemes, algorithms, and boundary conditions we use to set up our simulations will determine the information we can extract. Even if we model our flow correctly to extract an acoustic signal, we still have to combat uncertainties and modelling errors that may or may not influence our results. It is our job to convince who ever is interested in our results that the level or uncertainties and errors is so low that it would not change the main conclusions if we were to get rid of them entirely.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we can demonstrate that, we gain trust, and people will believe our results, and you will gain credibility as a CFD practitioner. As it turns out, one of the largest uncertainties we have to manage is the influence of the grid on our results. A coarse grid will give potentially less accurate results than a fine grid, but the reverse can be true as well!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Refining a grid beyond a point where any more accuracy may be achieved can lead to non-physical results. Think of a grid which is refined to a point where we resolve the smallest of turbulent features. If we use a RANS model, it can't predict these features, but it will give you something. All that it is doing is injecting your simulations with features that are non-physical, and these may result in convergence never being reached.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Or, you may resolve a multiphase flow where you are modelling particles based on an Eulerian description (i.e. you don't resolve the particles themselves but rather compute how much of the particle is within a computational cell and then you transform that information into a volume fraction). If your cells are now getting smaller than a particle, then it is possible to get volume fractions of more than 100%, leading to divergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, let us review some uncertainties and errors and keep them in mind for when we analyse our simulations. As alluded to above, we will be looking at the grid convergence index (GCI) as one method to quantify the biggest uncertainty we have, i.e. grid-induced uncertainties.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-experimental">Measurement uncertainty</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The first uncertainty that we have is measurement uncertainty, which is true for both CFD and experimental results. The following figure represents the issues with measurements, where we take repeated measurements to predict the centre of a circle:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4229,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://cfd.university/wp-content/uploads/2024/08/measurement_uncertainties-1024x279.png" alt="" class="wp-image-4229"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>There are two types of measurement uncertainty: Precision and accuracy.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Precision</strong>: A repeated measurement will result in a value that is close to other measurements</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Accuracy</strong>: Taking an average over all measurements will result in an accurate prediction of the quantity we are measuring.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Let's make this more real by measuring the lift and drag force coefficients of an airfoil. Let's say we run an experiment and measure the lift and drag coefficient every second for a total duration of 10 minutes. A precise measurement would be one where we see a small standard deviation, or variance, while an accurate measurement would be one in which we see a mean lift and drag coefficient that is closely matched with an expected value, for example, a lift value of zero for a symmetric airfoil at an angle of attack of zero.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's look at how this concept can be translated to CFD measurement uncertainties. The following graph shows the development of the drag coefficient for a steady-state RANS simulation:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4248,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2024/08/drag_coefficient-1-1024x663.png" alt="" class="wp-image-4248" style="width:800px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Let's say the solution has converged at around 280 iterations. What is the corresponding drag value at the end of the simulation (at 402 iterations)? The drag value oscillates between 0.32 and 0.34, and if we were just to take the value at the last iteration, we would get some value in this interval, but is it an accurate value? We can probably all agree that taking an average drag coefficient over a number of iterations, say, 150 or so, would probably give us a more accurate reading of the true drag coefficient.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What about the precision? if we now simulated the case with a different turbulence model, we would, perhaps, get a drag coefficient oscillating between 0.29 and 0.37. Sure, the mean drag coefficient would still be similar to the one obtained from the above graph, but how much confidence would we have in the value given the higher level of oscillations?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This may also seem trivial and obvious, but believe me, it is very common for people to run steady-state RANS simulations and then believe that the results they are seeing are steady-state, so they can just take integral quantities like the lift and drag coefficient at the last iteration. We also would typically plot contour plots for the last iteration only, but even those are likely clouded by some oscillatory behavior and we ideally should also look at some averaged flow properties, even if we use a steady state description.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-mesh-induced-uncertainty-the-grid-convergence-index-gci">Mesh-induced uncertainty</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This discussion is a precursor for the grid dependency index that we will look at shortly, but let's look at this from a high level first. If we generate three different grids, by subsequently refining our grids so that we have a coarse, a medium, and a fine grid, each having a larger number of cells than the previous one, we would expect that our results get more accurate as we refine our grids. This is wrong.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>When we refine our grids, the accuracy does not improve; instead, the precision will improve. Put differently, if we are interested in measuring the lift and drag coefficient in a simulation, then the uncertainty of this measurement will be reduced. We may get really good results on a coarse grid, which are not significantly different from the medium or fine grid solution, but we have less certainty that the solution is as good as on the medium or fine grid. Let's look at this statement more closely by inspecting the following figure:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4233,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2024/08/mesh_refinement-1024x689.png" alt="Mesh refinement for an airfoil using both structured and unstructured grids for the grid convergence index calculation" class="wp-image-4233" style="width:800px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, we provide a coarse, medium, and fine grid for the flow around an airfoil for both an unstructured (top) and structured (bottom) grid. Let's stick with the example of measuring the lift and drag coefficient, and let's also assume that we are investigating transonic flows, i.e. one in which shock waves are emerging. How well would we expect our drag coefficient to be captured with these grids? Probably not that well, as we are not providing any mesh refinement in areas where we would expect shock waves to form, which are important to determine the wave drag of the airfoil.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, it is not enough to just provide mesh refinement; it needs to be systematic, and we need to refine the mesh in areas that are responsible for capturing the quantities or flow patterns that we want to study. In our case, we want to capture the drag, which requires a good resolution near the wall with inflation layers to capture the velocity gradient accurately, which in turn captures the profile drag. We also need some refinement on the top and bottom of the grid to capture any emerging shock waves.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If this we solved this case in 3D, then we also want to resolve wingtip vortices and wake to capture induced drag. Furthermore, if we are interested in simulating high angles of attack, we will get a separation point on the upper airfoil surface, either due viscous boundary layer separation or through shock wave boundary layer interactions (SWBLI).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But even if we refine the mesh in areas we expect to be important, why are we only improving precision and not improving accuracy (necessarily)? Well, the solution you obtain is just that, a solution to the underlying partial differential equation (the Navier-Stokes equations) that you are solving. To get a solution, we have to provide boundary conditions and initial values, and the solution of any (partial) differential equation will depend on either the boundary or initial conditions, or both.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While the initial condition typically only influences the length it takes for your simulation to converge (though I have experienced cases where different initial conditions can be the difference between convergence and divergence), the boundary conditions dominate the solution of your problem. If we run the simulation with an inlet velocity of, say, [katex]100 m/s[/katex] or [katex]1000 m/s[/katex] (i.e. a Mach number of approximately 0.3 or 3.0 at standard atmospheric conditions), then we would expect to get a rather different solution.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, if we provide the wrong boundary conditions, then it does not matter how much our mesh is refined, we will get a wrong result. In this case, this is a simple fix, i.e. if we made a typo in the boundary condition set up, we can spot and fix it, but there are other, more challenging cases, where boundary conditions are limited and not able to resolve the flow properly.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For steady state RANS, a typically problem is reverse flow at outlets. Sometimes we can move the outlets further away to avoid this, but if that is not possible, the we have to handle the reverse flow issue. <a href="https://www.semanticscholar.org/paper/R%C3%A9sum%C3%A9-and-remarks-on-the-open-boundary-condition-Sani-Gresho/b5d32d230bb7f3bf7191839cd8d9b07711f92eac" target="_blank" rel="noopener" title="">Sani and Gresho</a> held a minisymposium on exactly this issue and came to the conclusion that all proposed outlet boundary conditions are violating physics, and they were unable to provide a satisfactory solution. We still use the same outlet boundary conditions they investigated nowadays, despite the study being conducted in the 1990s.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Furthermore, most of the time, we do not solve the Navier-Stokes equations; rather, we solve a closely related equation. After all, RANS stands for Reynolds-averaged Navier-Stokes, which is not the Navier-Stokes equation (but instead a time-averaged form of it). While there is nothing wrong with the RANS equations themselves, they are not solvable, and we have to come up with models (RANS turbulence models) that provide estimates here.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This means we are no longer solving the exact Navier-Stokes equations, and our simulation's convergence and results will depend on the turbulence model. If we change the RANS model, we'll likely get a different result for, say, the drag coefficient. Thus, the combined effect of the boundary conditions and turbulence model (plus any other model that we may use in our simulation) largely determines the accuracy of our simulation; the mesh refinement will only improve the precision of the results these combined models and boundary conditions provide.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, if we make the right assumptions and feel comfortable that the selection of numerical schemes, algorithms, turbulence models, boundary conditions, etc., are a good fit for the problem that we want to solve, and we know the areas in the mesh we need to refine to get a more precise measurement for our quantities of interest, then mesh refinement will likely get us more accurate results. However, mesh refinement by itself is not a guarantee of better accuracy.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-iterative-uncertainty">Iterative uncertainty</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is another good one. One of the more common misconceptions I have to debunk in my students is that the residuals don't tell you anything about convergence! The only thing you can read off from the residuals is whether your solution is diverging, converging, or plateauing, potentially oscillating around a mean residual value. With relatively simple measures, you can artificially construct a case where you get a converged but incorrect solution and one where you don't get convergence but a correct solution.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The following plot shows the convergence history for the <a href="https://arxiv.org/abs/cs/0411048" target="_blank" rel="noopener" title="">lid driven cavity problem</a>, which is the flow inside a quare box in which the top boundary is moving from the left to the right, inducing a vortex at the centre.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4263,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/convergence_vs_non_convergence.png" alt="" class="wp-image-4263"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>On the left, we see the correct behaviour, where the main vortex forms. The residuals, however, plateau and do not get below a convergence threshold. On the right, we see an incorrect behaviour, but the residuals have converged to the relatively modest convergence threshold of 1e-3.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Residuals do not equal convergence, even if the residuals have dropped below a convergence threshold! Granted, the example above is extreme, and not likely to repeat itself in real situations often, but it just shows the danger of using residuals to judge convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The reason many still use residuals to judge convergence is based on how they are computed. Residuals simply measure the difference in the solution from one iteration to the next. If our solution does not change significantly, then we expect low residuals and, thus, a converged result. This works in theory, but in practice, we make so many assumptions that will result in poor convergence, and thus, plateauing of residuals is the norm, not the exception, especially for high Reynolds number flows.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you still don't believe me, here is an experiment you can try at home. Initialise the flow with a wild guess, it doesn't matter what it is, the further from the real, physical solution, the better (i.e. initialise the flow with a constant negative flow which goes against the inlet velocity component, for example). Now set the under-relaxation factors to 1e-10 for all quantities. Set your convergence threshold to 1e-3, though you can go lower if you want (it doesn't really matter).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Despite having an objectively bad initial solution, you will see that your residuals converge within one iteration. The solution you will see is wrong, but the residuals will reliably drop below your convergence threshold of 1e-3. Why? Under-relaxation will limit how much the solution can change from one iteration to the next, and if we multiply all changes by 1e-10, then the actual changes in our solution will be small, resulting in a small residual being calculated.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So how can we get around this issue? Ignore residual-based convergence checking and, instead, introduce quantities that you are actually interested in extracting from your simulation, like the lift and drag coefficient, for example. Calculate how much these quantities are changing between iterations, and use that instead as a measure for convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Whatever you do, please stop using the residuals as your only measure for convergence!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-other-sources-of-uncertainties">Sources of errors in CFD modelling</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Having looked at the two biggest uncertainties that will plague you in your quest to get accurate CFD results, let's turn our attention to the most common sources of errors. Some of them we can influence, some we can't, and sometimes we won't even have a chance to quantify or even just get a feel for how large this error is. This is where experience, testing, verification and validation come into play, and we will need to build up our experience to ensure that our results are a true reflection of reality and not a construct of the accumulated errors of our simulation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-softwar">Numerical scheme errors</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Our numerical schemes that we use to approximate gradients (finite difference) or interpolate values from cell centers to cell faces (finite volume), have a nominal order of approximation. Let's stick with the finite volume approach for the moment, and let's consider a first-order and second-order upwind scheme, where the nominal order of approximation is 1 and 2, respectively.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the first-order case, we simply copy values from cell centres to cell faces. This means that we assume there is no change within each cell, and as we go from cell to cell, we have a discontinuous change at the cells' faces. In the second-order case, we do something similar, except that we take the local gradient of the quantity we are approximating into account. However, this may still lead to discontinuities. Both the first- and second-order upwind schemes are schematically shown in the following figure:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4256,"scale":"cover","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/upwind_schemes-1.png" alt="" class="wp-image-4256" style="object-fit:cover"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, an arrangement of cells is shown at the bottom, and we can see how the solution is assumed constant across cells in the first-order scheme while variation is allowed in the second-order scheme. If the signal (in this case, [katex]u[/katex]) is smooth, then we get small discontinuous changes going from cell to cell, but in the case of compressible flows, we may get shock waves, where these changes get larger.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>These discontinuities only arise as the numerical schemes make certain assumptions, i.e. the first-order upwind scheme assumes the signal is constant, while the second-order upwind scheme assumes the flow to be linearly changing. The flow may be approximated well with a scheme that assumes linear changes only if the cells are rather small, but in reality, the flow may change with a polynomial behaviour, and our assumption of linear change in the flow property will be wrong.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thus, numerical schemes introduce an approximation error that diminishes as we refine the grid, but it will always be there. The nominal order of approximation tells us how quickly this error diminishes. Say you have a simple case in which you know the behaviour of the flow analytically. Then, you can compute the error between your solution and the analytic solution.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A first-order scheme will reduce the error by a factor of 2 as we double our mesh size. A second-order scheme will reduce the error by a factor of 4. If we put this into an example, say we solve a 1D flow and have 100 grid points and a computed error of 0.5, then on a grid with 200 grid points, we expect the error to be 0.25 with a first-order upwind scheme and 0.125 with a second-order upwind scheme. The error drops with [katex]2^p[/katex], where [katex]p[/katex] is the nominal order of approximation (1 or 2 in our case).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You may then conclude that we should always be using higher-order schemes, i.e. those with high orders of approximation, but these bring about different problems; there is no free lunch. Higher-order methods introduce oscillatory behaviour and can reduce accuracy, especially near discontinuities. There are ways around that (using a so-called limiter), which in turn will influence your convergence rate.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ultimately, we hope that by refining the mesh sufficiently and obtaining results where quantities of interest do not change significantly (like the lift and drag coefficient), that the numerical scheme error has reduced to a level where it does not manifest itself in the solution. The best protection we have here is to compare our results against analytic solutions and, in the absence of them, experimental data.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But don't assume that experimental data is free of errors either, we might be getting far better results than what the experiment can measure. Or we may be able to reproduce a certain geometry with much more detail than a wind tunnel model. You because your results do not match with the experimental results does not mean that your results are flawed. You have to exercise your critical thinking here and make a judgement on which results are correct and why. However, experimental data will give us confidence if we have a close match.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-physical-modelling-errors">Physical modelling errors</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This error pertains to errors made in our models that model some part of the physics we are not resolving, and that is largely the turbulence models we use. For Stokes flow (i.e. low Reynolds number flows), that we may find in microfluidic applications, the Navier-Stokes equations are dominated by viscous effects (diffusion), rather than convective effects (non-linear term). Since there is no turbulence and the flow can be considered to be laminar, we can get pretty accurate results, as no turbulence model is required. Furthermore, diffusion can be well captured with linear numerical schemes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, for large Reynolds numbers, we need to face the challenge of turbulence and as the saying goes, all models are wrong, only some turn out to be useful (but not correct). This is true for turbulence models and we have already alluded to their influence above when discussing the mesh-induced uncertainties.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But any other model that we introduce will equally influence the accuracy of our simulation, be it a Riemann solver which linearises the flow or a multiphase model where different methods exist to track the interface between two phases, each model will make assumptions that may or may may may not be correct for your simulation. Only experience, expertise, and testing will allow you to investigate how useful these models are for your type of application, which typically requires a systematic study of different models and their parameters in the absence of best practices.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-software">Programming errors</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>No software is free of software defects/regressions/bugs. Period. If you assume that you pay ANSYS, Siemens, or any other large commercial CFD solver vendor a small fortune to use their well-tested and bug-free CFD solver, you are mistaken. Each solver has their own bugs. Sometimes, these can be as insignificant as breaking the graphical user interface, and they can become more serious when some internal scheme or algorithm is not implemented correctly. We have no way of knowing unless we can inspect the code.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The best way we have to protect ourselves against programming errors is a to follow good software testing practices; that is, writing unit, integration, and system tests for our solver as we develop it. This ensures that we have confidence in the correct working behaviour of critical parts in our solver, and I have an entire <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications/" target="_blank" rel="noopener" title="">series on how to systematically implement a rigorous software testing practice in CFD software</a>. It is that important.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Other than being able to inspect the source code, we have no way of telling if the code is correct or not. We may not have any control over the software testing practices used by the developers of the CFD solver we are using, but we can make our own validation and verification studies to ensure the solver is working correctly.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-usage-errors">Usage errors</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Simply put, if we use the CFD solver incorrectly, then it is our fault for getting the wrong results. We may have a CFD solver that is perfectly capable of giving us correct results, but if we can't set up a simulation correctly, then it is our usage error that will prevent us from getting correct results, with no blame on the solver for once.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>OpenFOAM is an excellent example of this, where even a PhD degree in CFD will not fully prepare you for all of the different options you can and have to set in the set-up files. A decision to learn OpenFOAM is akin to a marriage proposal, i.e. this is a long-term commitment (and, like marriage, I suspect that every second person is giving up on the software ...).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-post-processing-errors">Post-processing errors</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is an interesting one. We may have used <em>the</em> perfect solver, have done the set up of our simulation without any user errors, and gotten <em>perfect</em> results. However, now we throw it into a post-processing software like Tecplot and Paraview, and well, you guessed it, these are software as well, so they, too, can be plagued with bugs that may lead to incorrect interpretation of results.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I once had to work on visualising the results from a higher-order numerical simulation using the discontinuous Galerkin method, and my supervisor and I were looking at the results in Tecplot and were suspicious of the contour plots. There was a discontinuity that shouldn't have been there, but it was exactly on the interface between two different grid zones (where we switched from tetrahedra to hexahedra elements). We weren't sure if this was an interpolation error on the graphics side (OpenGL) or an incorrect implementation on my behalf.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Most of the time, we can probably believe the results, but every now and then, we may need to question the validity of what we are seeing and identify where the error is coming from (i.e. the post-processor itself or your code). In case you are wondering, my implementation was wrong, and Tecplot was right.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-the-grid-convergence-index-gci">The Grid convergence index (GCI)</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Having reviewed the most common types of uncertainties and errors that we have in our simulations, I want to turn our attention now to the grid convergence index, which is the best way to mitigate most of these issues. The grid convergence index, or GCI, will give us a numerical value (in percent) for how much uncertainty there is in our mesh. To obtain this grid convergence index, we need to run a series of simulations on three separate grids, which all have a different number of cells. We label these grids, as we saw before, the coarse, medium, and fine grids.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ideally, we want the grid convergence index to be as low as possible, but we know that increasing the mesh size will increase the computational cost, the in reality, we aim for a grid convergence index beyond which we see diminishing returns on our (computational time) investment, and there is a way to judge that, again, with a numerical value. We will see that in a second as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, there are only two things we need to perform a grid dependency study</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>A series of 3 grids with a coarse, medium and fine resolution, where each grid has more cells than the previous grid.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>We can measure a single quantity on all grids, such as the lift or drag coefficient.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>We can have more than a single quantity; for example, we could look at the lift and drag coefficient, as well as the pressure drop, and then calculate the grid convergence index for all three quantities. All of them may return a different grid convergence index, which means that there are different levels of uncertainties to obtain different quantities. Thus, once we have established the mesh-induced uncertainty for one quantity, it does not mean that this is the global uncertainty for the grid, only for the quantity of interest.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The way that the grid convergence index works, in a nutshell, is to check how much the solution is changing as we go from the coarse to medium and from the medium to the fine grid. Then, we can calculate the differences between our integral quantities, like the lift and drag coefficient, from one grid level to the next, which we call the error. Perhaps this is not the best terminology, but the argumentation is that once we have reached sufficient mesh refinement, the quantities of interest will no longer change as we refine the mesh, resulting in an error of zero (or close to zero).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Furthermore, we know the refinement ratio between grids, and we can calculate the observed order of approximation of our numerical schemes. Even if our nominal order of approximation is, say, 2, because we are using a second-order accurate scheme, the actual, or observed order of approximation may be lower, typically due to unstructured grid properties (but other factors can also play a role here).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>With the refinement ratio, the order of approximation, and the error in our quantities of interest, we can throw all of them into an equation to get an uncertainty that remains in the grid. As we have discussed above in the section on numerical scheme errors, we have a certain expectation of how much the error (or, here, the difference between solutions) will decrease as we increase the number of cells. We use this knowledge to construct the grid convergence index, and any deviation from our expectation by how much the error ought to be reduced is due to mesh-induced uncertainty.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let us now go through the steps required to calculate the grid convergence index.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-how-to-calculate-the-grid-convergence-index">How to calculate the grid convergence index</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>There are a few different ways to calculate the grid convergence index (and they mainly differ in how the observed order of convergence is calculated). There is a good discussion of how the grid convergence index is derived on <a href="https://www.grc.nasa.gov/www/wind/valid/tutorial/spatconv.html" target="_blank" rel="noopener" title="">NASA's website</a> (which I will skip here as I want to concentrate on the correct usage, but I have heard good things about these <em>NASA guys</em>, apparently they can <a href="https://cfd.university/blog/the-6-biggest-and-unoslved-challenges-in-cfd/" target="_blank" rel="noopener" title="">predict the future of CFD</a>). The derivation I'll follow is that of <a href="https://asmedigitalcollection.asme.org/fluidsengineering/article/130/7/078001/444689/Procedure-for-Estimation-and-Reporting-of" target="_blank" rel="noopener" title="">Celik et al.</a>, which is likely the most widely accepted form of the grid convergence index nowadays.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This involves 7 steps, which we will go through in the following.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-step-1-calculate-a-representative-volume">Step 1: Calculate the mesh refinement</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The first thing we want to establish is the refinement ratio between different grid levels. However, it is not as simple as taking the number of cells of two separate grid levels and then using this number as the mesh refinement ratio. To see this point, imagine decreasing the spacing of the cells by a factor of 2 for a 1D, 2D, and 3D simulation. In the 1D case, we are doubling the number of cells, in a 2D case, we are increasing the number of cells by a factor of 4, and for 3D, we increase it by a factor of 8. However, this is only true for Cartesian grids, and it would not work for unstructured grids.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thus, the first thing we do is to calculate a representative grid spacing, which we will denote [katex]h[/katex]. This can be achieved for 1D, 2D, and 3D cases in the following way:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>1D:</strong></li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>h=\left[\frac{1}{N}\sum_{i=1}^N \Delta x_i\right]</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>2D:</strong></li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>h=\left[\frac{1}{N}\sum_{i=1}^N \Delta A_i\right]^{1/2}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>3D:</strong> </li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>h=\left[\frac{1}{N}\sum_{i=1}^N \Delta V_i\right]^{1/3}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]\Delta x_i[/katex], [katex]\Delta A_i[/katex], [katex]\Delta V_i[/katex] are the cell spacing, cell area, and cell volume in 1D, 2D, and 3D, respectively. By taking the square and cube root in 2D and 3D, respectively, we ensure that we get a sort of average or representative spacing for each cell. Then, we simply take the mean of all representative cell spacings, which will give us an equivalent 1D spacing, which we can now use to calculate the refinement ratio.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We follow the convention of abbreviating the coarse, medium, and fine grid with the following indices:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>1: Fine grid</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>2: Medium grid</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>3: Coarse grid</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>This, if we wanted to calculate the refinement ratio as [katex]r[/katex], as we go from the medium to the fine grid, we could express that as [katex]r_{medium, fine}[/katex], which is commonly abbreviated to [katex]r_{21}[/katex]. Similarly, we can introduce the refinement ratio from the coarse to medium grid as [katex]r_{32}[/katex]. These are then calculated as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Coarse to medium grid:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>r_{coarse, medium}=\frac{h_{coarse}}{h_{medium}}\quad\rightarrow\quad r_{32}=\frac{h_3}{h_2}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Medium to fine grid:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>r_{medium, fine}=\frac{h_{medium}}{h_{fine}}\quad\rightarrow\quad r_{21}=\frac{h_2}{h_1}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-step-2-calculate">Step 2: Calculate the observed order of approximation</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In the next step, we want to obtain the observed order of approximation. We could simply set this to the nominal order of the approximation, i.e. use [katex]p=1[/katex] for a first-order scheme and [katex]p=2[/katex] for a second-order scheme, but calculating it will give us a better feeling for the actual order achieved int he simulation. It also provides us with some protection against unrealistic grid convergence index results; if [katex]p[/katex] takes on unrealistic values, there may be something wrong with our calculation, see common pitfalls in the next section of this article.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The observed order of approximation, sometimes also referred to as the order of convergence or apparent order of convergence (mainly by me, as I am consistently inconsistent), has to be approximated iteratively. We start by assuming a value for [katex]p[/katex] (it doesn't really matter which value, typically 1 and 2 will do), and then we refine this guess based on the following iterative equations:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\begin{aligned}
+p&amp;=\frac{1}{\mathrm{ln}(r_{21})}\left|\mathrm{ln}\left(\frac{\phi_3-\phi_2}{\phi_2-\phi_1}\right)\right| +\left|\mathrm{ln}\left(\frac{r_{21}^p-s}{r_{32}^p-s}\right)\right|, \\
+s&amp;=sign\left(\frac{\phi_3-\phi_2}{\phi_2-\phi_1}\right).
+\end{aligned}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, the [katex]sign()[/katex] function will return the sign of the argument provided, i.e. [katex]+1[/katex], [katex]-1[/katex], or [katex]0[/katex]. The values of [katex]\phi_1[/katex], [katex]\phi_2[/katex], and [katex]\phi_3[/katex] represent the solution of our quantity of interest on the fine, medium, and coarse grid, respectively. I.e. we can have [katex]\phi=cl[/katex] for the lift coefficient, or [katex]\phi=cd[/katex] for the drag coefficient, and so on.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>An implementation of this iterative procedure is shown in the following Python code:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"def __find_apparent_order_iteratively(self, e21, e32, r21, r32):\n    eps = 1\n    iteration = 1\n    max_iteration = 100\n    norm = 1\n    p = 2\n    while eps \u003e 1e-6:\n        p_old = p\n        s = self.__sign(e32 / e21)\n        q = log((pow(r21, p) - s) / (pow(r32, p) - s))\n        p = (1.0 / log(r21)) * fabs(log(fabs(e32 / e21)) + q)\n\n        residual = p - p_old\n        if iteration == 1:\n            norm = residual\n        iteration += 1\n        eps = residual / norm\n        if iteration == max_iteration:\n            print('WARNING: max number of iterations reached for calculating apparent order p ...')\n            break\n    return p\n\ndef __sign(self, value):\n    if value == 0:\n        return 0\n    elif value \u003e 0:\n        return 1\n    elif value \u0026lt; 0:\n        return 0","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003edef\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003e__find_apparent_order_iteratively\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eself\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ee21\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ee32\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003er21\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003er32\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e):\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    eps = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    iteration = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    max_iteration = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e100\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    norm = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    p = \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e2\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ewhile\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e eps \u0026gt; \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1e-6\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e:\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        p_old = p\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        s = \u003c/span\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003eself\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e.__sign(e32 / e21)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        q = log((\u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003epow\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(r21, p) - s) / (\u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003epow\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(r32, p) - s))\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        p = (\u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1.0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e / log(r21)) * fabs(log(fabs(e32 / e21)) + q)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        residual = p - p_old\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eif\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e iteration == \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e:\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            norm = residual\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        iteration += \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        eps = residual / norm\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eif\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e iteration == max_iteration:\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003eprint\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(\u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026#39;WARNING: max number of iterations reached for calculating apparent order p ...\u0026#39;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ebreak\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ereturn\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e p\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #569CD6\u0022\u003edef\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003e__sign\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e(\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eself\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003evalue\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e):\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eif\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e value == \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e:\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ereturn\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eelif\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e value \u0026gt; \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e:\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ereturn\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e1\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eelif\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e value \u0026lt; \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e:\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003ereturn\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e0\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"python","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":29,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(2 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="def __find_apparent_order_iteratively(self, e21, e32, r21, r32):
+    eps = 1
+    iteration = 1
+    max_iteration = 100
+    norm = 1
+    p = 2
+    while eps &gt; 1e-6:
+        p_old = p
+        s = self.__sign(e32 / e21)
+        q = log((pow(r21, p) - s) / (pow(r32, p) - s))
+        p = (1.0 / log(r21)) * fabs(log(fabs(e32 / e21)) + q)
+
+        residual = p - p_old
+        if iteration == 1:
+            norm = residual
+        iteration += 1
+        eps = residual / norm
+        if iteration == max_iteration:
+            print('WARNING: max number of iterations reached for calculating apparent order p ...')
+            break
+    return p
+
+def __sign(self, value):
+    if value == 0:
+        return 0
+    elif value &gt; 0:
+        return 1
+    elif value &lt; 0:
+        return 0" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #569CD6">def</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">__find_apparent_order_iteratively</span><span style="color: #D4D4D4">(</span><span style="color: #9CDCFE">self</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">e21</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">e32</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">r21</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">r32</span><span style="color: #D4D4D4">):</span></span>
+<span class="line"><span style="color: #D4D4D4">    eps = </span><span style="color: #B5CEA8">1</span></span>
+<span class="line"><span style="color: #D4D4D4">    iteration = </span><span style="color: #B5CEA8">1</span></span>
+<span class="line"><span style="color: #D4D4D4">    max_iteration = </span><span style="color: #B5CEA8">100</span></span>
+<span class="line"><span style="color: #D4D4D4">    norm = </span><span style="color: #B5CEA8">1</span></span>
+<span class="line"><span style="color: #D4D4D4">    p = </span><span style="color: #B5CEA8">2</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #C586C0">while</span><span style="color: #D4D4D4"> eps &gt; </span><span style="color: #B5CEA8">1e-6</span><span style="color: #D4D4D4">:</span></span>
+<span class="line"><span style="color: #D4D4D4">        p_old = p</span></span>
+<span class="line"><span style="color: #D4D4D4">        s = </span><span style="color: #569CD6">self</span><span style="color: #D4D4D4">.__sign(e32 / e21)</span></span>
+<span class="line"><span style="color: #D4D4D4">        q = log((</span><span style="color: #DCDCAA">pow</span><span style="color: #D4D4D4">(r21, p) - s) / (</span><span style="color: #DCDCAA">pow</span><span style="color: #D4D4D4">(r32, p) - s))</span></span>
+<span class="line"><span style="color: #D4D4D4">        p = (</span><span style="color: #B5CEA8">1.0</span><span style="color: #D4D4D4"> / log(r21)) * fabs(log(fabs(e32 / e21)) + q)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #D4D4D4">        residual = p - p_old</span></span>
+<span class="line"><span style="color: #D4D4D4">        </span><span style="color: #C586C0">if</span><span style="color: #D4D4D4"> iteration == </span><span style="color: #B5CEA8">1</span><span style="color: #D4D4D4">:</span></span>
+<span class="line"><span style="color: #D4D4D4">            norm = residual</span></span>
+<span class="line"><span style="color: #D4D4D4">        iteration += </span><span style="color: #B5CEA8">1</span></span>
+<span class="line"><span style="color: #D4D4D4">        eps = residual / norm</span></span>
+<span class="line"><span style="color: #D4D4D4">        </span><span style="color: #C586C0">if</span><span style="color: #D4D4D4"> iteration == max_iteration:</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #DCDCAA">print</span><span style="color: #D4D4D4">(</span><span style="color: #CE9178">&#39;WARNING: max number of iterations reached for calculating apparent order p ...&#39;</span><span style="color: #D4D4D4">)</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #C586C0">break</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #C586C0">return</span><span style="color: #D4D4D4"> p</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #569CD6">def</span><span style="color: #D4D4D4"> </span><span style="color: #DCDCAA">__sign</span><span style="color: #D4D4D4">(</span><span style="color: #9CDCFE">self</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">value</span><span style="color: #D4D4D4">):</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #C586C0">if</span><span style="color: #D4D4D4"> value == </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">:</span></span>
+<span class="line"><span style="color: #D4D4D4">        </span><span style="color: #C586C0">return</span><span style="color: #D4D4D4"> </span><span style="color: #B5CEA8">0</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #C586C0">elif</span><span style="color: #D4D4D4"> value &gt; </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">:</span></span>
+<span class="line"><span style="color: #D4D4D4">        </span><span style="color: #C586C0">return</span><span style="color: #D4D4D4"> </span><span style="color: #B5CEA8">1</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #C586C0">elif</span><span style="color: #D4D4D4"> value &lt; </span><span style="color: #B5CEA8">0</span><span style="color: #D4D4D4">:</span></span>
+<span class="line"><span style="color: #D4D4D4">        </span><span style="color: #C586C0">return</span><span style="color: #D4D4D4"> </span><span style="color: #B5CEA8">0</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-step-4-calculate-the-convergence-condition">Step 3: Calculate the convergence condition</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The convergence condition tells us if our quantity of interest is either converging or diverging and if this converging/diverging behaviour is happening monotonically or oscillatory as we increase the number of cells in the mesh. Take a look at the following schematic:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4427,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/convergence_condition.png" alt="" class="wp-image-4427"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>In this case, we can see that monotonic convergence (blue line) results in what we hope to observe in all cases, i.e. the difference in our quantity of interest decreases as we increase the mesh size. However, it is possible to observe a more oscillatory behaviour, as seen by the orange curve, which is labelled oscillatory convergence. In either case, both solutions indicate a convergence towards a specific value.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The pruble and green lines, on the other hand, represent monotonic and oscillatory divergence. Either case indicates that the solution is not converging but instead diverging. If you observe either condition, you will have to go back to your meshing software and start from scratch. Something went wrong here, and you are observing divergence, usually due to poor grid quality metrics (though you may be resolving additional flow features that may change the flow as you increase the mesh size, which can also lead to divergence).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The convergence ratio is calculated as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>CR=\frac{\phi_2-\phi_1}{\phi_3-\phi_2}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We then compare the computed value of [katex]CR[/katex] against the following conditions:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>[katex]CR &lt; -1[/katex]: Oscillatory divergence</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>[katex]-1 \le CR &lt; 0[/katex]: Oscillatory convergence</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>[katex]0 \le CR &lt; 1[/katex]: Monotonic convergence</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>[katex]CR \ge 0[/katex]: Monotonic divergence</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>You should always aim for monotonic convergence if you can, but sometimes you may see oscillatory convergence as well (see also common pitfalls below, where we look at one such example, i.e. uniform vs. non-uniform mesh refinement). If you observe divergence, you grid dependency study is telling you that you need to start over. Your results are not grid-indipendent, in fact, it is the opposite, so go back to the drawing board and try again.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-step-3-calculate-the-richardson-extrapolated-value">Step 4: Calculate the Richardson extrapolated value</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>So, we stated that as we reduce the mesh-induced uncertainty, our precision would increase. This increase in precision means that if we take measurements of a quantity of interest on grids with an ever-increasing number of cells, we will eventually end up with a precise measure that does not change very much. However, we do not have to refine our grids indefinitely; instead, we can use the Richardson extrapolation, which will take a best guess as to what our quantity of interest ought to be on a grid that is free of mesh-induced uncertainties.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is shown in the following figure, where the quantity of interest is shown here as [katex]\phi[/katex] and how it changes with an increase in the number of cells in the mesh. At some point, we only get small changes, and as we increase the mesh size, we will asymptotically approach the red line, which represents a precise measurement of our quantity of interest.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4255,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/richardson_extrapolation.png" alt="" class="wp-image-4255"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>The Richardson extrapolation can be calculated based on</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi_{extrapolated}=r_{21}^p\frac{\phi_1-\phi_2}{r_{21}^p-1}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The Richardson extrapolation is only expected to work well for cases where you have monotonic convergence. For any other convergence condition (see the previous point), your Richardson extrapolated value will likely give you useless results!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-step-4-calculate-the-errors">Step 5: Calculate the errors</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The errors are just the difference in the quantity of interest as we go from one grid level to another, as alluded to above. It can be calculated for the various grid levels as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Error from the coarse to medium grid:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\epsilon_{32}=\mathrm{abs}\left(\frac{\phi_2-\phi_3}{\phi_2}\right)</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Error from the medium to the fine grid:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\epsilon_{21}=\mathrm{abs}\left(\frac{\phi_1-\phi_2}{\phi_1}\right)</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-step-5-calculate-the-grid-convergence-index-gci">Step 6: Calculate the Grid Convergence Index (GCI)</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Now we have all the ingredients we need to obtain the grid convergence index. Let's look at the formulas first and then put that into context:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>The grid convergence index for the coarse to medium grid:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>GCI_{32}=\frac{1.25\epsilon_{32}}{r_{32}^p-1}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>The grid convergence index for the medium to fine grid:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>GCI_{21}=\frac{1.25\epsilon_{21}}{r_{21}^p-1}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We see that we will end up with two grid convergence index values. These will tell us how much uncertainty is in the mesh as we go from the coarse to medium and medium to the fine grid. If we multiply this value by 100, we get it as a percentage, which is typically how the grid convergence index is reported.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The value of 1.25 is somewhat arbitrary, and if you look into the original paper of Roache, where the grid convergence index was introduced, a value of as high as 3.0 was recommended for parametric studies. This factor is, essentially, a safety factor, and the higher this value is, the larger your grid convergence index, and so we can be more or less conservative with our estimate for the grid convergence index by playing with this parameter. In practice, though, I have found that leaving it to the default of 1.25 works well across a range of applications.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While there are no hard and fast rules about what values are acceptable for the grid convergence index itself, I have found these guidelines to be useful as a starting point:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Aim for a GCI of about 5%-10% if you are performing parametric studies. Relative errors between simulations will partially cancel, so we don't need a very precise measure of our quantities of interest, especially if we are just interested in getting an idea for the optimal parameter combinations.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Aim for a GCI of about 1%-5% for detailed studies, i.e. if you want to obtain a precise measure of your quantity of interest.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-step-6-calculate-the-asymptotic-range">Step 7: Calculate the asymptotic range</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The asymptotic range provides us with an estimate of how much return on investment (in terms of computational cost) we are getting as we are refining the grid. It is calculated as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>AR=r^p\frac{GCI_{21}}{GCI_{32}}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we reach a value of 1 (unity), we have reached the optimum, and refining our grid further will no longer provide us with a more precise measure of our quantity of interest but instead increase our computational cost with no additional gain in precision. A value different from 1 means we may consider changing our grid levels. Say we have a coarse, medium and fine grid with 0.1 million, 0.4 million, and 1.6 million cells, resulting in a value of [katex]AR=0.7[/katex], we may want to increase the number of elements in each grid level.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We may opt to use 0.5 million, 2.0 million, and 8 million instead for an additional grid convergence index calculation, which may then give us [katex]AR=0.996[/katex], indicating that we have reached a fairly low uncertainty in our grid on the finest grid level. We may then look at the grid convergence index for the fine and medium grid (i.e. [katex]GCI_{32}[/katex] and [katex]GCI_{21}[/katex]) and decide which one to take based on the recommendations provide above (i.e. do we want to stay below or above 5%. If both are below 5%, we will take the medium grid to save computational cost).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-step-7-estimate-the-optimal-number-of-grid-points">Step 8: Estimate the optimal number of grid points</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>And finally, we can also solve the grid convergence index for the refinement ratio, which will allow us to reverse engineer the number of cells we would require, in theory, to obtain a grid convergence index of a specific value. This may be useful if we want to achieve a specific value for the grid convergence index, for example, a value of 1%, to reduce the mesh-induced uncertainties to a minimum, or a value of 10%, to maximise computational efficiency (for parametric studies) while keeping the uncertainty at an acceptable level.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This refinement ratio is calculated as: </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>r^*=\left(\frac{GCI^*}{GCI_{21}}\right)^\frac{1}{p}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]GCI^*[/katex] is the grid convergence index that we want to achieve, which returns the refinement ratio we would need. From the refinement ratio, we can calculate the representative grid spacing, and from that, the required number of points.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-pitfalls-avoid-these-common-mistakes">Pitfalls: Avoid these common mistakes</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The grid convergence index is one of the first things you want to obtain, if you have no other information to go by. But is may not always be the best thing to do; if there are best practices available, and you reasons to trust them, then it is a good idea to follow these best practices, especially if meshing guidelines are included. There is no need to reinvent the wheel.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, these best practices are not always provided or easy to find, in this case, the grid convergence index is your best protection early on to established results that have an insignificant amount of mesh-induced uncertainty. In the following sections, I want to address common mistakes I see being made over and over again. Try to avoid these as best as you can (though you will not always be able to do so). Exercise your critical thinking and know when and why to distrust your grid convergence index.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-use-uniform-refinement-where-possible">Refining your grid not uniformly</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is the single most common mistake, or issue, I see. The grid convergence index was derived for uniform mesh refinement, meaning that we should refine our mesh equally in all direction. This only works for a structured grid, but we can get a fairly close approximation even on unstructured grids.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There are some complications here. If we want to capture the near-wall behaviour with a RANS turbulence model and decide to employ a first cell height that corresponds to a y+ value of 1, then we need to make sure that we will never go above this value in our mesh refinement. Thus, we need to aim for [katex]y^+=1[/katex] on the coarse grid, which will then reduce to [katex]y^+=0.5[/katex] on the medium and [katex]y^+=0.25[/katex] on the fine grid, if we apply strict uniform refinement.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we started, however, with [katex]y^+=1[/katex] on the fine grid and then applied mesh coarsening to get to the medium and coarse grid, we would get [katex]y^+=2[/katex] on the medium and [katex]y^+=4[/katex] on the coarse grid, respectively. This would result in the boundary layer being incorrectly captured, and quantities such as skin friction or drag coefficients would be less accurately captured.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Furthermore, it is not sufficient to apply mesh refinement systematically in one direction, but instead, it needs to be applied in all direction equally (hence the name uniform mesh refinement). The following figure shows the difference between uniform and non-uniform mesh refinement.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4232,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2024/08/uniform_refinement-1024x619.png" alt="" class="wp-image-4232" style="width:800px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>For the uniform mesh refinement case on the left, we see that each surface element has been divided into 4 smaller surface elements. For the non-uniform refinement on the right, we see refinement along the slender edge, but only in one direction.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To exemplify this, take the following mesh refinement study done on a heat exchanger:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4259,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2024/08/incorrect_data_for_GCI-1024x228.png" alt="" class="wp-image-4259" style="width:800px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We have 6 different grids, and for each grid, some different meshing aspects were varied. This is not necessarily a bad approach; it will reveal how changes in the mesh will affect the solution, which is great. We just can't use this data also to calculate the grid convergence index (which, in fairness, the authors didn't do in this particular study).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A common issue with non-uniform mesh refinement is that you may have oscillatory results for your quantity of interest, and it may either be a converging or diverging behaviour.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Take the following graph, for example:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4260,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/non_uniform_gci_result.png" alt="" class="wp-image-4260"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, we see that with uniform mesh refinement results in a graph where the quantity of interest reaches an asymptotic limit. For the non-uniform mesh refinement, it is non unusual to see the quantity of interest first increase and then decreasing again (or vice versa).  We saw above that this is labelled oscillatory convergence, and this can result in unrealistic grid convergence index values, even if they appear to be low. Check you convergence condition, and always aim for a monotonic convergence condition if you can. This may require meshing again!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-believing-the-grid-convergence-index-applies-equally-to-structured-and-unstructured-grids">Believing the grid convergence index applies equally to structured and unstructured grids</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We touched upon this in the previous point, but it is worth reiterating. Since we require uniform refinement, which we can only achieve on structured grids, we <em>technically</em> can't use the grid convergence index for unstructured grids. However, we have gathered a lot of experience in the past decades on the correct usage of the grid convergence index, and we know that it works well for unstructured grids as well, as long as we do not deviate too much from uniform mesh refinement.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-makin">Refining your grids too little between coarse, medium, and fine grids</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Another common issue is the refinement ratio [katex]r[/katex]. Consider a 1D flow first. If we half the spacing between cells, then, well, we will double the number of cells in our 1D (line) mesh. But in 2D, if we have a quad element and we half the spacing in each direction, then we will generate 4 new quad elements, and in 3D, it gets worse, where one hexahedral element results in 8 new hexahedra being generated. This is shown in the following figure:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4262,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/refinement_of_a_hex.png" alt="" class="wp-image-4262"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Since we have half the spacing in each direction, the refinement ratio is [katex]r=2[/katex]. Let's think about this for a moment. If our coarse grid contains 1 million cells and we look at a 3D simulation, our medium grid will have 8 million elements, while the fine grid will have 64 million cells. This becomes quickly difficult to handle. Thus, [katex]r=2[/katex] is not realistic in most cases. So we probably want to use a lower value, but how low can we go?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Well, let's consider the extreme case of having 1,000,000 elements on the coarse grid, 1,000,001 elements on the medium grid, and 1,000,002 elements on the fine grid. Technically we fulfil the requirement of having an increase in the number of cells, but our refinement ratio will essentially be [katex]r\approx 1[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Say this is the mesh around an airfoil, and we are interested in the lift and drag values. How much are these values changing going from 1,000,000 elements to 1,000,001? Probably not by much, and I dare say, not at all! So if the quantities of interest are not changing at all, then the relative difference of the quantities between grid levels will be practically zero.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is also visualised by the following graph. Here, we have two sets of grids, each set containing three levels of meshes, i.e. the coarse, medium, and fine grid. We see that the first set of grids labelled with [katex]h[/katex] has very similar number of cells, while the second set of grids, labelled with [katex]g[/katex], shows a wider spread between the number of cells going from one grid level to the next.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4231,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2024/08/gci_refinement-1024x442.png" alt="" class="wp-image-4231" style="width:800px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Looking again at the definition of the grid convergence index (here for the medium to fine grid):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>GCI_{21}=\frac{1.25\epsilon_{21}}{r_{21}^p-1},</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>we see that the error (relative difference between the quantity of interest between two grid levels, i.e. [katex]\epsilon_{21}[/katex]) will be zero, and thus the grid convergence index will be zero, too! We now falsely believe that we have removed any uncertainty in our grid when, in reality, we have just tricked the equation into giving us a value that we like but that has no significance whatsoever.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To cut things short, <a href="https://asmedigitalcollection.asme.org/fluidsengineering/article/130/7/078001/444689/Procedure-for-Estimation-and-Reporting-of" target="_blank" rel="noopener" title="">Celik et al.</a> suggest that we should aim for [katex]r&gt;1.3[/katex] at a minimum, but the larger we make [katex]r[/katex], the more chance we stand to get a robust and realistic reading on our grid convergence index.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Obviously, you should always check your refinement ratio and ensure that you satisfy at least [katex]r&gt;1.3[/katex]. However, sometimes you may be close to the limit and believe that you are getting a robust grid convergence index calculated. You should also check the calculated order of approximation and check if that is similar to your actual order or approximation. So, if you use a second-order scheme, your calculated order of approximation should ideally be close to that. But if it has a value of, say, 7, you should be alarmed.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Non-uniform refinement + a low refinement ratio will often result in unrealistic orders of convergence being calculated. It is a sign that you should think again about your grid generation strategy if you want to have a realistic reading here. However, there is one more aspect that can also result in an unrealistic reading for the order of approximation (and, by extension, an unrealistic grid convergence index), and this is discussed next.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-using-integral-quantities">Using single-point measurements instead of integral quantities</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's say you want to calculate the grid convergence index for a simple flow through a 2D pipe. Which quantity are you taking as the quantity of interest? Well, your goal of this study is perhaps to test different numerical schemes and how well they can predict the velocity profile, for which we have an analytic solution available, at least for laminar flows. Since you are so focused on the velocity profile, you may then say that the quantity of interest is the max velocity measured at the outlet, which will be located in a single cell.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The grid convergence index may now work as expected, as you have followed all of the steps above to the letter, but the mesh uncertainty that your grid convergence index is calculating is now only applicable to a single point in your mesh. How much value is there in knowing the uncertainty of a single point in your mesh? Well, spoiler alert, not that much!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sometimes it is better to construct artificial quantities, that you have no interest in, or that do not even make any physical sense. This typically involved integrating a quantity along some boundaries or internal lines/planes to get a single, averaged quantity over an entire mesh region.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the 2D pipe example, we may want to integrate the velocity over the outlet and use that as our quantity of interest. We now use information on the entire outlet, which is better, but still not perfect. If we opt for the pressure drop along the channel, we exercise the entire mesh, as we need the solution on the inlet, the outlet, and how it develops on the internal mesh to get to that single measurement of the pressure drop.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, we may also choose to integrate the wall shear stresses on the wall boundaries and use that as a quantity of interest during the grid convergence index calculation. It may not represent anything physical, but it will ensure that they have confidence that the velocity profiles at the wall can be measured accurately.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Coming back to our 2D airfoil example, if we choose to use the lift and drag as our quantity of interest and perform two separate grid convergence index calculations, we may get good values for these quantities, but we have no idea if the wake is resolved well or not. If we are interested in separated flows, it may make more sense to create velocity profiles in the wake and integrate them, then calculate the grid convergence index either for an average of all of them or for each integrated velocity deficit in the wake.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This should bring home the point that the level of uncertainty that you calculate with the grid convergence index is tightly related to the quantity of interest that you are choosing. You have to be aware of how this quantity of interest is calculated so you know which areas of the mesh can be judged based on your grid convergence index. If you don't, you generate a false sense of security by calculating a number behind which you can hide, but it will not help you to address and quantify the real uncertainty that is in your simulation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-calculating-the-grid-convergence-index-because-you-can">Calculating the grid convergence index because you can</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>As we have seen above, calculating the grid convergence index is really not that difficult. And if our solution is small enough to be easy to mesh, it may be a no-brainer to calculate the grid convergence index. But should you? Let's keep in mind that the grid convergence index is a measure of precision, not accuracy, so even if we have a low grid convergence index, that doesn't mean that we can expect an accurate solution.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let me ask you this: If you had to make a pick between accuracy and precision, which one would you want to get with a low uncertainty (while the quantity you didn't pick would have a high uncertainty)? I.e., the choices are:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Low uncertainty in accuracy but high uncertainty in precision</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Low uncertainty in precision but high uncertainty in accuracy</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>The first choice is the better of the two, why? Well, if we selected the second option, we would get inaccurate results but would be very certain about them, while the first option would give us a high accuracy, but we may not be sure how accurate they are. If we lived in a vacuum, neither choice has a clear advantage over the other, but we do not live in a vacuum, and sometimes we can compare our results against experimental data or high-fidelity numerical simulations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If I know my results are accurate, but the precision is low, then I can circumvent the issue by looking at experimental data. If I get a close match, then I know my results ought to be good. Since the grid convergence index is only concerned with precision, what value would a grid convergence index study have here?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Well, certainly, it can't hurt to know what the mesh-induced uncertainty is, but let's say you perform your grid dependency study for the lift coefficient and then compare your results against experimental data for lift, drag, and side force coefficients. Now you have some numerical value for the mesh-induced uncertainty for the lift coefficient, but that won't necessarily translate to your drag and side force coefficients. This is a typical mistake I see being made over and over again.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you have experimental data available, there is no need to bother with a grid convergence index (though you may have a supervisor, a line manager, a reviewer, or a superstitious colleague who religiously believes in the power of the grid convergence index and you have to calculate it for them to not lose trust, credibility, or a job). Instead, you should get a feeling for how many cells you roughly need (i.e. literature review) and then create a similar mesh and compare your results against that set of experimental data.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-tools-to-calculate-the-grid-convergence-index">Tools to calculate the grid convergence index</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you have come to the conclusion that you want to use the grid convergence index from now on in your own simulations, then congratulations to you! It is not difficult to write your own script that implements the equations that we have discussed in this article, but in case you want to use an off-the-shelve solution, let me give you two software solution you can use instead.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-pygcs-a-python-based-grid-convergence-calculator">pyGCS: A Python-based grid convergence index calculator</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you are familiar with Python and how to install packages with pip, then <a href="https://github.com/tomrobin-teschner/pyGCS" target="_blank" rel="noopener" title="">pyGCS</a> (python grid convergence study, because the name pyGCI was already taken, annoying!) may be the right package for you. I wrote it to automate mainly the reporting of the grid convergence index with all of its parameters. The idea is that you specify all parameters as constructor arguments to a grid convergence index class and then simply tell the class to provide you with the results in the form of a table in either Markdown, LaTeX, or plain text syntax.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To install the package, use pip like so:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"pip install pyGCS","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #DCDCAA\u0022\u003epip\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003einstall\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003epyGCS\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"bash","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":1,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="pip install pyGCS" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #DCDCAA">pip</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">install</span><span style="color: #D4D4D4"> </span><span style="color: #CE9178">pyGCS</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>Then, to work with the code, copy and paste the following code and make changes to the constructor arguments as required:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"from pyGCS import GCS\n\n# create a grid convergence study object based on a constant domain volume\ngcs = GCS(dimension=2, volume=76, cells=[18000, 8000, 4500], solution=[6.063, 5.972, 5.863])\n\n# output information to Markdown-formated table\ngcs.print_table(output_type='markdown', output_path='.')\ngcs.print_table(output_type='latex', output_path='.')\ngcs.print_table(output_type='word', output_path='.')","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003efrom\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e pyGCS \u003c/span\u003e\u003cspan style=\u0022color: #C586C0\u0022\u003eimport\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e GCS\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e# create a grid convergence study object based on a constant domain volume\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003egcs = GCS(\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003edimension\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=\u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e2\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003evolume\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=\u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e76\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ecells\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=[\u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e18000\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e8000\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e4500\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e], \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003esolution\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=[\u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e6.063\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e5.972\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e5.863\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e])\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #6A9955\u0022\u003e# output information to Markdown-formated table\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003egcs.print_table(\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eoutput_type\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=\u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026#39;markdown\u0026#39;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eoutput_path\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=\u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026#39;.\u0026#39;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003egcs.print_table(\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eoutput_type\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=\u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026#39;latex\u0026#39;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eoutput_path\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=\u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026#39;.\u0026#39;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e)\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003egcs.print_table(\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eoutput_type\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=\u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026#39;word\u0026#39;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e, \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eoutput_path\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e=\u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026#39;.\u0026#39;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e)\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"python","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":9,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(1 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="from pyGCS import GCS
+
+# create a grid convergence study object based on a constant domain volume
+gcs = GCS(dimension=2, volume=76, cells=[18000, 8000, 4500], solution=[6.063, 5.972, 5.863])
+
+# output information to Markdown-formated table
+gcs.print_table(output_type='markdown', output_path='.')
+gcs.print_table(output_type='latex', output_path='.')
+gcs.print_table(output_type='word', output_path='.')" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #C586C0">from</span><span style="color: #D4D4D4"> pyGCS </span><span style="color: #C586C0">import</span><span style="color: #D4D4D4"> GCS</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6A9955"># create a grid convergence study object based on a constant domain volume</span></span>
+<span class="line"><span style="color: #D4D4D4">gcs = GCS(</span><span style="color: #9CDCFE">dimension</span><span style="color: #D4D4D4">=</span><span style="color: #B5CEA8">2</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">volume</span><span style="color: #D4D4D4">=</span><span style="color: #B5CEA8">76</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">cells</span><span style="color: #D4D4D4">=[</span><span style="color: #B5CEA8">18000</span><span style="color: #D4D4D4">, </span><span style="color: #B5CEA8">8000</span><span style="color: #D4D4D4">, </span><span style="color: #B5CEA8">4500</span><span style="color: #D4D4D4">], </span><span style="color: #9CDCFE">solution</span><span style="color: #D4D4D4">=[</span><span style="color: #B5CEA8">6.063</span><span style="color: #D4D4D4">, </span><span style="color: #B5CEA8">5.972</span><span style="color: #D4D4D4">, </span><span style="color: #B5CEA8">5.863</span><span style="color: #D4D4D4">])</span></span>
+<span class="line"></span>
+<span class="line"><span style="color: #6A9955"># output information to Markdown-formated table</span></span>
+<span class="line"><span style="color: #D4D4D4">gcs.print_table(</span><span style="color: #9CDCFE">output_type</span><span style="color: #D4D4D4">=</span><span style="color: #CE9178">&#39;markdown&#39;</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">output_path</span><span style="color: #D4D4D4">=</span><span style="color: #CE9178">&#39;.&#39;</span><span style="color: #D4D4D4">)</span></span>
+<span class="line"><span style="color: #D4D4D4">gcs.print_table(</span><span style="color: #9CDCFE">output_type</span><span style="color: #D4D4D4">=</span><span style="color: #CE9178">&#39;latex&#39;</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">output_path</span><span style="color: #D4D4D4">=</span><span style="color: #CE9178">&#39;.&#39;</span><span style="color: #D4D4D4">)</span></span>
+<span class="line"><span style="color: #D4D4D4">gcs.print_table(</span><span style="color: #9CDCFE">output_type</span><span style="color: #D4D4D4">=</span><span style="color: #CE9178">&#39;word&#39;</span><span style="color: #D4D4D4">, </span><span style="color: #9CDCFE">output_path</span><span style="color: #D4D4D4">=</span><span style="color: #CE9178">&#39;.&#39;</span><span style="color: #D4D4D4">)</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>Here, the volume parameter actually doesn't do anything, so you can set it to 1 if you want and still get the same results. It is required in the calculation, but as long as the domain stays constant in size (which it typically does), it will cancel out in the equations. Then we have two arrays to specify the number of cells and the quantity of interest on each grid level. The order for both arrays has to be the same, i.e. going from the fine to the medium to the coarse grid.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On lines 7-9, we generate the various outputs in either Markdown, LaTeX, or Word format and store them in the current directory. For example, the LaTeX output generated on line 8, after being compiled into a PDF, looks like:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":"600px","sizeSlug":"large","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/tomrobin-teschner/pyGCS/development/images/LaTeX.PNG" alt="" style="width:600px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>In this particular example, we find that the refinement ratio is above the minimum of 1.3, the asymptotic range value is close to 1.0, and the calculated order of convergence is around 1.53. The numerical scheme used in this example had a nominal order of 2, so some of that was lost, which is typically the case on unstructured grids. The solution on the fine grid had a quantity of interest of 6.063, and the extrapolated value is 6.17, so we aren't too far off, which is also supported by a low GCI value of 2.17% going from the medium to the fine grid.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-cfd-toolbox-a-chrome-extension-for-the-grid-convergence">CFD Toolbox: A chrome extension for the grid convergence index</h3>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":4230,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/cfd_toolbox_gci_calculator.png" alt="" class="wp-image-4230"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:paragraph -->
+<p>Ok, that was a bit low-level. The main advantage of <a href="https://github.com/tomrobin-teschner/pyGCS" target="_blank" rel="noopener" title="">pyGCS</a> is that you can produce outputs that are easily integrated into Websites, LaTeX or Word documents. But what if you just want to have a quick way to compute your GCI values and you don't want to write some Python code for it?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Well, let me introduce you to the <a href="https://chromewebstore.google.com/detail/cfd-toolbox/bcalbgngjglcapigdjlknojeoncdeomp?hl=en-GB" target="_blank" rel="noopener" title="">CFD toolbox</a>, a Swiss army knife of sorts for CFD practitioners. It has all kinds of useful calculators, one of which can be used to compute the grid convergence index. It runs as a Chrome extension and can be added to any chromium-based browser (Chrome, Edge, Brave, etc.)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As you can see from the screenshot on the left, you have similar inputs to make, i.e. the number of cells on each grid, along with the quantity of interest for each grid. You need to specify the dimension of the problem so that the characteristic length-scale can be computed correctly, and that's it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It reports the same values as the pyGCS tool, and you can specify an optional target grid convergence index that you want to achieve. It will then calculate how many cells you should aim for in your uniform mesh refinement to achieve said grid convergence index.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The output, which is not shown here, will give you the same values as the pyGCS tool shown above.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-summary">Summary</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Well, there you have it. In this article, we took a deep dive into uncertainties and errors in CFD and concentrated on the grid convergence index as the main tool in our arsenal to manage and quantify uncertainties. Using a serious of 3 grids, and a quantity of interest such as the lift or drag coefficient, we can calculate how much uncertainty we have in the measurement of that quantity on our 3 grids.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Contrary to common belief, the grid convergence index is not a measure to establish accuracy of our simulation, instead, it only specifies how much precision we have in measurements of key quantities of interest in our solution. This means that we may get an accurate result, even if we have a relatively high grid convergence index, but the uncertainty in this measurement is high, i.e. our confidence in the precision is low and thus, even though we may see an accurate result, it may be a fluke. In this case, comparison against experimental data is essential.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While the grid convergence index does not provide us with a measure for how accurate our simulations are (if life was only that easy), it does present one of the best chances we have to gain confidence in our simulations. In some areas, it is an essential piece of evidence to gain trust in your simulations and in the absence of any experimental data or high-fidelity numerical simulation data, it may be our best chance to establish confidence in the results.</p>
+<!-- /wp:paragraph -->

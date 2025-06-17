@@ -1,0 +1,587 @@
+<!-- The 6 biggest and unsolved challenges in CFD -->
+<!-- https://cfd.university/blog/the-6-biggest-and-unoslved-challenges-in-cfd/ -->
+
+<!-- wp:paragraph -->
+<p>Computational Fluid Dynamics (CFD) is undergoing constant development, yet development stagnated during the early 2000s. This led to a flurry of reports and articles that highlighted the biggest challenges in CFD we face. Among them, the 2030 CFD vision report by NASA is one of the most thoroughly researched ones, highlighting six key challenges we need to overcome to advance CFD capabilities beyond its current status quo. A set of 4 grand challenges is proposed that can only be achieved if sufficient progress in all six key challenges has been made.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this article, we'll have a look at the key challenges that NASA identified through surveys, workshops, and discussions with key stakeholders. Given that the 2030 CFD vision was published in the mid-2010s, we are halfway between its publication and reaching 2030, so we can already make comments on whether some of these challenges in CFD have been overcome. We'll also look at a list of topics you can work on today to check for yourself if we have made enough advancements in key areas so that we can work towards overcoming the four grand challenges.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this article</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":4,"blockClientId":"962ba1e9-8f39-4721-909e-db375f10a626","content":"Introduction","level":2,"anchor":"aioseo-introduction","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":24,"blockClientId":"c1d09f15-d3cb-4539-aaf2-32bdb3125b57","content":"Challenges in CFD: The six key areas of development","level":2,"anchor":"aioseo-the-6-key-areas-of-development","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":26,"blockClientId":"a2bf2fd4-30b7-4cf1-afe3-0fccf2df2a2d","content":"High-performance computing","level":3,"anchor":"aioseo-high-performance-computing","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":33,"blockClientId":"f667f75b-7ea4-4fb3-8c39-8ca64b092ef4","content":"Physical modelling of turbulence","level":3,"anchor":"aioseo-physical-modelling","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":44,"blockClientId":"82f2fe8d-7e5d-49cb-9196-2c1fb7ff130f","content":"Numerical Algorithms","level":3,"anchor":"aioseo-numerical-algorithms","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":53,"blockClientId":"8de92e51-e477-4a8a-a3fe-790a15ae1ee7","content":"Geometry and Grid generation","level":3,"anchor":"aioseo-geometry-and-grid-generation","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":62,"blockClientId":"b61a8660-50c2-4d70-bd91-931b62854b69","content":"Knowledge extraction","level":3,"anchor":"aioseo-knowledge-extraction","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":68,"blockClientId":"64a41db3-f023-4f36-875f-79f1233f58d0","content":"Multidisciplinary Analysis and Optimization","level":3,"anchor":"aioseo-multidisciplinary-analysis-and-optimization","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":74,"blockClientId":"2c85bd2a-48bb-4504-ba43-870937c8b16b","content":"NASA's 4 Grand Challenges in CFD","level":2,"anchor":"aioseo-the-4-grand-challenges-in-cfd","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":77,"blockClientId":"a31cd6a2-099e-41e3-9be0-ef151c583e61","content":"Challenge 1: Wall resolved LES simulation of complex industrial problems","level":3,"anchor":"aioseo-challenge-1","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":80,"blockClientId":"5626c95c-db94-4556-af65-f27651007132","content":"Challenge 2: Off-design turbofan engine transient simulation","level":3,"anchor":"aioseo-challenge-2","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":83,"blockClientId":"964f2b79-da1a-4ef2-a405-a8626ce282d1","content":"Challenge 3: Multidisciplinary Analysis and Optimization (MDAO)\nof a highly flexible advanced aircraft configuration","level":3,"anchor":"aioseo-challenge-3","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":86,"blockClientId":"c68397a4-dc62-422a-ad4a-48da5ccd724b","content":"Challenge 4: Probabilistic analysis of a powered space access configuration","level":3,"anchor":"aioseo-challenge-4","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":88,"blockClientId":"dc964f64-205f-46b5-bfcc-aeb4201bdbc8","content":"What did they miss? Current emerging challenges in CFD","level":2,"anchor":"aioseo-what-did-they-miss-current-emerging-challenges","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":95,"blockClientId":"fb0706cc-021f-4e78-b71d-64aa55f0d861","content":"towards next-generation CFD","level":2,"anchor":"aioseo-roadmap-towards-next-generation-cfd","order":14,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":97,"blockClientId":"fd187fe8-c3d0-431d-a404-263a5e920c01","content":"The 2015 - 2030 roadmap","level":3,"anchor":"aioseo-the-2015-2030-roadmpa","order":15,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":104,"blockClientId":"f8bc5a3e-0482-4236-aaa4-1148a57b126c","content":"Research topics you can work on to overcome challenges in CFD","level":3,"anchor":"aioseo-research-topics-to-get-you-started","order":16,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":109,"blockClientId":"89b37e28-f3d8-4065-a878-90120790e9cc","content":"Summary","level":2,"anchor":"aioseo-summary","order":17,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-introduction">Introduction</a></li><li><a href="#aioseo-the-6-key-areas-of-development">Challenges in CFD: The six key areas of development</a><ul><li><a href="#aioseo-high-performance-computing">High-performance computing</a></li><li><a href="#aioseo-physical-modelling">Physical modelling of turbulence</a></li><li><a href="#aioseo-numerical-algorithms">Numerical Algorithms</a></li><li><a href="#aioseo-geometry-and-grid-generation">Geometry and Grid generation</a></li><li><a href="#aioseo-knowledge-extraction">Knowledge extraction</a></li><li><a href="#aioseo-multidisciplinary-analysis-and-optimization">Multidisciplinary Analysis and Optimization</a></li></ul></li><li><a href="#aioseo-the-4-grand-challenges-in-cfd">NASA&#x27;s 4 Grand Challenges in CFD</a><ul><li><a href="#aioseo-challenge-1">Challenge 1: Wall resolved LES simulation of complex industrial problems</a></li><li><a href="#aioseo-challenge-2">Challenge 2: Off-design turbofan engine transient simulation</a></li><li><a href="#aioseo-challenge-3">Challenge 3: Multidisciplinary Analysis and Optimization (MDAO)
+of a highly flexible advanced aircraft configuration</a></li><li><a href="#aioseo-challenge-4">Challenge 4: Probabilistic analysis of a powered space access configuration</a></li></ul></li><li><a href="#aioseo-what-did-they-miss-current-emerging-challenges">What did they miss? Current emerging challenges in CFD</a></li><li><a href="#aioseo-roadmap-towards-next-generation-cfd">towards next-generation CFD</a><ul><li><a href="#aioseo-the-2015-2030-roadmpa">The 2015 - 2030 roadmap</a></li><li><a href="#aioseo-research-topics-to-get-you-started">Research topics you can work on to overcome challenges in CFD</a></li></ul></li><li><a href="#aioseo-summary">Summary</a></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-introduction">Introduction</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In the early 1970s, McDonnell Douglas and Lockheed introduced their iconic DC-10 and L-1011 TriStar jets, respectively (see images below). Capable of long-range flight, these aircraft dominated the skies with their iconic triple-engine design, only rivaled by Boeing's 747 jumbo jet, both in design, range, and capacity. In the late 1980s, Both the DC-10 and L-1011 TriStar were approaching retirement age and airlines started to look for alternatives to fill their space.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Boeing kept updating its 747 with various variants, which it continued to do for some decades to come, while both McDonnell Douglas and Lockheed were looking to come up with their own alternatives. The competition was fierce, and compared to the 1970s, American manufacturers suddenly had to take the European threat, operating under the name of Airbus, seriously. It, too, proposed its own version, the A330 and A340, to compete in this market segment. Airlines were spoiled for choice for once.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Boeing realised that Airlines weren't interested in their extended Boeing 767. Airlines were spoiled for choice and could play each manufacturer against each other, so Boeing realised that they had to come up with a design from scratch that would satisfy all the Airlines' requirements. Their original design was the Boeing 777 Trijet (see image below), resembling the look of the DC-10 and L-1011 TriStar, though that was later dropped in favour of a twinjet design that we know today and either love (or hate).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column -->
+<div class="wp-block-column"><!-- wp:image {"id":4153,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/dc10.jpg" alt="" class="wp-image-4153"/><figcaption class="wp-element-caption">DC-10 (<a href="https://en.wikipedia.org/wiki/McDonnell_Douglas_DC-10" target="_blank" rel="noopener" title="">Source</a>)</figcaption></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column"><!-- wp:image {"id":4154,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/l1011.jpg" alt="" class="wp-image-4154"/><figcaption class="wp-element-caption">L-1011 TriStar (<a href="https://en.wikipedia.org/wiki/Lockheed_L-1011_TriStar" target="_blank" rel="noopener" title="">Source</a>)</figcaption></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column"><!-- wp:image {"id":4155,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/08/b777concept.jpg" alt="" class="wp-image-4155"/><figcaption class="wp-element-caption">Original Boeing 777 Trijet design (<a href="https://en.wikipedia.org/wiki/Boeing_777" target="_blank" rel="noopener" title="">Source</a>)</figcaption></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:paragraph -->
+<p>Why do I bring this up? Well, for starters, I could be talking all day about aircrafts and their history (and some of my student will have had the (dis)pleasure of me doing so in one of my lectures), but the aerospace industry has a long-standing track record of taking emerging and disruptive technology and pushing it to the limit, far beyond of what their usecase was at the point of adoption.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We are living through one of these phases at the moment, where hydrogen is being proposed as an alternative to Jet A1 fuel, requiring a completely different approach to designing aircraft. While the exterior will look the same, the internal systems will have to operate differently. When the Boeing 787 Dreamliner was introduced, we were adopting carbon fibre on a massive scale (and not without its own initial problems), the A320 pushed for flight-by-wire technology, and, well, the Boeing 777 was the first aircraft to be fully constructed in CAD.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Unsurprisingly, then, the aerospace industry was also the main driver behind pushing CFD beyond its current use cases, and we have the aerospace industry to thank for CFD being as powerful as it is today. Through a constant stream of investment, research, and innovation, CFD methods have been developed, matured, and deployed into commercial CFD solvers, and not just the aerospace industry but other industries as well are benefitting from these developments.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is only sensible, then, that the aviation industry is leading the way in mapping out the current challenges in CFD that we all face, not just the aerospace industry.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>NASA spearheaded a committee in the mid-2010s to identify the key challenges in CFD, which comprised members from academia, industry, and governmental bodies representing areas of expertise in aeronautical engineering, applied mathematics, and computer science. Initial challenges were collected through a survey from individuals with a stake in CFD, and this was followed up by a workshop. The outcome was synthesized in their landmark study, which we nowadays know as&nbsp;<a href="https://ntrs.nasa.gov/citations/20140003093" target="_blank" rel="noopener" title="">NASA's 2030 CFD vision</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This published report was a direct response to what many leading figures within the CFD community felt was stagnating CFD development (but don't worry—around that time, I started my PhD, disaster averted ...).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The report details key challenges in CFD that are currently representing bottlenecks in research. Although issued in the mid-2010s, there still are many open research questions that need addressing. Today, I thought it would be good to examine the 2030 CFD vision and comment on recent successes, areas that represent emerging challenges, and opportunities that could not have been foreseen in the mid-2010s.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Related to the 2030 vision, <a href="https://arc.aiaa.org/doi/10.2514/6.2017-3791" target="_blank" rel="noopener" title="">other authors</a> were cashing in on the same idea and proposed their own challenges in CFD. Unsurprisingly, they all do reflect more or less the same challenges, albeit using slightly different words and terminology. But one study is of particular interest, and that is the work of&nbsp;<a href="https://www.cambridge.org/core/journals/aeronautical-journal/article/on-the-role-and-challenges-of-cfd-in-the-aerospace-industry/AB70FEF00301B20648F5B0627893B787" target="_blank" rel="noopener">Spalart and Venkatakrishnan</a>, who, in their own rights, are influential people within the CFD community and recognised for their developments, who published a study on the challenges in CFD faced by the aeronautical industry.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I guess that's a good way to spend retirement, no judgment. I do receive the odd email blurb from Spalart (it's an email list of about 170 participants (or so), so no private communication), educating us all on the correct usage of the Spalart-Allmaras. It's very <em>informative</em> (and not grumpy at all). I digress.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In their study, they produced the following image:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4148,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2024/08/aerospace_challenges-1024x557.png" alt="challenges in cfd in the aerospace sector" class="wp-image-4148" style="width:800px"/><figcaption class="wp-element-caption">Taken from <a href="https://www.cambridge.org/core/journals/aeronautical-journal/article/on-the-role-and-challenges-of-cfd-in-the-aerospace-industry/AB70FEF00301B20648F5B0627893B787" target="_blank" rel="noopener" title="">Spalart and Venkatakrishnan</a> (I may or may not have modified the picture slightly ...)</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, areas shown in green indicate regular and confident use of CFD, purple area represent emerging trends where CFD is used more and more, while red areas represent areas where CFD is not yet routinely used. Even though this image is from 2016, picking any of the purple or red areas are an easy way to generate research ideas or in-deed a PhD research proposal.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We can see that the green areas refer to mainly steady-state <a href="https://en.wikipedia.org/wiki/Reynolds-averaged_Navier%E2%80%93Stokes_equations" target="_blank" rel="noopener" title="">RANS</a> simulations while purple areas are mostly related to unsteady simulations, be it either unsteady RANS (URANS) or using some form of scale-resolved turbulence modelling approach (e.g. <a href="https://en.wikipedia.org/wiki/Detached_eddy_simulation" target="_blank" rel="noopener" title="">DES</a>, <a href="https://arc.aiaa.org/doi/10.2514/6.2003-767" target="_blank" rel="noopener" title="">SAS</a>, <a href="https://en.wikipedia.org/wiki/Large_eddy_simulation" target="_blank" rel="noopener" title="">LES</a>). </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Oh, and areas shown in black represent common sense but also a target for Boeing to achieve, perhaps this could be Boeing's 2030 vision, although I really hope they achieve that much quicker!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, in the remaining part of this article, I want to go through the NASA 2030 CFD vision report and highlight what challenges they have identified and then look at some areas you can pick to formulate your own research project, should you wish to contribute to the current challenges in CFD.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-the-6-key-areas-of-development">Challenges in CFD: The six key areas of development</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>NASA identified six key areas that are currently representing bottlenecks in the CFD development process. To advance CFD into the next generation of tools and methods, we need to overcome all of these jointly before we can make advances and push current CFD technology to the next level. Let's review each section individually.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-high-performance-computing">High-performance computing</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>What a great challenge to start on, as this was already partially addressed in my <a href="https://cfd.university/blog/why-is-everyone-switching-to-gpu-computing-in-cfd/" target="_blank" rel="noopener" title="">previous article on GPU computing in CFD</a>. However, NASA does provide some more details here. GPUs are just part of the equation, but their reduced power consumption is an aspect that makes them rather powerful.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, HPC systems of the future are heterogeneous in nature (CPUs and GPUs), and in order to run CFD software efficiently, we'll need to be able to leverage both at the same time. Most legacy CFD codes are written with a pure&nbsp;<a href="https://cfd.university/blog/why-is-everyone-switching-to-gpu-computing-in-cfd/#aioseo-distributed-memory-approach" target="_blank" rel="noopener">distributed memory approach</a>&nbsp;in mind, and switching to a hybrid approach, utilising CPUs and GPUs at the same time, as well as mixing distributed and shared memory approaches, will likely require entire new codes (or legacy codes with substantial investment in this area).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Programming languages and libraries also need to catch up, as the complexity of writing a scalable CFD solver across different HPC hardware architectures requires expertise in computer science and CFD, a set of skills that, in my experience, are usually mutually exclusive. Thus, writing a scalable CFD solver is not the result of a single motivated individual, but it becomes an inherently multidisciplinary endeavour, and if you want to write the next Fluent, OpenFOAM, or the like, you'll need to find a strong partner with complimentary skills to yours.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>CFD codes don't scale well. For a long time, HPC research was concerned with producing the first Exascale-capable cluster, which we have achieved. However, utilising that amount of power is an entirely different challenge. If you get good scalability across 1,000 cores, that is a really strong achievement. However, if we want to utilise the Exascale clusters that become more widely available as time progresses, we need to be able to scale across 1,000,000 cores (and more) efficiently to leverage these computational powers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Using 1,000,000 cores brings its very own challenges. The amount of data required, and produced, can no longer be processed by a human, and thus both the pre- and post-processing needs to be fully automated by tools that can handle this amount of parallelisation. We are seeing more and more tools being developed to adress this issue but it remainds to be seen if they scale effeciently across processors.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>And even if we have all of these issues resolved, ultimately, we need to develop and test our code on the same HPC architectures. It is no good to develop your own tool on your own laptop or desktop PC and test that it works well in your consumer graphics card or 4-core CPU when the scaling of your code breaks down after adding a few more cores or GPUs. Developers need to have access to profile and test their implementation to make it scalable across a large number of heterogeneous compute nodes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-physical-modelling">Physical modelling of turbulence</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>By the time of writing the 2030 CFD vision, available compute resources on HPC clusters were just about capable of running large eddy simulations of wings at realistic Reynolds numbers. This is shown in the following image:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4159,"width":"600px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="https://cfd.university/wp-content/uploads/2024/08/hpc_capabilities.png" alt="challenges in cfd in turbulence modelling" class="wp-image-4159" style="width:600px"/><figcaption class="wp-element-caption">Taken from <a href="https://arc.aiaa.org/doi/10.2514/6.2017-3791" target="_blank" rel="noopener" title="">Witherden and Jameson</a></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, we have the available computational power plotted on the x-axis and the required memory on the y-axis. In the mid-2010s, we were in the Petascale compute capabilities, and we see that Exascale compute capabilities are required, which have already been achieved, so large-scale LES simulations have now become possible. Great, one challenge solved. HPC facilities will improve just by sitting and waiting.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One issue with turbulence models is that they are calibrated and adjusted over a wide range of flows, though these calibrations are done for simplistic flow types (flat plate, channel and pipe flows, shear layers, etc.). Sure, they give results for more complex geometries, but they are known for their sometimes poor performance for secondary flow structures and separation predictions. Experimental work for calibration, as well as validation and verification studies, are required to be made available to a wider audience so they can benefit from the test data.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>RANS-based turbulence models assume that the flow is fully turbulent. If the laminar to turbulent transition plays an important role (as it does, for example, for stall predictions on airfoils and wings), then classic RANS models stand no chance of predicting this phenomenon accurately (and this is the reason we can only confidently use RANS in areas where the flow is steady and attached, i.e. see the green areas in the Figure above by Spalart and Venkatakrishnan).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we take a look at Otto Aviation's Celera 500L, an aircraft that is <a href="https://www.twz.com/28409/the-mysterious-and-potentially-revolutionary-celera-500l-aircraft-may-fly-soon" target="_blank" rel="noopener" title="">hyped to be a revolution in the aerospace sector</a> for its radical design to promote laminar flow (I have done some CFD studies on it and remain sceptical about its actual advantage based on the numbers), then we would have no chance to predict lift and drag using conventional RANS models.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Transition-based RANS models have been developed and applied with modest success, but the most popular variant, the Re-theta-Gamma k-omega SST, or k-omega SST-Langtry-Menter model, is based on correlations alone and not physics. If it is applied to flows outside its correlation, it can fail just like any other RANS model if applied to flows for which it hasn't been calibrated. Furthermore, this is a development driven by ANSYS, and some details of the model haven't been published.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There are alternatives, such as the k-kl-omega model, which are based on physics and thus stand a better chance of predicting this phenomenon. However, it focuses on only natural and bypass transition, ignoring cross-flow and separation-induced transition. If the latter two are important, such as in cross-flow at wingtips that induce transition, which influences the prediction of aerodynamic flutter, then even this model would be unable to capture this. Sure enough, aeroelasticity and flutter are purple areas in Spalart and Venkatakrishnan's figure above.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To complicate things further, the accuracy of the solution is not just a function of the turbulence model being used but also the grid which is used to solve the flow. Different models are more susceptible to grid-induced modelling errors than others, and transition-based RANS models have some of the strictest (and most prohibitive?!) modelling constraints. As far as I am aware, and as of the time of writing, there still isn't any best-practice guideline available on what grid resolutions are required for solving turbulent flows with transition-based RANS models.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>With DES and LES simulations, we require that we capture about 80% of the turbulent kinetic energy in the farfield (or away from any wall geometry). This is easier said than done, as most solvers (if not all) provide no support to test this (as there is no uniform agreement on how this can be verified). Sure, there are approximations to this, and it is typically down to the end-user to select one and implement it themselves to ensure sufficient flow details are resolved for DES and LES to work correctly.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-numerical-algorithms">Numerical Algorithms</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you have ever run a RANS simulation at moderate to high Reynolds numbers than you will be acutely aware of the challenges of getting a converged solution. Most of the times, convergence is impossible and rooted in the various modelling assumption that are inherent to different turbulence models. In these cases, we typically opt for surrogate measures to attest convergence, for example, by checking if integral quantities such as the lift or drag coefficient have converged to a mean value over a predefined averaging window.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If turbulence models themselves cannot be made to behave better to allow for convergence, more work on convergence acceleration techniques is required that are capable of speeding up the convergence rate, such as the <a href="https://onlinelibrary.wiley.com/doi/10.1002/fld.1798" target="_blank" rel="noopener" title="">CFL-based evolution strategies</a> (which, when they work, are a bit of magic! I have gotten convergence to machine precision (1e-14) within about 20 iterations for a simple test case).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Even if we do get these techniques to work, there is no universal technique available that can accurately judge convergence over a wide area of flow cases. Domain expertise needs to be utilised to judge convergence (e.g. lift and drag for airfoils, wall-shear stresses for reattaching flows, heat transfer rates for chemical reacting flows, etc.), which makes judging convergence still a hot topic of debate. A universal measure remains absent a decade on from the 2030 CFD vision report.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Another area of improvement that falls under the numerical algorithms group is uncertainty quantification. While there have been advanced made, these remain unexplored in most cases. Typically, we do a grid dependency study and use that to quantify the uncertainty to some extend. However, the field of uncertainty quantification is vast and not only limited to CFD itself, yet little additional tools are used to quantify simulation uncertainties.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Even if uncertainty and error quantification could be used on a larger scale, it is not as simple as simply dropping some tools into our CFD workflow. Quantifying errors and uncertainties with our boundary and initial conditions is complicated. Turbulent quantities are approximated based on an average turbulent intensity and an assumed (approximated) turbulent length scale, which is rarely constant across a boundary, yet we used these average quantities to let our solution converge.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Modelling errors are also difficult to quantify. While er can confidently state the error we do by approximating a derivative or interpolation with a first-, second-, or higher-order approximation, other areas remain more challenging to quantify. RANS turbulence models, for example, are full of assumed correlations between mean field quantities and unresolved turbulent quantities, closure coefficients, and sometimes additional terms required to model some assumed behaviour.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While we can quantify errors against experimental data of a turbulent solution, we are not able to determine how much of that error is due to the turbulence model, the boundary or initial conditions, the numerical approximations, and even the grid, although the grid dependency study tells us at least how much the solution varies with successive refinements of the grid.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>An additional issue is with existing methods used in CFD; typically, linearised error estimations are used to quantify errors, which work well for steady-state flows but have shown to grow without bounds for time-dependent flows. Since a move towards DES and LES is required to overcome existing challenges in CFD, we'll have to explore additional ways to quantify errors and uncertainties with time-dependent flows.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-geometry-and-grid-generation">Geometry and Grid generation</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is probably my favourite area in all of this, not because I am a particularly enthusiastic grid generation person (although I find the grid generation process very satisfying), but because there is so much work to be done in this area, and no one seems to be interested in doing anything about it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I did make a statistic once by looking at the number of papers published on turbulence modelling and then at the number of papers published about grid generation and related CAD to CFD papers. Do you want to have a guess for how many more papers there are in the field of turbulence compared to grid generation? 42. First of all, <a href="https://en.wikipedia.org/wiki/The_Hitchhiker's_Guide_to_the_Galaxy" target="_blank" rel="noopener" title="">42</a> is a pretty good number by itself, but it also shows the sheer discrepancy in research funding.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It turns out that not just CFD practitioners can't stand the mesh generation process, but even governmental funding bodies, who presumably have never done grid generation, can't be bothered to invest in this topic. I find it fascinating, but then again, <a href="https://cfd.university/learn/keep-your-users-happy-how-to-document-code-the-right-way/" target="_blank" rel="noopener" title="">I find code documentation fascinating</a>, and I know that no one is sharing this fascination with me (based on reader numbers).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This consistent underfunding of grid generation tools is now coming back to bite us as we move into the exascale computing era. Mesh generation needs to be automated and scale well over a number of cores, yet most mesh generators are incapable of generating high-quality grids automatically.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since the CFD 2030 vision was published, new tools have sprung up, in particular, Ansys Fluent meshing, which I think is one of the (if not the) best meshing tools out there. It's pretty straightforward to use, can be easily automated (a task taking me 3 weeks to automate in Pointwise was reduced to an hour with Fluent meshing), and is pretty robust. However, it can still fail for complex geometries, which is mostly related to the underlying CAD file that was given to the meshing tool.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This brings me to the next point: there is no good format to exchange CAD data with a CFD solver or meshing tool. Most other industries are quite happy with a rough approximation of the shape, whereas CFD has very tight requirements towards its CAD files. Ideally, they should be watertight (which they rarely are), do not feature any singularities, and show avoid any round-off induced geometry issues, such as inexact edges (which will mess with mesh). <a href="https://arc.aiaa.org/doi/10.2514/6.2018-1402" target="_blank" rel="noopener" title="">Gammon et al.</a> give a pretty good overview of all types of issues with CAD files<a href="https://arc.aiaa.org/doi/10.2514/6.2018-1402" target="_blank" rel="noopener" title="">.</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have played around with the idea of proposing my own CAD format (standard) to alleviate this problem, though some good formats do exist. Among the best, I think, is the <code>*.obj</code> file format, which has support for requiring watertightness (though it does not enforce it), allows for surface grouping (required to assign different boundary conditions to different parts of the geometry), and is not as wasteful with its memory compared to <code>*.stl</code> files. The downside is that, just like <code>*.stl</code> files, it only features linear elements.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A <code>*.obj</code> file format that optionally enforces watertightness and has support for non-linear elements is probably a good step forward towards having a CFD-specific and fit-for-purpose CAD file format. But, would you believe it, it takes time to create such as format, implement and test it, and did I mention that no one cares to provide research funding for that? Anyway, I think this would be an important and hugely impactful feature for CFD applications, but there does not seem to be a lot of excitement working on a new file format.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-knowledge-extraction">Knowledge extraction</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>To date, the prevailing method of extracting data from CFD simulations is by using a post-processing tool, be it an onboard post-processor within the CFD solver or an external software such as Tecplot, Paraview, Fieldview, etc. Extracting information from simulations will become more and more challenging as the number of grid points increases, and downloading individual simulations onto a personal computer will become impossible.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Large-scale clusters with dedicated visualisation nodes, with high-performance graphic cards as well as sufficient RAM are required to visualise these simulations, but even then, extracting key information will require some form of processing of the data, which mostly remains a task of clicking a series of buttons within the post-processor, or automating that through bespoke user scripts. All of these factors will make it more challenging to extract information effectively from large-scale simulations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>With the adoption of finite-element methods, in particular, the Discontinuous Galerkin (DG) method in the field of CFD, post-processing software needs to catch up as well with visualising higher-order elements. While the CGNS file format allows storage of higher-order, standard elements (up to fourth-order), post-processors lack the ability to visualise these (rendering the use of higher-order elements somewhat limiting). In practice, higher-order elements still need to be decomposed into smaller, linear elements just for visualisation purposes alone.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If knowledge extraction from a single CFD simulation isn't complicated enough, getting information from a series of CFD simulations over a large range of input parameters will be equally challenging. Creating a reduced-order model (ROM) from a collection of high-fidelity CFD data remains widely under-utilised, where we pay a high upfront cost to set up a ROM that can then be efficiently used to extract information.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>CFD data is also typically used in conjunction with experimental data, where available. Instead of viewing each component as a separate entity to assess errors and uncertainties, data-fusion activities will be required to unlock further potential in CFD. From simple outlier detections to time-dependent data collection in experiments that are fed into a CFD solver as boundary conditions to overcome, for example, the issue of specifying averaged turbulent intensities and integral turbulent length scales.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-multidisciplinary-analysis-and-optimization">Multidisciplinary Analysis and Optimization</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We are moving into an age where CFD simulations on their own are no longer the only way to extract information. Instead, we are seeing more and more coupling of CFD solvers with one another to simulate multiphysics aspects. An example that most will probably be familiar with is that of Fluid-Structure Interactions (FSI), where we couple a fluid and a structural solver together, where pressure information from the CFD solver is given to the structural solver, which uses that as a non-uniform load to compute displacements and stresses.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While there are some frameworks available in which FSI simulations can be done with ease, there are a multitude of other physics-based solver out there that may benefit from coupling their solution with that of CFD. The challenge in multidisciplinary analysis and optimisation is thus one of finding a general way to couple two or more physics-based solvers together to increase the knowledge that can be extracted (i.e. not just the pressure for CFD, but also the displacement from a solid solver).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the 2030 CFD vision report, it was proposed that a robust framework must be found to couple solvers from different disciplines together, and <a href="https://precice.org/" target="_blank" rel="noopener" title="">preCICE</a> is one candidate working towards becoming this framework. It offers coupling of different solvers out of the box and comes with all of the goodies you'd expect; coupling of transient equations, support for parallelisation, and a way to efficiently map data between different simulations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One thing it has not done yet, but one area in which the 2030 CFD vision is postulating is required is the propagation of uncertainties from solver to solver, which will keep track of the overall simulation uncertainty. Since this is an area that is still actively developed for CFD simulations themselves, we do not have, as of yet, a way to manage this in a multidisciplinary framework.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>An additional barrier for these types of simulations is the exchange of data, not just through a library like&nbsp;<a href="https://precice.org/" target="_blank" rel="noopener">preCICE</a>, but in general for storing the data after simulations have finished. If we run an FSI simulation, how do we store the associated data? We have a CFD solution and one from a solid solver, and both will likely be stored in separate data files. For CFD purposes, we have the <a href="https://cfd.university/learn/the-complete-guide-to-structured-and-unstructured-mesh-reading-using-cgns/what-is-the-cgns-format-and-how-to-get-started/" target="_blank" rel="noopener" title="">CGNS data format</a>, which has been designed as a standardised way to store CFD data, and we will need similar developments for multidisciplinary data exchange formats.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-the-4-grand-challenges-in-cfd">NASA's 4 Grand Challenges in CFD</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The six areas we looked at above provide the building blocks for the 2030 CFD vision. These are all individual challenges in CFD that individuals or research teams may want to tackle, but in order to demonstrate that a readiness beyond the simplest of test cases has been achieved, NASA postulated four grand challenges, which, if successfully simulated, would attest sufficient maturity within all of these areas.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Given NASA's aeronautical position, these grand challenges in CFD research are all tied to aeronautical applications. While the geometries may be aerospace-specific, changing the geometry can translate most of these challenges to other industries as well. We will look at each grand challenge next.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-challenge-1">Challenge 1: Wall resolved LES simulation of complex industrial problems</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Unsurprisingly, turbulence modelling is one of the key challenges in CFD we need to overcome, and it is tightly coupled with available computing resources. NASA is foreseeing the simulation of a complete aircraft configuration at critical points in the flight envelope using scale-resolved turbulence modelling, i.e. wall-modelled LES or DES.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Advances in HPC alone are not sufficient, and CFD solvers need to adopt algorithmic improvements to run simulations on exascale HPC clusters. Successful demonstration of this grand challenge will require simulations at low-speed approaches, take-off, and dynamic manoeuvres, where the behaviour is strongly influenced by turbulence characteristics such as separation and shock-boundary layer interactions.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-challenge-2">Challenge 2: Off-design turbofan engine transient simulation</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this grand challenge, the complete simulation of an engine is envisaged. This will require rotating geometries, scale-resolved turbulence simulations, resolving combustion processes, conjugated heat transfer, and the prediction of aerodynamic noise. The challenge here is the coupling of potentially more than one solver, as well as the disparate time scales, i.e. going from the smallest time scales found in the combustion process through to turbulent time scales and all the way up to the energy-containing eddies which operate at the highest time scales.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Achieving this grand challenge will allow for virtual engine testing, which will include the prediction of compressor surges and stalls, as well as the intricate details of the combustion process itself, which will be tightly coupled to turbine cooling itself. Thus, while high confidence can be given to the flow around the engine intake, as the flow moves further downstream and complexities such as combustion and cooling are added, uncertainties grow with each modelling stage, and they need to be effectively captured and managed.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-challenge-3">Challenge 3: Multidisciplinary Analysis and Optimization (MDAO)<br>of a highly flexible advanced aircraft configuration</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The basic goal of this grand challenge is to demonstrate that CFD can be used to optimise complex aircraft geometries for different phases of the flight mission. This will require the coupling of at least CFD with a structural and flight-dynamics solver, which will be used to determine aerodynamic limits (buffeting), structural limits (plastic deformation), as well as manoeuvrability within safe limits (preventing stalls).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The first step is the coupling of at least three separate solvers, which will require a significant amount of compute resources, and if unsteady flight conditions at scale-resolved turbulent conditions are envisaged, uncertainty propagation becomes paramount to avoid divergence between the simulated conditions and flight tests.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-challenge-4">Challenge 4: Probabilistic analysis of a powered space access configuration</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Their final grand challenge is designed to touch upon all six areas of improvements that we looked at above, which include the aerothermal simulation of the fluid flow around a representative space vehicle, including the modelling of heat transfer and the material properties. Uncertainty propagation and capturing are additionally required, and as we saw with the other grand challenges in CFD, scale-resolved turbulence modelling in conjunction with HPC computing is required to demonstrate successful performance within this challenge.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-what-did-they-miss-current-emerging-challenges">What did they miss? Current emerging challenges in CFD</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The 2030 CFD vision was researched in the early 2010s and published a year later. This meant that some merging technologies could not have been foreseen, or they were present but were not seen as important enough to have an influence on CFD itself. There is one area in particular that was difficult to assess in the early 2010s, which I think deserves an honourable mention here, as it is fast taking over various areas within the CFD toolchain, and I foresee it becoming ever more important.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I am talking, of course, about artificial intelligence (AI), and within this discipline, machine and deep learning in particular.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We have already looked at <a href="https://cfd.university/blog/can-chatgpt-write-fully-functional-cfd-solvers/" target="_blank" rel="noopener" title="">ChatGPT's capabilities&nbsp;for writing CFD solvers</a>, and we have&nbsp;established that it can be a good tool for small tasks but not for writing entire solvers. However, the real application of deep learning in CFD will replace the high cost of simulations themselves with a deep neural network.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There are already a few research groups working on replacing Navier-Stokes with machine learning and their results <em>look</em> impressive. However, looking impressive is not the measure by which we need to judge these results, and ultimately, any result obtained from a deep neural network must be judged with the same high-expectation that we have towards Navier-Stokes-based CFD solvers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Conservation of mass, momentum, and energy are paramount, especially in compressible flow simulations, and this is an area where machine learning algorithms are just not capable of providing satisfactory results. If a machine learning algorithm is trained with too little data or is allowed to fit the data exactly (overfitting), it will not generalise well for different flow scenarios for which it wasn't tested and thus will become useless. Thus, there will always be a degree of inaccuracy, and this will likely be enough to violate our conservation laws.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thus, we need to use our machine learning frameworks in a clever way to exploit their potential, and this is where research will need to focus its attention if machine learning is to be adopted on a widespread scale within the CFD community. An additional issue is that uncertainty quantification will become rather difficult, so any advances made in this area will need to be judged in conjunction with losses made in the area of uncertainty quantification.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-roadmap-towards-next-generation-cfd">towards next-generation CFD</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>OK, so there were a lot of challenges in CFD and outstanding areas of research we need to overcome. Keeping all of that in our heads may be rather difficult the first time we read. So the CFD 2030 report also provides us with a handy roadmap and key areas of investigation that I wanted to highlight here as well, as they are rather useful to get a visual overview of all of these challenges we have looked at above, as well as providing a list of challenges in CFD we can use to formulate our own research projects.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-the-2015-2030-roadmpa">The 2015 - 2030 roadmap</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The 2015-2030 roadmap provides, well, a roadmap to overcome these issues and challenges in CFD. Since some time has already passed since the original inception of this report, some areas will have already progressed towards achieving these challenges, others will lack behind. To get a detailed understanding of where we are, an in-depth literature review would need to be performed, which is beyond the scope of this article (and I am sure you'll thank me for not bombarding you with 500 academic references).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's look at the roadmap then:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4147,"sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large"><img src="https://cfd.university/wp-content/uploads/2024/08/cfd_2030_roadmap-1024x749.png" alt="a roadmap for challenges in cfd" class="wp-image-4147"/><figcaption class="wp-element-caption">Taken from <a href="https://ntrs.nasa.gov/citations/20140003093" target="_blank" rel="noopener" title="">Slotnick et al.</a> (NASA 2030 Vision)</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We can see all areas of research on the left, and we can see that HPC is the main driver at the top. Without HPC, CFD is practically impossible for any serious geometry of interest. We also see how different research streams interact with others, as well as technology milestones we have to hit in order to demonstrate the maturity of any given development.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>From reading the academic literature, I know for a fact that the first milestone around LES over an entire aircraft has already been achieved and so things are moving in the right direction. Having worked on the <a href="https://elib.dlr.de/67768/1/para10-paper-44.pdf" target="_blank" rel="noopener" title="">FlowSimulator</a> myself, a platform for multidisciplinary simulation of CFD, structures, flight dynamics, and pretty much anything else required for the simulation of a full aircraft (including optimisation), I am confident that similar development elsewhere will result in the next technology demonstration to be achieved as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It remains to be seen if we will achieve all technology demonstration by the year 2030, which likely will remain a challenge. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-research-topics-to-get-you-started">Research topics you can work on to overcome challenges in CFD</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Computational tools and CFD solvers are constantly evolving, with many pumping out 1 or 2 new versions each year. With that comes improvements in HPC, automation, and implemented algorithms that tackle one of the six key areas we looked at above. Thus, constant evaluation of current solver capabilities is required to assess whether any noticeable progress has been made towards achieving the 2030 CFD vision.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>NASA provided a list of possible topics that need to be investigated to monitor progress against all six key areas of improvement and to work towards the four grand challenges in CFD themselves. Given their aeronautical orientation, their list is heavily geared towards these types of applications, but they can equally be applied in various other industries.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have copied this list below and modified it somewhat so it is not just applicable to aerospace applications where applicable (some areas are still heavily aerospace-focused). This should give aerospace engineers, as well as engineers from other disciplines, a better idea of which areas need to be focused on:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Investigation of flow separations over smooth surfaces (wings), bluff-bodies (cars), as well as shock-induced separation</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Laminar to turbulent boundary layer flow transition and subsequent reattachment (predicting laminar separation bubbles on wings/car diffusers, etc.)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Viscous wake interactions and boundary layer interactions or merging</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Flows in corners or junctions (wing-fuselage intersection)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Simulation of icing and its build-up during flight</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Passive and active flow control to control the separation point on a given surface</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Turbomachinery flows (here, the main issue is complexity, i.e. resolving rotating parts, scale-resolving turbulence, combustion, and convective heat transfer)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Mixing and cooling in aerothermal flows (heat exchangers), predicting heat transfer rates accurately</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Reactive flows, including gas chemistry and combustion</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Simulation of the jet exhaust</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Aero-acoustics for passenger comfort and noise-level predictions (airplanes, cars)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Resolving vorticities with a high degree of confidence around blade tips (helicopters, wind turbines, propellers) and wings (wingtip vortices)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Wake hazard reduction and avoidance (airplane spacing during approach and landing, motorsport applications for enhanced overtaking capabilities) </li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Correlation between wind tunnel and flight testing (scaling effects)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Rotor aero/structural/controls, wake and multirotor interactions, acoustic loading, ground effects</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Shock/boundary layer, shock/jet interactions</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Predicting and mitigating sonic boom</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Store/booster separation</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Planetary retro-propulsion</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Aerodynamic/radiative heating</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Plasma flows</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Ablator aerothermodynamics</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-summary">Summary</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you have followed this article to its end, you now have a pretty good idea of the current challenges in CFD. The six key challenges we need to overcome are in</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>High-performance computing</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Physical modelling of turbulence</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Numerical Algorithms</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Geometry and Grid generation</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Knowledge extraction</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Multidisciplinary Analysis and Optimization</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>It is likely that some of these challenges in CFD will still persist beyond the year 2030, especially in the area of uncertainty management and multidisciplinary coupling of solvers at various scales.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I hope to have conveyed the key challenges in CFD, as well as areas to work on if you intend to check for yourself how much progress was made in different areas towards the 2030 CFD vision. These areas are challenging, but rewarding to work on, and some progress already does suggest that we are on a good trajectory to tackle most of these issues by the year 2030.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Finally, what the 2030 CFD vision did not foresee was the advancement of machine learning and the proliferation of applications within CFD. It is my personal opinion that we will continue to see case studies, research streams and success stories in various areas of CFD where machine learning will be applied to great success. This area offers a great benefit to the CFD community, yet there is no widespread uptake as of the time of writing. If you are looking for an emerging research topic, then why not consider machine and deep learning for CFD applications? </p>
+<!-- /wp:paragraph -->

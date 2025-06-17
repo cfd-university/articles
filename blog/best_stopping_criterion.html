@@ -1,0 +1,962 @@
+<!-- How to determine the best stopping criterion for CFD simulations -->
+<!-- https://cfd.university/blog/how-to-determine-the-best-stopping-criterion-for-cfd-simulations/ -->
+
+<!-- wp:paragraph -->
+<p>Have you ever stopped and asked yourself, <em>how do I know if my CFD simulation has actually converged?</em> Well, you are not alone. Judging convergence is one those topics that, at first glance, doesn't seem to be a very complicated matter, but upon further inspection you realise that this is a deep rabbit hole.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this article, we will review common ways to judge convergence and highlight the issues that arise with each approach. Afterwards, we will develop a framework that will help us automatically determine an optimal stopping criterion. This is achieved by reverse engineering an optimal stopping criterion for an existing simulation, which has to be done once and can be reused for other similar cases, such as parametric studies.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>By the end of this article, you will understand the intricate issues with judging convergence and how to get around them, as well as how to use the framework I've mentioned above to determine an optimal point of convergence. You no longer have to guess what the best stopping criterion is; instead, you can make an informed decision and have confidence that your simulations will converge.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:block {"ref":2490} /-->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Download</strong>: <a href="https://github.com/tomrobin-teschner/pycfd-osc" target="_blank" rel="noopener" title="">https://github.com/tomrobin-teschner/pycfd-osc</a></li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this article</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":7,"blockClientId":"a39e8e2a-2017-4c7e-b230-69204a566f97","content":"Introduction","level":2,"anchor":"aioseo-introduction","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":18,"blockClientId":"570b3657-9169-42ef-b562-04fac9c5d9d8","content":"How convergence is commonly judged","level":2,"anchor":"aioseo-how-convergence-is-commonly-judged","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":20,"blockClientId":"1ab05202-b6c7-4c6f-881c-ad44b5c6af3f","content":"Residual-based convergence","level":3,"anchor":"aioseo-residual-based-convergence","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":25,"blockClientId":"da0c3a2f-dae2-457d-bcde-509a37db3914","content":"Iteration-based residuals","level":4,"anchor":"aioseo-iteration-based-residuals","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":65,"blockClientId":"4bea74ed-5b31-4fbf-bec8-acd877e80044","content":"Linear system of equation-based residuals","level":4,"anchor":"aioseo-linear-system-of-equation-based-residuals","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":76,"blockClientId":"449a1014-2d5a-4bee-b56a-678d260425aa","content":"Right-hand-side-based residuals","level":4,"anchor":"aioseo-vector-norm-based-residuals","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":91,"blockClientId":"651b875d-d6f6-46a7-8b03-6fe6c71c26ed","content":"Integral quantity-based convergence","level":3,"anchor":"aioseo-integral-quantity-based-convergence","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":111,"blockClientId":"d4a89ae8-5de9-4226-89c8-0dfda0b1df60","content":"Issues arising with judging convergence this way","level":3,"anchor":"aioseo-what-ar","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":113,"blockClientId":"e1a5bc76-98f8-4012-9b93-a8ff4f8b2538","content":"Issue 1: Residuals and convergence do not correlate","level":4,"anchor":"aioseo-issue-1-residuals-and-convergence-do-not-correlate","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":124,"blockClientId":"e7e79d6e-6b56-43ac-b9e5-7898f318c827","content":"Issue 2: Integral quantities only provide convergence for selected boundary patches","level":4,"anchor":"aioseo-issue-2-integral-quantities-only-provide-convergence-for-selected-boundary-patches","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":133,"blockClientId":"751d7968-0068-4184-b69e-abf04f0b1f76","content":"Issue 3: The window size and convergence threshold can lead to premature convergence","level":4,"anchor":"aioseo-issue-3-the-window-size-and-convergence-threshold-can-lead-to-premature-convergence","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]},{"id":140,"blockClientId":"01ed92b0-e764-49f3-9be6-82b727717d43","content":"The solution: An optimal stopping criterion framework","level":2,"anchor":"aioseo-developing-an-optimal-stopping-strategy","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":144,"blockClientId":"eed61eb3-cef4-46a4-95b8-a98ba9b099be","content":"Step 1: Perform a sufficiently long, single simulation without a stopping criterion","level":3,"anchor":"aioseo-step-1-calculate-window-averaged-solution","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":149,"blockClientId":"36353764-88e1-4b6a-b36d-17a4ac402e23","content":"Step 2: Calculate the asymptotic integral quantity","level":3,"anchor":"aioseo-step-2","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":152,"blockClientId":"38a28c7f-500d-46e5-955a-b35d367381cf","content":"Step 3: Determine the earliest iteration to stop based on the asymptotic value","level":3,"anchor":"aioseo-step-3","order":14,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":164,"blockClientId":"416fccd0-649d-4709-9da5-ee71b0448c8b","content":"Step 4: Determine the point of monotonic convergence","level":3,"anchor":"aioseo-step-4","order":15,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":169,"blockClientId":"474246b5-812a-4181-97d0-1e2a0476273b","content":"Step 5: Determine the optimal window size and convergence threshold that leads to convergence past the earliest iteration","level":3,"anchor":"aioseo-step-5","order":16,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":179,"blockClientId":"94562fad-8d88-453c-9134-7bd3fe03b903","content":"Case studies","level":2,"anchor":"aioseo-example-optimal-convergence-for-the-saab-340-aircraft","order":17,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":182,"blockClientId":"45b6c8d8-c0e2-4dd8-b145-ea8238b883e0","content":"Case 1: F1-style Front Wing","level":3,"anchor":"aioseo-case-1-f1-style-front-wing","order":18,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":197,"blockClientId":"6f6e5c3a-ad7f-402a-bd52-dbf1a9efd7e6","content":"Case 2: Saab 340 aircraft during climb","level":3,"anchor":"aioseo-case-2-saab-340-aircraft-during-climb","order":19,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":206,"blockClientId":"7db97788-af6e-4e3f-b2f2-fc64a994ba18","content":"Summary","level":2,"anchor":"aioseo-summary","order":20,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-introduction">Introduction</a></li><li><a href="#aioseo-how-convergence-is-commonly-judged">How convergence is commonly judged</a><ul><li><a href="#aioseo-residual-based-convergence">Residual-based convergence</a><ul><li><a href="#aioseo-iteration-based-residuals">Iteration-based residuals</a></li><li><a href="#aioseo-linear-system-of-equation-based-residuals">Linear system of equation-based residuals</a></li><li><a href="#aioseo-vector-norm-based-residuals">Right-hand-side-based residuals</a></li></ul></li><li><a href="#aioseo-integral-quantity-based-convergence">Integral quantity-based convergence</a></li><li><a href="#aioseo-what-ar">Issues arising with judging convergence this way</a><ul><li><a href="#aioseo-issue-1-residuals-and-convergence-do-not-correlate">Issue 1: Residuals and convergence do not correlate</a></li><li><a href="#aioseo-issue-2-integral-quantities-only-provide-convergence-for-selected-boundary-patches">Issue 2: Integral quantities only provide convergence for selected boundary patches</a></li><li><a href="#aioseo-issue-3-the-window-size-and-convergence-threshold-can-lead-to-premature-convergence">Issue 3: The window size and convergence threshold can lead to premature convergence</a></li></ul></li></ul></li><li><a href="#aioseo-developing-an-optimal-stopping-strategy">The solution: An optimal stopping criterion framework</a><ul><li><a href="#aioseo-step-1-calculate-window-averaged-solution">Step 1: Perform a sufficiently long, single simulation without a stopping criterion</a></li><li><a href="#aioseo-step-2">Step 2: Calculate the asymptotic integral quantity</a></li><li><a href="#aioseo-step-3">Step 3: Determine the earliest iteration to stop based on the asymptotic value</a></li><li><a href="#aioseo-step-4">Step 4: Determine the point of monotonic convergence</a></li><li><a href="#aioseo-step-5">Step 5: Determine the optimal window size and convergence threshold that leads to convergence past the earliest iteration</a></li></ul></li><li><a href="#aioseo-example-optimal-convergence-for-the-saab-340-aircraft">Case studies</a><ul><li><a href="#aioseo-case-1-f1-style-front-wing">Case 1: F1-style Front Wing</a></li><li><a href="#aioseo-case-2-saab-340-aircraft-during-climb">Case 2: Saab 340 aircraft during climb</a></li></ul></li><li><a href="#aioseo-summary">Summary</a></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-introduction">Introduction</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>One issue is common across all computational disciplines. Whether you work on computational solid or fluid mechanics, computational geometry, computational biology or chemistry, or even machine learning, what unites these fields is the need to find a stopping criterion for iterative algorithms.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In CFD, we have to determine some form of stopping criterion to determine when to stop a simulation. For steady-state simulations, we want to stop when the flow is no longer changing in time, but for high-Reynolds number flows, particularly those based on RANS turbulence modelling, a steady state may never be reached.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For unsteady flows, it may be sufficient to march the simulation until a certain flow time is reached, though sometimes we would like to use an unsteady solver to march a solution in time until a steady-state solution is reached so that we can benefit from certain properties time-dependent simulations offer. In this case, we face the same issues presented by the steady-state solution process.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The question then arises of how to judge convergence to a steady state. As it turns out, there is no easy answer to this question. To this date, we have no robust mechanism in place that can guide us in this process, although a few useful mechanisms exist that work well if you know what you are doing.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This means that an experienced CFD practitioner is needed to determine whether a simulation has converged or not, as there is no universal answer to this question. Residuals, integral quantities, and perhaps even some measures of uncertainties or comparisons against experimental data, if available, may be used for this. The only commonality among different simulations is that there are no commonalities to judge convergence across simulations. Each simulation is unique and requires testing.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is a dilemma that I and one of my students faced some time ago. The student was doing his thesis for a company that ran its simulations for a set number of iterations, but they wanted to introduce a stopping criterion that would stop the simulation as early as possible but only after each integral quantity, such as the lift, drag, and side force coefficient, had converged.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We proposed a framework that could uniquely determine the best stopping criterion for a given simulation. This was particularly useful for cases where parametric runs were envisaged. In this case, the simulations were deemed similar enough that a stopping criterion could be found that would work across different cases.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Over time, I have continued to work on this topic and refined the framework. In fact, there were several improvements and simplificiations that I made and found useful, so I thought I would share them with you in this article. This article goes well with my previously written article on <a href="https://cfd.university/blog/how-to-manage-uncertainty-in-cfd-the-grid-convergence-index/" target="_blank" rel="noopener" title="">managing uncertainties in CFD</a>. Both present tools that we can use to judge uncertainties that exist in CFD simulations, with the optimal stopping criterion presenting a tool to judge iterative convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this article, I'd like to introduce you to common ways of judging convergence in CFD. I will then point out the issues with these approaches and present you with my framework for optimising the stopping criterion for your CFD simulations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's get started.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-how-convergence-is-commonly-judged">How convergence is commonly judged</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this section, we will review the most common techniques to judge convergence, as alluded to above. There are more ways to do so, as, for example, discussed in my article on&nbsp;<a href="https://cfd.university/blog/how-to-manage-uncertainty-in-cfd-the-grid-convergence-index/#aioseo-iterative-uncertainty" target="_blank" rel="noopener">managing uncertainties in CFD</a>, but the ones presented in this section are the ones you'll likely find in the solver you are working with.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-residual-based-convergence">Residual-based convergence</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Residual-based convergence is likely the most used way to determine convergence. For a long time, this was pretty much the only way to judge convergence until somewhat more clever ways were introduced. There are different residuals we can calculate, and in this section, we are going to look at the three types I have seen used in practice.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Regardless of the type, the main idea always remains the same:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li>First, we will calculate some form of a residual that is representative of the quantity we are solving for (e.g. velocity, pressure, temperature, etc.) for each timestep (or iteration)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>We then subtract residuals between two subsequent timesteps (or iterations) and determine by how much the solution has changed between these two timesteps (or iterations)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Once the change is deemed small enough, we can claim a converged solution.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Let's review the three different methods that are most commonly used to calculate these residuals.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-iteration-based-residuals">Iteration-based residuals</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If we are calculating the solution to a steady-state problem, we have to iterate over our solution until a steady-state solution is reached. When we do that, we calculate the solution of the quantities we are solving for (e.g. velocity, pressure, temperature, etc.) at each grid point or centroid.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This means that for each grid point or centroid, the solution changes for each iteration slightly, and we want to quantify how much the solution changes. Take the following simple example:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4616,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/iteration_based_residuals.png" alt="" class="wp-image-4616"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, I am showing what the solution values for a given quantity (this could be velocity, pressure, or temperature, for example) are at two different time steps [katex]t=0[/katex] and [katex]t=1[/katex] on the left and middle of the figure. The values are stored at the centroid, which is common for a finite volume discretisation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On the right of the figure, I am calculating the residual based on the iteration, i.e. by how much the simulation is changing from one time step (or iteration) to the next. Say the values that I am showing in the figure are denoted by the generic quantity [katex]\phi[/katex], and that the solution is given at time step [katex]n[/katex] (left) and [katex]n+1[/katex] (middle). In this case, we can compute the residual as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathrm{residual}=\phi^{n+1}-\phi^{n}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Thus, for each timestep (or iteration), we can compute a residual value at each grid point for each quantity [katex]\phi[/katex]. This is not helping us much, as we can now say by how much the simulation is changing per quantity and per grid point, but we want to be able to judge by how much our quantity [katex]\phi[/katex] is changing from one timestep (or iteration) to the next.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To do so, we write all the residuals in a vector, like so:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi_{\mathrm{residual}}=[0.01,\,0.09,\,0.3,\,0.03]^T</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In order to get a single value that represents the change from one timestep (or iteration) to the next, we can compute different vector norms. There are three common norms we use:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>[katex]L_\infty[/katex]-norm</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>[katex]L_1[/katex]-norm</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>[katex]L_2[/katex]-norm</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>A vector norm is defined as follows:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>|\phi|_p=\left(\sum_i |\phi_i|^p\right)^{\frac{1}{p}}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]p=1, 2, ..., n[/katex] represents the order of the norm. We saw above that the most commonly used types are the [katex]p=1[/katex] and [katex]p=2[/katex] norms. We can be written out using the above equation:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>[katex]L_1[/katex]-norm</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>|\phi|_1=\sum_i |\phi_i|</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>[katex]L_2[/katex]-norm</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>|\phi|_2=\left(\sum_i |\phi_i|^2\right)^{\frac{1}{2}}=\sqrt{\sum_i |\phi_i|^2}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>I also mentioned the special case of the [katex]L_\infty[/katex]-norm, sometimes also written as the [katex]L_0[/katex]-norm (although this may be confusing since the above definition of the vector norm does not allow a solution for [katex]p=0[/katex]!). This norm is defined as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>|\phi|_\infty=\max_i |\phi_i|</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This is a very conservative norm, as it will pick the highest residual. It does not work well with cases where we are using limiters on our numerical schemes (which we typically do). Limiters can change values in a few cells near discontinuities, for example, resulting in rather large and almost random-looking residuals. In this case, the [katex]L_2[/katex]-norm is better suited. For smooth solutions without the use of limiters, the [katex]L_\infty[/katex]-norm may be used as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's calculate the different norms based on the residual vector we had. As a reminder, we had [katex]\phi_{\mathrm{residual}}=[0.01,\,0.09,\,0.3,\,0.03]^T[/katex]. Applying the various vector norms results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>[katex]L_\infty[/katex]-norm</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>|\phi|_\infty=\max_i|\phi_{\mathrm{residual,i}}|=0.3</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>[katex]L_1[/katex]-norm</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>|\phi|_1=\sum_i|\phi_{\mathrm{residual,i}}|=0.01+0.09+0.3+0.03=0.43</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>[katex]L_2[/katex]-norm</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>|\phi|_1=\sqrt{\sum_i|\phi_{\mathrm{residual,i}}|^2}=0.01^2+0.09^2+0.3^2+0.03^2=0.0001+0.0081+0.09+0.0009=0.0991</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If in doubt, use the [katex]L_2[/katex]-norm. It is the most robust out of the three. What we have gained now is the ability to state by how much the simulation has changed, in an average sense (at least for the [katex]L_1[/katex]- and [katex]L_2[/katex]-norm). We can now compute this residual for each quantity we are interested in (e.g. velocity, pressure, temperature) and have a mechanism to state by how much the simulation has changed for the current timestep (or iteration).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since vector norms grow as we increase the number of grid points, we commonly apply normalisation to the residuals, which can be categorised into two different categories:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Normalise by the first residual</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Normalise by the number of grid points</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>In the first case, we divide each residual by the residual that we computed for the first timestep (or iteration). This can be written as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>|\phi|_{\mathrm{normalised}}^n=\frac{|\phi|^n}{|\phi|^{n=0}}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Thus, by definition, we have [katex]|\phi|^{n=0}=1[/katex]. This is a common normalisation you will find in CFD solvers, and you can spot that easily if your residual is 1 for the first timestep (or iteration).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The second normalisation is to divide the residual by the number of grid points. This can be written as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>|\phi|_{\mathrm{normalised}}^n=\frac{|\phi|^n}{N_{\mathrm{grid}}}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]N_{\mathrm{grid}}[/katex] represents the number of cells or vertices in the solution (depending on where the solution is stored). If we store the solution at the cell centroids, as shown above, then [katex]N_{\mathrm{grid}}[/katex] is the number of cells. If we store the solution at the vertices instead, then [katex]N_{\mathrm{grid}}[/katex] is the number of vertices.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Again, we can spot this normalisation as well by inspecting our first residual. If it is not equal to one, then it has most likely been normalised by the number of cells or vertices.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This type of residual calculation is very robust. If you ever need to implement residual calculations into your own solver, then I would recommend this type. But let's have a look at another one that you will find in CFD solvers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-linear-system-of-equation-based-residuals">Linear system of equation-based residuals</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If we have to solve a linear system of equations of the form</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{A}\phi=\mathbf{b}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Then, we can use this system to calculate another type of residual. The issue with the above equation is that we have a matrix [katex]A[/katex] that we cannot invert easily. However, in order to solve the above system, this is exactly what we need to do. That is, if we want to solve for [katex]\phi[/katex], we need to compute</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi=\mathbf{A}^{-1}\mathbf{b}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In order to avoid the inversion of the matrix, we typically approximate this inverted matrix using some iterative procedure. In my series on <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/" target="_blank" rel="noopener" title="">how to write a CFD library in C++</a>, we looked at the case of solving such a system. In our article, we used the conjugate gradient method to approximate [katex]\mathbf{A}^{-1}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since we are now able to compute a solution for [katex]\phi[/katex], we can also compute the following:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi_{\mathrm{residual}}=\mathbf{A}\phi-\mathbf{b}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The matrix [katex]\mathbf{A}[/katex] and right-hand side vector [katex]b[/katex] are known from the simulation, with [katex]\phi[/katex] computed, we can define a residual based on the solution of our linear system. The residual will now scale with how well we have approximated the inverse of the coefficient matrix [katex]\mathbf{A}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since our solution vector [katex]\phi[/katex] is, well, a vector, we can apply the same vector norms we have introduced above to calculate a representative residual for [katex]\phi_{\mathrm{residual}}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This type of residual calculation only works if you are solving a linear system of equations, which is only the case for implicit time integrations. If you have an explicit time integration, no such system is solved, and thus, you can't use this type of residual calculation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-vector-norm-based-residuals">Right-hand-side-based residuals</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The final type of residual we will look at is very closely related to the iteration-based residual we looked at first in this section. Let us first introduce what right-hand-side-based residual means.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Whenever we have an equation and seek a numerical solution to it, we have to discretise it. We typically transform an ordinary or partial differential equation into an algebraic equation which we can solve, with the understanding that the process of approximating derivatives with numerical schemes introduces some form of modelling errors.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For example, if we take the incompressible Navier-Stokes equations, we have for the momentum equation the following form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \mathbf{u}}{\partial t}+(\mathbf{u}\cdot\nabla)\mathbf{u}=-\frac{1}{\rho}\nabla p = \nu \nabla^2\mathbf{u}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Let's only approximate the time-derivative for the moment, using a first-order time integration for simplicity, then we have:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathbf{u}^{n+1}-\mathbf{u}^n}{\Delta t}+(\mathbf{u}\cdot\nabla)\mathbf{u}=-\frac{1}{\rho}\nabla p + \nu \nabla^2\mathbf{u}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We solve this equation now for the unknown velocity [katex]\mathbf{u}^{n+1}[/katex], and obtain:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{u}^{n+1}=\mathbf{u}^n + \Delta t\left[-(\mathbf{u}\cdot\nabla)\mathbf{u}-\frac{1}{\rho}\nabla p + \nu \nabla^2\mathbf{u}\right]</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can now introduce a right-hand-side vector as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{u}^{n+1}=\mathrm{RHS}=\mathbf{u}^n + \Delta t\left[-(\mathbf{u}\cdot\nabla)\mathbf{u}-\frac{1}{\rho}\nabla p + \nu \nabla^2\mathbf{u}\right]</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This right-hand-side vector [katex]\mathrm{RHS}[/katex] is, well, again, a vector, and so we can apply the same vector norms introduced above.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we bring [katex]\mathbf{u}^n[/katex] on the left-hand side, we obtain the following form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{u}^{n+1}-\mathbf{u}^n=\mathrm{RHS}=\Delta t\left[-(\mathbf{u}\cdot\nabla)\mathbf{u}-\frac{1}{\rho}\nabla p + \nu \nabla^2\mathbf{u}\right]</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This resembles the first type of residual calculation we looked at above. Thus, this type is actually one and the same approach, but I thought of mentioning it here for completeness, as I have seen this used as well in the wild.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-integral-quantity-based-convergence">Integral quantity-based convergence</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>An integral quantity is a single scalar value that was computed through some form of integration. Be it a line, surface, or volume integral, all of these produce single scalar values. The lift and drag coefficients, for example, are integrated over all points on a wall boundary to yield a single quantity. Hence, the name integral quantity.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Integral quantities are representative of your solution. Just like an elected president or prime minister represents the voice of the majority of the population, an integral quantity represents the solution for a specific boundary patch (or collection thereof).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The idea of using integral quantities to judge convergences is similar to the residual-based way to judge convergence. First, we compute the integral quantities for each boundary patch and iteration. Then, we check if these quantities change less than a predefined threshold. If the change is less than the maximum allowed, we deem the solution to have converged.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's examine an example to discuss this in greater detail. The following two plots show the development of the lift coefficient overt iterations as the simulation reaches convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column -->
+<div class="wp-block-column"><!-- wp:image {"id":4623,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/smooth_integral_quantity.png" alt="" class="wp-image-4623"/><figcaption class="wp-element-caption">Reproduced from <a href="https://www.researchgate.net/figure/Lift-Coefficient-Convergence_fig14_242345126" target="_blank" rel="noopener" title="">Researchgate</a></figcaption></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column"><!-- wp:image {"id":4624,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/oscillatory_integral_quantity.png" alt="" class="wp-image-4624"/><figcaption class="wp-element-caption">Reproduced from <a href="https://www.researchgate.net/figure/Time-history-of-the-drag-coefficient-C-D-and-lift-coefficient-C-L-for-the-flow-past-a_fig5_226658401" target="_blank" rel="noopener" title="">Researchgate</a></figcaption></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:paragraph -->
+<p>On the left plot, we see two curves for different angles of attack. We can see that around 10,000 iterations, the lift coefficient reaches an asymptotic value and likely no longer changes greatly. Thus, we may reasonably expect that the solution has converged at this point.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On the right plot, however, things are very different. We see that for the first 30-40 iterations, the simulation seems to have converged to a zero lift coefficient value. However, the lift coefficient then starts to pick up an oscillatory motion with the same frequency and amplitude. We can say that this simulation has converged to a periodic signal.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we looked at the plot on the left and were to calculate the normalised difference in lift coefficient from one iteration to the next, we likely see that the difference after 10,000 would be rather small. We can now say that if the simulation changes by less than, say, 0.1%, we have found convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But this would not work for the simulation on the right. In this case, we would never reach convergence as the integral quantity is constantly changing.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This brings us to the necessity of averaging. Integral quantities are often averaged over a few iterations, and it is this averaged quantity that is compared now. The number of iterations used to average our integral quantities is called the window size, and the averaged quantity is said to be window averaged. This is shown in the following plot.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4625,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/window-averaged_quantities.png" alt="" class="wp-image-4625"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, we have the history of some quantity [katex]\phi[/katex], which is slowly converging as the iterations increase. We now take 5 values of [katex]\phi[/katex] and compute its average as [katex]\bar{\phi}^n=(\phi^{n}+\phi^{n-1}+\phi^{n-2}+\phi^{n-3}+\phi^{n-4})/5[/katex]. This window size of 5 iterations is also shown on the bottom left of the figure.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The window averaged quantity of [katex]\phi[/katex] is shown by the orange lines for each iteration. We can see that as we approach the end of this fictitious simulation, the orange bars come closer together. In other words, the window averaged values are converging.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we now calculate residual based on the window averaged quantities, we have a much more robust way to judge convergence. The residual may now be computed as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi_{\mathrm{residual}}=\frac{\bar{\phi}^{n} -\bar{\phi}^{n-1}}{\bar{\phi^{n=0}}}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]\bar{\phi^{n=0}}[/katex] represents the residual at the first iteration and is used to normalise the residuals. If the condition [katex]\phi_{\mathrm{residual}}&lt;\varepsilon_{\mathrm{convergence-threshold}}[/katex] is satisified, convergence is reached. Here, [katex]\varepsilon_{\mathrm{convergence-threshold}}[/katex] is a user-defined input.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we return to our lift coefficient, which we saw above in the right picture, we can now introduce a window averaging procedure. If the window size contains a few of these oscillations, we can reach convergence in a window-averaged sense.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Say our window size is 50, then we capture about 8-9 periods. The average over that will likely be zero (as the mean value of the signal is centred around zero). This won't change between window-averaged quantities, and as a result, we will reach convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Judging convergence this way is much better, but it is not free from issues. Both residual- and integral quantity-based convergence checking have their respective issues that we will look at next.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-what-ar">Issues arising with judging convergence this way</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>As alluded to above, residual- and integral quantity-based convergence checking is by far the most commonly employed tactic. In this section, I want to address some of these issues, which will set us up perfectly for the framework for determining the best stopping criterion discussed in the next section.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-issue-1-residuals-and-convergence-do-not-correlate">Issue 1: Residuals and convergence do not correlate</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>When you are just starting with CFD, you are likely learning that when the residuals are not changing by much, your simulation has converged. You then go through some tutorials, and these do indeed converge as predicted. Later, you realise that for your own cases, you do not get convergences in this case. Why? Because tutorials typically use very simple cases for which convergence can be reached this way.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Then you start to wonder, why is my simulation no longer converging? You start to check your solver settings and cross-check them with tutorials. However, you can't find a reason why you no longer get this nice convergence you are so used to. The truth about residuals is this:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>The residuals will tell you exactly one thing, and that is if your simulation is on a path of convergence or divergence</strong>. It won't tell you when a simulation has converged, only if it is going towards it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we are on a path of convergence, then our residuals are dropping in value. This is shown by residuals going down in our residual plot. If the residuals are increasing, then we are on a path towards divergence. That's it. Using residuals to judge convergence is a common beginner mistake and one that you will avoid from now on.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is a third case, and this is by far the most common case for high-Reynolds number flows (aka engineering applications). This is where your residuals are neither converging nor diverging but instead reaching an oscillatory motion. This motion often oscillates around the same mean value. Take the following image as an example:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4626,"sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large"><img src="https://cfd.university/wp-content/uploads/2024/11/residual_with_oscillations-1024x490.png" alt="" class="wp-image-4626"/><figcaption class="wp-element-caption">Reproduce from <a href="https://www.researchgate.net/post/Is_My_CFD_Ship_Resistance_using_Star-CCM_Results_Residual_Correct_Converging" target="_blank" rel="noopener" title="">Researchgate</a></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, all of your residuals are oscillating and using this to judge convergence is impossible. As stated above, you will most likely get this behaviour with your simulations, and thus, you want to avoid using residuals to judge convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Even if the residuals are not converging, your window-averaged integral quantities will always converge, given a large enough window size. Thus, integral quantity-based convergence judging should be what you are doing from now on.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Having said that, you may be wondering, could I not use window-averaged residuals to check convergence? Yes, you can, and it would likely work, though it is not something done commonly. I can think of only one solver that will allow you to do that; in all the others, you would have to implement that type of residual checking yourself.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thus, it is best to leave the convergence checking to integral quantities and only use residuals as an indicator for convergence, divergence, or reaching an oscillatory plateau!  </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-issue-2-integral-quantities-only-provide-convergence-for-selected-boundary-patches">Issue 2: Integral quantities only provide convergence for selected boundary patches</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Say we use the lift and drag value to judge convergence on an airfoil. The integral quantities may converge at one point, and you happily stop the simulation, but you can now only say that your simulation has converged for the flow around your airfoil. Why? Because your integral quantities are based on values taken at the boundary.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Here is a test you can (and should) do next time you perform your simulations. Set up as many force coefficient monitors as feasible (i.e. lift, drag, side force, moment coefficient, etc.). Set the same window size and convergence threshold for all of them. At what time do you reach convergence? All of these quantities will converge at different points in time (iteration)!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The lift coefficient, in this case, is mainly driven by the pressure. The drag coefficient, on the other hand, is mainly driven by the velocity (gradient). Thus, if the pressure and velocity fields are converging at different rates (which they typically do), then so are our integral quantities.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, not only does integral quantity-based convergence tell us only about convergence at the boundary patches on which they are defined, but these coefficients may also converge at different rates.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sometimes, you need to be creative and come up with measurements that do not necessarily reveal any physical information. We use this information solely to judge convergence in a specific part of the domain (e.g., the wake).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sticking with the airfoil example, even though our lift and drag coefficient may have converged, we have no idea if the flow in the wake has converged either. If we wanted to measure convergence in the wake, we would have to come up with another integral quantity here.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One logical integral quantity may be the integrated momentum thickness along a line embedded in the airfoil's wake. Once the wake stabilises in an averaged sense, the window averaged integrated momentum thickness will converge. If you were to do that, and test that for a high-angle of attack flow, you would likely see very different convergence behaviour, and likely need a larger window size in the wake compared to the airfoil.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This brings us to the next issue with integral quantity-based residual checking. What is a proper convergence threshold and window size?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-issue-3-the-window-size-and-convergence-threshold-can-lead-to-premature-convergence">Issue 3: The window size and convergence threshold can lead to premature convergence</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The final issue with integral quantity-based convergence judgment is that we have to specify the window size and convergence threshold. We have no idea what values to use here and have to rely entirely on our intuition, experiences, and guesstimations. If we don't have any of that, we likely stick with the default values the solver gives us (if it has any, that is!). This is a dangerous endeavour.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Based on the window size and the convergence threshold, your simulation may reach premature convergence. I label simulations as prematurely converged if the solver suggests that results have converged, while in reality, the integral quantities would further change (and even find a new minimum or maximum) if the simulation was to be continued. Take the following plot, for example:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4628,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/premature_convergence-1.png" alt="" class="wp-image-4628"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>In this case, if we stopped the simulation after 7500 iterations, we may judge that the simulation has converged. This is shown with the solid black line. However, if we continue that simulation, we see that the integral quantity is changing, and instead of reaching an asymptotic limit at around 0.6, we are now reaching a new asymptotic limit at around 0.4, as shown by the black dashed line.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thus, while integral quantity-based convergence judging is the best way to judge convergence, it does have inputs for which the wrong values can lead to premature convergence. The question then becomes, can we automate this and find the best possible window size and convergence threshold that will avoid premature convergence or at least warn us about it?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The answer is yes, and this is what we will look at in the next section. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-developing-an-optimal-stopping-strategy">The solution: An optimal stopping criterion framework</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We have now looked at the different stopping mechanisms to judge convergence. In the following, I want to share with you my framework that can determine the window size and convergence threshold [katex]\varepsilon_{\mathrm{convergence-threshold}}[/katex] automatically. This allows us to avoid premature convergence while ensuring the simulation does converge.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The framework is split into five steps that need to be followed. Each step will be detailed below, but before we go through each step, let's look at the required inputs. There are four parameters we have to specify before the framework can start calculating the best stopping criterion:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Minimum window size</strong>: This is the smallest window size that should be used for averaging. A good default value is 10.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Maximum window size</strong>: Similar to the minimum size, we also specify a maximum window size. A good default value is 100.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Window increments</strong>: This is the increment in which window sizes should be checked. A good default value is 5, and this means we would be checking window sizes of 10, 15, 20, 25, ..., 85, 90, 95, and 100, if we use the default values specified above.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Asymptotic Convergence Tthreshold (ACT)</strong>: This is the value used to judge if a quantity has converged to its asymptotic value. See further explanations in step 3 of this framework.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-step-1-calculate-window-averaged-solution">Step 1: Perform a sufficiently long, single simulation without a stopping criterion</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The first step in this framework is to establish a baseline. For that, we need to run a simulation where the integral quantities do not change anymore. This is achieved by running the simulation until a clear asymptotic value has been reached. This is demonstrated in the following figure:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4637,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/frontWing_coefficients-1.png" alt="" class="wp-image-4637"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, it is likely that convergence is reached before 1000 iterations, though we leave the simulation running until we see a clear convergence to an asymptotic value. Here, we reach an asymptotic value of just under 20N for the drag and about -300N for lift (or downforce, in this case).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The above simulation was actually run until 20,000 iterations. I am just showing here the first 3,000 iterations, but I hope you can see that this simulation does not change anymore. The asymptotic values for 20,000 iterations do not change anymore, either.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-step-2">Step 2: Calculate the asymptotic integral quantity</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The next step is to calculate the asymptotic value at the end of the simulation. This is the 20N and -300N we saw above, respectively. This value will allow us to determine what the integral quantity would be if an infinite number of iterations were to be used.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the above example, the signal appears rather clean, i.e. there aren't any oscillations in the lift and drag values. However, as we saw before, there may always be some form of oscillation in the integral quantities. Thus, we have to average our asymptotic value over a few iterations at the end to ensure a mean value. We use the minimum window size to average the last few iterations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-step-3">Step 3: Determine the earliest iteration to stop based on the asymptotic value</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Now that we have calculated what the asymptotic value of [katex]\overline{\phi_{\mathrm{asymptotic}}}[/katex] is, we can make comparisons against the window-averaged values [katex]\overline{\phi_i}[/katex] at each iteration.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One of the inputs to this framework is the <em>Asymptotic Convergence Threshold</em> or ACT. We use these values to check at which point our window averaged values are within a certain percentage (specified by ACT) of our asymptotic value. Once we have found this point, we label it as the earliest iteration at which the simulation can be deemed to have converged. This can be expressed as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\overline{\phi_{\mathrm{asymptotic}}} - \overline{\phi_{\mathrm{i}}}}{\overline{\phi_{\mathrm{asymptotic}}}} &lt; ACT</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]\overline{\phi_i}[/katex] is the variable for a given iteration [katex]i[/katex], which requires the above expression to be evaluated within a loop.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The following figure also shows what ACT is doing:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4644,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/asymptotic_and_monotonic_convergence.png" alt="" class="wp-image-4644"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>The values of [katex]\phi[/katex] are shown by the dark blue curve. This curve asymptotically reaches a constant value at the end of the simulation. ACT is the maximum deviation of this asymptotic value, which we allow to ensure the simulation is within this region. In the figure above, ACT is the blue double arrow line showing the maximum allowable difference from the actual asymptotic value.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We then simply check at which point the values of [katex]\phi[/katex] are outside of this range. We use the horizontal dashed green line to show at which point the maximum allowable difference, or ACT, intersects with our values for [katex]\phi[/katex]. At this point, we have found the earliest point where the simulation can be stopped.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We will use this line for the optimal stopping criterion later. If the optimal stopping criterion (which is determined by this framework) results in an iteration that is before the one determined in this step, the simulation is said to have converged prematurely. Otherwise, we have reached convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since it is common for integral quantities to change rapidly at the beginning of the simulation, with many possible over and undershoots, [katex]\overline{\phi_i}[/katex] may be within range of the asymptotic range value in the process. We see that [katex]\phi[/katex] would cross the horizontal green dashed line early on, but clearly, the simulation has not yet converged.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To avoid a false detection of asymptotic convergence, we need to avoid these regions in the beginning. We do that by looking for the point at which we are just within ACT by starting from the back (last iteration) and working our way to the front (first iteration). in this way, we know when we are leaving ACT, and so we can find the point this way.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-step-4">Step 4: Determine the point of monotonic convergence</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The point of monotonic convergence is a point in which the window averaged quantities are either only increasing or decreasing. It is expected that the integral quantities will fluctuate at the beginning of the simulation. However, at some point, we do expect these fluctuations to settle. It is then common for the window-averaged quantities to reach a state of monotonic convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This monotonic convergence can be reached long before the earliest iteration to stop has been reached. In some cases, though, it can be also afterwards. Thus, this value should not be used to judge convergence, rather, it is an indicator for when the solution is marching towards monotonic convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If the monotonic convergence is reached past the optimal iteration stop, as determined in the previous step, then this may suggest that the solution has not yet fully converged. We may need to continue our simulation to check that the asymptotic value does not change. Or, it may simply show that we have an oscillatory integral quantity, either way, we use it as an indicator only, not as a criterion to judge convergence. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the figure above, the point of monotonic convergence is given by the orange dashed line. At this point, the solution of [katex]\phi[/katex] does monotonically converge towards an asymptotic value. The slope of [katex]\phi[/katex] is positive after this point for all values.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-step-5">Step 5: Determine the optimal window size and convergence threshold that leads to convergence past the earliest iteration</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is the main work of this framework. Now that we have established the best iteration to stop, we need to check when this is achieved with a given window size and convergence threshold. Note that the best iteration to stop will be different for each integral quantity and boundary patch if we are looking at more than one boundary.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For each window size to be tested (determined by the min and max window size, as well as the window increments), calculate the window-averaged quantities and compute the difference between them between two subsequent iterations. These will form our residuals. We then have to check what the residual is at or past the earliest point of convergence, which we calculated in step 3. If this residual is lower than any other residual before the earliest point of convergence, we stop and store the window size, residual, and iteration at which convergence is reached.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We repeat this step for each window size and, once completed, check for which window size which gives us fastest convergence, i.e. the smallest number of iterations at which convergences was found.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In some cases, we may obtain smaller residuals before the point of earliest convergence, in which case, no optimal stopping criterion can be found for the current integral quantity and boundary patch. In this case, we can't find a residual that is lower past the point of earliest convergence. If that is the case, we label this window size as producing premature convergence and check another window size.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The residual will later be used in our CFD solver to judge convergence, i.e. our residual will now be used as our convergence threshold. This process is also visualised in the figure below:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4646,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/convergene_threshold.png" alt="" class="wp-image-4646"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>The green line represents the optimal iteration to stop (we are within a few per cent, as specified by ACT, of our asymptotic value). We then inspect the corresponding window-averaged residuals of [katex]\phi[/katex], which is shown in the second plot. We look at the residual at this point and use that to set our convergence threshold (the value we have to specify in our CFD solver).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We will get different convergence threshold values for different window sizes, though we pick the one that gives us convergence closest to the optimal iteration to stop.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>And this is it. We have now found a optimal iteration to stop, and determined an appropriate window size that will give us a residual (convergence threshold) close to this optimum. We can now go ahead and use these values for our integral quantity-based convergence checking.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-example-optimal-convergence-for-the-saab-340-aircraft">Case studies</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this section, I want to showcase how this framework works for two separate cases. The first case is the simplest type of a Formula 1 front wing. It has an inverted and constant cambered airfoil section supplemented by an endplate. The second example is the Saab 340 turboprop aircraft at a climbing angle of attack.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Both cases will help to show how convergence is reached at different points for different integral quantities and boundaries. As a result, the framework will pick the best possible stopping criterion that works across all boundaries. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-case-1-f1-style-front-wing">Case 1: F1-style Front Wing</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The first case, as mentioned, revolves around an F1-style front wing. Well, it is simple enough to be used in class for demonstrations. You probably wouldn't want this on your current-generation F1 cars, but I had it lying around, so let's go with it!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I've given you some static pressure contour plots below of the geometry. We can also see some mesh refinement within the wing section and some streamlines that go around the endplate. These show the endplate vortex forming. Nothing spectacular, but it is a gentle introduction to see how the optimal stopping criterion framework performs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4653,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://cfd.university/wp-content/uploads/2024/11/SimpleFrontWingNoConvergence-1-1024x390.png" alt="" class="wp-image-4653"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>On the wing, I have recorded the lift and drag values, and the plots for them are given below. We see four different coloured lines (although a few are overlapping, so they may be difficult to differentiate). These are:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Dashed green line</strong>: This is the point at which the window-averaged integral quantity (i.e. lift or drag here) is still within 1% of the asymptotic value (here at 1000 iterations)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Dashed black line</strong>: This is the point of convergence determined by the framework. Ideally, it should be close to the green dashed line (earliest stopping point). In this case, the green and black dashed lines overlap, so they may be difficult to distinguish.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Dashed yellow line</strong>: This is the point of monotonic convergence. Drag does show monotonic convergence after 400 iterations, while lift still shows small oscillations at the last iterations. I have tested it with more than 1000 iterations, but this behaviour does not change. Monotonic convergence is always reached around the last iterations.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Dotted blue line</strong>: This looks at all boundaries (here only the wing assembly) and integral quantities (here lift and drag) and simply checks which of the black dashed lines (optimal determined stopping criterion) comes last. The simulation would, in reality, only reach convergence at this point (i.e., after all integral quantities have converged), and this line helps to visualise this point.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:image {"id":4654,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/frontWing_coefficients-2.png" alt="" class="wp-image-4654"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>This provides us with a graphic representation, but we want to know what the best convergence threshold and window size are that we should use in our simulation. For that, the framework spits out the following information:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:kevinbatdorf/code-block-pro {"code":"{\n    \u0022wingAssembly\u0022: {\n        \u0022drag\u0022: {\n            \u0022window_size\u0022: 15,\n            \u0022convergence_threshold\u0022: \u00229.1e-04\u0022,\n            \u0022iterations\u0022: 89,\n            \u0022status\u0022: \u0022Converged\u0022\n        },\n        \u0022lift\u0022: {\n            \u0022window_size\u0022: 10,\n            \u0022convergence_threshold\u0022: \u00221.3e-04\u0022,\n            \u0022iterations\u0022: 301,\n            \u0022status\u0022: \u0022Converged\u0022\n        }\n    }\n}","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e{\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;wingAssembly\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;drag\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;window_size\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e15\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e,\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;convergence_threshold\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026quot;9.1e-04\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e,\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;iterations\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e89\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e,\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;status\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026quot;Converged\u0026quot;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        },\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;lift\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: {\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;window_size\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e10\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e,\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;convergence_threshold\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026quot;1.3e-04\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e,\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;iterations\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: \u003c/span\u003e\u003cspan style=\u0022color: #B5CEA8\u0022\u003e301\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e,\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e            \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003e\u0026quot;status\u0026quot;\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e: \u003c/span\u003e\u003cspan style=\u0022color: #CE9178\u0022\u003e\u0026quot;Converged\u0026quot;\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e        }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e    }\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e}\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"json","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":16,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
+<div class="wp-block-kevinbatdorf-code-block-pro cbp-has-line-numbers" data-code-block-pro-font-family="Code-Pro-JetBrains-Mono" style="font-size:.875rem;font-family:Code-Pro-JetBrains-Mono,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;--cbp-line-number-color:#D4D4D4;--cbp-line-number-width:calc(2 * 0.6 * .875rem);line-height:1.25rem;--cbp-tab-width:2;tab-size:var(--cbp-tab-width, 2)"><span role="button" tabindex="0" data-code="{
+    &quot;wingAssembly&quot;: {
+        &quot;drag&quot;: {
+            &quot;window_size&quot;: 15,
+            &quot;convergence_threshold&quot;: &quot;9.1e-04&quot;,
+            &quot;iterations&quot;: 89,
+            &quot;status&quot;: &quot;Converged&quot;
+        },
+        &quot;lift&quot;: {
+            &quot;window_size&quot;: 10,
+            &quot;convergence_threshold&quot;: &quot;1.3e-04&quot;,
+            &quot;iterations&quot;: 301,
+            &quot;status&quot;: &quot;Converged&quot;
+        }
+    }
+}" style="color:#D4D4D4;display:none" aria-label="Copy" class="code-block-pro-copy-button"><svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path class="with-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path><path class="without-check" stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg></span><pre class="shiki dark-plus" style="background-color: #1E1E1E" tabindex="0"><code><span class="line"><span style="color: #D4D4D4">{</span></span>
+<span class="line"><span style="color: #D4D4D4">    </span><span style="color: #9CDCFE">&quot;wingAssembly&quot;</span><span style="color: #D4D4D4">: {</span></span>
+<span class="line"><span style="color: #D4D4D4">        </span><span style="color: #9CDCFE">&quot;drag&quot;</span><span style="color: #D4D4D4">: {</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #9CDCFE">&quot;window_size&quot;</span><span style="color: #D4D4D4">: </span><span style="color: #B5CEA8">15</span><span style="color: #D4D4D4">,</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #9CDCFE">&quot;convergence_threshold&quot;</span><span style="color: #D4D4D4">: </span><span style="color: #CE9178">&quot;9.1e-04&quot;</span><span style="color: #D4D4D4">,</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #9CDCFE">&quot;iterations&quot;</span><span style="color: #D4D4D4">: </span><span style="color: #B5CEA8">89</span><span style="color: #D4D4D4">,</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #9CDCFE">&quot;status&quot;</span><span style="color: #D4D4D4">: </span><span style="color: #CE9178">&quot;Converged&quot;</span></span>
+<span class="line"><span style="color: #D4D4D4">        },</span></span>
+<span class="line"><span style="color: #D4D4D4">        </span><span style="color: #9CDCFE">&quot;lift&quot;</span><span style="color: #D4D4D4">: {</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #9CDCFE">&quot;window_size&quot;</span><span style="color: #D4D4D4">: </span><span style="color: #B5CEA8">10</span><span style="color: #D4D4D4">,</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #9CDCFE">&quot;convergence_threshold&quot;</span><span style="color: #D4D4D4">: </span><span style="color: #CE9178">&quot;1.3e-04&quot;</span><span style="color: #D4D4D4">,</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #9CDCFE">&quot;iterations&quot;</span><span style="color: #D4D4D4">: </span><span style="color: #B5CEA8">301</span><span style="color: #D4D4D4">,</span></span>
+<span class="line"><span style="color: #D4D4D4">            </span><span style="color: #9CDCFE">&quot;status&quot;</span><span style="color: #D4D4D4">: </span><span style="color: #CE9178">&quot;Converged&quot;</span></span>
+<span class="line"><span style="color: #D4D4D4">        }</span></span>
+<span class="line"><span style="color: #D4D4D4">    }</span></span>
+<span class="line"><span style="color: #D4D4D4">}</span></span></code></pre></div>
+<!-- /wp:kevinbatdorf/code-block-pro -->
+
+<!-- wp:paragraph -->
+<p>For the wingAssembly boundary patch, we have information for both the lift and drag. It tells us that convergence for the drag is reached within 89 iterations, which is achieved with a window size of 15 iterations and a convergence threshold of 9.1e-4.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The convergence status is <em>converged</em>, which indicates to us that using these values will make sure that convergence is reached past the earliest stopping point (that was the green dashed line in the figure above). If no optimal stopping criterion can be determined (i.e. convergence is always reached before the earliest stopping criterion), then the status will be <em>premature convergence</em>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have also shown a screenshot from ANSYS Fluent below. This is the convergence condition window, where we can impose our stopping criterion we have obtained above.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4655,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/stopping-criterion-fluent.png" alt="" class="wp-image-4655"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We can see that the <em>stop criterion</em> is the <em>convergence_threshold</em> the stopping criterion framework provides us. Similarly, the <em>use iteration</em> entry corresponds to the <em>window_size</em> variable in the stopping criterion framework.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We can ignore the <em>ignore iterations before</em> entry. Since we have already ensured that the convergence threshold and window size will give us convergence past the earliest iteration to stop, we do not need to avoid averaging over the first few iterations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-case-2-saab-340-aircraft-during-climb">Case 2: Saab 340 aircraft during climb</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The Saab 340 aircraft is another case I like to use in class, though I did generate a more refined mesh here than what I would use for demonstration. It is still relatively coarse with 25 million elements, but it will be fit for purpose for the present discussion. let's look at some contours first to see what we can expect.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4656,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://cfd.university/wp-content/uploads/2024/11/saab-2-30000-1024x387.png" alt="" class="wp-image-4656"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We can see the static pressure on the aircraft, and I have superimposed the Q-criterion plot (also coloured by static pressure) to see the wake development. Some mesh refinement was done around the aircraft, although some more refinement in specific areas (such as the wing tip) would have been advantageous.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The point of the Q-criterion is to visualise how the wake of the wing and the engine cover interact with the horizontal stabiliser. We can see that this wake hits the horizontal stabiliser, and as a result, we would expect the horizontal stabiliser to converge much later than the wing. This is because the wing is exposed to a clean freestream, while the horizontal stabiliser has to wait until the wing's turbulent wake has converged.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The optimal stopping criterion framework was presented with the engine, wing, fuselage, and horizontal and vertical stabiliser boundary patches, and the lift and drag coefficients were recorded for each. The results are shown below.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4659,"width":"1000px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="https://cfd.university/wp-content/uploads/2024/10/saab340_coefficients.png" alt="" class="wp-image-4659" style="width:1000px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>The same definitions for the coloured lines hold as for the F1-style front wing. We can see that the wing does indeed converge before the horizontal stabiliser. Convergence on the wing is reached at around 23000 iterations for the drag, while the horizontal stabiliser is only converging after 25000 iterations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Similar outputs, as shown for the F1-style front wing, will be generated for the convergence threshold and window size (as well as a status on convergence and premature convergence). I'll skip them here, but feel free to run this example yourself. Instructions (and all data you need) are provided on <a href="https://github.com/tomrobin-teschner/pycfd-osc#example-use-cases" target="_blank" rel="noopener" title="">GitHub</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-summary">Summary</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this article, we reviewed the different mechanisms we have at our disposal to judge convergence. Historically, we have used residuals to judge convergence. I hope to have convinced you that residuals are only useful to see if a simulation is converging or diverging.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we want to judge convergence, we would use integral quantities and judge when their window-averaged values no longer change. This is a much more accepted practice these days, and I recommend you start using it if you are not already doing so.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Using integral quantities, though, to judge convergence means you have to specify the window size for averaging and a convergence threshold. Both of these are difficult to determine. Intuition and experience for similar cases help here, but if you have no idea what to impose here, you ideally want to have a more generalised way to determine these inputs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is where the stopping criterion framework we examined comes in. Using this will allow you to determine the best possible stopping criterion for one case, which can then inform the stopping criterion for similar cases. This may work well for parametric studies.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the end, judging convergence will ultimately be the responsibility of the CFD practitioner running the simulation. The framework developed in this article can help, but other sources, such as experimental data or reference simulation (using high-fidelity turbulence modelling), may also need to be used to judge convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is not an easy and trivial endeavour, and non-converged CFD results may sway non-CFD experts to believe that CFD is still limited in its predictive capabilities. Often, it is the user's abuse that produces sub-optimal results. I have seen this a few times playing out in reality, and with the democratisation of CFD, we need to develop tools that will help non-CFD experts produce high-fidelity results.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This framework is my attempt to improve the convergence judgement issue, and I hope it will help you!</p>
+<!-- /wp:paragraph -->

@@ -1,0 +1,2220 @@
+<!-- How to get started with Computational Fluid Dynamics (CFD) -->
+<!-- https://cfd.university/blog/how-to-get-started-with-computational-fluid-dynamics-cfd/ -->
+
+<!-- wp:paragraph -->
+<p>The best way to learn CFD from scratch requires good resources to use for studying all the different aspects that make up a CFD simulation. Be it books, online resources, or even just the tools we use to perform CFD calculations. This is a list of my favourite resources that I have used in the past and present to master CFD and I have organised it into different sections so you can quickly go to sections that you have a particular interest in. This list is not static and will be updated from time to time as new resources become available.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this Article</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":3,"blockClientId":"47ef0ec3-cc1c-4a0e-bb58-1364e7c8079b","content":"Introduction","level":2,"anchor":"aioseo-introduction","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":12,"blockClientId":"ef8ce114-9c30-4166-929d-e514ba50e472","content":"Resources to get started with CFD","level":2,"anchor":"aioseo-resources-to-get-started-with-cfd","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":14,"blockClientId":"7de066e3-af4c-431a-af54-995fb09b3628","content":"Books","level":3,"anchor":"aioseo-books","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":16,"blockClientId":"5702fea6-3bc1-4cf1-b65f-8edb40113329","content":"General introduction to CFD","level":4,"anchor":"aioseo-general-introduction-to-cfd","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":19,"blockClientId":"1f1333fa-a6fb-4c26-b69e-981a386b5a31","content":"Turbulence (modelling and physics)","level":4,"anchor":"aioseo-turbulence-modelling-and-its-physics","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":26,"blockClientId":"6ba216a6-2f50-4e83-9f5f-77e3a71e96a1","content":"Numerical discretisation","level":4,"anchor":"aioseo-numerical-discretisation","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":30,"blockClientId":"95ff83e2-4d1b-40b9-82ff-d42dfc0a6f07","content":"Review of basic mathematical concepts for CFD","level":4,"anchor":"aioseo-review-of-basic-mathematical-concepts-for-cfd","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":33,"blockClientId":"2d932c4c-4412-407b-b72b-5d7ef51b6fe3","content":"Programming CFD solvers","level":4,"anchor":"aioseo-writing-programming-cfd-solvers","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":36,"blockClientId":"28f2cb66-1f0b-4a5c-9e9d-28d55611351a","content":"Incompressible flows","level":4,"anchor":"aioseo-incompressible-flows","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":38,"blockClientId":"9dc02693-15cf-4f8b-9999-6028842216ec","content":"Compressible flows","level":4,"anchor":"aioseo-compressible-flows","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":41,"blockClientId":"21e511d9-6668-46c8-a9ba-dcc1bd81f582","content":"Verification and validation","level":4,"anchor":"aioseo-verification-and-validation","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":45,"blockClientId":"e8098919-7b19-4d6f-ac9a-1dc3335e3a1e","content":"Programming languages and software engineering","level":4,"anchor":"aioseo-programming","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":50,"blockClientId":"2a53079b-49b3-4f8f-9953-d52db54fbd7b","content":"High-performance computing","level":4,"anchor":"aioseo-high-performance-computing","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":56,"blockClientId":"12b9c6b3-a393-4c03-9ad5-417d4141af4d","content":"On the internet","level":3,"anchor":"aioseo-internet","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":58,"blockClientId":"23429a05-34ff-4b68-b5ea-816f58c093e3","content":"CFD theory, applications, and miscellaneous bits","level":4,"anchor":"aioseo-cfd-theory","order":14,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":62,"blockClientId":"65e1f648-8f6d-41e6-bb1b-a11ed4638961","content":"Programming","level":4,"anchor":"aioseo-software-engineering-and-programming","order":15,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":66,"blockClientId":"4767b5a5-1f73-4416-9094-586e9210fcb0","content":"High-performance computing","level":4,"anchor":"aioseo-high-perfromance-computing","order":16,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]},{"id":70,"blockClientId":"be9b25e8-c45d-435e-9760-e3e8d89b8f17","content":"Review of CFD software","level":2,"anchor":"aioseo-review-of-cfd-software","order":17,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":72,"blockClientId":"78585347-febb-4699-9233-6d56fb4f82be","content":"Pre-processing: CAD cleanup","level":3,"anchor":"aioseo-pre-processing-meshing","order":18,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":76,"blockClientId":"6113c90b-22df-435c-bfc4-539d9359f7f8","content":"Pre-processing: Meshing","level":3,"anchor":"aioseo-pre-processing-meshing","order":19,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":83,"blockClientId":"e7f0d70e-98e2-48d2-bde2-73ad6fdcc45f","content":"CFD Solver","level":3,"anchor":"aioseo-cfd-solver","order":20,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":95,"blockClientId":"ddc4a352-3d04-44e8-b5bb-698a32ec4fad","content":"Post-processing (data visualisation and processing)","level":3,"anchor":"aioseo-post-processing-data-visualisation-and-processing","order":21,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-introduction">Introduction</a></li><li><a href="#aioseo-resources-to-get-started-with-cfd">Resources to get started with CFD</a><ul><li><a href="#aioseo-books">Books</a><ul><li><a href="#aioseo-general-introduction-to-cfd">General introduction to CFD</a></li><li><a href="#aioseo-turbulence-modelling-and-its-physics">Turbulence (modelling and physics)</a></li><li><a href="#aioseo-numerical-discretisation">Numerical discretisation</a></li><li><a href="#aioseo-review-of-basic-mathematical-concepts-for-cfd">Review of basic mathematical concepts for CFD</a></li><li><a href="#aioseo-writing-programming-cfd-solvers">Programming CFD solvers</a></li><li><a href="#aioseo-incompressible-flows">Incompressible flows</a></li><li><a href="#aioseo-compressible-flows">Compressible flows</a></li><li><a href="#aioseo-verification-and-validation">Verification and validation</a></li><li><a href="#aioseo-programming">Programming languages and software engineering</a></li><li><a href="#aioseo-high-performance-computing">High-performance computing</a></li></ul></li><li><a href="#aioseo-internet">On the internet</a><ul><li><a href="#aioseo-cfd-theory">CFD theory, applications, and miscellaneous bits</a></li><li><a href="#aioseo-software-engineering-and-programming">Programming</a></li><li><a href="#aioseo-high-perfromance-computing">High-performance computing</a></li></ul></li></ul></li><li><a href="#aioseo-review-of-cfd-software">Review of CFD software</a><ul><li><a href="#aioseo-pre-processing-meshing">Pre-processing: CAD cleanup</a></li><li><a href="#aioseo-pre-processing-meshing">Pre-processing: Meshing</a></li><li><a href="#aioseo-cfd-solver">CFD Solver</a></li><li><a href="#aioseo-post-processing-data-visualisation-and-processing">Post-processing (data visualisation and processing)</a></li></ul></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-introduction">Introduction</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you are considering taking up Computational Fluid Dynamics (CFD), be it for an engineering problem you have to solve as part of your studies or some quick simulations you want to run as part of an industrial project, let me congratulate you on your decision! CFD is a fascinating area to get stuck in, and it is full of wonderful and curious problems that you will come across on your journey.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In 2008, I attended lectures on structural mechanics, and one of the images we looked at was the stress distribution around a circular cutout within a plate. The stress distribution lines looked an awful lot like streamlines around a circular cylinder, and while I can't say that I am particularly moved seeing streamlines around cylinders these days back then, for some reason, it captivated me and ever since I went down the path of CFD, never looking back.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>During that lecture, I decided to pick up CFD as my focus of studies and, from that day, started to consume whatever CFD literature I could get my hand on (and there wasn't a lot in our university library on it). But I kept buying books and reading what I could find. I picked up ANSYS CFX and then later ANSYS Fluent as my first solvers to get some experience, and later, I expanded to other software. Eventually, I started writing my own solvers, and to this day, I repeat that cycle (read, experiment, write code).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Most people interested in picking up CFD for the first time probably have no ambitions to write their own solver immediately (I certainly wasn't planning on writing my own solver back in 2008). However, one core principle in CFD differs from most other engineering disciplines; all CFD problems are non-linear, causing beautifully complex flow patterns to emerge (commonly referred to as turbulence). A small subset of flows exists where turbulence plays no role (which is referred to as laminar flow), but engineering applications are governed by turbulence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As a famous saying in the circles of Fluid Dynamicists goes, God created the world in six days, and on the seventh, he created turbulence. Or take the 1932 Nobel prize winner Werner Heisenberg, who said: When I meet God, I am going to ask him two questions: Why relativity? And why turbulence? I really believe he will have an answer for the first.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Suppose you want to develop a true intuition for how different numerical schemes and algorithms influence your solution. In that case, I can tell you from experience that programming, even the simplest of test cases, will give you a much better understanding and intuition of what different schemes and algorithms do to your solution than anyone following a YouTube video and learning to press the right buttons in a commercial CFD solver.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is a reason why I have picked the slogan <em>learn through coding</em> for this website; it embodies the importance that code plays in developing our understanding of how CFD works. Adjusting parameters and quickly changing the mesh or boundary conditions will help you to build up that intuition that you can translate directly to more complex and real cases. So if you are serious about CFD, you'll have to write <em>some</em> code, but fear not, this is exactly why I have created this website to show you how to code CFD, and I update it weekly with new articles.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this remaining article, I want to look at some of my favourite resources for getting started with CFD. Even if you are already a more seasoned CFD user, there are some gems for you here as well that you will learn to appreciate over time. The remaining article will provide you with resources I have found useful for getting started with CFD, be it literature, software, or any other form of resource that may be of use to you.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-resources-to-get-started-with-cfd">Resources to get started with CFD</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this section, I have listed my favourite books and places on the internet that I have found particularly useful when learning CFD. It focuses mainly on the literature, as this is still the best place to start learning CFD, and I have structured it into different subsections to help you navigate through it. That means some resources may pop up twice, but I'll explain why if that happens.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-books">Books</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>There are lots of good books on CFD. In my experience, though, no single book does a good job of explaining everything there is to know (and likely never will be). So, I have categorised my favourite books to show you which books I think are a great place to start if you are interested in a specific topic with CFD.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-general-introduction-to-cfd">General introduction to CFD</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3384,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/An-Introduction-to-Computational-Fluid-Dynamics-The-Finite-Volume-Method.jpg" alt="" class="wp-image-3384"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">An Introduction to Computational Fluid Dynamics: The Finite Volume Method</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-h-versteeg-w-malalasekera">Authors: H. Versteeg, W. Malalasekera</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is my all-time favourite recommendation for anyone starting with CFD. It gives a gentle introduction to CFD and all of its equations, numerical schemes, and algorithms without overwhelming you.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It has probably the best description of turbulence, both from a physical point of view and how to model it with various levels of complexities, and they manage to get it on paper in about 50 pages or so. You can read entire books on this phenomenon and understand less than from reading the chapter on turbulence in this book.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While it does cover the essentials, there is an attempt to bridge the gap between simplified theory and how things are done in general-purpose CFD solvers (i.e. commercial solvers). In my view, these chapters are not exactly the strong points of this book, but at least they provide you with some perspective.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While the first few chapters are essentially a rip-off from <a href="https://www.taylorfrancis.com/books/mono/10.1201/9781482234213/numerical-heat-transfer-fluid-flow-suhas-patankar" target="_blank" rel="noopener" title="">Patankar's 1980 book</a>, it is still the most complete, easiest to understand, and most up-to-date book that you can get your hands on. If you only ever invest in a single book on CFD, this should be it.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3385,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/The-Finite-Volume-Method-in-Computational-Fluid-Dynamics-An-Advanced-Introduction-with-OpenFOAM-and-Matlab.jpg" alt="" class="wp-image-3385"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">The Finite Volume Method in Computational Fluid Dynamics: An Advanced Introduction with OpenFOAM® and Matlab</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: F. Moukalled, L. Mangani, M. Darwish</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This would be my second-highest-rated book on this list. I prefer using this book over Versteeg and Malalasekera's book listed above as it is more complete and goes into much more detail. When you are implementing something, this is what you need. But if you are starting out, Versteeg and Malalasekera strike a much better balance of not overwhelming you.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I would put it this way: start with Versteeg and Malalasekera's book, and after you have finished with that, consider consulting this book if you still have questions (you probably will have!).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What I think makes this book really strong is that it does not try to simplify the theory overly; what you see in this book is what is implemented in open-source and commercial CFD solvers alike!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>After you have read this book, you will have all the knowledge it takes to write your own CFD solver, which means you will have built up an appreciation for which schemes and algorithms will perform best for a given situation. As alluded to above, even if you have no interest in coding your own Navier-Stokes solver, you will still need that knowledge to make the right choices for your own CFD problems.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I had long put off consulting this book because of OpenFOAM in the title. Before using OpenFOAM, I thought this book was an OpenFOAM manual, but that's not true. It simply reviews the schemes and algorithms implemented into OpenFOAM. Still, these are implemented into any other serious solver, and this knowledge will hold you in good stead regardless of the solver you are using.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-turbulence-modelling-and-its-physics">Turbulence (modelling and physics)</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3387,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/A-First-Course-in-Turbulence.jpg" alt="" class="wp-image-3387"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">A First Course in Turbulence</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: H. Tennekes</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>It's widely regarded as the textbook on the physics of turbulence, and it's a classic. I don't think I can talk about book recommendations for turbulent flows without including this book.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The title aptly summarises what it is: the first steps with turbulence. It is an old book, first published when CFD was still in its infancy. At the time of its publication, we didn't understand how to model turbulence with CFD, so this book only describes the physics of turbulence rather than how to model it. But as a crash course, it works just fine.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What I like about this book is its compactness. Other books on turbulence are often twice as long, and Tennekes manages to balance necessary equations and descriptions well. It helps to have a firm mathematical background, but that is just the nature of turbulence, and you will find that in any textbook listed in this section.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3386,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/Turbulence-An-Introduction-for-Scientists-and-Engineers.jpg" alt="" class="wp-image-3386"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Turbulence: An Introduction for Scientists and Engineers</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: P. Davidson</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Regarding the physics of turbulence, we have two established textbooks that provide an up-to-date introduction: Turbulent Flows by Pope and Turbulence by Davidson. If you want to understand turbulence, pick up Davidson's book, but if you have a death wish, the book of Pope will do as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I read Pope's book, cover to cover, mostly sitting at the top front seat of a London double-decker bus, on line 38, during my 1-hour commute in the morning to Imperial College. I didn't understand much, but that was the sort of literature we had to read (given Pope was an Imperial Alumni).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Pope's book is full of equations and integrals but few explanations. If you are a pro in turbulence, you will appreciate the dense information collection, but if you just want a gentle introduction, do yourself a favour and pick up Davidson's or Tennekes' book. These are much easier to understand, and they focus on explanations rather than integrals (although we can't avoid them).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Davidon is also not afraid to pick up controversial topics and discuss them in his book, e.g., does 2D turbulence exist, and can we model it as such? You won't find controversial topics in many books; seeing how he discusses them is great. It is well worth your time if you are getting started with turbulence.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3389,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/Turbulence-Modelling-for-CFD.png" alt="" class="wp-image-3389"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Turbulence Modelling for CFD</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: D. C. Wilcox</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Wilcox is an interesting character; it doesn't matter where you look, Wilcox is always portrayed as the inventor of the [katex]k-\omega[/katex] RANS turbulence model, though he very openly writes in his book that Kolmogorov derived it first in 1942, but it received little attention due to a lack of computational resources to do anything with it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In 1970, Saffman derived the [katex]k-\omega[/katex] independently without knowledge of Kolmogorov's work, and only after that did Wilcox join the development of the model. Two people before him derived the model, yet he is receiving all the praise (granted, he actively developed the model from then onwards).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>His book helped popularise the model and is a fine example of how to write a book at a level accessible to students yet covering all essential parts with sufficient details to give a holistic picture of how to model turbulence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Along the way, Wilcox reviews important aspects of turbulence itself when they are important for the discussion. It gives you an excellent introduction to the modelling of turbulence (though limited to RANS), the only downside is that the book is pretty difficult to obtain.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3390,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/Statistical-Turbulence-Modelling-For-Fluid-Dynamics-Demystified-An-Introductory-Text-For-Graduate-Engineering-Students.jpg" alt="" class="wp-image-3390"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Statistical Turbulence Modelling For Fluid Dynamics - Demystified: An Introductory Text For Graduate Engineering Students</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: M. Leschziner</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you were unlucky and could not get your hands on a copy of Wilcox's book, fear not. The next best thing you can get is the book by Leschziner.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is a great book in its own right and fills a gap in the literature where we haven't had a book for a long time. Given the popularity of RANS modelling, you would think that someone thought of writing a book about just that, yet it is the first usable book I have come across that exclusively focuses on RANS modelling.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Starting with some good derivations of basic equations that are later used in the RANS models, this book focuses on demystifying RANS turbulence modelling and features a much higher text(explanations)-to-equation ratio than other books.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you want to understand how to derive the various RANS models, how the different terms are obtained, and their meanings, then try this book. It is an excellent foundation for getting into RANS modelling.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3384,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/An-Introduction-to-Computational-Fluid-Dynamics-The-Finite-Volume-Method.jpg" alt="" class="wp-image-3384"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">An Introduction to Computational Fluid Dynamics: The Finite Volume Method</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-h-versteeg-w-malalasekera">Authors: H. Versteeg, W. Malalasekera</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ah, Versteeg and Malalasekera, I can't hide my love for their turbulence chapter. I mentioned it above when recommending it as a general textbook for CFD, but it works just as well as an introduction to turbulence in terms of its physics and modelling.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It covers pretty much all the important RANS models and essential background information you need to understand them, but it also talks about scale-resolving turbulence models (Large Eddy Simulations (LES) and Direct Numerical Simulations (DNS)).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As a bonus, they also discuss boundary conditions, which, if you are just using a commercial CFD solver, you will probably never have to think about. However, when you start to use a solver like OpenFOAM, you will appreciate the details they give in their book on how to set the right boundary conditions. Excellent book!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-numerical-discretisation">Numerical discretisation</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3392,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/Fundamentals-of-Engineering-Numerical-Analysis.jpg" alt="" class="wp-image-3392"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Fundamentals of Engineering Numerical Analysis</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: P. Moin</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The bread and butter of any CFD solver is the discretisation used to solve a given partial differential equation, e.g. the Navier-Stokes equations. This usually creates two problems we have to solve: 1) How to transform the Navier-Stokes equations into a form that can be solved (especially for incompressible flows), and 2) Which discretisation should be used to solve the partial differential equation(s).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The book by Moin (one of the greats in CFD) introduces the second problem, i.e., how to discretise your partial differential equations. Regarding discretisation, different approximations are available, namely the finite difference, finite volume, and finite element methods.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This book focuses on the (now outdated) finite difference method. I say outdated, as commercial CFD solvers these days use the finite volume methods exclusively (with a few exceptions using the finite element method). However, suppose you are a complete beginner to numerical discretisation. In that case, you need to start somewhere, and from an educational point of view, there is no better place to start than with the finite difference method.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you ignore the last chapter of the Fourier series, this book only has about 150 pages, giving you a quick introduction to essential concepts used in CFD. The knowledge gained in this book is not just for educational purposes; many of the classical concepts developed for the finite difference method also hold for the finite volume and finite element methods (e.g. time discretisations, numerical schemes), and they can (and have been) translated to work in this frameworks as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you are looking for a quick introduction, this book is for you.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3393,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/computational-fluid-dynamics-for-engineers.jpg" alt="" class="wp-image-3393"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Computational Fluid Dynamics for Engineers</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: K. A. Hoffmann, S. T. Chiang</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ah, this brings back memories. It was my first book on numerical modelling, and among our CFD study group, this was regarded as <em>the</em> bible for CFD engineers (and if I recall correctly, we called it the blue bibble, but even if we didn't, I suggest that we do from now on!).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I'm always saying there is no better way to learn CFD than by implementing it yourself and then playing around with the parameters to see how they influence the simulation. Hoffmann and Chiang do exactly that in their book, i.e., they derive equations in a form that can be easily implemented, but they also provide you with results from some of their numerical experimentation (great for validation if you want to follow along).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The book also focuses on numerical discretisations using the finite difference method, although there is also the pink and green bible (or volumes 2 and 3) where the finite volume method is picked up. Still, the book by Versteeg, Malalasekera, and Moukalled et al. listed above will perhaps give you a more complete and up-to-date introduction to the finite volume method.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, this book gives a great introduction to how CFD was initially developed, and I have seen the schemes derived from it implemented in commercial codes that are still around.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Similar to the book of Moin, it is a great introduction and well worth your time. It just comes with more examples and more content than the book of Moin. Like the Wilcox book, though, it may be difficult to get your hands on this book, but if you can, give it a try.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3394,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/numerical-computations-of-internal-and-external-flows.jpg" alt="" class="wp-image-3394"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Numerical Computation of Internal &amp; External Flows</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: C. Hirsch</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I was having issues with this book for a long time. I still do, for certain parts of the book, but I have come around to appreciating it for what it is. I certainly wouldn't recommend this book to a novice, for it assumes, perhaps, too much of a background in CFD already, even though it reviews everything from the ground up. However, suppose you have already gone through the book of Moin or Hoffmann and Chiang (or something similar). This book will give you an excellent transition from classical CFD theory to methods, schemes and algorithms used nowadays in commercial CFD solvers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It does cover the finite difference and finite volume method in depth, but it also provides an introduction to the finite element method, so perhaps, in that respect, it is the most complete book out there.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What I like about this book is its completeness. The topics are covered in great depth. The last chapters also include some helpful walkthroughs for implementing the incompressible and compressible Navier-Stokes equations, which is rather useful, especially if you want to go beyond simple model equations that mimic the behaviour of the Navier-Stokes equation and implement the real deal.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is also a second volume to this book, though I have found the first to be more useful than the second. Also, it does not seem to exist anymore, so it may equally be difficult to find (the first volume was re-released by a different publisher, which is easy to find).</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-review-of-basic-mathematical-concepts-for-cfd">Review of basic mathematical concepts for CFD</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3395,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://cfd.university/wp-content/uploads/2024/04/computational-fluid-dynamics-the-basics-with-applications-689x1024.jpg" alt="" class="wp-image-3395"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Computational Fluid Dynamics: The Basics with Applications</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: J. D. Anderson</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I <em>may</em> have created this subsection (review of basic mathematical concepts for CFD) just so that I can recommend this book. For me (and others may reasonably have different opinions), J. D. Anderson is one the greats in the field, maybe not in CFD, but in Fluid Mechanics in general and related disciplines (Aerodynamics and compressible flows, in particular).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>His writing is probably the best in terms of accessibility, and there is a reason that all of his books are selling so well, given how easy it is to read his text and explanations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Anderson does a good job of deriving the basic equations in fluid mechanics and provides enough mathematical concepts to follow the derivations easily. If you want to brush up on some basics in mathematics, this (or any other book by Anderson) is a great place to start.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3385,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/The-Finite-Volume-Method-in-Computational-Fluid-Dynamics-An-Advanced-Introduction-with-OpenFOAM-and-Matlab.jpg" alt="" class="wp-image-3385"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">The Finite Volume Method in Computational Fluid Dynamics: An Advanced Introduction with OpenFOAM® and Matlab</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: F. Moukalled, L. Mangani, M. Darwish</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I have listed the book by Moukalled et al. again because I think they do a good job reviewing essential tensor calculus rules. These rules aren't complicated but need to be memorised, after which following the derivation of the Navier-Stokes equations isn't that hard.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The mathematical background chapter in this book is also rather complete and lengthy enough to strike a good balance between the details provided and the explanations given. Together with Anderson's book, both sources should give you sufficient information on the mathematics required to follow along with CFD derivations.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-writing-programming-cfd-solvers">Programming CFD solvers</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3396,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/computational-fluid-dynamics-principles-and-applications.jpg" alt="" class="wp-image-3396"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Computational Fluid Dynamics: Principles and Applications</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: J. Blazek</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I picked this book up rather late (after my PhD), but when I did, I was immediately hooked by its clarity. The author makes an excellent effort to explain how numerical schemes are derived and then how to implement them into code.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It always provides two separate discussions of how to implement something for structured and unstructured grids. Thus, it may be seen as a more advanced book, but once you feel ready to make the transition to unstructured grids, this book is an excellent place to start.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It comes with a CD that contains some good sample programs that you can use for self-study purposes if you want to achieve something similar. My only downside of this book is that it focuses exclusively on compressible flows. But if that is not a problem for you, then this is the book you want to go through.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3395,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://cfd.university/wp-content/uploads/2024/04/computational-fluid-dynamics-the-basics-with-applications-689x1024.jpg" alt="" class="wp-image-3395"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Computational Fluid Dynamics: The Basics with Applications</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: J. D. Anderson</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ah, Anderson, you did it again, sneaking into my list without me realising. When I originally made this list, I didn't consider this book, but then I was reminded of the excellent discussions it provides on implementing the governing equations of fluid mechanics into code.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>An entire chapter is dedicated to showing how to adapt the governing equations to a given problem so that it can be solved numerically with a given scheme. Anderson provides intermediate results that you can use to check that your solution is marching in the right direction. While he does focus primarily on compressible flows, there is one subsection on incompressible flows as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I would rank it similar to the book of Hoffmann and Chiang, which provides numerical experiments; you may not implement a CFD solver in this way, but you can learn an awful lot from the experimentation provided with the code in this book.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-incompressible-flows">Incompressible flows</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3397,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://cfd.university/wp-content/uploads/2024/04/computational-methods-for-fluid-dynamics-683x1024.jpg" alt="" class="wp-image-3397"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Computational Methods for Fluid Dynamics</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: J. H. Ferziger, M. Peric, R. L. Street</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>For a long time, I disliked this book a lot. In academia, it is seen as advantageous to have a textbook published in your field, and you can use that for promotional cases if you want to become a full professor. There are many examples out there where people have written books to get promoted but not to educate the reader, and for a long time, this is how I viewed this textbook.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There was nothing really wrong with it, it was just not very good at any of the discussions that it did provide. There was always another book I could point to that was better at discussing any of the points they were making in this book.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But then came the fourth edition, and they added Street as an author. Thankfully, Street really earned his spot as an author, as he took some of the weaker sections and transformed them into masterpieces, in my view. They are full of details and insights I haven't seen anywhere else, and you would only expect from someone who has dedicated their professional life to understanding these topics insight-out.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The discussion about the differences between the fractional-step and SIMPLE methods, in particular, stuck with me, as I had my questions about how both of these are different, and Street provides an answer for it as clearly as day. Surprisingly, they are pretty much the same, but I doubt many will have picked up on that.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, if you want to learn how to transform the Navier-Stokes equations for incompressible flows, this book really does a great job of providing an in-depth discussion by someone who understands the topic like the back of his hand.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-compressible-flows">Compressible flows</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3398,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="https://cfd.university/wp-content/uploads/2024/04/numerical-methods-for-conservation-laws-712x1024.jpg" alt="" class="wp-image-3398"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Numerical Methods for Conservation Laws</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: R. J. LeVeque</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you look at the (historic) development of compressible and incompressible solvers, you'll find quite a difference in how these problems are approached, and for good reasons. This means that if you pick up the book of Versteeg and Malalsekera, which focuses pretty much exclusively on incompressible flows, then comparing the text, methods, and schemes presented in a book on compressible flows can seem disconnected.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>LeVeque's book focuses on compressible flows and provides an excellent introduction to the problem. He focuses on what is essential to treating compressible flows, where shockwaves and, thus, discontinuous signals are the norm.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Discontinuities are difficult to capture mathematically, and so special approaches have been developed to treat them numerically (higher-order and total variation diminishing (TVD) scheme, as well as Riemann solvers). LeVeque introduces these concepts and separates the problem into two parts: the physics of compressible flows and the numerical treatment of it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What is a bonus is that he manages to do all that in about 200 pages, and I am always a fan of books that convey key messages quickly. Most authors seem to favour quantity over quality, but not this book. It is an excellent introduction to compressible flows and covers all essential topics.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3411,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/riemann-solvers-and-numerical-methods-for-fluid-dynamics.jpg" alt="" class="wp-image-3411"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Riemann Solvers and Numerical Methods for Fluid Dynamics</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: E. F. Toro</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Once you have finished the book of LeVeque (above), you will find that you have gotten a very good surface-level coverage of compressible flows and a good idea of how all of that fits together, including some numerical treatment of the problem.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But now, you want to explore more advanced concepts and numerical schemes that can help you solve compressible flows. Perhaps you are writing a research or commercial CFD solver and focusing on compressible flows, in which case, this book is probably a must on your reading list.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It comes with sample programs and probably provides complete coverage for treating numerical discontinuities and compressible flows. I wouldn't recommend it as a textbook for starting with compressible flows, but once you have an appetite for them, this book will take you from beginner to expert.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-verification-and-validation">Verification and validation</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":4239,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/06/verification_and_validation_oberkampf.jpg" alt="" class="wp-image-4239"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Verification and Validation in Scientific&nbsp;Computing</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: W. L. Oberkampf, C. J. Roy</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Verification and Validation are critical aspects of CFD, and those who understand the limitations imposed by models, modelling uncertainties, and other sources of uncertainties and errors are likely to get reliable and accurate results.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This book is a fantastic first course that encompasses pretty much all of the areas we associate with uncertainties. If you only ever want to read a single book on this subject, this is probably it. It gives you a good sense of how to tackle uncertainties and an appreciation that most of what we do in CFD is uncertainty management.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Oberkampf is one of the leading figures in validation and verification and, therefore, probably also the best-equipped person to write a book about this subject. I go back to it every now and then and always find something new.  </p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":4240,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/06/verification_and_validation_roache.jpg" alt="" class="wp-image-4240"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Verification and Validation in Computational Science and Engineering</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: P. J. Roache</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If we talk about verification and validation, it would be wrong not to mention the work of Roache here. Roache is probably one of the <em>founding fathers</em> of uncertainty management in CFD. We have to thank him for a lot of the development, and subsequent momentum, in this area.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>His book on verification and validation is, by today, probably a bit dated, and it is certainly difficult to get your hands on a copy as it is no longer in print. All of the concepts covered in this book are also covered in the book mentioned above by Oberkampf and Roy.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, since verification and validation wasn't at a very advanced state (and pretty much driven entirely by Roache himself at the point of publication), the concepts covered in his book, like the grid convergence index and the method of manufactured solutions, are discussed in much greater depth than in Oberkampf's book.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you need some additional explanations and can get your hands on this, well worth a read!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":4241,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/06/a_defense_of_computational_physics.jpg" alt="" class="wp-image-4241"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">A defense of Computational Physics</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: P. J. Roache</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is what happens when you retire and have spent your entire life working on verification and validation for CFD processes. You take on philosophers like Karl Poppers and write a monograph defending the field to which you have dedicated your life.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Roache looks at the falsification statement in science, i.e. a scientific theory can only ever be falsified but never verified. If we can't find a way to falsify a theory, then the theory is probably correct. This is a prevailing attitude in the field of physics.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, if we allow this statement to be true, then the entire field of CFD has to be rejected, and things like RANS turbulence models should not be allowed to exist. Seeing how we can successfully employ RANS models and CFD as a whole suggests that there is value in using computational methods in the field of science and engineering, so the statement of falsification may apply to exact physical theories but not to inexact fields like CFD.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is not a textbook, but if you fancy some philosophical discussions on the validity of CFD, put it on your pleasure reading list. </p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-programming">Programming languages and software engineering</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3404,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/professional-c.jpg" alt="" class="wp-image-3404"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Professional C++</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: M. Gregoire</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I've gone through a few books on C++, and I remember my first book on C++ to be 200 pages of wasted time and money. It is not so professional C++, but this book really takes a deep dive into the different concepts of C++ and is probably the most complete book out there. Granted, it has a page count of around 1000, but this is not a book that you read cover to cover, but rather chapter by chapter, depending on what you want to learn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It covers almost every concept in C++, and, given the frequent updates this book receives, it keeps pace with the updates introduced to C++.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>When working as a software engineer on a commercial CFD solver, I had this book on my desk to refer to concepts I didn't quite get when looking through the code. The descriptions of templates are especially good, and that's something I can't say for most books on C++.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you are looking for a single reference book on C++, this book should be at the top of your list.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3405,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/C-High-Performance-Master-the-art-of-optimizing-the-functioning-of-your-C.jpg" alt="" class="wp-image-3405"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">C++ High Performance: Master the art of optimizing the functioning of your C++ code</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: B. Andrist, V. Sehr</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you don't have a formal background in software engineering, I would argue that picking up just a book on C++ is likely not enough. There are probably as many solutions to a problem as there are programmers interested in solving it. But which one is the fastest?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This book examines C++ from a performance perspective. How can you write code to solve a problem that requires the fastest code execution?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the early chapters, the authors review a few critical concepts that help throughout the book and then dive deep into algorithms and data structures, which essentially walk you through the standard template library (STL). If you are not already using the STL (you should!), this book will guide you into it naturally, and you will see why using it is advantageous.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Code performance is determined by 2 factors: the CPU speed (nothing we can do about it, other than change or overclock it), and memory access (lots we can do here). This book has an entire chapter dedicated to memory management, and while I get that it is not the most interesting thing to talk about, it is essential, and you need to understand how memory works to write fast code. <a href="https://cfd.university/learn/what-every-cfd-developer-needs-to-know-about-c/understanding-memory-management-in-c/" target="_blank" rel="noopener" title="">I've got you covered</a> if you are looking for a shortcut.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3420,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/clean-code.jpg" alt="" class="wp-image-3420"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Clean Code: A Handbook of Agile Software Craftsmanship</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: R. C. Martin (Uncle Bob)</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This book is interesting, and I hold it in high regard. Let me paint you a picture: You write code, and it works, but you find it getting more complicated to add new lines of code. The more code you add, the more it breaks your code. Does this sound familiar? This is the typical journey of a new programmer; we first learn the language and then use it with our best intentions, but that rarely leads to well-written code.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The book by Robert Martin, affectionately called Uncle Bob in the community, guides you through every piece of code you have and how to structure it so that you write clean code.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Clean code does not simply mean easy-to-read code but rather easy-to-maintain and easy-to-extend code as well, and this book does a brilliant job, with lots of examples, at showing how it is done.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This book may not be on your immediate reading list, but keep it in the back of your head for when you are writing a program that has more than 500 lines of code and somehow sucks, but you can't point your finger at the problem.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3419,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/unit-testing.jpg" alt="" class="wp-image-3419"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Unit Testing: Principles, Practices and Patterns</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: V. Khorikov</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>When I read this book (and it is one of those books I go back to every now and then to re-read certain sections), I was already familiar with unit testing and had been testing my codes using this approach for a few years.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This book does a great job of teaching how to write unit tests, how to structure them, and, more importantly, what should and shouldn't be tested. You will see that many of the lessons learned from this book have influenced my series on <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications" target="_blank" rel="noopener" title="">software testing</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Similar to the book mentioned above on clean code, this book does so much more than simply describe how to test code. It shows how to write tests and how these tests influence the design of the interfaces (classes) they test. After you look at code in terms of testability, you realise that this alone can help you design clean code automatically, and I have certainly used that in my own projects ever since.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you feel comfortable with programming and want to improve your skills, this book is well worth your time and money. It will help you get closer to coding perfection.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-high-performance-computing">High-performance computing</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3407,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/Introduction-to-High-Performance-Computing-for-Scientists-and-Engineers.jpg" alt="" class="wp-image-3407"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Introduction to High-performance Computing for Scientists and Engineers</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: G. Hager, G. Wellein</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's face it: CFD can't be run on a single CPU unless you are the company's expert in running 1D CFD solvers. Running a 3D simulation in steady-state mode is already challenging enough on a single laptop/PC. Still, once you add unsteadiness (or just lots of cells in steady-state mode), you can't avoid parallelization and utilisation of more than one core.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While most books on high-performance computing use the above paragraph to say, "As a result, we need to parallelise our code", this book takes a step back and says, no, we first need to optimise our code before parallelising it. Let's extract as much performance out of our code as possible before we start thinking about parallelisation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The first chapters concentrate on optimising code on a single core, but towards the middle of the book, the tone changes, and parallel computing is introduced. This book discusses both distributed (Message Passing Interface (MPI)) and shared (OpenMP) memory approaches for parallelisation and highlights their strengths and weaknesses. Towards the end, a hybrid approach is presented where both MPI and OpenMP are combined to remove their respective disadvantages.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I really enjoyed this book. It provides a good introduction to the hardware used on modern PCs and clusters, which helps me understand later chapters on optimising code. Suppose you are interested in optimising code for a single core and not the parallelisation bit of the book. In that case, the authors are running a course on node-level optimisation that you can view on YouTube (but note that the playlist is in reverse order, so you have to start from the last video).</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3423,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/Parallel-Programming-for-Multicore-and-Cluster-Systems.jpg" alt="" class="wp-image-3423"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Parallel Programming for Multicore and Cluster Systems</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: T. Rauber, G. R<strong>ü</strong>nger</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The previous book has a lot in common with it, so I wouldn't recommend reading both of them at the same time. However, I wanted to mention this book as well, as it also covers GPU programming (besides MPI and OpenMP), i.e., using graphic cards to accelerate your code. It is a gentle introduction, which the book by Hager and Wellein misses.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The other aspect I really enjoyed about this book is that it shows how to implement different numerical algorithms in a parallel environment. While that is limited to the last chapter, and the examples are not exhaustive, they are well selected, and if you are writing a CFD solver, there will be something of interest to you.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Apart from that, the book does a good job of introducing a few more concepts that Hager and Wellein's book does not cover. It gives you a really good understanding of how high-performance clusters work from a conceptual level and how code has to be written to utilise these machines.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3425,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/Parallel-Programming-for-Science-and-Engineering.jpg" alt="" class="wp-image-3425"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Parallel Programming for Science and Engineering</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: V. Eijkhout</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Who says you must raise a small mortgage to buy a good textbook? Victor Eijkhout is a person I have stumbled upon a few times now through different channels. When it comes to textbooks, his work is really good and, best of all, free under an open-source license. You can find his textbooks on <a href="https://theartofhpc.com/" target="_blank" rel="noopener" title="">theartofhpc.com</a> and, just in case that website ever moves or vanishes, also on <a href="https://github.com/VictorEijkhout/TheArtOfHPC_vol2_parallelprogramming" target="_blank" rel="noopener" title="">GitHub</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This book, to me, is the most complete introduction to MPI and OpenMP programming that I have come across. There is a book floating around by William Gropp, which seems to be the only book available for MPI programming, and while I have purchased both volumes 1 and 2 of his books, I can't recommend them. This book, on the other hand, is just magnificent. Since it is free, you may download it now and save it to your ebook library, it will become useful eventually if you go deep enough into CFD. I promise!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3426,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/Professional-CUDA-C-Programming.jpg" alt="" class="wp-image-3426"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Professional CUDA C Programming</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: J. Cheng, M. Grossman, T. McKercher </h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you look at the cover and find that this looks an awful lot like the professional C++ book, then you are right. It is from the same series, and in general, I have found these books to be rather helpful.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>CUDA programming allows you to leverage GPUs, specifically Nvidia GPUs, to accelerate code on graphic cards. This book does a good job of introducing you to the basics and then jumping straight into coding examples. What I really enjoyed in this book was the introduction of a new concept, which was followed up with a code example and the timing of the code. In this way, you get a sense of how good or bad a certain approach is in terms of performance.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While most books stop here and, perhaps, introduce a few examples, this book only really gets started and covers more advanced concepts such as working with CUDA libraries, fine-tuning and debugging CUDA code, and leveraging multiple GPUs to improve performance even further.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It's a great introduction to CUDA and learning how to parallelise your code using graphic cards, I've enjoyed reading it and so will you, I'm sure!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3427,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/OpenACC-for-Programmers-Concepts-and-Strategies.jpg" alt="" class="wp-image-3427"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">OpenACC for Programmers: Concepts and Strategies</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Authors: S. Chandrasekaran, G. Juckeland</h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>You may not know what OpenACC stands for, so let me give you a quick intro: We looked at CUDA programming above, which is a very low-level programming approach (you must manage memory transfer between CPU and GPU memory yourself). But what if you want to write code and then provide some hints to the compiler so you can do all of the parallelisation? This is what OpenACC does.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Suppose you are familiar with OpenMP (which also simply provides instructions to the compiler for parallelising your code). OpenACC will feel very similar in that case, but it mainly focuses on GPUs. If you look at simple OpenACC examples, you will very quickly get an idea of how to use it, and this book gives you a quick introduction to the topic.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This book is not for everyone, but it can provide impressive results if you want to experiment with quick GPU acceleration without writing excessive code.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-internet">On the internet</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this section, I want to review some of my favourite places on the internet that have helped me and will help you to master CFD. Be it for understanding the theory behind CFD, or for mastering some programming-related concepts, I have collected here what I think will help you to become a better CFD practitioner.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-cfd-theory">CFD theory, applications, and miscellaneous bits</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3432,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/cfd-online.png" alt="" class="wp-image-3432"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">CFD online</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.cfd-online.com/" target="_blank" rel="noopener" title="">https://www.cfd-online.com/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I'm always surprised when talking to my students that CFD online is not a household name. It is probably the go-to resource on the internet for any CFD-related question. It has an active forum with an exceptional user base that can answer pretty much any questions you may have.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Besides its forum, it does come with a highly underrated wiki, a job section advertising CFD jobs, and a vast link directory that has links to probably every CFD resource on the internet.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you are not already a member, I highly recommend signing up and contributing to the community through forum discussions. Some excellent questions were asked and answered, and I occasionally contribute there.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3431,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/fluid-mechanics-101.png" alt="" class="wp-image-3431"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Fluid Mechanics 101</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.youtube.com/@fluidmechanics101" target="_blank" rel="noopener" title="">https://www.youtube.com/@fluidmechanics101</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is a pretty useful collection of lectures on CFD theory, in no particular order. If you want to understand certain concepts, this is an excellent resource, and I wish I had it available as a student.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Adrain is really good at explaining complex phenomena and making them understandable in layman's terms, and I've certainly picked up a few good insights from him here and there. If you haven't viewed any of his lectures, pick a topic and see for yourself. I'm sure you will make good use of his videos.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3433,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/cfd-toolbox.png" alt="" class="wp-image-3433"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">CFD toolbox</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://chromewebstore.google.com/detail/cfd-toolbox/bcalbgngjglcapigdjlknojeoncdeomp?hl=en-GB" target="_blank" rel="noopener" title="">https://chromewebstore.google.com/detail/cfd-toolbox/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is a bit of a selfish advertisement, as this tool is from me, but let me give you my motivation, and then it'll make sense.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>When performing CFD calculations, you have to perform many calculations, and tools have been developed to help practitioners do that. Whether calculating the first cell height based on a y+ value, performing a grid dependency study, or setting turbulent quantities at inlets, these tools help streamline the process.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have used these for a long time but got frustrated that they were scattered over the internet. I wanted a single place where all my calculators were home, so I created this little toolbox where they all met and became friends.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It has calculators for:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>calculating the first cell height based on a y+ value</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>calculating the grid convergence index based on simulations performed on three separate grids</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>calculating the turbulent inlet properties for virtually any RANS turbulence model (useful if you are using OpenFOAM)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>calculating how much CO2 is emitted by large-scale CFD applications (useful to calculate the carbon footprint of simulations; it is larger than you'd expect)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>the international standard atmosphere to calculate freestream properties of air at a given altitude and reference ground temperature</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-software-engineering-and-programming">Programming</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3436,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/learncpp.png" alt="" class="wp-image-3436"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Learn C++</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.learncpp.com/" target="_blank" rel="noopener" title="">https://www.learncpp.com/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I mentioned Marc Gregoire's book above, which may be best suited for you if you require a deep dive into C++. But if you want to learn the concepts in C++ with lots of examples, then there is no better place than learncpp.com, in my opinion.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Have you ever wondered what rvalues and lvalues are and how they are important in move semantics? I have, but if you look at some sources online, they get very academic about this topic. Why not just show an example and explain how these are different? This is how most people learn, and so this website is high on my recommendation list because it features a lot of examples.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3437,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/cppcon.png" alt="" class="wp-image-3437"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Cppcon: The C++ conference</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.youtube.com/@CppCon" target="_blank" rel="noopener" title="">https://www.youtube.com/@CppCon</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Cppcon is the largest conference organised in C++. Unlike more scientific conferences (certainly the ones I have encountered), there are some pretty interesting talks given in C++, most of them at a level that someone without a C++ background can understand.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is also reflected by their different tracks, one of which is called <em>Back to Basics</em>, where they take a deep dive into a C++ concept and explain it in the form of a tutorial. Great if you want to pick up a certain concept and want someone to explain it to you (and you have an hour to spare).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What's more, the C++ steering committee members are pretty much all at the conference, and you get a real-time update of where the language is heading, with new proposals being presented and how they would look in code. If you have the time, this is a great place to get lost in C++ programming.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3439,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/refactoring-guru.png" alt="" class="wp-image-3439"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Refactoring guru</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://refactoring.guru/" target="_blank" rel="noopener" title="">https://refactoring.guru/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Software engineers love to talk about design patterns, and for good reason: they help us achieve common tasks with a clean implementation. When I heard the term <em>design pattern</em> for the first time, I didn't realise that it meant something specific in the world of programming, but once I figured it out, well, let's say I flushed some money down the toilet by buying a book with the term design pattern in the title.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The book wasn't bad, but it was just too long, and I couldn't sit through all the useless advice they were trying to preach. Refactoring Guru, on the other hand, is very different in that respect. It lists all existing design patterns, which are explained effectively on the website. Example code is provided for several languages, so you can easily pick the one you want.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you just want a crash course, look at their description of a <a href="https://refactoring.guru/design-patterns/what-is-pattern" target="_blank" rel="noopener" title="">design pattern</a> (it takes about a minute to read) and then come back later when you decide this is something you need right now.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-high-perfromance-computing">High-performance computing</h4>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3438,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/cscsch.png" alt="" class="wp-image-3438"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">CSCS</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.youtube.com/@cscsch/playlists" target="_blank" rel="noopener" title="">https://www.youtube.com/@cscsch</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>There are quite a few national supercomputing facilities available. For some reason, the ones I have come across love giving away expert knowledge through training for free.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>CSCS is one such fine example; they record their training and post it on their YouTube channel, which is fantastic. If you looked at the book of Hager and Wellein above and clicked through to the video playlist, you would have also ended up on CSCS's YouTube channel!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>From programming to high-performance computing to the visualisation of scientific data, there is something for everyone here, and the quality is good. I once attended a 2-day workshop on CUDA programming, which was so bad that halfway through the workshop, I decided to drop out of the online session. Instead, I watched one of their CUDA workshops in the time I had set aside for the original workshop. This was a wise decision, and I was much happier.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I'd say browse through their playlists and see if there is anything that interests you, and when you have the time and motivation, watch the videos. I haven't watched all of them, but the ones I did were just fantastic!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3440,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/rookie-hpc.png" alt="" class="wp-image-3440"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Rookie HPC</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://rookiehpc.org/" target="_blank" rel="noopener" title="">https://rookiehpc.org/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Rookie HPC is a website I wasn't aware of for a long time, but once I found it, boy, was I excited. As I said above, I love <a href="https://www.learncpp.com/" target="_blank" rel="noopener" title="">learncpp.com</a> for its focus on examples to show how a certain concept works, and rookie HPC does the same for MPI and OpenMP.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is an example-driven website that explains how to use every last instruction in MPI and OpenMP and is probably one of the best references for these parallel programming approaches.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you want to learn how to use a certain MPI routine, look it up to get an explanation of what the routine does, what arguments the function takes, and what an example code would look like. It is a handy reference and my first place to go when I have a question on either MPI or OpenMP!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3442,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/04/the-art-of-hpc.png" alt="" class="wp-image-3442"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">The art of HPC</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://theartofhpc.com" target="_blank" rel="noopener" title="">https://theartofhpc.com</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I have praised the work of Eijkhout earlier on high-performance computing book recommendations, and I think his website deserves its own place on the list, as he is covering just so much content when it comes to HPC.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There's not much more to say, really. He writes excellent textbooks and makes them available for free; what a lad!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-review-of-cfd-software">Review of CFD software</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>When it comes to CFD software, there are three essential phases: pre-processing, solving, and post-processing. Various tools, both open-source and commercial in nature, exist that will help you to prepare and mesh your geometry (pre-processing), create the velocity, pressure, temperature, etc. information around your geometry (solving), and, finally, visualise your results and allow you to extract some additional information based on computed flow fields (post-processing). This section will look at tools I have found useful for these tasks.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-pre-processing-meshing">Pre-processing: CAD cleanup</h3>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3457,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/spaceclaim.png" alt="" class="wp-image-3457"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">ANSYS SpaceClaim</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.ansys.com/en-gb/products/3d-design/ansys-spaceclaim" target="_blank" rel="noopener" title="">https://www.ansys.com/en-gb/products/3d-design/ansys-spaceclaim</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>My favourite tool for cleaning up geometry is ANSYS' SpaceClaim. The software was developed by an independent software company, then bought by ANSYS, and integrated with its sledgehammer approach into its catalogue of products.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>SpaceClaim is one of those software programs that are really good at one thing and one thing only—in this case, preparing geometry for meshing. You are missing the point if you look at SpaceClaim as a CAD processor. It can create geometry (and if you have nothing else available, it is certainly a decent tool). Still, in my view, it is so much more powerful at cleaning geometry than any other CAD software I have used (think Catia, Solidworks, NX, etc.).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It can clean and heal both NURBS-based and tesselated surfaces. If these terms don't mean anything to you, replace "NURBS-based and tesselated" with "any kind of" (but we'll leave the terms in here for the nerds).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The integrated geometry checker can point out issues with your geometry and does a semi-decent job at it. Overall, it does a good job cleaning complex 3D models, albeit with somewhat erratic behaviour at times. Just save your progress often and with different file names, and you'll be just fine.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>SpaceClaim doesn't have any official documentation or tutorials that would help me learn this software, and to be honest, I learned it by clicking through all possible buttons and figuring out what they do. There are a few good recorded webinars by external ANSYS partners that you can find on YouTube, which serve as an excellent point to get started (see here: Video 1, Video 2, Video 3, Video 4, Video 5). ANSYS really needs to get some tutorials on their website. Otherwise, it will remain an obscure software for most people! But it shouldn't be; once you know it, it is really powerful.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3458,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/cadfix.png" alt="" class="wp-image-3458"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">CADFix</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.iti-global.com/cadfix" target="_blank" rel="noopener" title="">https://www.iti-global.com/cadfix</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I haven't used this tool myself, but I have seen what the tool can and is capable of. And if CAD cleanup is what you are after, this is certainly a worthy contender.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Typically, suppose you are dealing with complex 3D engineering geometries and you don't have an internal CAD department that understands your CAD geometry requirements. In that case, it will be up to you to clean and process the geometry before you start to mesh it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>CFD wisdom has it that 70-90% of your time is spent on meshing, while only 10-30% of your time is spent on solving your case. I think people advocating this do not understand the importance of CAD clean-up. With a tool like CADFix (or SpaceClaim mentioned above), you'll clean your geometry, but once that is done (and done well), meshing time should be much less than time spent solving.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>CADFix comes with standard features such as simplifying CAD geometry, preparing surfaces, and removing unwanted features, as well as more advanced features such as geometry morphing (for parametric studies without going back to your CAD program) and scripting.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is paid, just like SpaceClaim, but perhaps worth considering if you are in a professional environment and spend 90% of your time on meshing and don't want to buy into the massive ANSYS Ecosystem.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3459,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/blender.png" alt="" class="wp-image-3459"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Blender</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.blender.org/" target="_blank" rel="noopener" title="">https://www.blender.org/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Blender is a 3D modelling, rendering, and animation software that uses triangulated surfaces. This makes it easy to morph geometry and model something quickly, which Blender is really good at. In a subset of cases, we can also use these tools for our CAD cleanup stage.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As a prerequisite, we need to be working with tessellated surfaces (or triangulated surfaces), which are typically provided in either <code>*.stl</code> or <code>*.obj</code> format. If this is the format required by our meshing software, then Blender is likely our best tool for preprocessing data (well, SpaceClaim also does have decent support for <code>*.stl</code> and <code>*.obj</code> files).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We can simplify triangulated surface regions, delete elements and fill gaps. We can group triangles into groups, which we can then use during export to either export these regions into separate files or add a group tag to the triangles (<code>*.obj</code> files only) which we can then use to assign different boundary conditions to different triangles.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While all of this can be done with Blender (and I have cleaned up some rather large geometries with it for meshing), there is no documentation on how to use Blender for CFD applications (yet), but I may provide some guides on that in the future.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-pre-processing-meshing">Pre-processing: Meshing</h3>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3461,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/pointwise.png" alt="" class="wp-image-3461"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Pointwise</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.cadence.com/en_US/home/tools/system-analysis/computational-fluid-dynamics/fidelity.html" target="_blank" rel="noopener" title="">https://pointwise.com/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Pointwise should be high on your list if you only want to invest in one tool that can do it all. Meshing for CFD applications can be done using a bottom-up or top-down approach, and Pointwise is one of the few (if not the only one!) that can do both. It also does both structured and unstructured meshing, which is just great!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Top-down means essentially automated. You specify some global parameters such as minimum and maximum edge lengths, curvature refinements, etc., and you get a mesh for a complex geometry without touching any of the surfaces. Bottoms-up, on the other hand, means you specify all parameters for all surfaces individually and then create the mesh step by step, i.e., first for your edges (1D), then surfaces (2D), and then finally for your volume (3D). Pointwise does both, and it is really good at it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It allows you to have fine-grained control over how surfaces and volumes are meshed. You can pick different algorithms and compare the meshes they create (as well as the mesh quality that follows). There is nothing stopping you from creating a quick automatic mesh (top-down), which you then refine by adapting meshing regions that need further refinement.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The only problem I have with Pointwise is its CAD kernel, for some reason, I always get a few surfaces that can't be imported. Pointwise has the functionality to repair surfaces on a very rudimentary level. Still, since discovering SpaceClaim, I usually look at what regions are problematic in Pointwise and then fix them in SpaceClaim only to reimport the fixed geometry. If Pointwise were better on this front, I would not need this two-pronged approach, but <a href="https://www.youtube.com/watch?v=Yc4VO8yzYcU" target="_blank" rel="noopener" title="">so here we are</a>.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3465,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/ansys.png" alt="" class="wp-image-3465"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Ansys Fluent Meshing</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.ansys.com/products/fluids/ansys-fluent" target="_blank" rel="noopener" title="">https://www.ansys.com/products/fluids/ansys-fluent</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you say that you can't be bothered with meshing and want something that works quickly and gives you a decent quality, then Fluent Meshing should get your attention.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Fluent Meshing combined with SpaceClaim is a powerhouse that completely changed how I performed meshing. It is quick, reliable, and has some of the best inflation layer algorithms I have seen in a long time. If you have ever used ICEM-CFD (not on this list!) or snappyHexMesh (see next entry), you will know the pain of creating inflation layers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It can only create 3D volume meshes (no 2D meshing), but if that is not a limitation and you have access to Fluent already, then go for it. It will save you a lot of meshing headaches. I like the scripting functionalities as well. They are not well documented, but with a bit of trial and error and recording a journal file of your meshing session, you can quickly automate your meshing and then forget about it completely.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You can't modify local meshing regions easily, although you can separate local areas in SpaceClaim that you want to have some more control over. However, it is also a tool in active development by Ansys and I have seen some features in the pipeline that could be game changer if implemented in a useful way (but from what I have seen, I remain somewhat skeptical).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is honestly one of the best mesh generators I have used in a long time, but it is just a bit restrictive in that it wants to automate everything, so you lose some control over smaller details. If you can live with that, this mesher is for you!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3462,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/openfoam.png" alt="" class="wp-image-3462"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">OpenFOAM: snappyHexMesh</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.openfoam.com/" target="_blank" rel="noopener" title="">https://www.openfoam.com/</a> and <a href="https://cfd.direct/openfoam/" target="_blank" rel="noopener" title="">https://cfd.direct/openfoam/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>OpenFOAM, where to start. Well, it does come with its own mesh generators. Do you need to mesh a geometry? How about five different mesh generators? Yes, OpenFOAM has a few different mesh generators, some of which are not documented, so perhaps you have never encountered them.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Having said that, the working horses are blockMesh and snappyHexMesh. Both mesh generators combined can do the same things as Fluent Meshing mentioned above. If you don't care about turbulence, then snappyHexMesh is the tool for you—that is, if you can work with a mesh written in OpenFOAM format. It is good at creating a decent volume mesh but horrible at creating inflation layers, which are required for turbulent flows.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But the best part—and that is why it is on the list—is that it is completely free to use. If I had to pay for it, I would not recommend it! On the plus side, snappyHexMesh is also in a somewhat active development phase, and you'll see improvements in OpenFOAM releases every now and then. So perhaps the inflation layer issue will be resolved at some point in the future.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3464,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/boxer.png" alt="" class="wp-image-3464"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">BOXERMesh</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.cambridgeflowsolutions.com/en/products/boxer-mesh/" target="_blank" rel="noopener" title="">https://www.cambridgeflowsolutions.com/en/products/boxer-mesh/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>BOXERMesh is an interesting case; it does seem to follow the same meshing philosophy as snappyHexMesh, with the difference that it does work well for large-scale applications, including robust inflation layer creation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For me, the emphasis is on processing large domains. If you need to create domains with widely different length scales or have so many features to capture that you need a well-thought-out mesh refinement strategy, then this tool may be the right one for you.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As an added bonus, the mesh generator uses mesh metrics to steer the meshing workflow, which is good to see. Quality metrics are often overlooked but really should be the main focus during meshing. BOXERMesh gets this aspect right and deserves its place on this list for this fact alone!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3463,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/ansa.png" alt="" class="wp-image-3463"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">ANSA Beta</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.beta-cae.com/ansa.htm" target="_blank" rel="noopener" title="">https://www.beta-cae.com/ansa</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is another tool I haven't used myself, but I feel inclined to include it here simply for the fact that I have heard a lot of positive feedback on this mesh generator from people that I trust.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>From what I can see, it is pretty similar to Pointwise, but it does seem to have a more robust CAD kernel and clean-up functionalities. So, if you deal with dirty geometry a lot, this tool may be for you.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On the other hand, I have also heard that the learning curve is rather steep, but since I have never been able to get my hands on a license, I can't confirm this. I would put it this way: if you are in the market to get a mesh generator and are willing to pay for it, consider both Pointwise and ANSA Beta and see which of these tools has the features you need.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3468,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/altair.png" alt="" class="wp-image-3468"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Altair Hypermesh</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://altair.com/hypermesh/" target="_blank" rel="noopener" title="">https://altair.com/hypermesh/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is another tool I haven't used, but as part of my grid generation lectures, I like to ask students what type of mesh generator they have used before. They usually mention the same software from year to year, and Hypermesh is one of them which I wasn't aware of before, so I checked it out.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have to say, when it comes to automatic meshing, this tool certainly seems to know what it is doing! It seems to be equally robust as Fluent meshing and does a good job at creating a mesh quickly, but what I really liked about this tool is the post-meshing influence you have. It is similar to Pointwise, where you can go in and change the mesh locally, albeit with less control than Pointwise (where you can literally grab vertices and move them around), but certainly more than Fluent meshing.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The only thing I can't comment on is the inflation layer creation, which is the most critical part of any mesh generator. Without it, the mesh generator becomes useless for any serious (engineering) application. But I have no doubt that they perform just as well here, given the set of features implemented into Hypermesh. It's worth a try if you can get your hands on it.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-cfd-solver">CFD Solver</h3>
+<!-- /wp:heading -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3465,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/ansys.png" alt="" class="wp-image-3465"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Fluent</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.ansys.com/products/fluids/ansys-fluent" target="_blank" rel="noopener" title="">https://www.ansys.com/products/fluids/ansys-fluent</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ansys offers a range of CFD solvers; Fluent is the strongest code among them. It is a CFD solver that works, and if this is the only CFD solver you are using or planning to pick up, it will be difficult to appreciate how simple Fluent can be while still giving you excellent results. You will know exactly what I mean if you have used less user-friendly software such as OpenFOAM before.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It has a decent selection of models, especially in turbulence modelling. It helps that they have one of the best turbulence gurus on their payroll who is constantly developing new ways to solve turbulence. As a result, their turbulence modelling capabilities are constantly evolving and ahead of everyone else's solver.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>With the addition of Fluent meshing, it is now a self-contained code where you can do meshing, solving, and post-processing, all in one place. The support for extending Fluent is also great, from automating meshing and simulations through simple scripts to defining your own expressions to calculate new fields or integrated quantities (all with unit checking and automatic conversion) to writing code that is injected into fluent at runtime and even with possibilities to change the user interface to add your own custom tools directly into Fluent.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It does a great job of obtaining flow field information while giving you the feeling that CFD isn't that complicated. This is achieved by doing a lot of heavy lifting in the background, which sometimes means you lose control over some settings. Some may find this restrictive, but I find this a necessary evil to get results in the first place.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is a commercial product, so you'll have to pay for it, but if you are in the market to consider which solver to go for, this is an excellent choice. It also comes with SpaceClaim, which will sort you out on the CAD cleanup stage!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3475,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/star-logo.png" alt="" class="wp-image-3475"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Star-CCM+</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/" target="_blank" rel="noopener" title="">https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Star-CCM+ is probably Fluent's most direct competitor in the commercial landscape. In its own right, it is a fantastic solver with many features and models that you want to see from a commercial CFD solver. Some find the user interface easier to navigate than Fluent's (though I think Fluent is already pretty straightforward), but one nice feature is that you can select parts of your simulation setup and copy and paste them onto a different case, saving you from clicking buttons.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Star-CCM+ long enjoyed a unique standing in the commercial CFD landscape in that it had (and perhaps still has?!) one of the best automatic surface wrappers that helped to pretty much automate the CAD cleanup stage, followed by generating a decent volume mesh. Given that all of that takes place in one software (with Fluent, you need SpaceClaim, Fluent Meshing, and Fluent, so three separate software to learn), it may be easier to pick up and learn than Fluent.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Model and feature-wise, it does not have to hide behind Fluent; they cover pretty similar features albeit with less exotic ways to model turbulence. It can be extended through scripting but uses Java, which is a pretty strange choice for a scripting language, making Star-CCM+, at least in this respect, a unicorn. If this is not a problem for you and you want a single tool to do everything from meshing to solving to post-processing, then this is a good choice.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3462,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/openfoam.png" alt="" class="wp-image-3462"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">OpenFOAM</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.openfoam.com/" target="_blank" rel="noopener" title="">https://www.openfoam.com/</a> and <a href="https://cfd.direct/openfoam/" target="_blank" rel="noopener" title="">https://cfd.direct/openfoam/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I love OpenFOAM, and I hate it at the same time. If you spend long enough with this solver, I believe you will come to the same conclusion. It is a free and open-source solver, so there is no premium to pay for using it, which is great. Of all the open-source solvers out there, it is definitely the best in terms of features and capabilities.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I love OpenFOAM because it has a nice set of features implemented and gives you full control over your simulation setup. I don't necessarily want to have full control over every aspect of my simulation, but if you want to understand how a CFD solver works and having to read up about all of the settings that you can influence, it gives you a pretty good understanding of what it takes to go from initialising the flow to getting a final solution.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You can inject C++ code pretty much anywhere, and since it is entirely text-based, it is easy to automate your simulations. Since it is open-source, it is easy to extend and write your own solvers and models, but finding suitable documentation is a pain, and the developers make it hard for you to get the information you need, as their main source of income is training people to use OpenFOAM, which is a frustrating business model but one that we have to embrace if we want to use the solver.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I hate OpenFOAM because it sometimes just doesn't work. It is full of bugs and seemingly non-tested code, and even if it does work, there are cases where it works in theory but is just so slow that it is useless for what you want to use it for. Their compressible flow implementation is so bad that even the OpenFOAM developers agree that something needs to be done about it (for years, but I haven't seen them move their fingers, I doubt that this sentence will age badly and that OpenFOAM will remain a useless solver for compressible flows in the future).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Still, if I have to weigh up all the advantages and disadvantages, I love the freedom OpenFOAM gives me to explore simulation settings and even the underlying source code as well. Want to know what empirical correlation is used for transitional-based RANS models to obtain closure coefficients in the turbulence models? No problem, find the corresponding source file, and the answer is right there. It is the best code to learn CFD (the hard way), but if you sit through it and try to understand all the different settings and options you can influence, you will emerge as a CFD power user; I have no doubt about that!</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3476,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/numeca.png" alt="" class="wp-image-3476"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Numeca</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.numeca.de/en/" target="_blank" rel="noopener" title="">https://www.numeca.de/en/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Numeca's CFD code is an interesting software; it reminds me a lot of Star-CCM+ in that it unifies the entire process from CAD cleanup to solution in one interface and does so with a seemingly sleeker and more modern interface. I don't know why you should bother about having a modern interface, but it is just prettier to look at, a purely personal preference.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Again, it has all the features and models you would expect to perform internal and external aerodynamic calculations, as well as heat transfer, acoustics, and high-fidelity turbulence simulations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Their heritage seems to be turbomachinery and CFD for ships in open water, but they have matured to a general-purpose CFD code that is, like the other tools, extendable through scripting with Python as a language.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It has a unique way of determining uncertainties and imposing that onto the results, which I haven't seen in any other software. Managing uncertainties is probably the most important aspect for us to get right when simulating cases, yet it remains a pretty unexplored concept by other CFD solvers regarding native integration. It may be a good tool to explore if you are dealing with applications with a high dependence on uncertainties (e.g., erosion predictions).</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3477,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/converge.png" alt="" class="wp-image-3477"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Converge CFD</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://convergecfd.com/" target="_blank" rel="noopener" title="">https://convergecfd.com/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Converge CFD is a code for combustion. Period. This doesn't meant that you can't use it for anything else (I have done some nice external aero simulations of high-performance vehicles with it!) but the way the interface, features, and models are designed gives you a clear indication that you ought to be using this code for combustion related problems.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is no other software that comes even close to having the same set of features and models implemented related to combustion modelling (at least from what I can see), and I have to say that they have some of the best support staff I have ever interacted with. Do you have a specific problem for which you need a solution? How about a personalised webinar with two support staff that walk you through the solution while you get to ask questions along the way?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What I really like about the software is the ability to modify imported CAD surfaces and prepare them for meshing; the meshing works great and has support for inflation layers, which may, though, not be at the same level as other commercial meshing software. But you have some tools to get around this issue, so it is not really a big problem.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The code really shines when it comes to automatic mesh adaptation. Other software can do that as well, but I have the feeling that Converge CFD has come closest to mastering automatic mesh adaptation in a sensible way while retaining load balancing when running the code in parallel.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you are interested in combustion, this is your solver; for anything else, you would need to evaluate it for your specific needs.  </p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3478,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/code_saturne.png" alt="" class="wp-image-3478"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">code_saturne</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.code-saturne.org/cms/web/" target="_blank" rel="noopener" title="">https://www.code-saturne.org/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is another open-source code which is free of charge and intended to be used for incompressible flows (mainly). Compared to OpenFOAM, it has by far not the same set of features, but then again, I probably only use about 2% of the features implemented in OpenFOAM, so quantity is not always a deciding factor.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There are two things that I like about code_saturne: It comes with a graphical user interface (pretty much unheard of for open-source CFD solvers), though with the only caveat that this is only used for setting up cases, not for an integrated workflow like other commercial CFD software for meshing, solving, and post-processing. The other nice feature is that it can easily be integrated with other software. They have native support to couple it to code_aster, which is a structural solver, so Fluid-Structure Interaction (FSI) simulations can be done pretty painlessly (good luck doing that in OpenFOAM). But they have an interface that can be used to couple any other software to code_saturne, and this may be just what you need to build a multiphysics simulation framework that combines various pieces of code.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3479,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/su2.png" alt="" class="wp-image-3479"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">SU2</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://su2code.github.io/" target="_blank" rel="noopener" title="">https://su2code.github.io/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>SU2 is the direct opposite of OpenFOAM. It supports incompressible flows (which you can probably use), but it is aimed purely at compressible flows, and it does an excellent job of getting this step right.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you look at the features implemented, you can quickly see that the history of CFD is well reflected in the implemented models. This means that if you read through the documentation and try to figure out what you have to change to get the simulation setup you want, you will come across many classical schemes that were developed in the context of compressible flows, and so you have a good playground for testing these different methods.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The setup is straightforward: You have to provide a configuration file, which is pretty standard for console-based applications. Once this single file has been created, changing parameters and seeing their effects on the solution is simple.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>SU2 was developed for external aerodynamics, which is what they focus on. This makes sense, given that compressible flows are mainly found in aerospace applications, but if you have a different use case and want a decent base compressible solver, you should give this a try. I have found this solver rather pleasant to work with. </p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3480,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/dassault.png" alt="" class="wp-image-3480"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">PowerFlow</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.3ds.com/products/simulia/powerflow" target="_blank" rel="noopener" title="">https://www.3ds.com/products/simulia/powerflow</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Now we get into the obscure (or shall I say niche?!) solvers, and PowerFlow is the first one I want to start with. PowerFlow is departing from the Navier-Stokes equations and uses the lattice Boltzmann method to solve the fluid dynamic equations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Having done excessive work on Lattice Boltzmann, I don't understand why, honestly. The method is just not fit for purpose, yet people have tried to make it work for large-scale engineering applications (and they have seemingly succeeded).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What I always find interesting is how people repeat, over and over, what advantages we stand to gain from using the lattice Boltzmann method, yet you can probably find directly correlated disadvantages, which may even impose more restrictions.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Having said that, PowerFlow has seemingly overcome all of these disadvantages and provides a tool for industrial applications using the lattice Boltzmann method. It is the go-to tool in the automotive industry, and if this is where you are heading, then it is definitely a bonus to know how to use this solver.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I personally remain sceptical about the lattice Boltzmann method for such applications (which doesn't mean that I distrust the results it provides, just that it is not the best tool for the task at hand). However, if you are interested in more moderate Reynolds numbers and potentially some multiphysics or multiphase aspects, it is a decent tool and actually an area where I believe the lattice Boltzmann method to be a strong tool.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For the right application, this software may be the best solution you have.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3482,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/palabos.png" alt="" class="wp-image-3482"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Palabos</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://palabos.unige.ch/" target="_blank" rel="noopener" title="">https://palabos.unige.ch/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I hesitated to include this software here, but I have a reason, so let me elaborate. Palabos is also based on the lattice Boltzmann method, but it is open-source and free of charge. This may make it the right tool for you for this fact alone.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I hesitate to include it here because you have to use the software to get a solution. To set up a case, you have to write a C++ code that essentially uses functionalities provided by Palabos. It is not a solver where you simply provide the input file, you have to write the solver from scratch (but with heavy support from Palabos itself). This means you must go through the documentation to set up even the simplest of cases, creating a steep learning curve. But if you want to get stuck into lattice Boltzmann, you have time, and the prospect of being able to customise your lattice Boltzmann solver sounds promising, so this is definitely worth a try.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The good news is that there does seem to be at least some decent documentation, so if you have the time, mastering Palabos should be possible. </p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3481,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="http://cfd.university/wp-content/uploads/2024/05/lsdyna.png" alt="" class="wp-image-3481"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">ICFD</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.dynaexamples.com/icfd">https://www.dynaexamples.com/icfd</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I used ICFD in a project with a student, so my recollection of this software is based largely on the student experience. But I wanted to include this solver here because it does something different; it uses the smooth-particle hydrodynamic (SPH) method to solve the Navier-Stokes equations, which means we are using particles instead of a fixed grid to get our results.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Like the lattice Boltzmann method, SPH is often portrayed as having advantages that should make you jump out of your seat and ask why not everyone is using this fantastic method. It is often hailed as a meshless method, and so you remove the pre-processing stage entirely (great news if you hate meshing),  but this isn't strictly speaking true, as you still have to provide locations for the particles to be injected from (which usually sit on a regular mesh). Granted, it is simpler than creating a 3D volume mesh, but at the same time, you lose control over mesh densities close to wall boundaries, where you probably want to have some more information to capture velocity gradients accurately.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is the only commercial CFD software available that is based on the SPH method, so if this is what you want to evaluate, it is probably your best shot. From the result I have seen, it seems to be doing a decent job, though, in terms of development, there is still a tall mountain to climb to come anywhere near capabilities that mesh-based solvers such as Fluent, Star-CCM+, and OpenFOAM have to offer.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3484,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/pysph.png" alt="" class="wp-image-3484"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">PySPH</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://pysph.readthedocs.io/en/main/" target="_blank" rel="noopener" title="">https://pysph.readthedocs.io/en/main/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Similar to Palabos, I have included this software here purely for completeness. It is an open-source implementation of the SPH method, rivalling ICFD mentioned above.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Unlike Palabos, though, the developers seem to have done a great job of exposing a user-friendly API for writing SPH code. Similar to Palabos, you have to write your own solver, but they use Python with some pretty impressive performance (comparable to compiled code). It is parallelised for CPUs and GPUs, and for that fact alone, it is a worthy contender.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Particle-based codes always have the disadvantage that conventional post-processing software are notoriously bad at displaying particle-based solutions. PySPH overcomes this by implementing its own post-processing software.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While I may not be personally interested in working with SPH, the software design of PySPH is rather nice and from a software engineering perspective I like how they have achieved a few things that I may want to learn from them should I need these feature in the future myself. Perhaps not the strongest endorsement for a CFD code, but if you are interested in SPH, why not try this before splurging on expensive ICFD licenses?</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-post-processing-data-visualisation-and-processing">Post-processing (data visualisation and processing)</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>So, we have cleaned up and meshed our geometry, solved the flow within or around it, and are now at a stage to analyse the results. Post-processing is not the process of showing colourful images (that is just visualisation), but post-processing is the step of taking the computed raw data (pressure, velocity, temperature, etc.) and converting that into quantities of interest, e.g. integral quantities such as lift and drag coefficients, separation points on external aerodynamic surfaces, pressure drops, efficiencies, the list goes on.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Think about post-processing this way: if you run the simulation around a complex geometry or engineering application, what information would you need to decide what to change about the geometry for quick optimisation? To make this decision, you will need to calculate application-specific quantities, which will help you steer that decision. This is the realm of post-processing, which includes visualisation as well, but that is just one part of it. In the following, we'll review tools that help you to do just that.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3492,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/paraview.png" alt="" class="wp-image-3492"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Paraview</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.paraview.org/" target="_blank" rel="noopener" title="">https://www.paraview.org/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>My go-to tool for all post-processing needs. It is one of the rare open-source, free-to-use software and probably better (at least in certain areas) than paid counterparts.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Paraview is, first and foremost, an excellent visualisation tool. It comes with features that you would expect here, i.e., contour plots, iso-surfaces, streamlines, 1D plots, and a very decent line-integral convolution-based streamline plotting tool. The quality of these plots is excellent, and you can even choose ray tracing for your visualisation to give your renderings that <a href="https://www.youtube.com/watch?v=ifK3vXYJm6Y" target="_blank" rel="noopener" title="">photorealistic look</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But the processing of data is where Paraview really comes to shine for me. Paraview works by stacking different filters on top of each other, each modifying certain bits of the data. For example, you only have velocity and pressure data around a geometry and want to calculate the lift and drag coefficient? No problem; first, use a filter to get the surface normal vectors for each cell, then a filter to calculate the velocity gradient (from which you can then calculate the wall shear stresses), and you can then calculate components in the direction of your lift and drag vector and finally use the integration filter to get lift and drag forces. You can apply another (calculator) filter to compute the lift and drag coefficient.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you perform a certain set of filters all the time, you can create your own custom filter to apply that or simply record a macro which spits out Python code that you can then modify to perform similar tasks for different data sets. I have used that to record the steps to take for one simulation, and then I changed the data loading instruction and replaced it with a loop to do that for a number of other simulations, all giving me the same outputs for different test points.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For me, the downside with Paraview is that the data loaders are not the best. If you have a look through them, you'll notice that a huge number of data loaders are available. Yet, the ones I am interested in either don't work anymore (the data format has changed, but Paraview has not caught up) or are only partially implemented, and I can't use all the features the data format provides me (CGNS, in particular). If getting data into Paraview is not a problem for you, then Paraview is a fantastic, free software, which is also one of the more user-friendly tools for learning.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3493,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/tecplot.png" alt="" class="wp-image-3493"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Tecplot</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://tecplot.com/" target="_blank" rel="noopener" title="">https://tecplot.com/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Tecplot is another great paid post-processing tool. The learning curve is definitely stepper than Paraview's, but once you get it, you can do some pretty good post-processing.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Paraview and Tecplot do pretty much the same things in terms of visualisation, so there really is no differentiating factor here. Post-processing-wise, though, Tecplot works a bit differently. You can achieve exactly the same things with Tecplot as with Paraview, though not in as much of a unified way as in Paraview, in my opinion. You can calculate new variables, say the vorticity or Q-criterion, using the calculation tool, write your own macro to calculate a new variable, or use the equation editor to calculate a new variable, or why not throw Python in the mix and do everything there, including automating your post-processing?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As I said, once you know how to do things with the software, then it is a great tool and also much more robust than Paraview; for example, the data loader issues mentioned above do not seem to appear with Tecplot, and they do keep their data loaders up to date. If I want to use advanced CGNS features, I know that I have to go to Tecplot.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One thing where Tecplot is far better than Paraview is the support for visualising parametric studies using Tecplot Chorus. It's a simple piece of software which you can pick up in a matter of hours, but it really helps to explore parametric studies and differences between geometries and operating conditions, whereas Paraview can only really be used to investigate single simulations.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3494,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/python.png" alt="" class="wp-image-3494"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Python</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://www.python.org/" target="_blank" rel="noopener" title="">https://www.python.org/</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Nowadays, I can't see a professional CFD engineer who is oblivious to Python's existence! I say that because I used to ignore Pythjon for a long time and only picked it up in the mid-2010s.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you have never used Python before, you have no idea how powerful it really is. Even if we concentrate on CFD data processing, Python offers so much support here that you really do not need to write much code to get what you want. With an account for ChatGPT, or better, <a href="https://codeium.com/" target="_blank" rel="noopener" title="">Codeium</a>, you can create Python scripts that process and plot data for you with ease.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Plotting is straightforward with Python, and packages such as matplotlib or pyplot really make it easy to visualise simple 1D graphs or 2D contours. Pyplot is interactive and opens in a browser, meaning there are some nice data manipulation possibilities, which come in handy if you are trying to visualise parametric studies in a 1D graph using <a href="https://datavizcatalogue.com/methods/parallel_coordinates.html" target="_blank" rel="noopener" title="">parallel coordinate plots</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Python is really powerful for processing, too. Doing a fast Fourier transform (FFT) is simple and straightforward (and you can use packages that have that implemented already), and with scipy, you have a package that does a lot of things that are useful for data manipulation for engineering and scientific applications.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>With Python at your fingertips, throwing in some machine learning is relatively simple (though you still need to know what you are doing). It helps that the CFD community is moving to expose the functionalities of each solver or tool through a Python layer. Thus, you can automate CAD cleanup in Python through SpaceClaim, meshing and solving with Python in Fluent, as well as post-process your result with Python using either Paraview or Tecplot.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I'd argue that you need to be aware of Python and able to read and modify scripts. Otherwise, you risk falling behind in terms of productivity. Python is a powerful tool, and once applied to your everyday workflow, you can save a lot of time and automate processes. </p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->
+
+<!-- wp:columns -->
+<div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
+<div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":3495,"sizeSlug":"full","linkDestination":"none"} -->
+<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2024/05/matlab.png" alt="" class="wp-image-3495"/></figure>
+<!-- /wp:image --></div>
+<!-- /wp:column -->
+
+<!-- wp:column {"width":"66.66%"} -->
+<div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading">Matlab</h4>
+<!-- /wp:heading -->
+
+<!-- wp:heading {"level":6} -->
+<h6 class="wp-block-heading" id="aioseo-authors">Website: <a href="https://uk.mathworks.com/products/matlab.html" target="_blank" rel="noopener" title="">https://uk.mathworks.com/products/matlab.html</a></h6>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Matlab is a very different beast for me. It's great for plotting 1D graphs and 2D contour plots, and you can do easy data manipulation with it. I used Matlab extensively in the past, but over time, I got more and more into Python, and the more I used it, the less I used Matlab.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, for plotting, it is perhaps not the best option, as it would be overpriced to buy Matlab licenses just for that (especially as Matplotlib can do pretty much the same things in Python). But Matlab has a lot of toolboxes that, for the right application, can make your life a lot easier and give you functionalities that other packages in Python can't. I personally never really got into toolboxes in Matlab so this is not a strong motivating factor for me to stay in Matlab, but it does offer decent support here.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The Matlab documentation is really great and example-driven, and for that reason, I find Matlab easier to pick up and definitely more user-friendly. If you have no idea how to get started with machine learning to analyse your CFD data, browse their machine learning toolboxes and look at their tutorials and write-ups. You may not learn much about the theory, but you get a head start on applying these methods to your problem. Documentation is usually an underrated feature of the software, though I think documentation is just as necessary as the code you write to produce that software; for that fact alone, I can appreciate Matlab for what it is.</p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->

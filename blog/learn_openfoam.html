@@ -1,0 +1,504 @@
+<!-- Learn OpenFOAM: The Good, The Bad, And The Evil! -->
+<!-- https://cfd.university/blog/learn-openfoam-the-good-the-bad-and-the-evil/ -->
+
+<!-- wp:paragraph -->
+<p>Should you learn OpenFOAM? What are its biggest advantages and disadvantages? Having used and taught OpenFOAM since 2016, I have to say that my love/hate relationship with it has only grown over the years, and I find this solver fascinating, as it is quite a polarising CFD solver. So, I thought I would organise my thoughts in this blog article to provide you with a list of advantages and disadvantages that you should expect when you are considering to learn OpenFOAM, and use that to make recommendations when or when not to learn it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this article</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":3,"blockClientId":"db8d5f60-945d-4ce0-95af-91b6333ac555","content":"Introduction","level":2,"anchor":"aioseo-introduction-how-to-learn-openfoam","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":17,"blockClientId":"82afa2cc-4963-4fb6-9252-f299385e4d1c","content":"Should I learn OpenFOAM? The good and the bad ...","level":2,"anchor":"aioseo-the-pros-and-cons-of","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":23,"blockClientId":"4c867c53-c55f-44c5-afcf-a7b7810b5967","content":"For the sceptics: What advantages can I expect when I learn OpenFOAM?","level":3,"anchor":"aioseo-pros-of-learning-openfoam","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":25,"blockClientId":"715438ed-1f92-4f60-ae0f-cfb4604e35a6","content":"It's free and open-source","level":4,"anchor":"aioseo-its-free-and-open-source","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":29,"blockClientId":"86c9b601-9f88-428f-9124-8d595bfbb435","content":"Complete support from pre- to post-processing","level":4,"anchor":"aioseo-batteries-included","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":35,"blockClientId":"af061377-1453-4256-b5c6-0da51597638f","content":"A collection of feature-complete CFD solvers","level":4,"anchor":"aioseo-a-feature-complete-cfd-solver-from-a-z","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":39,"blockClientId":"9a40e120-24bc-4fba-a904-bdf6a68b272f","content":"Once you master OpenFOAM, you will become a CFD master","level":4,"anchor":"aioseo-once-you-master-openfoam-you-will-become-a-cfd-master","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":46,"blockClientId":"77220774-5fb5-4321-81f4-2d87f6292b7e","content":"Well-written source code","level":4,"anchor":"aioseo-well-written-source-code","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":50,"blockClientId":"d564835f-2362-4779-afa0-14bdeb720988","content":"Easily extend OpenFOAM with custom C++ even without knowing C++","level":4,"anchor":"aioseo-great-support-for-user-defined","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":55,"blockClientId":"d6e8a0bb-a6ce-4ee0-8727-4ccfb1cbda2d","content":"Great for automation and parameterisation","level":4,"anchor":"aioseo-great-for-automation-and-parameterisation","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":58,"blockClientId":"0918cb92-9cd0-44dc-b4b8-9c9b59f3ab98","content":"A threat to commercial CFD solvers","level":4,"anchor":"aioseo-a-threat-to-commercial-cfd-solvers","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":66,"blockClientId":"25ab73a9-d470-4415-b6f9-b857d2bcee15","content":"For the optimists: What disadvantages can I expect when I learn OpenFOAM?","level":3,"anchor":"aioseo-cons-of","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":68,"blockClientId":"610b9cf8-8b32-4179-8264-2e017a4635f6","content":"I hope you like Linux","level":4,"anchor":"aioseo-i-hope-you-like-linux","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":75,"blockClientId":"025cf159-0ac5-4b99-ba47-5191f4fe3915","content":"Poor software testing practices in place (if at all, any)","level":4,"anchor":"aioseo-poor-software-testing-practices-in-place-if-at-all-any","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":81,"blockClientId":"238c14e6-9528-4b61-9158-029e2f4b3aa2","content":"Meshing capabilities are limited for complex geometries","level":4,"anchor":"aioseo-meshing-capabilities-still-not-up-to-date","order":14,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":87,"blockClientId":"71d5e606-b4f8-4819-8d4b-68e802b286db","content":"High setup cost, prone to mistakes","level":4,"anchor":"aioseo-a-lot-of-input-re","order":15,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":92,"blockClientId":"7ff69e4d-acb6-40fe-99d6-4aaac940d0d6","content":"Poorly documented solver","level":4,"anchor":"aioseo-poorly-documented-solver","order":16,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":98,"blockClientId":"36faba21-7fa2-4b9c-9134-0615c6991b52","content":"Only inefficient CFD algorithms are available","level":4,"anchor":"aioseo-only-inefficient-cfd-algorithms-s-implemented","order":17,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]},{"id":103,"blockClientId":"410637bc-aae7-4a21-9167-f1ad136c8ca1","content":"Summary","level":2,"anchor":"aioseo-summary","order":18,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":106,"blockClientId":"3f016697-d577-44e0-8ca3-058ddc57fdc0","content":"When to learn OpenFOAM","level":3,"anchor":"aioseo-when-to-learn-openfoam","order":19,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":108,"blockClientId":"014b9052-2793-4d69-98ca-8d7da7f03dea","content":"When not to learn OpenFOAM","level":3,"anchor":"aioseo-when-not-to-learn-openfoam","order":20,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-introduction-how-to-learn-openfoam">Introduction</a></li><li><a href="#aioseo-the-pros-and-cons-of">Should I learn OpenFOAM? The good and the bad ...</a><ul><li><a href="#aioseo-pros-of-learning-openfoam">For the sceptics: What advantages can I expect when I learn OpenFOAM?</a><ul><li><a href="#aioseo-its-free-and-open-source">It&#x27;s free and open-source</a></li><li><a href="#aioseo-batteries-included">Complete support from pre- to post-processing</a></li><li><a href="#aioseo-a-feature-complete-cfd-solver-from-a-z">A collection of feature-complete CFD solvers</a></li><li><a href="#aioseo-once-you-master-openfoam-you-will-become-a-cfd-master">Once you master OpenFOAM, you will become a CFD master</a></li><li><a href="#aioseo-well-written-source-code">Well-written source code</a></li><li><a href="#aioseo-great-support-for-user-defined">Easily extend OpenFOAM with custom C++ even without knowing C++</a></li><li><a href="#aioseo-great-for-automation-and-parameterisation">Great for automation and parameterisation</a></li><li><a href="#aioseo-a-threat-to-commercial-cfd-solvers">A threat to commercial CFD solvers</a></li></ul></li><li><a href="#aioseo-cons-of">For the optimists: What disadvantages can I expect when I learn OpenFOAM?</a><ul><li><a href="#aioseo-i-hope-you-like-linux">I hope you like Linux</a></li><li><a href="#aioseo-poor-software-testing-practices-in-place-if-at-all-any">Poor software testing practices in place (if at all, any)</a></li><li><a href="#aioseo-meshing-capabilities-still-not-up-to-date">Meshing capabilities are limited for complex geometries</a></li><li><a href="#aioseo-a-lot-of-input-re">High setup cost, prone to mistakes</a></li><li><a href="#aioseo-poorly-documented-solver">Poorly documented solver</a></li><li><a href="#aioseo-only-inefficient-cfd-algorithms-s-implemented">Only inefficient CFD algorithms are available</a></li></ul></li></ul></li><li><a href="#aioseo-summary">Summary</a><ul><li><a href="#aioseo-when-to-learn-openfoam">When to learn OpenFOAM</a></li><li><a href="#aioseo-when-not-to-learn-openfoam">When not to learn OpenFOAM</a></li></ul></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-introduction-how-to-learn-openfoam">Introduction</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Here is a question I get quite often: Should I learn OpenFOAM, yes or no? Gun to my head, yes, you should learn OpenFOAM if you don't know it already, but if you allow me some more breathing space (put that gun away, will you?), then let me elaborate on that question because it is not an easy one to answer. It will depend on what you want to get out of it, and based on your intended use cases (or career aspirations), the answer may be very different.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But before we dive into the advantages and disadvantages of OpenFOAM, let's look at a bit of history, its about to get messy. Are you ready?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>No one really knows when OpenFOAM started, and it seems to be a bit sketchy as to who actually started the development of it, but the common believe is that Henry Weller started to develop FOAM (field operation and manipulation) in 1989 using C++, opposed to good old Fortran which was the prevailing programming language back then for CFD applications.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>At around that time, Hrvoje Jasak joined the party and together with Weller, they developed OpenFOAM for about a decade. They formed Nabla Ltd and distributed FOAM as a commercial solver. It seems a bit of a mystery what happened in the year of 2004, but Nabla Ltd was dissolved, and a somewhat messy divorce ensued. Weller, along with others, went on to form OpenCFD Ltd to continue developing FOAM, which was now released under an open-source license and renamed to OpenFOAM.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Jasak, on the other hand, went solo and formed the consulting firm Wikki Ltd, which retained a fork of OpenFOAM called <a href="https://sourceforge.net/projects/foam-extend/" target="_blank" rel="noopener" title="">foam-extend</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In 2011, OpenCFD moved all of its source code and documentation to the newly created company called OpenFOAM Foundation Inc., which was set up in the US, thus seeing the departure of OpenFOAM to the US. 3 days later, the OpenFOAM Foundation was acquired by Silicon Graphics International (SGI), but only a year later, the <a href="https://www.esi-group.com/" target="_blank" rel="noopener" title="">ESI Group</a> would acquire OpenCFD (which would go on to operate as a subsidiary of ESI), and with it, the OpenFOAM Foundation and ownership of OpenFOAM are still with the ESI Group today.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In 2014, the OpenFOAM Foundation Ltd was established in the UK, and the source code moved back from the US to the UK, where it is still developed today. In 2015, Weller and others founded <a href="https://cfd.direct/" target="_blank" rel="noopener" title="">CFD direct</a> and continue to work on and release OpenFOAM to the present day.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, let's keep stock, we have <a href="https://cfd.direct/" target="_blank" rel="noopener" title="">CFD direct</a>, <a href="https://openfoam.org/" target="_blank" rel="noopener" title="">OpenFOAM Foundation</a>, <a href="https://www.openfoam.com/" target="_blank" rel="noopener" title="">OpenCFD</a>, and <a href="https://sourceforge.net/projects/foam-extend/" target="_blank" rel="noopener" title="">foam-extend</a>, all having some right and heritage in the development of OpenFOAM and wanting some part of the pie. This diversification of owners and developers means that over time, some incompatible changes were introduced, and if you look up the syntax for one version, it may or may not work in another. Yes, you need a bit of luck to set up your simulations, and surely this is what you want from a new solver that you are just about to learn ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Rumours have it (that I may have started), that Jasak and Weller do not talk to each other anymore which led to the breakup of Nabla Ltd in 2004 and the diversification of owners and companies developing OpenFOAM. It reminds me of Adidas and Puma, which are two brands you are probably familiar with, but did you know that <a href="https://en.wikipedia.org/wiki/Dassler_brothers_feud" target="_blank" rel="noopener">both come from the same family</a> and they only developed as two brothers could not agree on which direction to take the business they inherited from their father?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Perhaps Weller and Jasak had a similar feud, or perhaps there was a peaceful transition, or they just couldn't agree on which takeaway shop to get their lunch from. My guess is as good as yours, but we all have to live through the mess of having to pick a version and stick with it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To complicate matters further, OpenFOAM is not a CFD solver, although this is its main usage. Recall that FOAM just stands for field operation and manipulation; the FOAM project was originally developed to work on field operators (like applying the nabla, or curl operator, to a scalar, vector, or tensor field). It turns out that CFD desperately needs field operators, so using FOAM (or, nowadays, OpenFOAM) to write a CFD solver is pretty straightforward.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, OpenFOAM is a library in the first instance. However, when you download OpenFOAM, you also get a collection of solvers developed with this library, which are the ones we are more familiar with when talking about OpenFOAM. If you have come across solvers like simpleFoam, pimpleFoam, or rhoCentralFoam, these are all solvers developed using the OpenFOAM library.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So OpenFOAM is a CFD solver that is not a CFD solver, and it doesn't know who its parents are anymore, having set the stage, let's look into why you should, or shouldn't learn OpenFOAM. Are you ready? It's about to get messy (oh, right, I already said that. Well, strap in, it won't get any better).  </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-the-pros-and-cons-of">Should I learn OpenFOAM? The good and the bad ...</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>So, after reading the opening paragraphs, you may be thinking, why bother? This software project seems messy and why should I bother to learn OpenFOAM? Well, you are right about the messy part, and it is one that we have to put up with, I'm afraid.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Take Jeremy Clarkson, for example, who was a presenter on <a href="https://www.topgear.com/" target="_blank" rel="noopener" title="">TopGear</a> and <a href="https://www.bbc.co.uk/news/entertainment-arts-35648682" target="_blank" rel="noopener" title="">got fired for punching his producer</a>. Clarkson was known to be aggressive, and most of his actions leading up to this incident would have been enough for anyone else to get fired, but not Clarkson; he was an integral part of the TopGear brand, and so people just had to put up with his <em>difficult</em> behaviour.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>OpenFOAM is a massive collection of source code, and there is no one rivalling it, probably most commercial solvers have less lines of code than OpenFOAM. There is no competition, and so we just have to accept that it will occasionally punch us in the face, too, without reason, without any warning. I love/hate working with OpenFOAM, so the following list provides you with reasons for what is good and bad about it and why I still believe you should learn OpenFOAM if you haven't already.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>And, if you are currently picking up OpenFOAM and have been looking at it for a few weeks or months, you will still feel the punches. I wish I could tell you that it gets better, but it won't. At best, we will settle for the discomfort and simply find a way to live with our abusive new best friend.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But let's be optimistic, let's try to see the good side of it (I sound like suffering from <a href="https://www.webmd.com/mental-health/what-is-stockholm-syndrome" target="_blank" rel="noopener" title="">Stockholm syndrome</a>). In the next section, we'll look at all of the advantages and disadvantages you can expect when you want to learn OpenFOAM. Let's dive in.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-pros-of-learning-openfoam">For the sceptics: What advantages can I expect when I learn OpenFOAM?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I know I have been a bit over the top in the previous paragraphs, it isn't all that bad. There are some genuinely good developments I really enjoy that make it worthwhile to learn OpenFOAM. Let's look at the main advantages in my view.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-its-free-and-open-source">It's free and open-source</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Well, I can't be clearer than that. You get a collection of highly competitive CFD solvers, hundreds of thousands of lines of code, and a complete integrated CFD workflow for the <a href="https://www.freehugscampaign.org/" target="_blank" rel="noopener" title="">same price as a hug</a>. It is absolutely free. I am a big fan of free and open source (<a href="https://itsfoss.com/what-is-foss/" target="_blank" rel="noopener" title="">FOSS</a>) software projects, as they allow anyone to inspect the source code and submit bug fixes in the source code.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Unfortunately, OpenFOAM is no longer developed by a group of open-source enthusiasts (if only they could have agreed on their takeaway lunch ...) but instead by a commercial company, and the cost to cover their staff has to come from somewhere. In-house training may be one source, but some money is made by offering to implement new (or fixing existing) code in exchange for a small fortune (I was applying for funding once, and the quoted price was mouth-wateringly high).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, take it or leave it, but until a similar massive open-source project threatens OpenFOAM's existence, we have to live with the fact that, yes, it is free in terms of money, but we still have to pay a price, mainly with our time, to work out why OpenFOAM is not working as intended.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-batteries-included">Complete support from pre- to post-processing</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is what separates the boys from the man, there are countless open-source CFD solvers out there, but OpenFOAM always wanted to be a <a href="https://protocolostomy.com/2010/01/22/what-batteries-included-means/" target="_blank" rel="noopener" title="">batteries included</a> deal, i.e. provide you with a complete set of tools to manage your pre-processing (meshing), solving, and post-processing. There is no other open-source software that I am aware of that has the same capabilities, certainly not to the same standard that OpenFOAM provides.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Heck, there aren't even any good open-source mesh generators available that I could name (and yes, I am aware of Gmsh, Salome, and the like, but when it comes to serious CFD meshing, they all fold).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, if you know how to use OpenFOAM, you have a complete set of tools available and don't need to consider tools outside the OpenFOAM ecosystem, though, in fairness, it should be mentioned that their post-processing is done entirely within paraFoam, which is a fork of <a href="https://www.paraview.org/" target="_blank" rel="noopener" title="">ParaView</a>. ParaFoam used to expose some additional help to work with OpenFOAM cases directly, though that has been lon integrated with Paraview, rendering the use of paraFoam somewhat limited.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Be that as it may, it integrates well with ParaView and has some decent meshing capabilities. The only thing missing, really, is a CAD processor, but that would be a bit over the top (though primitive shapes like squares and cylinders can be generated, and with a bit of work, you can also create grids for airfoils with their meshing tools).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you are planning to take down OpenFOAM, you have to come up with a solver that can do all of these three things, and do it better. You see, there is a lot of development in OpenFOAM, putting it lightyears ahead of any other CFD solver. This is why it is so difficult to overlook OpenFOAM in the open-source space and a good reason to start learning it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-a-feature-complete-cfd-solver-from-a-z">A collection of feature-complete CFD solvers</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>As I have alluded to previously, OpenFOAM is a library, not a solver, but it does come with a set of pre-programmed solvers for various CFD applications. Perhaps one of its downsides is that there are, by now, around 100 different solvers, and you have to know the difference between them in order to know which one is the right one for you. The way OpenFOAM has designed its solver is a bit unfortunate in that a few selections are hardcoded and can't be changed (unless you want to write your own solver and change it in the code), and some aren't.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For example, you can change the turbulence model in each solver that supports turbulence modelling, but the ability to include turbulence models is a property of the solver. So, some solvers support turbulence modelling, and some don't, but if they do support it, you can use RANS, DES, SAS, or LES with it, and you don't have to make any modifications to your code. The worst part is that you can set up a case to include turbulence modelling and run it with a solver that does not support it; the solver will run without warnings, but it won't calculate what you expect it to.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In fact, if you look through the solvers, you'll quickly find that you have a lot more features and solvers available than in some other commercial CFD solvers. This means that if you are ready to learn OpenFOAM now, you can rest assured that you won't reach any limits in the future; OpenFOAM has probably support for pretty much anything you need in the future, capabilities that you are now as a CFD or OpenFOAM novice not even aware. And even if it isn't implemented, you have a large community of OpenFOAM enthusiasts that can help you implement it later.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-once-you-master-openfoam-you-will-become-a-cfd-master">Once you master OpenFOAM, you will become a CFD master</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's not beat around the bush; setting up a case in OpenFOAM is hard. It isn't necessarily hard because the interface is confusing (it is rather well designed), but instead because you have to provide a lot of information. OpenFOAM assumes nothing, so you have to set up everything yourself, from scratch, for every case (or OpenFOAM won't even launch your case).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Compare that to ANSYS Fluent, for example, where you can set up a case (say, the flow around an airfoil) in 12 mouse clicks and 2 keyboard inputs. You can see that setting up a case probably takes less than a minute, but in OpenFOAM, you'll spend more time than this. Seasoned OpenFOAM users will chime in and say that they can set up a case in a few minutes or so, though they are most likely following the common convention that you copy a tutorial case that is similar to what you want to do, and then they only change the inputs they need to.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is a dangerous business but a necessary one; looking at a similar case setup for a flow around an airfoil requires around 700 lines of code spread over 13 different files. And when I say code, I mean it; OpenFOAM uses a somewhat inconsistent C++ syntax to set up cases, so you have the get the parenthesis right, put the commas in the right place, etc. Setting up your case feels like programming.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You can see that if you have to write 700 lines of code for a simple case setup, you will be forced to work with a case that has already been set up. The danger lies in not changing everything that is required, but just enough the get the case running, which is what most beginners in OpenFOAM will do. You run your case, you inspect the results, and you wonder what's wrong. But without knowing what went into the case set up in the first place, because you copied everything, you have no chance of identifying the error.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This brings me then to the main advantages: when you learn OpenFOAM, it forces you to become proficient in CFD at the same time. You need to have CFD expertise in order to use it correctly. Anyone can run tutorial cases, and anyone can show results in ParaView (which is what we call CFD = colourful fluid dynamics), but knowing if the results are right and being able to make a case run after it crashes without any error message given requires a certain background knowledge in CFD.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The good thing is that OpenFOAM exposes everything you need to set up a case, this also means, that you can start looking for what each option and input does. In the beginning, you will spend a lot of time looking up these things (not in the official documentation, which is rather useless). Over time, things will become clearer, but it takes time. However, once you emerge from this process, you will know more about CFD than the average CFD user, and you will feel confident about setting up simulations. It is a rewarding feeling, but one that takes a while to settle in.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-well-written-source-code">Well-written source code</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Looking through the code, I see that it has its very own formatting, and it doesn't really resemble anything that I have seen prior, but it somehow works. OpenFOAM does everything its own way, and that is true for its code as well. While the formatting is somewhat non-standard, it is consistent, and this means reading the source code becomes rather straightforward, even though OpenFOAM is a massive collection of different source files. If you look at any other open-source code project, formatting and clarity of code are usually not a priority.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This means that if you want to learn something, how a certain concept is implemented into an actual CFD solver, you will have to go through an initial pain of learning how to read the source code, but once you have done that, the source code becomes probably the best book about CFD you will ever read. I only wish that there was a bit more documentation of where they are taking their equations from, but, well, you can't get everything.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I have used the source code for a few of my lectures, for example, to extract correlations for transitional turbulence models (which you won't find written down in any textbook). It is a really useful resource, and reading it is not that difficult, honestly.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-great-support-for-user-defined">Easily extend OpenFOAM with custom C++ even without knowing C++</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Now, this is what I really like about OpenFOAM. Weller and Jasak designed it in a way that makes it easy for you and me to inject C++ code without even knowing that we are writing C++ in the simplest of instances. And you can inject code pretty much anywhere you want.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Do you want to parameterise your input files? No problem, instead of hardcoding a value, just use <code>#calc" &lt;c++ code> ";</code> instead, and you can inject your own C++ code in this way. You can define variables before, and then use them in your <code>calc</code> statements. Parameterising your case is done in a matter of minutes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Are OpenFOAM's 50+ boundary conditions not enough for you? Do you need something very specific? (custom inlet profile, time-varying behaviour)? Of course, just slap in some code for your boundary condition and OpenFOAM will hook this into your solver, you don't even have to compile it yourself. It will all be done the first time you run your case (and only once; the next time you run it, the compiled version will be used straight away, no recompilation required!).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sure, you need to know how to inject all of this into your case set up, but thankfully there are a few online resources that will get you started. Once you have the code, you can easily modify it and use in another case set up. It is part of when you learn OpenFOAM, but once you have mastered it, there are no more limitations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-great-for-automation-and-parameterisation">Great for automation and parameterisation</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>I touched upon the parameterisation aspect of OpenFOAM, but there is a closely related aspect, and that is automation. When we run our cases, chances are, we want to run a few different simulations and then extract data from all of these. For example, we want to extract the lift and drag coefficient from an airfoil over a range of angles of attack. Having the ability to parameterise our simulations means that we can also easily automate them.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since everything is text-based, it is easy to write a script that runs all of your simulations, extracting the data you need, storing it in a specific place, and perhaps even making changes to your existing case setup and then re-launching the simulations. Customising, automating, and parameterising your cases is rather straightforward, more so than with other solvers. So once you go through the pain of learning OpenFOAM, using it in an automated manner is rather straightforward.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-a-threat-to-commercial-cfd-solvers">A threat to commercial CFD solvers</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is, perhaps, my favourite point. When I started learning CFD in my undergraduate studies, my university had student licenses for ANSYS Fluent, and so that was the solver I first used. I was neither thrilled nor dissatisfied with it as I had no point of reference, but it was an okay solver.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>At around the same time (early 2010s), OpenFOAM really started to take off, and people were using it in pretty much any industry you can think of. It posed a serious threat to commercial solvers like Fluent, and in the past decade, there has been a drastic redevelopment of commercial solvers to address this threat.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As a Fluent user since the early 2010s, I was able to observe this transformation myself and it is really rather fascinating. Although I have no ties to ANSYS, I'm pretty sure their operating mode must have been something along the lines: "We can't compete with OpenFOAM on cost, so let's work out how we can differentiate ourselves from them and provide solutions where OpenFOAM is weak". What we have in Fluent nowadays is exactly that!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We have had Fluent meshing since around 2020, which does a pretty decent job of creating a mesh. Similar to Fluent, setting up the mesh can be achieved with just a few clicks. It generates grids that are usually of better quality than other dedicated mesh generators, and the inflation layer algorithm just works pretty much all of the time. This is where other mesh generators typically struggle the most (including OpenFOAM's mesh generators).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you have ANSYS, or even just Fluent, you'll also get Spaceclaim, which is one of the most underrated but probably best CAD/pre-processors for CFD purposes we have available. OpenFOAM does not offer any support for creating CAD or cleaning it up. Fluent has also become even more user-friendly (yes, it used to be more than 12 clicks and 2 keyboard inputs), while OpenFOAM has remained as user-unfriendly as it has always been (as in, give me 700 lines of code before I even start running your case).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We looked at <a href="https://cfd.university/blog/why-is-everyone-switching-to-gpu-computing-in-cfd/" target="_blank" rel="noopener" title="">GPU computing in CFD</a> a while back, and this is another area where Fluent has drastically improved and it is unlikely that we will see similar capabilities in OpenFOAM anytime soon (or at all), <a href="https://sim-flow.com/rapid-cfd-gpu/" target="_blank" rel="noopener" title="">although some attempts have been made</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>OpenFOAM is keeping other CFD vendors honst, and it ensures that the high license cost they are charging means you are getting a decent product in return, on top of the support that commercial solvers provide.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-cons-of">For the optimists: What disadvantages can I expect when I learn OpenFOAM?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>So, we looked at some of the advantages you can expect if you decide to learn OpenFOAM. But let's also review a few disadvantages and see what obstacles and hurdles are in your way that you will either have to overcome or mitigate.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-i-hope-you-like-linux">I hope you like Linux</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>OpenFOAM only works on Linux. Period. They claim it does work on Windows as well, but it doesn't, <em>technically</em>. Sure, you can run OpenFOAM on Windows (and this is what I do all the time), but you need to set up a Linux kernel first in order to run it. You can't natively run OpenFOAM on Windows, you'll always need some intermediate Linux layer to get it to work, be it <a href="https://www.mingw-w64.org/" target="_blank" rel="noopener" title="">MinGW</a>, or <a href="https://learn.microsoft.com/en-us/windows/wsl/about" target="_blank" rel="noopener" title="">WSL</a>. Why? Because the OpenFOAM developers decided to write their own build system that wraps around another one that only works on Linux and uses some Windows-incompatible libraries.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In fairness, though, OpenFOAM is an old project, imagine you are starting a new software project now and you need to have backward compatibility, it would be unreasonable to accuse you of poor software design 30 years later when the computer sicence sector probably has moved on into spheres we can't even imagine yet.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, let's say you are one of the <a href="https://gs.statcounter.com/os-market-share/desktop/worldwide" target="_blank" rel="noopener" title="">70% of people who use Windows</a>. If you are, you now have to learn an entirely different operating system. No, not where all the buttons are and how to change to dark mode; you have to become intimately familiar with your terminal. What? You aren't using PowerShell on Windows? Right, so you have to learn how to work with <em>any</em> terminal first.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>OpenFOAM's learning curve is steep enough, but most people will have to learn a new operating system on the side. This is a lot of cognitive load and doesn't make things easier. Even if you are running OpenFOAM on Windows, since you have to work through one of the Linux sublayers (I would recommend WSL), it is no different from booting up a Linux operating system and just doing all the work there (or using a virtual machine, though, I would not recommend it, it is too slow and limited for even just medium-sized simulations).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is not necessarily a bad thing, though, as CFD codes are typically run in a Linux environment, especially if you are moving to an HPC cluster. When you do, you will already be familiar with the basic navigation on a cluster and only need to learn how to interact with a scheduler like <a href="https://slurm.schedmd.com/overview.html" target="_blank" rel="noopener" title="">Slurm</a> or <a href="https://www.openpbs.org/" target="_blank" rel="noopener" title="">PBS</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, I hope you love Linux because it will be your (non-abusive) second new best friend!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-poor-software-testing-practices-in-place-if-at-all-any">Poor software testing practices in place (if at all, any)</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>To this day, I am still not sure if there is any software testing going on at OpenFOAM HQ. They must do some form of testing, and I can see the odd test in the code repository, but given the number of software defects that are still in the codebase (and a reluctance to fix these), software testing does not seem to be a priority.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sure, there are <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications/how-to-get-started-with-software-testing-for-cfd-codes/#aioseo-system-or-end-to-end-tests" target="_blank" rel="noopener" title="">system tests</a> in place, and these typically offer you the greatest support in catching bugs, but if your system test don't cover your entire code base, they can't possibly detect bugs in code sections that were untested. This seems to be the practice, though, as best I can tell, and OpenFOAM provides only <a href="https://doc.openfoam.com/2306/examples/verification-validation" target="_blank" rel="noopener" title="">a few system tests for rather simple geometries</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In a nutshell, this means: Good luck! If you want to run something that is outside of the system tests, it is anyone's guess whether you will be successful or not. If you use settings that are used by many others, sure, you likely will get results and they are liekly correct, assuming your case set up is correct. But in other cases, you may not be so lucky.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>My favourite example is that of the DFSEM turbulent inlet, which generates synthetic eddies at the inlet for LES simulations. There is a very detailed thread of this particular boundary condition on <a href="https://www.cfd-online.com/Forums/openfoam-solving/177711-turbulentdfseminlet.html" target="_blank" rel="noopener" title="">cfd-online</a>, and people have spent a significant amount of time figuring out how to get it to work, only to realise that whoever implemented it didn't take a particular value into account (which in their test case is 1 so it doesn't influence the result), but for any other case where this value is not 1, it just doesn't work. To the best of my knowledge, it hasn't been fixed since.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is one LES subgrid-scale model that just outright doesn't work. There isn't any tutorial case that makes use of it, nor is there any system test for it. As far as I can see, someone implemented it and didn't bother to test it. I have written my own system test and systematically checked all LES implementations. It wasn't difficult to find the issue, and neither was it difficult to figure out that there was a programming, not a setup, mistake at play here. If proper software testing had been implemented, this would have never been released to the public.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-meshing-capabilities-still-not-up-to-date">Meshing capabilities are limited for complex geometries</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ok, so I mentioned that OpenFOAM comes with its own set of mesh generators and that they can be used for rather complex geometries. This is all true, but unfortunately, when it comes to mesh generation (and this is not just true for OpenFOAM's mesh generators), creating inflation layers is a process that is a must for boundary-fitted grids that want to resolve turbulence. Typically, you can take any mesh generator and judge it by its robustness in generating inflation layers, and OpenFOAM's capability is really poor (probably one of the worst I've seen).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, yes, you can use OpenFOAM's mesh generators, and it makes sense to do so when you learn OpenFOAM in the first place, but be aware you will get grids for very simple geometries, but for more complex cases, the inflation layer process will likely fail. You can still use your grids, but you won't get good predictions of the velocity field near walls, and you can pretty much say goodbye to getting any meaningful drag or skin friction coefficients out of your simulation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you don't have any solid walls, sure, OpenFOAM does have decent mesh support for you, but if you see any scale-resolved (DES, SAS, LES) or even wall-resolved RANS simulation of a moderate to high Reynolds number that used OpenFOAM's mesh generators, I would be highly sceptical of the accuracy of the results.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If wall-modelled RANS is good enough for you (which it tends to be in industries), then you can get away with it. Or, if you have sufficient compute resources available and you don't really care about resources used or compute times, then sure, you may get grids that can be used for more challenging turbulent simulations, but chances are, a dedicated grid generator that only focuses on generating a grid, and doing it well, will likely get you a grid with higher quality metrics and an overall smaller number of cells for the same level of accuracy.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But as the saying goes, a bad grid generator is better than no grid generator. And again, it is completly free, so there is still merit in learning OpenFOAM's mesh generators. But be advised, you'll likely will hit some form of limit here, be it performance-, quality-, or accuracy-wise. You have been warned.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-a-lot-of-input-re">High setup cost, prone to mistakes</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We talked about the fact that 700 lines of code are required to set up a simple flow around an airfoil (which does not even include the calculation of forces; that would be another 100 lines of code). Clearly, this is prohibitively large, but as mentioned before, something we just have to deal with.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You have several options here:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Suck it up, and just deal with it. Write all 700 lines of code from memory (no one does that!), or, if you like an element of danger, why not ask ChatGPT to write something for you? (<a href="https://cfd.university/blog/can-chatgpt-write-fully-functional-cfd-solvers/" target="_blank" rel="noopener" title="">no one <em>should</em> do that</a>)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Copy a tutorial case and modify it to your liking (as discussed above, a dangerous but common practice)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Use a tool to set up your case (requires learning a new tool, on top of learning OpenFOAM, on top of learning a new operating system). Some of these tools have a similar complexity and learning curve as OpenFOAM itself (a popular example: <a href="https://github.com/Unofficial-Extend-Project-Mirror/openfoam-extend-swak4Foam-dev" target="_blank" rel="noopener" title="">swak4Foam</a>)</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>You can easily see how mistakes can creep in and ruin your simulations. This often means that you have to iteratively fine tune your simulation set up by running a test simulation first, checking the results, ideally comparing against some reference data, refining your set up, and repeat until you have reached a satisfactory results (in whichever way you want to measure this).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-poorly-documented-solver">Poorly documented solver</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you have been around for a bit on this site, you know that I get excited about things no one else cares about, like <a href="https://cfd.university/learn/keep-your-users-happy-how-to-document-code-the-right-way/" target="_blank" rel="noopener" title="">writing documentation</a> and writing about how to do it. No one cares about these topics, and OpenFOAM is a brilliant example that shows what happens when developers don't care about it but provide it anyway.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>OpenFOAM's documentation may as well not exist. It is useless. They do have a pretty handy <a href="https://doc.openfoam.com/2306/" target="_blank" rel="noopener" title="">user guide</a>, which I would recommend anyone who is interested in learning OpenFOAM to go through in its entirety (it isn't that long), but don't bother looking up anything in the code documentation itself (as of the time of writing, there seems to be a shift in the documentation that is provided, perhaps we are getting better documentation in the future, but I wouldn't bet on it).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Following the example I provided above for the DFSEM turbulent inlet generator, after reading through the cfd-online post, I gave up on it in frustration. But then, I noticed that two additional boundary conditions were introduced that were supposed to address exactly the same issue, so I gave them a try.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The problem was that I just couldn't figure out what input they wanted me to use. There wasn't any documentation, but they provided the reference paper from where they had implemented this condition. I read the paper in its entirety and still couldn't figure out what needed to go into the set up. I turned to cfd-online and got a few suggestions but none of them were working.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I am not claiming to be an all-knowing OpenFOAM wizard, but I do have a PhD in CFD and work as a lecturer in CFD. If I can't figure out (nor anyone else I consulted), what chances do beginners stand in navigating the complexities of OpenFOAM and really leveraging all the capabilities that it offers?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-only-inefficient-cfd-algorithms-s-implemented">Only inefficient CFD algorithms are available</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Finally, one of the biggest issues I have with OpenFOAM is that it is very slow. It isn't slow because its implementation is inefficient; it is slow because it limits itself to semi-implicit methods for all of its solvers. This means that we will always be limited in the time step size we can use (for transient solvers), and thus, the convergence rate is rather slow. Even if we use a CFL-based time stepping, we can't use very large CFL numbers to march towards convergence, which is required for fast convergence.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Having said that, OpenFOAM does have support for large CFL numbers by using their pimpleFoam algorithm with a large number of outer corrector steps (which is akin to using PISO with dual time stepping), though as a beginner who just started to learn OpenFOAM, you may easily miss this. But even if you are using it, you will see that this is also not necessarily very efficient, as we do have to solve the pressure Poisson equation countless times, and that is where all of the computational cost lies with an incompressible CFD solver.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Instead, they could have implemented at least one fully implicit method (which you can impelemt yourself with not too much changes to existing solvers), but you are likely not looking at customising your own solvers when you have just started to learn OpenFOAM.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Other CFD solvers implement convergence acceleration methods such as pseudo time stepping, switched evolution relaxation, and the like, but OpenFOAM has none of that. Ok ok, local time stepping is available, but I have tried it now several times and it just doesn't seem to work correctly, nor does it accelerate the convergence as it is supposed to do.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-summary">Summary</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>So then, in this article, we looked at the main advantages and disadvantages when you learn OpenFOAM. But let's return to our opening question, should you learn OpenFOAM?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Well, I think the answer is depending on your specific case, so let me group them into separate categories:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-when-to-learn-openfoam">When to learn OpenFOAM</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>You are a student, you have a lot of time, and don't mind being abused by your PC late at night just trying to get those wall functions to work. OpenFOAM is perfect for you.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>You want to gain CFD expertise and understand all steps in the solver set up. You are not necessarily looking for a solver that gets you results immediately, but one where you are OK to wait for a few weeks/months before you get something sensible out of it. In short, you don't shy away from an intellectual challenge. OpenFOAM is great for this, too!</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>You are considering to write your own solver. You don't care about other CFD solvers and just want to dominate the world with your own solver. Learn OpenFOAM first, learn its weaknesses, and make damn sure your solver provides an exceptional user experience for all of these weaknesses (meshing, set-up complexity, untested code, etc.).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>You don't fall into any of the categories above but don't want to or can't spend any money on license cost. OpenFOAM is probably your best choice from the open-source CFD solvers as a general purpose CFD solver.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-when-not-to-learn-openfoam">When not to learn OpenFOAM</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>If you value your time and sanity.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>You have money available to splurge on a 25,000$/year ANSYS license (other solvers are available). Seriously, why have you made it all the way to the bottom of this article? You should have left long ago, I left enough hints for you to take your money and throw it at ANSYS ...</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>You want an easy-to-navigate user interface, ideally something graphical, so you can exercise your clicking rate with that new gaming mouse of yours</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>You are a complete novice in CFD. If you are a university student and have access to a different (commercial) solver, learn that one first and then later get back to learning OpenFOAM. Having a basic understanding of a more user-friendly solver will help massively when you learn OpenFOAM.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>You don't have access to a commercial grid generation tool, and you want or need to simulate flows with wall-resolved turbulence models (i.e. having a y+ value of 1 or less). Unless you are doing something as simple as a flat plate, cylinder flow, box in a channel, airfoil, or anything else for which you can easily divide the domain into separate blocks (and thus use OpenFOAM's structured mesh generator blockMesh, which is quite decent), OpenFOAM won't give you what you are looking for. Their Cartesian cut-cell mesher snappyHexMesh suffers from poor inflation layer creation. It does an alright job for y+ values of perhaps 100 and larger, but even here, I have seen it fail spectacularly. With a lot of work, you can still get decent results, but wall-resolved boundary layers are a challenge, if not impossible (which will depend on your geometry) </li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>You have a specific use case in mind for which a better alternative exists. For example, OpenFOAM is known for having a notoriously poor performance for compressible flow (no Riemann solvers or higher-order schemes are available). In this case, a solver like <a href="https://su2code.github.io/" target="_blank" rel="noopener" title="">SU2</a> may be better. For fluid-structure interactions, <a href="https://www.code-saturne.org/cms/web/" target="_blank" rel="noopener" title="">code_sature</a> has better support out of the box. OpenFOAM does have FSI capabilities, but not to the same level of maturity.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>So I hope this list summarises when to learn OpenFOAM, and when not to. See which part you best fall into and then you have your answer.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If I had to give a one-size-fits-all answer (you are bringing out that gun again?!), then I would say, yes, learn OpenFOAM. Even if you have access to a different commercial solver, I think that OpenFOAM and the arsenal of solvers you have available are actually complimentary. You know that you will always be able to get results with your commercial solver, but every now and then, try to set up a case in OpenFOAM and compare that against your commercial (or in-house, or any other type of) solver you have available.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this way, you can ease the pain to learn OpenFOAM and stretch it over time. From my own experience, there were a lot of things I did not quite get as a student when I first encountered OpenFOAM, but over time, with a lot of reading, I managed to get on top of it, and my knowledge of CFD solver algorithms and schemes just exploded. It'll take time, but it is time well invested.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Sure, every now and then, OpenFOAM pulls a Jeremy Clarkson on you out of nowhere, but if you can manage that, you will soon feel like a CFD superpower that can tame a beast most of us can't! It is a very satisfying feeling when you run your simulations, and they just work. If you have decided to learn OpenFOAM now, congratulations. You have picked the bumpy adventure road, but one that is worth travelling.</p>
+<!-- /wp:paragraph -->
