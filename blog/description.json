@@ -1,0 +1,62 @@
+{
+    "name": "Blog",
+    "slug": "blog",
+    "description": "Articles that don't require their own series and can be discussed in just a single article.",
+    "articles": {
+        "01_how-to-get-started-with-computational-fluid-dynamics-cfd.html": {
+            "heading": "How to get started with Computational Fluid Dynamics (CFD)",
+            "slug": "how-to-get-started-with-computational-fluid-dynamics-cfd",
+            "description": "The best way to learn CFD from scratch requires a good collection of resources. This is a complete guide for the best books, online resources and CFD software."
+        },
+        "02_should-you-specialise-in-cfd-and-get-a-university-degree.html": {
+            "heading": "Should you specialise in CFD and get a university degree?",
+            "slug": "should-you-specialise-in-cfd-and-get-a-university-degree",
+            "description": "CFD is an fascinating area of study. Discover if it is worth specialising in this field and which universities offer specialised MSc degrees in CFD."
+        },
+        "03_setting-up-a-programming-environment-to-develop-cfd-codes.html": {
+            "heading": "Setting up a programming environment to develop CFD codes",
+            "slug": "setting-up-a-programming-environment-to-develop-cfd-codes",
+            "description": "In this article, you'll learn how to create a programming environment to develop and run CFD codes on Windows, Linux, and macOS."
+        },
+        "04_why-is-everyone-switching-to-gpu-computing-in-cfd.html": {
+            "heading": "Why is everyone switching to GPU computing in CFD?",
+            "slug": "why-is-everyone-switching-to-gpu-computing-in-cfd",
+            "description": "Discover why every general-purpose CFD solver is switching to GPUs by learning the key differences between GPUs and CPUs that make them so powerful!"
+        },
+        "05_can-chatgpt-write-fully-functional-cfd-solvers.html": {
+            "heading": "Can ChatGPT write fully functional CFD solvers?",
+            "slug": "can-chatgpt-write-fully-functional-cfd-solvers",
+            "description": "Explore whether ChatGPT is capable of producing production-grade CFD solvers or if it fails miserably, as well as how to best use generative AI tools for coding"
+        },
+        "06_the-6-biggest-and-unsolved-challenges-in-cfd.html": {
+            "heading": "The 6 biggest and unsolved challenges in CFD",
+            "slug": "the-6-biggest-and-unoslved-challenges-in-cfd",
+            "description": "Learn about the 6 biggest challenges in CFD we need to overcome to achieve NASA's postulated 4 grand challenges in their 2030 CFD vision report"
+        },
+        "07_learn-openfoam-the-good-the-bad-and-the-evil.html": {
+            "heading": "Learn OpenFOAM: The Good, The Bad, And The Evil!",
+            "slug": "learn-openfoam-the-good-the-bad-and-the-evil",
+            "description": "OpenFOAM is polarising; either you love it or you hate it. In this article, I review the good and the bad you can expect when you decide to learn OpenFOAM."
+        },
+        "08_how-to-manage-uncertainty-in-cfd-the-grid-convergence-index.html": {
+            "heading": "How to manage uncertainty in CFD: the grid convergence index",
+            "slug": "how-to-manage-uncertainty-in-cfd-the-grid-convergence-index",
+            "description": "Learn about common errors and uncertainties in CFD simulations and how to use the grid convergence index to quantify the largest uncertainty in your simulation."
+        },
+        "09_how-to-determine-the-best-stopping-criterion-for-cfd-simulations.html": {
+            "heading": "How to determine the best stopping criterion for CFD simulations",
+            "slug": "how-to-determine-the-best-stopping-criterion-for-cfd-simulations",
+            "description": "Learn how convergence in CFD is judged, what common pitfalls exist, and how we can avoid those with the help of a new convergence judging framework."
+        },
+        "10_ive-tried-su2-for-a-week---should-you-too.html": {
+            "heading": "I've tried SU2 for a week - should you, too?",
+            "slug": "ive-tried-su2-for-a-week-should-you-too",
+            "description": "I spent a week with the open-source CFD solver SU2, and this article reflects on my first impression of it. Is it any good? Let's find out together!"
+        },
+        "11_what-is-numerical-dissipation-in-cfd-and-why-do-we-need-it.html": {
+            "heading": "What is numerical dissipation in CFD and why do we need it?",
+            "slug": "what-is-numerical-dissipation-in-cfd-and-why-do-we-need-it",
+            "description": "This article clarifies the role of numerical dissipation once and for all by reviewing its origin, mitigation strategies, and applications."
+        }
+    }
+}

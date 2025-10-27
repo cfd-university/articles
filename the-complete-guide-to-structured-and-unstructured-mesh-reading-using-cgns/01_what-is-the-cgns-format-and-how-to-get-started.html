@@ -1,0 +1,261 @@
+<!-- wp:paragraph -->
+<p>The CGNS file format is one of the most powerful file formats there is when it comes to CFD applications and the first one each CFD developer should study in depth. It can store both structured and unstructured grids and the corresponding flow solution and has additional support to store information pertinent to your CFD simulation (such as the convergence history, equations used to solve the flow, etc.)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The CGNS file format is to CFD what PDF files are to written text documents. It is an exchange format that is supported by most CFD solvers. If you have your mesh stored in a CGNS file, chances are you can read it with your solver of choice (unfortunately, not OpenFOAM, though, but who knows, it may change in the future). </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"blockVisibility":{"controlSets":[{"id":1,"enable":true,"controls":[]}]}} -->
+<p>The CGNS file format stores its data using either HDF5 or ADF compression, thus file sizes are kept as small as possible and this enables the CGNS format to store large meshes and flow solutions. Most, if not all, post-processors understand the CGNS format, so if you know how to read and write a CGNS file within your own CFD solver, you can easily take meshes generated with a mesh grid generator, calculate the solution on it and then store it back to visualise the results with your favourite post-processor.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>By the end of this article, you will understand where the CGNS file came from, who is developing it and how it stores both structured and unstructured grids. You will also learn about some of the drawbacks the file format still has, despite being around for over 30 years now. This knowledge will help us in subsequent articles to read both structured and unstructured grids.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this series</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode -->
+[custom_category_posts_list category_slug="the-complete-guide-to-structured-and-unstructured-mesh-reading-using-cgns"]
+<!-- /wp:shortcode -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this article</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":8,"blockClientId":"c1980400-b2ca-4e80-a70a-219068a5eb78","content":"Overview of the CGNS data format","level":2,"anchor":"aioseo-overview-of-the-cfd-general-notation-system-cg","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":10,"blockClientId":"7ae8c79a-83fd-4bff-978d-dc19b283fd3c","content":"Structure of a CGNS file","level":3,"anchor":"aioseo-structure-of-a-cgns-file","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":21,"blockClientId":"c1f1ac44-252c-4adf-85ed-4f6f3080fba7","content":"Binary storage of data","level":3,"anchor":"aioseo-binary-storage-of-data","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":31,"blockClientId":"4e73f29d-784c-4a20-87f3-1e82f07d1bad","content":"Parallel support","level":3,"anchor":"aioseo-parallel-support","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":35,"blockClientId":"e30f17ae-f1ad-4064-90c0-fc7a9bb91076","content":"Criticism of the CGNS format","level":2,"anchor":"aioseo-cgns-file-take-away-points","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":37,"blockClientId":"90f68aed-c60f-47a5-ab61-077a0e84e1cc","content":"It is too complex","level":3,"anchor":"aioseo-it-is-too-complex","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":44,"blockClientId":"624f5247-5d37-422d-8f43-c92ab7343be4","content":"Boundary conditions are hard, confusing, and inconsistent","level":3,"anchor":"aioseo-boundary-conditions-are-hard-confusing-and-not-though-through","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":49,"blockClientId":"a82e5e92-e911-4737-be51-ada2939067d6","content":"Too many possibilities to write a CGNS file, too much confusion by users and developers","level":3,"anchor":"aioseo-too-many-possibilities-to-write-a-cgns-file-too-much-confusion-by-users-and-developers","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":55,"blockClientId":"67033c46-7cc8-400a-aec3-37d2ec0bfdf0","content":"No support for polyhedra cells","level":3,"anchor":"aioseo-cx","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":60,"blockClientId":"7a51cb9e-151f-493a-9dd8-1740a89bd04a","content":"Summary","level":2,"anchor":"aioseo-summary","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-overview-of-the-cfd-general-notation-system-cg">Overview of the CGNS data format</a><ul><li><a href="#aioseo-structure-of-a-cgns-file">Structure of a CGNS file</a></li><li><a href="#aioseo-binary-storage-of-data">Binary storage of data</a></li><li><a href="#aioseo-parallel-support">Parallel support</a></li></ul></li><li><a href="#aioseo-cgns-file-take-away-points">Criticism of the CGNS format</a><ul><li><a href="#aioseo-it-is-too-complex">It is too complex</a></li><li><a href="#aioseo-boundary-conditions-are-hard-confusing-and-not-though-through">Boundary conditions are hard, confusing, and inconsistent</a></li><li><a href="#aioseo-too-many-possibilities-to-write-a-cgns-file-too-much-confusion-by-users-and-developers">Too many possibilities to write a CGNS file, too much confusion by users and developers</a></li><li><a href="#aioseo-cx">No support for polyhedra cells</a></li></ul></li><li><a href="#aioseo-summary">Summary</a></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-overview-of-the-cfd-general-notation-system-cg">Overview of the CGNS data format</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p><a href="https://cgns.github.io/" target="_blank" rel="noopener" title="">CGNS</a> stands for the <strong>C</strong>FD <strong>G</strong>eneral <strong>N</strong>otation <strong>S</strong>ystem. It was created in 1994 in a joint effort between NASA and Boeing to standardise the exchange of CFD data, most notably the exchange of the computational grid/mesh. However, these days, it is not just capable of exchanging the grid, instead, users can read and write the solution, boundary conditions, grid connectivity information and more to a CGNS file. In 1999, the <a href="https://cgns.github.io/governance/committee.html" target="_blank" rel="noopener" title="">CGNS steering committee</a> was created, which includes representatives from government, industry and universities alike, working to maintain, improve, and promote the CGNS standard.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-structure-of-a-cgns-file">Structure of a CGNS file</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>A CGNS file is not simply a text or binary file that stores data, it is more useful to adopt a mental model of the CGNS file being a database that is organised into a tree structure. This is illustrated in the schematic below:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":2329,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2023/12/cgns_structure-1024x449.png" alt="" class="wp-image-2329" style="width:800px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>At the top, we have a file called <code>example.cgns</code>, which contains a few different nodes, all containing additional information below them. The hierarchy is such that we start with several bases, of which each base can have many zones. Each zone, in turn, will have at least their grid coordinates stored (in <code>x</code>, <code>y</code>, and <code>z</code>) as well as potentially the associated boundary conditions, as seen in the figure above. It is possible to have additional data stored here, such as the flow solution for each point in the grid (velocity, pressure, temperature, entropy, etc., not shown in the figure above).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One of the strengths of the CGNS format is that even though these links are all shown as internal links, i.e. within the <code>example.cgns</code> file, we can link different CGNS files together with different content. Take, for example, the following schematic:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":2330,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2023/12/cgns_links-1024x472.png" alt="" class="wp-image-2330" style="width:800px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Here, we have three CGNS files; <code>grid.cgns</code>, <code>solution1.cgns</code>, and <code>solution2.cgns</code>. There may be many more <code>solutionN.cgns</code> files. The <code>grid.cgns</code> file simply stores the mesh, while <code>solution1.cgns</code>, <code>solution2.cgns</code> and so on store the flow solution of the velocity <code>U</code>, pressure <code>p</code>, and temperature <code>T</code>. By establishing a link between these files, we can separate the grid from the solution data and thus save on storage if we want to store unsteady data, for example, where we don't want to store the grid repeatedly for each new time step.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Why do we have this convoluted hierarchy with potentially several bases and zones? Well, the CGNS format wants to be as general as possible and so we have to store our grid under bases and zones. Let's start with a zone. Imagine we have a single base, with several zones, each zone will have its own grid coordinates and, potentially, boundary conditions. This is typically the case for multi-block structured grids, and the original motivation for the CGNS file format was to represent a 3D, block-structured, compressible Navier-Stokes code. Consider the following image (taken from <a href="https://blog.gridpro.com/role-of-vortex-generators-in-diffuser-ducts-of-aircraft/" target="_blank" rel="noopener" title="">GridPro</a>):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":2353,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2023/12/S_duct_inlet-2.webp" alt="" class="wp-image-2353"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Each grid block containing a different colour in the image above represents a zone in a CGNS file. If you have a mesh with a structured and an unstructured portion (i.e. called a mixed element or sometimes also a hybrid mesh), you would have two zones, one for each. For a purely unstructured grid, you may only have a single zone but this will depend on your mesh generator.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Ok, so we do understand zones, but why do we have potentially several bases, each with additional zones? Well, if you want to store mesh movement, or in general, a deforming mesh, then we can store a snapshot of each deformed (moved) mesh under a different base, but still within the same CGNS file. Think about fluid-structure interactions (FSI), you could store the entire FSI simulation, including grid movement and solution variables within a single CGNS file. Practically speaking, though, you probably want to separate them and link files together through the linking mechanism described above, to keep file sizes to a manageable amount.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-binary-storage-of-data">Binary storage of data</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The CGNS file is stored in binary, meaning you can't open and inspect a CGNS file with a text editor, unlike most other mesh and post-processing file formats. However, it is also not simply stored as a pure binary output, instead, the binary data is organised with a hierarchical binary data format that aligns well with the tree-based structure of the CGNS file format and has taken inspiration from how files are stored in a UNIX file system.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This tree structure needed to be defined at first, and this is what is known as the <a href="https://cgns.github.io/standard/SIDS/CGNS_SIDS.html" target="_blank" rel="noopener" title="">Standard Interface Data Structure</a>, or SIDS. The SIDS describes which nodes are available, and the rules for how they can be connected (for example, each node can only have a single parent but multiple children). The figures we looked at above visualise the SIDS. With the SIDS defined, the CGNS developer now needed a way to store data in this hierarchical form. They considered two already-established formats to be used for the underlying CGNS implementation of the SIDS:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>The Common File Format (CFF)</strong>: Developed by McDonell Douglas Aerospace, is an attempt to unify the data structure of CFD data into a common format. Written in Fortran, it did not provide the best way forward to ensure cross-platform compatibility and wide acceptance, a C-based version was preferred.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>The Hierarchical Data Format (HDF)</strong>: Even though the name suggests hierarchical, this file format was not always <a href="https://cgns.github.io/general/history.html#development-of-adf" target="_blank" rel="noopener" title="">strictly speaking hierarchical</a> and thus initially not deemed to be ideal. It was written in C, though, which was something required by the developers.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>A side note: ANSYS Fluent introduced its own <em>Common Fluid Format</em> (CFF), which is different from the <em>Common File Format</em> mentioned above. To make things even more confusing, the <em>Common Fluid Format</em> uses the <em>Hierarchical Data Format</em> (HDF) to store its data.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While both of these options were considered, neither one matched what the developers were looking for exactly, and so they came up with their very own data format; the <a href="https://cgns.github.io/general/history.html#development-of-adf">advanced data format</a>, or ADF for short. This data format allows to store data in a binary, tree-like fashion, and thus is very closely designed to allow an easy implementation of the SIDS. It feels like a database, as it essentially follows the CRUD pattern (<strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete, i.e. what most modern web-orientated databases do). The ADF was designed to be general purpose, so its interface is unrelated to the SIDS (but they can be easily implemented with ADF).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>At this point, the CGNS developer had essentially developed an interface (the SIDS) and a database (ADF), yet both were not talking to each other. For that, the CGNS developers had to create a low-level API to create ADF files that implemented the SIDS. This low-level API is known as <a href="https://cgns.github.io/standard/CGNS_CGIO.html" target="_blank" rel="noopener" title="">CGIO</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Until CGNS version <code>2.x</code>, ADF was the only supported file format. At this point, the CGNS steering committee decided to take a second look at the <em>Hierarchical Data Format</em> (HDF) and decided to support both ADF and HDF as an underlying data structure for a CGNS file. Consequently, the CGIO routines were rewritten, as their design closely followed that of ADF and thus incorporating HDF was always going to be a messy exercise. The redesign of CGIO brought us to version <code>3.x</code>, and these days users can either pick ADF or HDF as the underlying storage, though HDF seems to be winning this battle, due to its superior performance for large file sizes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>At this point, we are not done, though. We have the SIDS, which is implemented through the CGIO low-level API using either an ADF or HDF file. If the CGNS developer left it at that, they would expect users of the CGNS format to be intimately familiar with at least the SIDS and CGIO, but ideally also with either ADF or HDF (or both), to write compliant CGNS data. Writing just a single node incorrectly, or providing a non-standard name for one of the nodes would mean that the entire CGNS file would be corrupt and could not be read by any software.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since there were too many possibilities for the end-user to mess up the CGNS file, a much more restrictive API was introduced, that only exposes functions that let users express their intent (for example, write coordinates or a flow solution to the CGNS file). This restrive API will then call the correct CGIO routines to ensure a SIDS-compliant file is generated using either the ADF or HDF file format. This restrictive API is called the <a href="https://cgns.github.io/standard/MLL/api/c_api.html" target="_blank" rel="noopener" title="">mid-level library</a> and is all that you need to know and care about from now on (unless you want to create non-compliant extensions of the CGNS file and submit proposals to the CGNS steering committee).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-parallel-support">Parallel support</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is a particularly nice feature of the CGNS file; it does consider the end-user and knows that CFD applications typically have large file sizes. As a result, CFD applications are typically run on multiple cores and this necessitates some thinking about how data should be written to disk. The CGNS file comes with native support to allow for the writing of files in parallel, i.e. when using a solver with <a href="https://www.techtarget.com/searchenterprisedesktop/definition/message-passing-interface-MPI" target="_blank" rel="noopener" title="">MPI</a>, and this can make the CGNS format particularly attractive for these types of applications.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you are planning to write a solver that targets large-scale applications (or are already working on an existing solver), then parallel CGNS may be a way forward for you. The alternative is to write out many segregated solutions (i.e. each processor is writing out the data it knows about) and then you stitch that data back together after the run has finished. If you are running on a few processors, that approach may work well, but if you are running on several hundreds to thousands of nodes, you may want to have a solution that supports MPI file writing.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>OpenFOAM uses the file stitching approach, for example, and you can see a subdirectory for each processor within your project folder. Applications like Paraview can read in a segregated solution and represent it as a single solution as if the data was stitched together, so these alternatives exist and can be used as well. At the end of the day, it comes down to what you prefer in your solver; an elegant native MPI solution, or a solution that <em>will do the job</em>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-cgns-file-take-away-points">Criticism of the CGNS format</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The following represents my criticism, I haven't taken it from any source so treat it as such. I may be wrong on some points (as things change), but all of my criticism comes from my experience working with this format since 2013.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-it-is-too-complex">It is too complex</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The first pain point I have found with the CGNS file is that it is very general but too complex. You saw the myriad of hierarchies that make up a CGNS file (i.e. ADF, HDF, CGIO, SIDS, mid-level library), and if you just want to get started with it, you may be lost in the documentation just trying to get a simple file reading program coded. This is not necessarily an issue, it just means you have to spend some time learning it. Hopefully, this series can shave off some hours to learn the CGNS format and you don't have to spend weeks trying to get your first CGNS program to work.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Take a look at the following screenshot, taken from a presentation given by one of the CGNS architects at the 2018 AIAA SciTech meeting titled <a href="https://github.com/CGNS/cgns-archives/blob/develop/CGNS_docs_current/slides/POINOT-RUMSEY-AIAA-2018-SLIDES.pdf" target="_blank" rel="noopener" title="">Seven keys for practical understanding and use of CGNS</a>:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":2544,"width":"800px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="https://cfd.university/wp-content/uploads/2024/01/cgnsFileOverview.png" alt="" class="wp-image-2544" style="width:800px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>This is a good 1-page overview of what the CGNS format is and isn't. In particular, I take issue with point 5, that there are too many ways to describe the same features, and this is the next criticism on my list below.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Secondly, since it is so complex, there is no guarantee that every single feature is implemented by every solver, mesh generator, or post-processor, in which you are planning to use the CGNS file. When I was working on a DNS/LES code and I wanted to implement the CGNS format to store the time history of some quantities (for later post-processing), I implemented everything according to the SIDS and had file linking between my grid and the solution data working (as described above under file linkage), only to find out that Paraview did not support file linking. It may now, but that was a huge waste of time (and a lot of frustration).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Even worse, you may find that different applications that write or read the CGNS file have everything implemented but they all implement the logic in a different way (as point 5 above states, there are too many different ways to achieve the same thing). Then, you need to capture all of these different scenarios in your code if you want to allow for a wide coverage of different software. Widespread acceptance of how to achieve the same thing is still not achieved and we are missing a set of best practices (at least) or strict rules on how things need to be implemented. I really wish this is on the agenda!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-boundary-conditions-are-hard-confusing-and-not-though-through">Boundary conditions are hard, confusing, and inconsistent</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Furthermore, there are currently 21 different types of boundary conditions a CGNS file supports, all of which a CFD solver needs to implement to ensure that each boundary condition is mapped to something within the solver. The problem is that since the CGNS file is trying to be as general as possible, some of the boundary conditions only make sense for certain solvers. For example, if you are working on an incompressible solver, then the supersonic inlet boundary conditions does not make sense, yet, you have to implement it in case someone uses that during grid generation. In that case, you find yourself mapping a supersonic inlet to a subsonic inlet. Not a very clean solution (but then again, there probably isn't one in this case).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You could, of course, only support a limited range of the 21 different boundary conditions, but then you run the risk that someone else may generate CGNS files that your solver doesn't understand. And if that is not bad enough, the 21 boundary conditions that are available don't even cover the entire spectrum of boundary conditions!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you want to implement cyclic/periodic boundary conditions, you are out of luck. Periodic boundary conditions are not supported, (or so you think), until you randomly look up another part of the documentation and find that periodic boundary conditions are implemented, but under the grid connectivity node! From an implementation point of view, that makes sense, as periodic boundary conditions essentially connect two faces (edges in 2D) together. But you wouldn't check the documentation under grid connectivity if you were searching for periodic <em>boundary conditions</em>, would you?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>And while we <em>technically </em>have an implementation of periodic boundary conditions, they are of no use. If you open Pointwise or ICEM (or, presumably, any other grid generation tool that can write CGNS files), you are not given the option to write out periodic boundary conditions. You can only assign boundary conditions from the available boundary condition list. The issue is that the CGNS format wants to provide all connectivity information between periodic interfaces, but typically, that connectivity is calculated by the CFD solver, not the mesh generator. As a result, the boundary condition is available under the interface connectivity group but you can't select that as a boundary condition when you create your grid. Useless!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-too-many-possibilities-to-write-a-cgns-file-too-much-confusion-by-users-and-developers">Too many possibilities to write a CGNS file, too much confusion by users and developers</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's stay with the 21 boundary conditions that are available. There are two ways how you can define them. Either, you associate boundary conditions directly with the grid (which makes sense), but what happens if you read the grid, change it, and then write it back? If you overwrite an existing grid node, you may loose all associated boundary conditions. So, there is a <em>lazy</em> and a <em>more sophisticated</em> way to store boundary conditions.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The <em>lazy</em> way just stores boundary conditions together with the mesh. You overwrite them, you lose them. The <em>more sophisticated</em> way requires you to create an additional node under which you store the boundary conditions. You still have boundary conditions associated with the grid, but their type points to the additional node you have just created. In this way, you never lose them (only a pointer to them if you overwrite the grid).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The SIDS allows for ambiguous implementations. You want to implement boundary conditions directly under the mesh node, fine. You want to create an additional node and store boundary conditions there? Sure, go ahead. All this means is that we as developers have to try to provide an implementation that can cope with all different types of CGNS files. Given that most tools that write or read these files are commercial and not cheap, it is unlikely that a single person would have access to every software to test CGNS file writing and reading.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What we need would be a common library of example CGNS files created with different tools and different versions of the CGNS library, but there is none that I am aware of. This is just adding to the inconsistencies which may be acceptable during the early development of a new library, but CGNS library is now 30 years old and you would have hoped that they had found a way to standardise everything, but we are still waiting (fingers crossed they manage before my retirement ...)!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As a result, you have mesh generators like ICEM-CFD and Pointwise that have historically written out CGNS files that were not compatible and could not be read with the same CGNS mesh reading program. You needed to check how boundary conditions were stored and then read them in different ways. Pointwise has changed that now and it seems that some level of uniformity is achieved but this is by convention, not by design. We are still missing a stronger set of rules to enforce a clear design.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-cx"><s>No support for polyhedra cells</s></h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Originally, I had a fourth point of criticism, and that was the lack of support for arbitrary cell types. Luckily, this seems to have been on the CGNS steering committee's agenda and we now have support for polygons and polyhedra. To be honest, learning this while going through the CGNS documentation for this article made me quite happy, as this was always a sore point for me (I prefer dealing with polyhedra cells rather than standard tetra, pyramids, hexa, etc. cells as you just need to deal with one type and all other, more specific types, can be represented as a polyhedron).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To be fair, polyhedra elements were not in wide use until recently. StarCCM and OpenFOAM always supported them and I suppose Fluent was always able to handle them as well, yet their mesh generator of choice (ICEM-CFD or the Workbench mesher) only provided standard elements by default. Fluent meshing has done away with that and it seems that we are now entering the era of polyhedral cells. It would freaking awesome if Paraview could wake up and notice that.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Yes, I know Paraview can handle polyhedral cells, but not every file reading format is implemented in all its details, so polyhedral cells can't be read with all file formats, even if they support them. I haven't tested writing polyhedral elements to a CGNS file and then trying to read them with Paraview, though I have a feeling that I would be disappointed if I tried. Perhaps instead of offering support to read 27 million different file formats, it would be better to focus on a few that actually matter and implement them well, but then again Paraview wants to serve and please everyone and by doing so serve no one, really. OpenFOAM support is great, but that's about it. CGNS doesn't work, the Fluent file reader is broken, and what point is a post-processor that can't read data?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Well, before this becomes a Paraview rant, (I think we were talking about CGNS, weren't we?), I shall leave it at that. It is not perfect, but then again it tries really hard to provide support for every possible aspect of exchanging CFD data. While there is room for improvement, I think we can all agree that this is an ambitious task if you think about the myriad of possibilities such a format needs to support. The CGNS file is the best chance we have at having something uniform that works across different CFD tools and solvers, and after all, despite what my criticism may suggest, it is actually a pretty decent solution. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-summary">Summary</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this article, we kick-started our discussion on the CGNS file and looked at how it represents critical aspects of the entire CFD workflow. In most cases, though, we only care about the grid and the CGNS file provides us with the opportunity to read and write structured and unstructured grids, even in the same file, which is the only mesh format out there that can do this (at least to the best of my information, certainly when it comes to mesh file formats that are used in modern CFD solvers). We may also want to store the flow solution within the CGNS file, and there is support as well here for that.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The CGNS file format is steered by an interest group that defines the interface and implementation of the format, which means that there is not always a clear path forward and some inconsistencies or limitations can arise. We looked at some criticism but also at ways previous drawbacks (such as the lack of support for polyhedra elements) were removed over time. The CGNS format is constantly evolving and, despite the criticism, represents the best chance of having a unified representation of grid and flow solution information across a wide range of solvers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the next articles, we will look at how to read and write both structured and unstructured CGNS files. It is hoped that this series will help you to get started with the CGNS file format. We don't need yet another mesh format and diversify the zoo of available mesh file formats, but rather clarity and understanding of existing formats. Let's not throw 30 years of development on a single format overboard just because the initial learning curve is rather steep. Instead, let's learn to use it and lobby for changes where we still find inconsistencies (and, if anyone on the CGNS steering committee is reading this, I think I have outlined my wish list in this article!).</p>
+<!-- /wp:paragraph -->

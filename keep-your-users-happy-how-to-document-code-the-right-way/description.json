@@ -1,0 +1,27 @@
+{
+    "name": "Keep your users happy: how to document code the right way",
+    "slug": "Learn in this series how to write documentation for your CFD solvers and libraries that doesn’t suck and ensure that users will use and love your work.",
+    "description": "keep-your-users-happy-how-to-document-code-the-right-way",
+    "articles": {
+        "01_documenting-code-why-bother-and-how-to-do-it-right.html": {
+            "heading": "Documenting code; why bother and how to do it right",
+            "slug": "documenting-code-why-bother-and-how-to-do-it-right",
+            "description": "Code documentation is just as important as the code itself. Learn in this article what the three main types of documentation are and how to write them properly."
+        },
+        "02_how-to-write-a-1-page-readme-file-to-document-your-code.html": {
+            "heading": "How to write a 1-page readme file to document your code",
+            "slug": "how-to-write-a-1-page-readme-file-to-document-your-code",
+            "description": "Learn in this article how to structure 1-page software documentation and how to write them using Markdown, including examples for how to document CFD libraries"
+        },
+        "03_how-to-write-a-user-guide-to-document-your-cfd-code.html": {
+            "heading": "How to write a user guide to document your CFD code",
+            "slug": "how-to-write-a-user-guide-to-document-your-cfd-code",
+            "description": "Learn how to write a user guide from scratch using reStructuredText and Sphinx. We see how to do that quickly and effectively so your users stay happy"
+        },
+        "04_how-to-annotate-c++-code-for-automatic-code-documentation.html": {
+            "heading": "How to annotate C++ code for automatic code documentation",
+            "slug": "how-to-annotate-c-code-for-automatic-code-documentation",
+            "description": "Learn how to write effective code documentation using Doxygen and how to avoid documentation that no one reads and no one wants to write."
+        }
+    }
+}
