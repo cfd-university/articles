@@ -1,0 +1,1444 @@
+<!-- How to Derive the Navier-Stokes Equations: From start to end -->
+<!-- https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/how-to-derive-the-navier-stokes-equations/ -->
+
+<!-- wp:paragraph {"align":"left","className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<p class="has-text-align-left wp-embed-aspect-16-9 wp-has-aspect-ratio">Are you looking for a single source that shows you how to derive the Navier-Stokes equations from start to end, without skipping any intermediate steps, and where each intermediate step is explained so that the derivation can be followed? Then look no further, I have written this article to give the most comprehensive review of how to derive the Navier-Stokes equations that you will, unlikely, find elsewhere (definitely not in text books, but I don't claim to have scoured the entire internet to see who provides the most complete derivation).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"align":"left","className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<p class="has-text-align-left wp-embed-aspect-16-9 wp-has-aspect-ratio">We will start with an important review of vector calculus so we all have a shared understanding of how to work with derivatives that are important in fluid mechanics, i.e. those that relate to scalar, vector, and tensor quantities. We then first derive the Reynolds transport theorem, which gives us a means to investigate how a quantity of interest evolves over time and space. This concept is fundamental for all subsequent derivations and, indeed, fluid mechanics itself.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"align":"left","className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<p class="has-text-align-left wp-embed-aspect-16-9 wp-has-aspect-ratio">We will use the Reynolds transport theorem to derive the continuity (mass) and momentum equation, in full. Along the way, we will learn what assumptions Navier and Stokes made and get to know a lesser known French scientist by the name of Saint-Venant, who contributed more to the Navier-Stokes equations than Navier himself (and, unlike Navier, his derivations were correct).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We will also learn that despite the mathematical elegance provided in the Navier-Stokes equations, Navier, Stokes, and Saint-Venant resorted to constitutive equations to find a relation for the shear stresses, which are full of assumptions. These assumptions have turned out to work well, but it is still an open question whether these assumptions are correct and a question that is unlikely to get answered any time soon!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, join me on a tour through fluid mechanic history and learn how to derive the Navier-Stokes equations from start to end; if you are serious about CFD, you owe it to yourself to learn about the derivation. You don't have to remember it by heart, but if you have seen it once and understand it, your subsequent encounters with this equation will feel much less intimidating!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this series</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode -->
+[custom_category_posts_list category_slug="10-key-concepts-everyone-must-understand-in-cfd"]
+<!-- /wp:shortcode -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-table-of-contents">Table of Contents</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":9,"blockClientId":"821a6d65-a9e9-4725-b7dd-05f372205904","content":"Introduction: The Navier-Stokes equations","level":2,"anchor":"aioseo-introduction","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":17,"blockClientId":"1b9c4ebe-0a36-4fa4-8791-e9bfaec2e633","content":"Review of vector calculus","level":2,"anchor":"aioseo-vital-scalar-and-vector-gradient","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":19,"blockClientId":"74ad5f5c-745a-4fba-95b1-0662db9244d5","content":"The Nabla operator","level":3,"anchor":"aioseo-the-nabla-operator","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":29,"blockClientId":"3b0b349e-db0d-45ed-a55f-a3924139c60e","content":"The divergence operator","level":3,"anchor":"aioseo-the-divergence-operator","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":41,"blockClientId":"2043fd5a-a43f-4e8e-a818-9873df12bf69","content":"The gradient operator","level":3,"anchor":"aioseo-the-gradient-operator","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":51,"blockClientId":"01e031ea-95b0-46be-a0ba-6e59b20f3770","content":"The curl operator","level":3,"anchor":"aioseo-the-curl-operator","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":55,"blockClientId":"e87c62ef-5a9c-4ca4-ba5f-4411a2ae78e5","content":"Deriving Reynolds Transport Theorem","level":2,"anchor":"aioseo-deriving-reynolds-transport-theorem","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":136,"blockClientId":"a6a63256-2719-4f4e-b682-116fe503ca5d","content":"Deriving the Navier-Stokes equations","level":2,"anchor":"aioseo-deriving-the-conservation-laws-of-fluid-dynamics","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":139,"blockClientId":"c04ff748-aaef-4aad-a538-14ec6126a924","content":"Conservation of Mass","level":3,"anchor":"aioseo-deriving-the-continuity-equation","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":152,"blockClientId":"6cf3b77c-88c3-49d1-a586-582c89e1e8fe","content":"Conservation of Momentum","level":3,"anchor":"aioseo-deriving-the-momentum-equation","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":154,"blockClientId":"0b392122-bdbb-4689-8afa-c5e332bc0080","content":"Starting with a molecular description","level":4,"anchor":"aioseo-starting-with-a","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":161,"blockClientId":"b291c1b5-243f-4bfe-9c92-cf365465477a","content":"What forces are acting on my system?","level":4,"anchor":"aioseo-what-is-driving","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":164,"blockClientId":"dd344f45-e7f7-4ca3-b103-52e5d363189c","content":"External forces","level":5,"anchor":"aioseo-external-forces","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":172,"blockClientId":"3b0cc052-69bf-48cb-9694-c16701fb94b4","content":"Internal forces","level":5,"anchor":"aioseo-internal-forces","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":190,"blockClientId":"dbf00a50-b414-4994-a18c-88eeff541e9b","content":"Deriving the general momentum equation","level":4,"anchor":"aioseo-deriving-the-general-momentum-equation-form","order":14,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":216,"blockClientId":"67233432-6664-4215-a753-0902a3fafc6b","content":"A simplistic approach: the Euler momentum equation","level":4,"anchor":"aioseo-naviers-and-stokes-brilliance-how-to-treat-the","order":15,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":225,"blockClientId":"70c3e38c-8b27-4215-9c12-7c21f4be1354","content":"Lucky bastard: Why history remembers the work of Navier but it shouldn't!","level":4,"anchor":"aioseo-naviers-and-stokes-brilliance-how-to-treat-the-internal-forces","order":16,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":233,"blockClientId":"ae36a308-a707-48e2-9d00-cc1e7a9db5ea","content":"Almost there, but we need to talk about constitutive equations first","level":4,"anchor":"aioseo-almost-there-but-lets-talk-about-constitutive-relationshiups-first","order":17,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":245,"blockClientId":"645b33b5-4d47-4e59-a3d7-9e25400e0017","content":"Finding a constitutive equation for the shear stresses","level":4,"anchor":"aioseo-stokes-and-saint-venant-brilliance-how-to-treat-internal-forces","order":18,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":268,"blockClientId":"a6e2cc0d-e42d-440e-858f-ed5a1d774204","content":"Stokes' and Saint-Venant' brilliance: How to treat internal forces","level":4,"anchor":"aioseo-stokes-and-saint-venant-brilliance-how-to-treat-internal-forces","order":19,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":291,"blockClientId":"f8241d32-c1b5-4bbf-b05f-b22f05a0ecd8","content":"Stokes velocity due to dilatation","level":4,"anchor":"aioseo-stokes-velocity-due-to-dilatation","order":20,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":318,"blockClientId":"3c8951bf-c055-4e1b-8bd2-deca59e25af9","content":"Putting it all together: the final Navier-Stokes momentum equation","level":4,"anchor":"aioseo-putting-it-all-together-the-final-navier-stokes-momentum-equation","order":21,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]},{"id":332,"blockClientId":"8b1d578f-2aec-48ba-b4e0-a9256947b0c9","content":"Summary","level":2,"anchor":"aioseo-conservation-of-energy","order":22,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-introduction">Introduction: The Navier-Stokes equations</a></li><li><a href="#aioseo-vital-scalar-and-vector-gradient">Review of vector calculus</a><ul><li><a href="#aioseo-the-nabla-operator">The Nabla operator</a></li><li><a href="#aioseo-the-divergence-operator">The divergence operator</a></li><li><a href="#aioseo-the-gradient-operator">The gradient operator</a></li><li><a href="#aioseo-the-curl-operator">The curl operator</a></li></ul></li><li><a href="#aioseo-deriving-reynolds-transport-theorem">Deriving Reynolds Transport Theorem</a></li><li><a href="#aioseo-deriving-the-conservation-laws-of-fluid-dynamics">Deriving the Navier-Stokes equations</a><ul><li><a href="#aioseo-deriving-the-continuity-equation">Conservation of Mass</a></li><li><a href="#aioseo-deriving-the-momentum-equation">Conservation of Momentum</a><ul><li><a href="#aioseo-starting-with-a">Starting with a molecular description</a></li><li><a href="#aioseo-what-is-driving">What forces are acting on my system?</a><ul><li><a href="#aioseo-external-forces">External forces</a></li><li><a href="#aioseo-internal-forces">Internal forces</a></li></ul></li><li><a href="#aioseo-deriving-the-general-momentum-equation-form">Deriving the general momentum equation</a></li><li><a href="#aioseo-naviers-and-stokes-brilliance-how-to-treat-the">A simplistic approach: the Euler momentum equation</a></li><li><a href="#aioseo-naviers-and-stokes-brilliance-how-to-treat-the-internal-forces">Lucky bastard: Why history remembers the work of Navier but it shouldn&#x27;t!</a></li><li><a href="#aioseo-almost-there-but-lets-talk-about-constitutive-relationshiups-first">Almost there, but we need to talk about constitutive equations first</a></li><li><a href="#aioseo-stokes-and-saint-venant-brilliance-how-to-treat-internal-forces">Finding a constitutive equation for the shear stresses</a></li><li><a href="#aioseo-stokes-and-saint-venant-brilliance-how-to-treat-internal-forces">Stokes&#x27; and Saint-Venant&#x27; brilliance: How to treat internal forces</a></li><li><a href="#aioseo-stokes-velocity-due-to-dilatation">Stokes velocity due to dilatation</a></li><li><a href="#aioseo-putting-it-all-together-the-final-navier-stokes-momentum-equation">Putting it all together: the final Navier-Stokes momentum equation</a></li></ul></li></ul></li><li><a href="#aioseo-conservation-of-energy">Summary</a></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-introduction">Introduction: The Navier-Stokes equations</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ah, the Navier-Stokes equation. If you go to a website titled cfd.university, you know that an article about the Navier-Stokes equation has to come up at some point, right? Well, so here are my 2 cents on the topic, but I'll do it with <em>a little twist</em>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you look up the Navier-Stokes equation in a textbook, you will find the equation provided but not derived. Some will go to the extent of deriving it, but either they start their derivation with an intermediate equation from which you have no idea where this is coming, or they jump so many steps that you can't follow the derivation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So,&nbsp;<em>my twist</em>, then, is to derive the Navier-Stokes equation from the start to the end, with no skipping of intermediate steps and with plenty of explanation for each equation where it is warranted. If you want to derive the equation that governs fluid mechanics, then you will find a full derivation in this article, and you will be able to understand each step, including how Navier and Stokes closed the momentum equation and how their equation came about. We'll also learn why Navier is a fraudster!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I love it when text books that have somewhere around 500 pages (or more) say that deriving the Navier-Stokes equation in detail is beyond the scope of the book. Really? You found 500 pages of other things to write about, surely you could add an additional 10 pages to derive those equation, no?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Here is a secret that I have learned as an academic</strong>: When someone writes "<em>this is beyond the scope of this publication/textbook</em>", what they are really saying is "<em>This is beyond the scope of my understanding. I have no clue how to do it myself, so you are better off reading about this topic elsewhere. I can't be bothered to look it up myself and frankly, I don't care either</em>".</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So if you are coming to this website to learn about how to derive the Navier-Stokes equation, then stay, the derivation is very much within the scope of this website.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We will start with a review of vector calculus, as we will use these concept extensively throughout the rest of the discussion. If you are already familiar with it, great, skip it, otherwise, read through it, it'll only take a few more minutes anyway. Afterwards, we jump straight in and derive the Reynolds transport theorem, which underpins all governing equations and transport equations in fluid mechanics. Knowing this theorem allows us to derive the conservation of mass and momentum, which we will do afterwards.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-vital-scalar-and-vector-gradient">Review of vector calculus</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In this section, we will only review the most essential vector calculus that we need in the rest of the article. If we need something more specific, we will introduce when and if needed, but the things covered in this section will pop up throughout the derivation process, so I thought of covering it at the beginning of the article.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-the-nabla-operator">The Nabla operator</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The Nabla operator is what makes our life in fluid mechanics easy. If you have never seen it before, it is this little upside-down triangle, i.e.: [katex]\nabla[/katex]. Why is it so useful? It is just telling us to take the derivative of a quantity, though how the derivative is formed will depend on the type of the quantity (i.e. if it is a scalar, vector, or tensor), but also the coordinate system. The nabla operator allows us to write a general form of a derivative, which can then be made more specific for the coordinate system and quantity of interest.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Most of the time, we are interested in Cartesian coordinates (and this is what we will use in this article as well), but the Nabla operator can be defined in cylindrical and spherical coordinate systems alike! For completeness, here are the various definitions for the nabla operator:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Cartesian coordinates</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla=\left(\frac{\partial}{\partial x},\frac{\partial}{\partial y},\frac{\partial}{\partial z}\right)^T</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Cylindrical coordinates</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla=\left(\frac{\partial}{\partial r},\frac{1}{r}\frac{\partial}{\partial \theta},\frac{\partial}{\partial z}\right)^T</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Spherical coordinates</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla=\left(\frac{\partial}{\partial r},\frac{1}{r}\frac{\partial}{\partial \theta},\frac{1}{r\sin\theta}\frac{\partial}{\partial \varphi}\right)^T</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Wikipedia has a <a href="https://en.wikipedia.org/wiki/Del_in_cylindrical_and_spherical_coordinates" target="_blank" rel="noopener" title="">comprehensive overview</a> of the different notations of the nabla operator in various coordinate systems, and the blog <a href="https://copaseticflow.blogspot.com/2009/03/cool-math-tricks-deriving-divergence-or.html" target="_blank" rel="noopener" title="">Copasetic Flow</a> shows how to transform the nabla operator from one coordinate system to another. Now, we can define different rules for how the derivatives are evaluated (which we label as the divergence or gradient operator), and these will then calculate the derivative of a scalar, vector, or tensor field in a different form, as we will see in the next sections. As mentioned above, we will stick with Cartesian coordinates here.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-the-divergence-operator">The divergence operator</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The divergence operator is expressed as [katex]\nabla\cdot\phi=\mathrm{div}(\phi)[/katex]. Here, [katex]\phi[/katex] can be either a vector or tensor quantity. In Cartesian coordinates, these can be written in the following form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Scalar</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>The divergence operator for a scalar is not defined.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Vector</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla\cdot \mathbf{v}=\mathrm{div}(\mathbf{v})=\nabla\cdot\begin{pmatrix}v_x \\ v_y \\ v_z\end{pmatrix}=\frac{\partial v_x}{\partial x}+\frac{\partial v_y}{\partial y}+\frac{\partial v_z}{\partial z}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The divergence of a vector results in a scalar value.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Tensor</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla\cdot \mathbf{T}=\mathrm{div}(\mathbf{T})=\nabla\cdot\begin{bmatrix}t_{xx} &amp; t_{xy} &amp; t_{xz} \\ t_{yx} &amp; t_{yy} &amp; t_{yz} \\ t_{zx} &amp; t_{zy} &amp; t_{zz}\end{bmatrix}=\\ \left(\frac{\partial t_{xx}}{\partial x}+\frac{\partial t_{yx}}{\partial y}+\frac{\partial t_{zx}}{\partial z}\right)\mathbf{i} + \left(\frac{\partial t_{xy}}{\partial x}+\frac{\partial t_{yy}}{\partial y}+\frac{\partial t_{zy}}{\partial z}\right)\mathbf{j} + \left(\frac{\partial t_{xz}}{\partial x}+\frac{\partial t_{yz}}{\partial y}+\frac{\partial t_{zz}}{\partial z}\right)\mathbf{k}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Or, in vector form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla\cdot \mathbf{T}=\mathrm{div}(\mathbf{T})=\begin{pmatrix}\frac{\partial t_{xx}}{\partial x}+\frac{\partial t_{yx}}{\partial y}+\frac{\partial t_{zx}}{\partial z} \\ \frac{\partial t_{xy}}{\partial x}+\frac{\partial t_{yy}}{\partial y}+\frac{\partial t_{zy}}{\partial z} \\ \frac{\partial t_{xz}}{\partial x}+\frac{\partial t_{yz}}{\partial y}+\frac{\partial t_{zz}}{\partial z}\end{pmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The divergence of a tensor is a vector. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-the-gradient-operator">The gradient operator</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The gradient operator is expressed as [katex]\nabla\phi=\mathrm{grad}(\phi)[/katex]. Here, [katex]\phi[/katex] can be either a scalar, a vector, or tensor quantity and notice that there is no multiplication (dot) between [katex]\nabla[/katex] and [katex]\phi[/katex], which is easy to miss. In Cartesian coordinates, these can be written in the following form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Scalar</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla s=\mathrm{grad}(s)=\frac{\partial s}{\partial x}\mathbf{i}+\frac{\partial s}{\partial y}\mathbf{j}+\frac{\partial s}{\partial z}\mathbf{k}=\begin{bmatrix}\frac{\partial s}{\partial x} , \frac{\partial s}{\partial y}, \frac{\partial s}{\partial z}\end{bmatrix}^T</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The gradient of a scalar results in a vector.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Vector</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla \mathbf{v}=\mathrm{grad}(\mathbf{v})=\begin{pmatrix}\frac{\partial v_x}{\partial x} &amp; \frac{\partial v_x}{\partial y} &amp; \frac{\partial v_x}{\partial z} \\ \frac{\partial v_y}{\partial x} &amp; \frac{\partial v_y}{\partial y} &amp; \frac{\partial v_y}{\partial z} \\ \frac{\partial v_z}{\partial x} &amp; \frac{\partial v_z}{\partial y} &amp; \frac{\partial v_z}{\partial z}\end{pmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The gradient of a vector results in a tensor</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Tensor</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Well, you can generalise the gradient operator, <a href="https://math.stackexchange.com/questions/1754710/finding-the-gradient-of-a-tensor-field" target="_blank" rel="noopener" title="">as shown here</a>, but we don't need it in everyday fluid mechanics or, indeed, the derivation of the Navier-Stokes equation. The definition of a gradient of a tensor is <em>beyond the scope</em> of this article.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-the-curl-operator">The curl operator</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The curl operator is of great significance in fluid mechanics. Applied to the velocity vector, it produces vorticity, i.e. a rotational flow component. It is only defined for vector quantities as given as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla\times\mathbf{v}=\mathrm{curl}(\mathbf{v})=\left(\frac{\partial v_z}{\partial y}-\frac{\partial v_y}{\partial z}\right)\mathbf{i}+\left(\frac{\partial v_x}{\partial z}-\frac{\partial v_z}{\partial x}\right)\mathbf{j}+\left(\frac{\partial v_y}{\partial x}-\frac{\partial v_x}{\partial y}\right)\mathbf{k}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The curl of a vector results in a vector.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-deriving-reynolds-transport-theorem">Deriving Reynolds Transport Theorem</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Right, so with the review of important vector calculus concepts out of the way, let us now return to some important derivations. But before we can derive the full Navier-Stokes equations, we need to first investigate how a flow property evolves over time. For this, we consider a volume [katex]V_0[/katex] which is depicted for some time [katex]t[/katex] below</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":697,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="http://cfd.university/wp-content/uploads/2023/04/control_volume_change-1024x405.png" alt="Change of a control volume over time and space, a central concept in the derivation of the Navier-Stokes equations!" class="wp-image-697" style="width:800px"/><figcaption class="wp-element-caption">Control volume change over time for some arbitrary volume [katex]V_0[/katex]</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Consider the circle on the left, which is shown for some point in time at [katex]t[/katex]. You could think that the circular boundary we see is the boundary of a collection of atoms. Let's assume that we are now imparting a force on these atoms, and as a result, they start to move. Intuitively, we can say that these atoms will not move in a static fashion but rather. in a fluid sense, and thus, after some time [katex]t+\Delta t[/katex], the boundary of all the atoms has changed as seen on the right-hand side of the figure.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is then also logical to conclude that if a collection of atoms is moving through space, its boundary is constantly changing. If we were to measure the area or volume of the boundary containing all of these atoms, it would be changing over time as well. Mathematically speaking, we can express that as [katex]V_0+\Delta V[/katex], where [katex]V_0[/katex] is the volume of the boundary at time [katex]t[/katex] and [katex]\Delta V[/katex] the differenfe in volume after we have advanced to [katex]t+\Delta t[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There are two types of flow properties</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Extensive flow properties: This property depends on the size of the system. The mass is an example. If you simulate a river or a system of rivers and lakes, you would expect the mass of water to be different in both cases</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Intensive flow properties: This property does not depend on the size of the system. The density is an example, and in the example above, we would expect the density of water to be the same for either type of simulation setup.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Let us now consider an extensive flow property (mass, volume, energy, etc.) and call it by the variable [katex]\Phi[/katex]. In fluid mechanics, we like to talk about conserved flow quantities within a control volume, which essentially says that if we draw an arbitrarily small boundary around a portion of our system (a so-called control volume), we say that properties within this control volume can be regarded as constant. It is the mathematical equivalent of saying "we take an average". This can be expressed in mathematical terms as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\Phi = \int_V \phi \mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This makes intuitive sense. Extensive properties depend on the system size, e.g. the mass of water contained within a volume of [katex]1 m^3[/katex] will be different compared to that of the volume of [katex]10 m^3[/katex] (assuming the density remains the same). Thus, the above equation simply states that when we increase or decrease the volume of the system through the integral [katex]\int_V\mathrm{d}V[/katex], then this change in volume is directly proportional to changes in [katex]\Phi[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is a proportionality factor [katex]\phi[/katex], which depending on [katex]\Phi[/katex] will take different forms. For example, if we consider [katex]\Phi[/katex] to be mass, then [katex]\phi[/katex] becomes the density of the fluid, which is commonly abbreviated as [katex]\rho[/katex]. In an equation, this can be expressed as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>m = \int_V \rho\cdot \mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This makes sense as a density multiplied by a volume provides a mass. This can also be easily seen by just looking at the units</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\left[kg\right]=\left[\frac{kg}{\sout{m^3}}\right]\cdot\left[\sout{m^3}\right]</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, we are assuming that [katex]\Phi[/katex] is our mass in kilograms and [katex]\phi[/katex] our density in kilograms per cubic meter. The reason we used [katex]\Phi[/katex] and [katex]\phi[/katex] above is to make it more generic. As it turns out, we can use this equation for many other flow properties, and this will help us construct our conservation laws of mass, momentum, and energy, which form the basis for the Navier-Stokes equations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I mentioned conservation of momentum, so let's take a look at that. In this case, we have [katex]\Phi=m\mathbf{u}[/katex], which represents the overall momentum (here, [katex]\mathbf{u}[/katex] represents the velocity vector, and I use the convention here that a vector quantity is written with bold letters). We have already seen the link between mass and density, so we have [katex]\phi=\rho\mathbf{u}[/katex]. In equation form, this results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>m\mathbf{u}=\int_V \rho\mathbf{u}\cdot\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can show, again, by just looking at units that this is correct</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\left[kg\cdot\frac{m}{s}\right]=\left[\frac{kg}{\sout{m^3}}\cdot\frac{m}{s}\right]\cdot\left[\sout{m^3}\right]</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We could have also taken the easy way by taking the equation we saw before for the mass conservation and multiplying that by the velocity vector [katex]\mathbf{u}[/katex]. This would have resulted in the same equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So far, we have not done anything interesting, really. We essentially just stated mathematically that if we sum the density over a control volume, we get its mass, which we can intuitively verify. Then, we saw that we could multiply this equation by additional quantities to derive additional equations of interest. The equation that we looked at is static, but fluid dynamics (as the name suggests) is not static but rather a time-dependent problem. So we have to add the time derivative to either side to make this equation dynamic, and this results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\int_{V(t)}\frac{\mathrm{d}\phi}{\mathrm{d}t}\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This equation does provide us now with a time history, however, we have no idea (or means to measure) how the control volume is changing over time and thus we can't solve the integral on the right-hand side, as the volume is now a function of time.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Whenever we are faced with a situation where we don't know how a quantity is changing over time (or space), we can create a Taylor series for that quantity, which will give us an approximation to an unknown function. The idea is to replace the function we can't solve analytically and approximate that with a function that looks fairly similar, at least within a small interval. We can then use this approximate function to determine properties such as derivatives, which will be similar to our original, unknown function.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In its most basic form, the Taylor series is written as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi(t+\Delta t) = \phi(t) + \frac{\mathrm{d} \phi}{\mathrm{d} t}\frac{\Delta t}{1!} + \frac{\mathrm{d}^2 \phi}{\mathrm{d} t^2}\frac{\Delta t}{2!} + \frac{\mathrm{d}^3 \phi}{\mathrm{d} t^3}\frac{\Delta t}{3!} + ... + \frac{\mathrm{d}^n \phi}{\mathrm{d} t^n}\frac{\Delta t}{n!}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, we are interested in a function [katex]\phi[/katex], for which we don't know the exact functional relationship. We may know the function values at discrete points, e.g. at time [katex]t[/katex], but we may want to get a value for some point in time in the future at [katex]t+\Delta t[/katex]. A classic example is where [katex]\phi[/katex] is the temperature, and we know the temperature right now (i.e. we know [katex]\phi(t)[/katex]), and we want to know what the temperature is tomorrow at [katex]t+\Delta t[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we have no idea what the temperature is going to be tomorrow, but we know the measurement of today's measurement, then the best guess we may have is that the temperature is going to be the same as today. It is not going to be 100% accurate, but we won't be far off either. This is the first term in the Taylor series, i.e. if we want to get an approximation for [katex]\phi(t+\Delta t)[/katex], then we may say that it is equal to [katex]\phi(t)[/katex] (ignoring all other terms).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, we may have yesterday's temperature available as well, and we can see if the temperature is rising or falling. In other words, we know the slope of the temperature curve, which is nothing else than the derivative, which is the second term in the Taylor series. Combining this with the first term, we get</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi(t+\Delta t) \approx \phi(t) + \frac{\mathrm{d} \phi}{\mathrm{d} t}\frac{\Delta t}{1!}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we had even more information about past measurements, we could add more and more higher-order derivatives to get an ever increasing accuracy, as long as our [katex]\Delta t[/katex] is small enough. Even if I had all the derivatives available, I probably still wouldn't get an accurate prediction for the temperature if I tried to forecast it years in advance. But for a few days, we can get a good estimate.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Typically, we truncate the Taylor series after a few terms and express the terms we have dropped by the (and its highest exponent) by [katex]\mathcal{O}(\Delta x)^n[/katex], where [katex]n[/katex] is the lowest-order term we are dropping. It is of no great importance to our understanding, but if you see this term, it just means we have dropped some additional terms. We have to, as the Taylor Series is an infinite series!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The following animation shows how the approximation of the exponential function [katex]f(x)=e^x[/katex] improves as we add higher-order derivatives (the value of [katex]n[/katex] corresponds to the derivatives in the Taylor series):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":4386,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2024/11/taylor-series-exponential-function.gif" alt="" class="wp-image-4386"/><figcaption class="wp-element-caption">Approximating the function [katex]f(x)=e^x[/katex] with a Taylor series using an increasing number of terms that are retained in the series, indicated by the number [katex]n[/katex]. <a href="https://en.wikipedia.org/wiki/Taylor_series#/media/File:Exp_series.gif" target="_blank" rel="noopener" title="">Image source</a></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>As we add more and more derivatives, the approximation becomes better and better. However, most of the time, our time step size [katex]\Delta t[/katex] is rather small, so it is usually sufficient to consider only the first two terms (the constant and linear contribution). This can be expressed as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi(t+\Delta t) = \phi(t) + \frac{\mathrm{d} \phi}{\mathrm{d} t}\frac{\Delta t}{1!} + \mathcal{O}(\Delta t)^2</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can rearrange this equation and write:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\phi(t+\Delta t) - \phi(t)}{\Delta t} =  \frac{\mathrm{d} \phi}{\mathrm{d} t} + \mathcal{O}(\Delta t)^2</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Ignoring the higher order terms, we can further write the following approximation:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d} \phi}{\mathrm{d} t} \approx \frac{\phi(t+\Delta t) - \phi(t)}{\Delta t}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This approximation is valid for small [katex]\Delta t[/katex] values. If we wanted to have an exact derivative, then we require that [katex]\Delta t\rightarrow 0[/katex], which we can express in the form of a limit, i.e. [katex]\lim\limits_{\Delta t\rightarrow 0}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Returning now to our time-dependent formulation of [katex]\Phi[/katex], i.e.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\int_{V(t)}\frac{\mathrm{d}\phi}{\mathrm{d}t}\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can see how we can split the right-hand side into two separate integrals. We simply replace the time derivative by its approximation and require the time-step to go towards zero. While the limit is inconsequential for our discussion, it is required from a mathematical consideration; otherwise, we will no longer be solving the same equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\lim\limits_{\Delta t\rightarrow 0}\left\{ \int_{V_0 + \Delta V} \frac{\phi(t + \Delta t)}{\Delta t}\mathrm{d}V - \int_{V_0} \frac{\phi(t)}{\Delta t}\mathrm{d}V \right\}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can take the time step outside the brackets, which results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\lim\limits_{\Delta t\rightarrow 0}\frac{1}{\Delta t}\left\{ \int_{V_0 + \Delta V} \phi(t + \Delta t)\mathrm{d}V - \int_{V_0} \phi(t)\mathrm{d}V \right\}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, we have simply introduced the approximation of [katex]\mathrm{d} \phi /\mathrm{d} t[/katex] and placed [katex]\Delta t[/katex] outside the integration as it remains constant. Note that because the volume can change for some [katex]t + \Delta t[/katex], the integration is carried out over [katex]V_0 + \Delta V[/katex], while the integration at [katex]t[/katex] can be taken over [katex]V_0[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We can expand the first of the two integrals and arrive at</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\lim\limits_{\Delta t\rightarrow 0}\frac{1}{\Delta t}\left\{ \int_{V_0} \phi(t + \Delta t)\mathrm{d}V + \int_{\Delta V} \phi(t + \Delta t)\mathrm{d}V - \int_{V_0} \phi(t)\mathrm{d}V \right\}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This allows us to group together integrals of the same bounds (i.e. here [katex]\int_{V_0}[/katex]). By doing so, we can write the above equation as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\lim\limits_{\Delta t\rightarrow 0}\frac{1}{\Delta t}\left\{ \int_{V_0} \left[ \phi(t + \Delta t) - \phi(t) \right] \mathrm{d}V + \int_{\Delta V} \phi(t + \Delta t)\mathrm{d}V \right\}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We want to obtain an expression for the left-hand side that we can readily solve, which is easier if we remove the limit from the right-hand side. So, let's examine how we can achieve that. To get started, we expand the above equation and write the limit in front of each integral. This will allow us to evaluate each integral on its own. We have</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\lim\limits_{\Delta t\rightarrow 0}\frac{1}{\Delta t}\int_{V_0} \left[ \phi(t + \Delta t) - \phi(t) \right] \mathrm{d}V + \lim\limits_{\Delta t\rightarrow 0}\frac{1}{\Delta t} \int_{\Delta V} \phi(t + \Delta t)\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Let us now look at the first integral. First, let's reintroduce [katex]\Delta t[/katex] back into the integral. Remember, a constant can be written before or after the integral. This results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\lim\limits_{\Delta t\rightarrow 0}\int_{V_0} \frac{\phi(t + \Delta t) - \phi(t)}{\Delta t} \mathrm{d}V + \lim\limits_{\Delta t\rightarrow 0}\frac{1}{\Delta t} \int_{\Delta V} \phi(t + \Delta t)\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>A few equations ago, we have already established the following relationship through the Taylor series</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d} \phi}{\mathrm{d} t} = \lim\limits_{\Delta t\rightarrow 0}\frac{\phi(t+\Delta t) - \phi(t)}{\Delta t}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Thus, we can simply rewrite the first integral as the time derivative, which will remove the limit from the integral. This is given as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\int_{V_0} \frac{\mathrm{d} \phi}{\mathrm{d} t} \mathrm{d}V + \lim\limits_{\Delta t\rightarrow 0}\frac{1}{\Delta t} \int_{\Delta V} \phi(t + \Delta t)\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Great, but what about the second integral? How do we integrate [katex]\phi(t + \Delta t)[/katex]? Well, we don't know the value of that function at some point in the future, so what do we do? Exactly, a Taylor series! Let's expand the second integral then with a Taylor Series, this results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\int_{V_0} \frac{\mathrm{d} \phi}{\mathrm{d} t} \mathrm{d}V + \lim\limits_{\Delta t\rightarrow 0}\frac{1}{\Delta t} \int_{\Delta V}\left[ \phi(t) + \frac{\partial \phi}{\partial t}\frac{\Delta t}{1!} + \mathcal{O}(\Delta t)^2 \right]\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Remember, we still have the limit in front of the integral, and the limit requires [katex]\Delta t[/katex] to go to zero. Hence, any term involving [katex]\Delta t[/katex] has to go to zero (if you want to visualise, just set [katex]\Delta t=0[/katex] and then see which terms go to zero, you will see, it is the first derivative (and any higher-order derivative). What remains is the constant part of the Taylor series, which results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\int_{V_0}\frac{\mathrm{d} \phi}{\mathrm{d} t}\mathrm{d}V+\lim\limits_{\Delta t\rightarrow 0}\frac{1}{\Delta t}\int_{\Delta V} \phi(t)\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>What just happened? Didn't we say we can get rid of the limit? Well, not quite yet, we have to reformulate our equation a bit, otherwise if we let the time step to go to zero, the term [katex]1/\Delta t[/katex] would reach infinity, which makes the equation rather useless. So we need to reformulate this integral a bit.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The trick is to replace the volume integral with a surface integral, and in the process, we can let the limit go to zero for the time step without destroying our equation. To see how this can be done, let's look at the volume first. It can be written as a product of an area and a length by which this area is extruded:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>V=A\cdot L</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>A length [katex]L[/katex] can be seen as a measure of a speed multiplied by time, and inserting this into our equation results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>V=A\cdot\mathbf{u}\Delta t</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can make our volume and area infinitesimally small, which we can write as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathrm{d}V=\mathrm{d}A\cdot\mathbf{u}\Delta t</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This equation holds true regardless of the size of the element we are considering. We can now substitute our volume integral with a surface integral using the above expression, which results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\int_{V_0}\frac{\mathrm{d} \phi}{\mathrm{d} t}\mathrm{d}V+\lim\limits_{\Delta t\rightarrow 0}\frac{\Delta t}{\Delta t}\int_{A}\phi\mathbf{u}\mathrm{d}A</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can see that [katex]\Delta t / \Delta t[/katex] is unity and thus will no longer influence the limit. We can drop the limit entirely from our equation to arrive at</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\int_{V_0}\frac{\mathrm{d} \phi}{\mathrm{d} t}\mathrm{d}V+\int_{A}\phi\mathbf{u}\mathrm{d}A</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The above equation is known as the <strong>Reynolds Transport Theorem</strong> and tells us how a quantity [katex]\Phi[/katex] changes in space and time within a fluid. We can rewrite the Reynolds transport theorem for the second integral using <a href="https://en.wikipedia.org/wiki/Divergence_theorem" target="_blank" rel="noopener" title="">Gauss' (or divergence) theorem</a>, which allows us to transform surface integrals back into a volume integral, which provides us with:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\int_{V_0}\frac{\mathrm{d} \phi}{\mathrm{d} t}\mathrm{d}V + \int_{V}\nabla\cdot\phi\mathbf{u}\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This form is particularly useful if we want to derive a differential form of the Reynolds transport theorem. This can be achieved by requiring that the control volumes we are looking at to become zero, i.e. [katex]V \rightarrow 0[/katex]. In this case, we obtain</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\frac{\mathrm{d} \phi}{\mathrm{d} t}+\nabla\cdot\phi\mathbf{u}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This is the final (differential) form of the Gauss (or divergence) theorem. Together with its integral form stated above, it is used in pretty much any equation we solve in CFD, from our conservation laws of mass, momentum, and energy to turbulence models, passive scalars, multiphase equations, and so on. Deriving any transport equation without the Reynolds transport theorem would be very difficult.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the literature, you will find different names for [katex]\mathrm{d}\Phi(t)/\mathrm{d}t[/katex]. It is either referred to as the total derivative, the substantial derivative or the material derivative. All of these denote the same thing, and when you read the literature, you may come across these different names.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-deriving-the-conservation-laws-of-fluid-dynamics">Deriving the Navier-Stokes equations</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Now that we have spent some time deriving the Reynolds Transport Theorem, we can put it to use to derive the governing equations of fluid dynamics, i.e. the Navier-Stokes equations. Strictly speaking, the Navier-Stokes equation is only concerned with the conservation of momentum. However, nowadays we use the term "the Navier-Stokes equations" to signal the conservation laws of mass (continuity), momentum, and energy.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this section, we look at the conservation of mass and momentum, which are the fundamental building blocks for any CFD simulation. If we are interested in temperature effects, or we are using a compressible formulation in which the density may change, then we need the energy equation, but a bulk of the problems occurring in CFD can be solved with just the conservation of mass and momentum, and these are the equations we will have a look at in the next sections.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-deriving-the-continuity-equation">Conservation of Mass</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We have already done all the heavy lifting and derived the Reynolds Transport theorem; deriving a conservation law for mass simply requires applying this theorem.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We also saw before that if we want [katex]\Phi[/katex] to be the mass, then we need to set [katex]\phi=\rho[/katex]. Thus, we write the Reynolds Transport Theorem as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}m}{\mathrm{d}t}=\frac{\partial \rho}{\partial t}+\nabla\cdot\rho\mathbf{u}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We have made two changes here. The first change is the usage of a partial derivative [katex]\partial/\partial t[/katex] instead of an ordinary derivative [katex]\mathrm{d}/\mathrm{d} t[/katex]. We do that as [katex]\rho[/katex] can not just change in time but also in space. Thus, we need to use the partial derivative whenever we have a derivative that depends on more than one variable.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Secondly, we set this equation to zero. This is because we want this to be a conservation law (the overall mass should not change), which means that the quantities on the left-hand side of the equations have to be conserved, and this is achieved by setting the right-hand side to zero. If the right-hand side was not equal to zero, the mass would either increase or decrease over time, violating the conservation of mass requirement. Thus, the conservation of mass, or continuity equation, can simply be written as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \rho}{\partial t}+\nabla\cdot(\rho\mathbf{u})=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This equation describes, in general, how mass is conserved. We will take special considerations into account at the end of this article to show how it may change for different flow regimes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For an incompressible fluid, we say that the density is constant. If the density is constant, then there is no variation in time (by definition), so the time derivative becomes zero and can be neglected. We are then left with:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla\cdot(\rho\mathbf{u})=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Since [katex]\rho=const.[/katex], we can also divide by it, which will further simplify our equation to</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla\cdot\mathbf{u}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This is the mass conservation law for an incompressible fluid and is only applicable to these types of flows. It is an important concept that will help us simplify other conservation laws encountered in incompressible flows.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-deriving-the-momentum-equation">Conservation of Momentum</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The following section will deal with deriving the Navier-Stokes equation in full. We won't make any assumptions and will dig deep into the literature, and I'll show you the assumptions that Navier and Stokes made, which are typically not given in any derivation or textbooks. It's a fascinating equation, and once you understand each step in the derivation, you will appreciate the complexity (but also its beauty) even more! Let's dive in. It is going to be a fun exercise!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-starting-with-a">Starting with a molecular description</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Before we jump into the conservation of momentum, let us take a step back and see the world through atoms. This is what Navier did to derive the momentum equation, and hey, if it is good enough for this french bloke, it'll be good enough for us as well I suppose!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Picture a collection of particles floating in space without any forces acting on them apart from their electrostatic interactive forces. Such a collection of atoms will adhere to random fluctuations that, on average, cancel out so that there is no net movement when observing a large collection of atoms at the same time.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>How could we force these atoms into motion? Well, we apply a force on each atom in a specific direction (this could be a magnetic force, for example). A heavier atom will have more inertia than a lighter atom, so the heavier atoms will take longer to accelerate than a lighter atom.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If this makes sense to you, then you are already at the same level as Navier and Stokes. From this observation, we can then start to look for an equation that describes the motion of each atom, and we quickly arrive at Newton's second law, which is given as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{F}=m\mathbf{a}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]\mathbf{F}[/katex] is the sum of the internal and external forces acting on the system and [katex]\mathbf{a}[/katex] the acceleration. We could say that this equation describes any type of fluid, at least on a per-atom basis. It is, indeed, this equation that we solve in most particle-based approaches, such as molecular dynamics and the dissipative particle dynamics approach. However, we don't want to describe the motion for each atom, but rather for a collective continuum of particles, and so we need to expand Newton's second law.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-what-is-driving">What forces are acting on my system? </h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The first thing we have to look at is the force term. The question is, what type of forces are acting on our system? Typically, this is separated into two broad categories: internal and external forces, and this can be written as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{F} = \mathbf{F}_{internal} + \mathbf{F}_{external}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading {"level":5} -->
+<h5 class="wp-block-heading" id="aioseo-external-forces">External forces</h5>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's look at the external forces first, then. The external forces describe anything that acts on our system, but our Navier-Stokes equations do not explicitly capture that. It acts on each fluid particle (or, if we run a CFD simulation, on each cell of our computational domain). Think of two immiscible fluids, where the heavy fluid is sitting on top of the light fluid, as shown in the video below</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:embed {"url":"https://www.youtube.com/watch?v=-va3ET2anNI","type":"video","providerNameSlug":"youtube","responsive":true,"align":"center","className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
+<figure class="wp-block-embed aligncenter is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+https://www.youtube.com/watch?v=-va3ET2anNI
+</div><figcaption class="wp-element-caption">Rayleigh Taylor Instability for two immiscible fluids. Here, the red fluid is heavier than the blue fluid.</figcaption></figure>
+<!-- /wp:embed -->
+
+<!-- wp:paragraph -->
+<p>But think about where the "force" is coming from in order for the heavier fluid to penetrate into the lighter fluid. If we just solve the Navier-Stokes equations without any external forces, nothing would happen. But at this point, we can all agree that gravity is pulling the heavier fluid into the lighter fluid. Thus, gravity is one such external force that we can consider.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This also provides an additional point to consider; if we do not expect gravity to be important for us in our situation (i.e. simulation), then it is OK to neglect the external forces such as gravity. But when we derive the conservation of momentum, we want to keep all those terms and then drop them later if we think this is appropriate.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Similar to gravity, there are other forces acting on the fluid, which are typically termed body forces, i.e.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{F}_{external} = \mathbf{F}_{gravity} + \mathbf{F}_{body}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Examples of body forces are magnetic fields, which influence the trajectory of magnetised fluid particles, and the Coriolis force, which imparts momentum in a specific direction to the fluid particles. Essentially, anything that would translate into additional momentum on fluid particles is lumped together into the body forces (and in some derivation, gravity is part of that body force term).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":5} -->
+<h5 class="wp-block-heading" id="aioseo-internal-forces">Internal forces</h5>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The internal forces are a bit more complicated and require some further considerations. Let's think about a simplified system: we have two solid blocks, one sitting on top of the other. The block on top will assert a pressure force on the block below (similar to the heavier and lighter fluid situation above). The block below will assert the same pressure force back according to Newton's third law (when two bodies interact with each other, they will apply an equal force to each other in the opposite direction). So, one such internal force is the pressure (force) itself.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Now, let's imagine we were to push that block on top forward so that there would be friction between these two blocks. This friction force is due to the upper block shearing over the bottom block, and we feel that it is a resistance when pushing the upper block. This is referred to as the shear force or the shear stresses. The internal forces can thus be summarised as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{F}_{internal} = \mathbf{F}_{pressure} + \mathbf{F}_{shear stresses}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In summary, we have forces of all different forms and shapes. In the following derivation, we will carry over internal, gravity, and body forces for the remaining derivation. Let's look at these terms in turn.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The internal force contains the pressure and shear stresses. From a dimensions-based analysis, we know that shear stresses are defined, according to Newton, as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\tau=\mu\frac{\partial\mathbf{u}}{\partial\mathbf{x}}\rightarrow\left[\frac{kg}{m\cdot s}\right]\cdot\left[\frac{m}{m\cdot s}\right]=\left[\frac{kg}{m\cdot s^2}\right]=\left[\frac{kg\cdot m}{m^2\cdot s^2}\right]=\left[\frac{N}{m^2}\right]</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we now were to take the derivative of [katex]\tau[/katex] as in [katex]\nabla\cdot\tau[/katex], then we would obtain units of [katex]N/m^3[/katex]. Integrating that over a volume would result in [katex]N[/katex], which is the correct unit for a force. Thus, we can write that</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{F}_{internal} = \int_{V}\nabla\cdot\sigma\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, we have chosen to represent all internal forces by [katex]\sigma[/katex], which includes not just the shear stresses but also the pressure forces. We will return to this point later. We do the volume integral here as the internal force is not a constant but may vary over our entire system's volume. Integrating overall contributions will result in the overall internal force.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Gravity has units of [katex]m/s^2[/katex], and thus, we need to multiply it with some mass to get units of [katex]kg\cdot m/s^2=N[/katex]. But since we are also going to integrate over the system's volume (similar to the internal forces), we need to divide this force by units of [katex]m^3[/katex], which means we need to multiply our gravitational force by something of units [katex]kg/m^3[/katex], which is just the density [katex]\rho[/katex]. Therefore, the gravitational force becomes</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{F}_{gravity} = \int_{V}\rho\mathbf{g}\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The body forces are provided as forces themselves and have units of [katex]N[/katex]. Thus, we have to simply divide them by the system's volume to account for the volume integral as in the cases before and arrive at</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{F}_{body} = \frac{1}{V}\int_{V}\mathbf{f}_{body}\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Thus, in summary, we can write the overall force as a superposition of the internal, gravitational, and body forces as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{F} = \mathbf{F}_{internal} + \mathbf{F}_{gravity} + \mathbf{F}_{body} =
+\int_{V}\nabla\cdot\sigma\mathrm{d}V + \int_{V}\rho\mathbf{g}\mathrm{d}V +
+\frac{1}{V}\int_{V}\mathbf{f}_{body}\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This covers the left-hand side of Newton's second law, i.e.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{F} = \mathbf{F}_{internal} + \mathbf{F}_{external}=m\mathbf{a}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-deriving-the-general-momentum-equation-form">Deriving the general momentum equation </h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Now, we need to work on the right-hand side. As we saw previously, we want to integrate over the entire system's volume to account for each change in mass and acceleration. After all, that is exactly what a conservation law is there for, i.e., to account for all contributions over a specific volume and track any changes. Since a volume integral will add units of [katex]m^3[/katex], we can divide the mass by a volume at this stage so that it will become a mass again after being multiplied by a volume. Dividing mass by a volume results in the density, thus:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\int_V\mathbf{F}\mathrm{d}V=\int_V\rho\mathbf{a}\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Taking a units-based approach again, we can see that the acceleration [katex]a[/katex] has units of [katex]m/s^2[/katex], and we can replace this term with the time derivative of the velocity, which is easier for us to measure. This can then be written as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\int_V\mathbf{F}\mathrm{d}V=\int_{V}\frac{\mathrm{d} \rho\mathbf{u}}{\mathrm{d} t}\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>At this stage, we simply insert the definitions for the forces we developed above and apply the Reynolds Transport Theorem derived previously to the right-hand side, where we use [katex]\Phi=\rho\mathbf{u}[/katex]. We do that because we are interested in how [katex]\rho\mathbf{u}[/katex] changes over time, which is what the Reynolds transport theorem tells us. We also switch the equation around so that the time derivative is on the left-hand side while all force terms are collected on the right-hand side. This results in</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\int_{V}\frac{\partial \rho\mathbf{u}}{\partial t}\mathrm{d}V + \int_{V}\nabla\cdot (\rho\mathbf{u}\otimes\mathbf{u})\mathrm{d}V = 
+\int_{V}\nabla\cdot\sigma\mathrm{d}V + \int_{V}\rho\mathbf{g}\mathrm{d}V + \frac{1}{V}\int_{V}\mathbf{f}_{body}\mathrm{d}V</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>You'll have noticed that we now have this [katex]\nabla\cdot (\rho\mathbf{u}\otimes\mathbf{u})[/katex] term, where did this new special character [katex]\otimes[/katex] come from? This is known as the <a href="https://en.wikipedia.org/wiki/Dyadics" target="_blank" rel="noopener" title="">dyad product</a>, and we have to use it as we are now multiplying two vectors. To see why we need this dyad (or tensor) product, let's look at the Reynolds transport theorem again:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\frac{\mathrm{d} \phi}{\mathrm{d} t}+\nabla\cdot\phi\mathbf{u}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In our case, we set [katex]\phi=\mathbf{u}[/katex], so the time derivative will now be a vector itself (containing the time derivatives of the velocity vector in the [katex]x[/katex], [katex]y[/katex], and [katex]z[/katex] velocity components, if we use a Cartesian coordinate system). If we simply inserted [katex]\phi=\rho\mathbf{u}[/katex] for the second term, we would get [katex]\nabla\cdot\rho\mathbf{u}\mathbf{u}[/katex]. Multiplying two vectors together results in a scalar using the <a href="https://en.wikipedia.org/wiki/Dot_product" target="_blank" rel="noopener" title="">dot or scalar product</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we were to do that, we would have a vector quantity for the time derivative and a scalar quantity for the second term. From basic vector calculus, we know that we can't add a vector and a scalar (we can only multiply them), so the second term has to retain a vector-like shape. We achieve that with the dyad product, which will result in a second-rank tensor (which is dirty math talk for "it's a matrix", and my sloppy use of language here will, I am sure, upset some mathematicians. I know there is a difference between the two, but it is beside the point here). </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's look at this dyad product in more detail. We can formally introduce it as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>a\otimes b=\begin{bmatrix}a_1b_1 &amp; a_1b_2 &amp; a_1b_3 \\a_2b_1 &amp; a_2b_2 &amp; a_2b_3 \\a_3b_1 &amp; a_3b_2 &amp; a_3b_3 \\\end{bmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Since both the time derivative and now the convective term (i.e. the second term in the Reynolds transport theorem) now have three components in the [katex]x[/katex], [katex]y[/katex], and [katex]z[/katex] direction, we can add them together again. So, if we want to insert vector quantities into our Reynolds transport theorem, we need to remember to carry out a tensor (dyad) product so we end up with the correct equation structure (tensor instead of a scalar).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Returning to our intermediate momentum equation above, we can carry out the integration over the volume and realise that the volume appears in each term. Thus, we divide by the volume to arrive at the following general momentum conservation equation (which is also known as the Cauchy momentum equation)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \rho\mathbf{u}}{\partial t} + \nabla\cdot (\rho\mathbf{u}\otimes\mathbf{u}) = \nabla\cdot\sigma+\rho\mathbf{g}+\frac{1}{V}\mathbf{f}_{body}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The above equation is written in conservative form; that is, all quantities are contained within the derivatives. However, the Navier-Stokes equation is commonly written in the so-called convective form, so let's see how we can arrive at this form instead. To do that, we need one general rule of differential calculus and one vector identity, which are given below:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>(ab)'=ab'+a'b\\\nabla\cdot(\mathbf{a}\otimes\mathbf{b})=(\nabla\cdot\mathbf{a})\mathbf{b}+\mathbf{a}\cdot\nabla\mathbf{b}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]()'[/katex] indicates that we want a time derivative of a quantity provided within the parenthesis. To make things simple, let's set the entire right-hand side to [katex]S=\nabla\cdot\sigma+\rho\mathbf{g}+\mathbf{f}_{body}/V[/katex], so we can concentrate on the left-hand side only. The first vector identity applies to the time-derivative, and so we can write:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\rho\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\frac{\partial \rho}{\partial t} + \nabla\cdot (\rho\mathbf{u}\otimes\mathbf{u}) = S</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Inserting the dyad vector identity, we can rewrite the second term as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\rho\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\frac{\partial \rho}{\partial t} + (\nabla\cdot\rho\mathbf{u})\mathbf{u}+\rho\mathbf{u}\cdot\nabla\mathbf{u} = S</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now, we can factorise the equation to arrive at the following form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{u}\left(\frac{\partial \rho}{\partial t}+\nabla\cdot\rho\mathbf{u}\right) + \rho\left(\frac{\partial \mathbf{u}}{\partial t} +\mathbf{u}\cdot\nabla\mathbf{u}\right) = S</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The first parenthesis must be equal to zero, as this is just our continuity (mass conservation) equation we derived above, and we saw that it was set to zero, so we can neglect this term. Thus, we can write the momentum equation that we have derived thus far in the following convective form, which is, as stated above, the common way to write the Navier-Stokes equations:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\rho\frac{\partial \mathbf{u}}{\partial t} + \rho(\mathbf{u}\cdot\nabla)\mathbf{u} = \nabla\cdot\sigma+\rho\mathbf{g}+\frac{1}{V}\mathbf{f}_{body}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-naviers-and-stokes-brilliance-how-to-treat-the">A simplistic approach: the Euler momentum equation</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The crucial aspect in deriving the momentum conservation laws for fluids is how we treat the internal forces, i.e. how we define [katex]\sigma[/katex]. We said that [katex]\sigma[/katex] contains all pressure and internal shear forces, which we can express as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\sigma = -p\mathbf{I} + \tau</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, the pressure [katex]p[/katex] is a scalar value. Since the pressure forces can only act normal to surfaces (not tangential to them), we multiply it by the identity matrix [katex]\mathbf{I}[/katex] to ensure it is only acting normal to the [katex]x[/katex], [katex]y[/katex], and [katex]z[/katex] direction. The pressure is also a scalar value, meaning that its value is the same in the [katex]x[/katex], [katex]y[/katex], and [katex]z[/katex] direction.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The shear stresses [katex]\tau[/katex], on the other hand, form a tensor (again, essentially a matrix, but let's not wind up those mathematicians more than we have to), so we can see the necessity to provide the pressure in a matrix form as well so that we can add both terms together.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We could make life simple for us and say that the shear stresses are zero, i.e. [katex]\tau=0[/katex], which would result in [katex]\sigma = -p\mathbf{I}[/katex]. In this case (omitting also any external forces), we can write our momentum equation as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\rho\frac{\partial \mathbf{u}}{\partial t} + \rho(\mathbf{u}\cdot\nabla)\mathbf{u} = -p\mathbf{I}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This is known as the Euler equation, i.e. this equation is valid for inviscid flows only, which is a crude but reasonable approximation for high-speed flows. If you want to write a compressible flow solver, starting with the Euler equations is usually not a bad idea as it will convey the basic characteristics of the flow you are solving. For more general situations, though (especially if we are interested in turbulence), it can't capture what we are interested in!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, thank you, Euler, but we have to leave you behind now and look at what Navier and Stokes did. They both arrived at the same equation, using slightly different reasons and being unaware of the work of the other (if only the internet existed in 1820-1850, seriously, what did people do back then without 5G?). Navier came up with the solution some 20 years before Stokes, but their work combined provided us with a useful equation that has proven to be a rather useful equation in determining the flow of a fluid.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-naviers-and-stokes-brilliance-how-to-treat-the-internal-forces">Lucky bastard: Why history remembers the work of Navier but it shouldn't!</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The history of the development of Navier and Stokes is fascinating, well, at least to me, but I guess you would expect that of someone teaching the Navier-Stokes equation on a daily basis to students. But bear with me, there will be some new information for you I am sure even if you are already well familiar with the equation itself.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The Euler equation was long accepted in the 19th century, but the role of friction was not properly understood. Louis Marie Henri Navier, Jean Claude Barre de Saint-Venant, and George Gabriel Stokes all presented different approaches to extend the Euler equation to incorporate friction between fluid layers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In his 1822 paper titled "Memoire sur les lois du mouvement des fluides", Navier presented his hypothesis about diffusion to the Academie des Sciences in Paris, which was published five years later. His work was based on molecular considerations as mentioned above, and interestingly, Anderson (J. D. Anderson, “Brief History of the Early Development of Theoretical and Experimental Fluid Dynamics,” 2010., p.12) highlights that:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>"<em>Navier's equations were of the correct form, [however, ] his theoretical reasoning was greatly flawed, and it is almost a fluke that he obtained the correct terms</em>".</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Yes, indeed, Navier took a lucky shot at the problem, and surprisingly, there was some truth to his statements. It was not until 1843, seven years after Navier's death, that Saint-Venant entered the picture and re-derived Navier's hypothesis from a macroscopic point of view, completely ignoring the molecular considerations given by Navier. His derivations were sound and arrived at the correct form.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Around the same time, in 1845, Stokes published his hypothesis on diffusion in his paper titled "On the Theories of the Internal Friction of Fluids in Motion, and of the Equilibrium and Motion of Elastic Solids". Stokes was unaware of the work of Navier or Saint-Venant, as alluded to above. Despite the more rigorous derivation given by Saint-Venant, the equations became known as the Navier-Stokes equations. Navier got lucky, and I suppose we could call Saint-Venant the <a href="https://en.wikipedia.org/wiki/Buzz_Aldrin" target="_blank" rel="noopener" title="">Buzz Aldrin</a> of fluid mechanics!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>(Though Saint-Venant came before Buzz Aldrin, should we be calling Buzz Aldrin the Saint-Venant of space exploration?)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-almost-there-but-lets-talk-about-constitutive-relationshiups-first">Almost there, but we need to talk about constitutive equations first</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We have almost all the pieces of the puzzles lined up. We just need one final ingredient to be able to derive the Saint-Venant-Stokes, I mean, the Navier-Stokes equations (a little <a href="https://en.wikipedia.org/wiki/Freudian_slip">Freudian slip</a> on my behalf, apologies).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>A <a href="https://en.wikipedia.org/wiki/Constitutive_equation" target="_blank" rel="noopener" title="">constitutive equation</a> relates two or more physical quantities with each other. Fluid mechanics is full of them, we have, for example, the equation of state [katex]p=\rho R T[/katex], where the pressure can be expressed in terms of the density, the gas constant, and the temperature, or the drag force [katex]D=0.5 c_d \rho u_\infty^2 A[/katex], which is expressed in terms of a drag coefficient and reference area, as well as the density and freestream velocity.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Constitutive equations allow us to express one quantity we don't know through other quantities we either know or can measure. These constitutive equations can be either derived from first principles (where we start with some fundamental physical law) or through empirical correlations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>An example where we derive the constitutive equation from first principle is the velocity profile in a 2D, laminar flow through a pipe. We start with the Navier-Stokes equation itself and then cancel out terms that are not relevant. The terms that remain in the Navier-Stokes equation can then be integrated and provide us with the famous laminar, quadratic velocity profile of the form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>u(r)=U_0\left(1-\frac{r^2}{R^2}\right)</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>where [katex]U_0[/katex] is the center line (max) velocity within the pipe, [katex]r[/katex] is a coordinate along the radius of the pipe, and [katex]R[/katex] is the radius of the pipe itself.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>An example of an empirical constitutive equation is Poiseuille's law, who stated that for the same pipe flows, we can determine the pressure drop within a pipe using the following formula:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\Delta p=128\frac{\mu L Q}{\pi d^4}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, we have [katex]\Delta p[/katex] being the pressure drop, [katex]\mu[/katex] the dynamic viscosity, [katex]L[/katex] the length of the pipe over which we want to measure the pressure drop, [katex]Q[/katex] the flow rate, and [katex]d[/katex] being the diameter of the pipe.  Where did the value of [katex]128[/katex] come from? Well, measurements and the subsequent curve fittings.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Poiseuille postulated that all of these quantities play a role in the pressure drop, and the equation above approximates the pressure drop, but no fundament physical law was used to derive this equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, now that we understand what a constitutive law is, we can move on and look at the momentum equation again.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-stokes-and-saint-venant-brilliance-how-to-treat-internal-forces">Finding a constitutive equation for the shear stresses</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's start by inserting our definition of [katex]\sigma = -p\mathbf{I} + \tau[/katex] into the Cauchy momentum equation. We obtain the following equation, which is exact (no approximation is done):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \rho\mathbf{u}}{\partial t} + \rho(\mathbf{u}\cdot\nabla)\mathbf{u} = \nabla\cdot(-p\mathbf{I} + \tau)+\rho\mathbf{g}+\frac{1}{V}\mathbf{f}_{body}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can then also separate the pressure and shear stress contribution to write the equation as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \rho\mathbf{u}}{\partial t} + \rho(\mathbf{u}\cdot\nabla)\mathbf{u} = -\nabla p + \nabla\cdot\tau + \rho\mathbf{g}+\frac{1}{V}\mathbf{f}_{body}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, we made use of the fact that taking the gradient of a scalar quantity is equivalent to multiplying that scalar with the identity matrix and then taking the divergence of that quantity, i.e. we used the following identity: [katex]\nabla\cdot (p\mathbf{I}) = \nabla p[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The work of Navier, Saint-Venant, and Stokes boils down to finding a suitable constitutive equation for the shear stresses [katex]\tau[/katex] (and, if after reading the rest of this section and you feel inspired to come up with your very own constitutive equation, you can create your own momentum equation and call it whatever you want).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In 1686, Newton had an idea of how shear stresses ought to behave and put it in words, but it was not until 1845 that Stokes translated these words into a three-dimensional equation. Poiseuille also proved in 1856 through experiments that Newton's hypothesis was true. Nowadays, we know this constitutive relation as Newton's law of viscosity, but really, it was the work of Stokes, Saint-Venant (heck, even that chap called Navier), Poiseuille, Hagen, and Bingham, who should be remembered just as much for their contributions!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Newton's law of viscosity can be stated (in 1D) as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\tau=\mu\frac{\mathrm{d}u}{\mathrm{d}y}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>That is to say, we can now approximate the shear stress through the dynamic viscosity (which we can measure), as well as the velocity profile (which we can also measure). Here, we assume that there is only one velocity gradient, but if we want to generalise this to 3D (which is effectively what Stokes did), then we could write this as a tensor instead:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\tau_{xy}=\mu\begin{bmatrix}\frac{\partial u}{\partial x} &amp; \frac{\partial u}{\partial y} &amp; \frac{\partial u}{\partial z} \\ \frac{\mathrm{d}v}{\partial x} &amp; \frac{\partial v}{\partial y} &amp; \frac{\partial v}{\partial z} \\ \frac{\partial w}{\partial x} &amp; \frac{\partial w}{\partial y} &amp; \frac{\partial w}{\partial z}\end{bmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Notice that our ordinary differential operator has now become a partial differential operator as the velocity components now depend on more than one variable (i.e. the [katex]x[/katex], [katex]y[/katex], and [katex]z[/katex] direction, to be precise). We could also write this with our nabla notation as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\tau_{xy}=\mu\cdot\nabla \mathbf{u}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Closely related to Newton's law of viscosity is the strain rate. The strain rate is defined as [katex]\dot{\gamma}=u/h[/katex], where [katex]u[/katex] is the relative velocity between two fluid layers in motion (typically taken between two solid plates in relative motion, i.e. the <a href="https://en.wikipedia.org/wiki/Couette_flow" title="">Couette flow</a>) and [katex]h[/katex] the distance between these two plates. Now, if we let the distance between these two plates go to zero, noting that the relative velocity can be expressed as the difference between the fluid velocity at the upper and lower layer, then we can write</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\dot{\gamma}=\frac{u}{h}=\lim_{h\rightarrow 0}\frac{u_{upper}-u_{lower}}{h}=\frac{\mathrm{d}u}{\mathrm{d}h}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we replace the height [katex]h[/katex] with the more general variable [katex]x[/katex], then we can see that the strain rate is nothing else than the velocity gradient in disguise (in 1D), and the velocity gradient tensor in the more general 3D form. Thus, if we are able to measure the strain rate [katex]\dot{\gamma}[/katex] and the shear stresses [katex]\tau[/katex], then we can plot their relationship and determine a mathematical model from that.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The following figure is taken from a study by <a href="https://www.researchgate.net/publication/230642993" title="B. C. Sahoo et al. 2009">B. C. Sahoo et al. 2009</a>, where these two properties were measured in a lab for nanofluidic applications.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":736,"width":"800px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="http://cfd.university/wp-content/uploads/2023/04/Shear-stress-versus-shear-strain-rate-in-the-higher-temperature-range-283-K-263-K-for.png" alt="Example plot of the linear relationship between shear stresses and strain rate, which is the underlying assumption for the Navier-Stokes equations." class="wp-image-736" style="width:800px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We can see that there are linear relationships for all of the measured lines, and we can also see that the steepness of these lines is determined by the dynamic viscosity [katex]\mu[/katex]. This makes sense, as we have already seen from Newton's law of viscosity that we expect a linear relationship between the shear stress and strain rate and that the dynamic viscosity is just a scaling factor.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>And we could even do some linear curve fitting using the general equation for a linear line of</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>y=mx+b</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In this case, we set [katex]b=0[/katex], as all curves pass through the origin, [katex]y=\tau[/katex], [katex]m=\mu[/katex], and [katex]x=\dot{\gamma}=\nabla\mathbf{u}[/katex]. Inserting these quantities, we arrive again at Newton's law of viscosity.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-stokes-and-saint-venant-brilliance-how-to-treat-internal-forces">Stokes' and Saint-Venant' brilliance: How to treat internal forces</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Ok, so we have a constitutive equation for the shear stresses, so we can just plug that into the momentum equation and then be done with it, right? Not quite, and if it was that simple, we'd probably call the Navier-Stokes equations the Newton equations of fluid dynamics instead! The crux is in the definition of the velocity gradient tensor [katex]\nabla\mathbf{u}[/katex], which we saw in Newton's law of viscosity, which we need to decompose into a symmetric and an anti-symmetric part as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla \mathbf{u}=\underbrace{\frac{1}{2}\left[\nabla \mathbf{u}+(\nabla \mathbf{u})^T\right]}_{symmetric}+\underbrace{\frac{1}{2}\left[\nabla \mathbf{u}-(\nabla \mathbf{u})^T\right]}_{anti-symmetric}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The above decomposition can be done for any matrix or second-order tensor, as shown by the mathematician Toeplitz. We can simply write out the tensors to verify that this can indeed be done. Introducing the shorthand notation [katex]\frac{\partial u}{\partial x}=u_x[/katex], we have</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla \mathbf{u}=\frac{1}{2}\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix}+\frac{1}{2}\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix}^T+\frac{1}{2}\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix}-\frac{1}{2}\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix}^T</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can see that the second and fourth tensors cancel out, and we are left with</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla \mathbf{u}=\frac{1}{2}\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix}+\frac{1}{2}\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix}=\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This is the original velocity gradient tensor that we started with, confirming that Toeplitz's decomposition does not change the original tensor. Let's investigate the anti-symmetric part (which is the third and fourth tensor above). This can be written as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{1}{2}\left[\nabla \mathbf{u}-(\nabla \mathbf{u})^T\right]=\frac{1}{2}\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix}-\frac{1}{2}\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix}^T = \frac{1}{2}\begin{bmatrix}u_x &amp; u_y &amp; u_z \\ v_x &amp; v_y &amp; v_z \\ w_x &amp; w_y &amp; w_z\end{bmatrix} - \frac{1}{2}\begin{bmatrix}u_x &amp; v_x &amp; w_x \\ u_y &amp; v_y &amp; w_y \\ u_z &amp; v_z &amp; w_z\end{bmatrix} =\\
+\frac{1}{2}\begin{bmatrix}0 &amp; u_y - v_x &amp; u_z - w_x \\ v_x - u_y &amp; 0 &amp; v_z - w_y \\ w_x - u_z &amp; w_y - v_z &amp; 0\end{bmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Compare that to the definition of vorticity, which is related to the rotation of a fluid:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>v=\nabla\times\mathbf{u}=\begin{bmatrix} w_y-v_z \\ u_z-w_x \\ v_x-u_y \end{bmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can see that the anti-symmetric part of the velocity gradient tensor decomposition contains the same quantities, albeit some having the opposite sign. Stokes then assumed that, due to the rotational nature, the ani-symmetric part should be dropped in the definition of the shear stresses. Why? Well, let's do a simple experiment to see why.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Suppose we have two vectors, which are [katex]a=[1, 0, 0][/katex] and [katex]b=[0, 1, 0][/katex]. If we now take the cross product of these two vectors, we have</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\begin{bmatrix}1 \\ 0 \\ 0\end{bmatrix}\times\begin{bmatrix}0 \\ 1 \\ 0\end{bmatrix} = \begin{bmatrix}0\cdot 0-0\cdot 1 \\ 0 \cdot 0 - 1 \cdot 0 \\ 1 \cdot 1 - 0\cdot 0 \end{bmatrix} = \begin{bmatrix}0 \\ 0 \\ 1\end{bmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Let say that both of these vectors [katex]a[/katex] and [katex]b[/katex] form a plane, in this case, a plane that is aligned with the [katex]x[/katex] and [katex]y[/katex] coordinate direction, then, taking the cross product of these two vectors results in a vector that is normal to this plane (and aligned with the [katex]z[/katex] direction). Thus, taking the cross product will always create a vector quantity that is normal to the plane that its underlying vectors span.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we relate that to a fluid particle, a force that is normal to the fluid particle's surface is a pressure force, but a force that is applied tangentially along the surfaces is a shear force. Normal forces like the pressure do not contribute to shearing forces.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thus, the vorticity is acting normal to the plane its two vector component span, and thus, vorticity does not contribute to shear stresses. Therefore, we can drop the anti-symmetric part, as it simply contains the same velocity quantities as the vorticity vector.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For completeness, the velocity gradient tensor decomposition is sometimes also written as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla \mathbf{u}=\underbrace{\frac{1}{2}\left[\nabla \mathbf{u}+(\nabla \mathbf{u})^T\right]}_{symmetric}+\underbrace{\frac{1}{2}\left[\nabla \mathbf{u}-(\nabla \mathbf{u})^T\right]}_{anti-symmetric} = \mathbf{S}+\mathbf{\Omega}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]\mathbf{S}[/katex] represents the symmetric (strain) part, and [katex]\mathbf{\Omega}[/katex] the anti-symemtric (rotational) part. After we have dropped [katex]\mathbf{\Omega}[/katex], we can write our constitutive equation for the shear stresses of a fluid in the following form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\tau=2\mu \mathbf{S}=\mu[\nabla\mathbf{u}+(\nabla\mathbf{u})^T]</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We have to multiply by a factor of two as both [katex]\mathbf{S}[/katex] and [katex]\mathbf{\Omega}[/katex] contribute an equal half to the tensor decomposition. Multiplying by two accounts for the fact that we have dropped [katex]\mathbf{\Omega}[/katex]. Anyways, that is what Stokes assumed. If you want to challenge him on that, feel free to create your own constitutive equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In principle, we are done. The above equation works, but just not for all types of flows (most notably, compressible flows). In order to also treat those flows (and have a generalised form of the Navier-Stokes equation), we need to look at one last concept.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-stokes-velocity-due-to-dilatation">Stokes velocity due to dilatation</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In his 1845 paper <em>On the theories of the internal friction of fluids in motion</em>, George Gabriel Stokes derived his hypothesis of how friction in a fluid comes about and used molecular considerations to arrive at his final equations. He assumed that the velocity can be decomposed as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph {"align":"center"} -->
+<p class="has-text-align-center"><strong>Total Velocity</strong> <strong>=</strong> Velocity due to <strong>Translation +</strong> Velocity due to <strong>Rotation +</strong> Velocity due to <strong>Dilatation</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The first two terms are the ones we have seen above, which were due to Toeplitz's matrix decomposition into a symmetric and anti-symmetric part (note that the above is for the overall velocity, not shear stresses; hence, we do account for the rotation here again). The third term, velocity due to dilatation, requires a bit further explanation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Stokes used a control volume approach, where the control volume itself is moving with the flow, specifically, with the mean velocity. If we make the control volume so small that we resolve individual atoms, then we would observe that these atoms do not have a preferred direction of movement since the control volume itself is moving with the mean flow. In other words, the atoms follow <a href="https://en.wikipedia.org/wiki/Brownian_motion" target="_blank" rel="noopener" title="">Brownian motion</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we now consider these atoms to hit the walls of the control volume, they would cause the volume to expand, which is what dilatation is. This idea is shown schematically below:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":949,"width":"800px","sizeSlug":"large","linkDestination":"none","align":"center","className":"is-resized"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="http://cfd.university/wp-content/uploads/2023/05/stokes_hypothesis_on_dilatation-e1683611927273-1024x391.png" alt="The control volume approach taken by Stokes when deriving the Navier-Stokes equations." class="wp-image-949" style="width:800px"/><figcaption class="wp-element-caption">Stokes' hypothesis on dilatation contributing to the shear stresses.</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>He then postulated that this dilatation term should be written as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\delta=\nabla\cdot\mathbf{u}=\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}+\frac{\partial w}{\partial z}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>To understand how this equation comes about, we need first to understand how density works at a molecular level. When we deal with atoms, it makes more sense to talk about the number density, i.e. how many particles are within a given volume. In the figure above, we have 13 atoms drawn, so its number density would be 13 (for that control volume).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's look at Stokes' dilatation term above; it is the continuity equation! For an incompressible flow, we know that we have [katex]\nabla\cdot\mathbf{u}=0[/katex]. Let's say the [katex]u[/katex] velocity component changes in the [katex]x[/katex] direction so that [katex]\partial u/\partial x[/katex] increases. This means that either [katex]\partial v/\partial y[/katex] or [katex]\partial w/\partial z[/katex], or both, need to get smaller, so that we still have [katex]\nabla\cdot\mathbf{u}=0[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>When [katex]\partial u/\partial x[/katex] increases, that means that our control volume has to stretch in the [katex]x[/katex] direction, and likewise, the control volume would shrink in the [katex]y[/katex] and/or [katex]z[/katex] directions. The number of particles would not change; they would still be in the control volume (by definition), so the number density (and, by extension, the macroscopic density) would remain constant. This is what we know to be true for an incompressible flow.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, for a compressible flow, the density does not have to be constant, and this can also be related to the schematic above. If all three velocity gradients increase, i.e. [katex]\partial u/\partial x[/katex], [katex]\partial v/\partial y[/katex] and [katex]\partial w/\partial z[/katex], then we would expect the control volume to increase. However, it will still contain the same number of atoms. The number density will reduce as the control volume increases, and so, by extension, the macroscopic density will decrease.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Therefore, if we expect a change in density, Stokes was saying that this will result in dilatation, and its effect contributes to the shear stresses. Since he decomposed the velocity into its translational, rotational, and dilatational part, its makes sense then (from a mathematical perspective), to include this additional term in our shear stress definition. This is done in the following:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\tau = \mu[\nabla\mathbf{u}+(\nabla\mathbf{u})^T]+\lambda(\nabla\cdot\mathbf{u})</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In order to understand the additional new variable [katex]\lambda[/katex], which is referred to as the bulk viscosity, Stokes needed to make some further assumptions. He assumed that the dilatation is uniform, i.e. the control volume is expanding or contracting in each direction uniformly.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In our discussion above, we looked at individual components of the velocity gradient. We said they could change independently of each other, but that was purely done to get an insight into how the equation works. When we get to a molecular level, though, we discussed that particles are moving with no preferred direction of motion (once the mean flow is removed), which we introduced as Brownian motion.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Since there is no preferred direction of movement, we could also just look at one direction and then say that it is the same in the other directions, i.e. if we knew the velocity gradient component in the [katex]x[/katex] direction, we could say it is the same in the other two directions. This is, anyway, what Stokes assumed to quantify the dilatation. Since each direction has the same strength and magnitude, we would need to multiply [katex]\nabla\cdot\mathbf{u}[/katex] by a third to get just one direction, and this is what Stokes assumed as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\delta = \frac{1}{3}\nabla\cdot\mathbf{u}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Next, Stokes also assumed that we can further write Newton's shear stress equation as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\tau=2\mu[S-\delta]</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>A positive dilatation causes the control volume to increase. So, let's think about what that would mean for the shear stresses. If the control volume increases, we are expanding its surface area on each side. The shear stresses have units of [katex]N/m^2[/katex], so if the surface area increases but everything else stays constant, then our shear stresses would have to decrease (purely from a dimensional consideration).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thus, Stokes said that this decrease in shear stress will be achieved by subtracting the dilatation term rather than by adding it (which would result in larger shear stresses).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we now insert Stokes' hypothesis into our stress tensor, then we arrive at the final form of</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\tau = \mu[\nabla\mathbf{u}+(\nabla\mathbf{u})^T]-\frac{2}{3}\mu(\nabla\cdot\mathbf{u})</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>At this point, I should stress again that this is a constitutive equation, i.e. something that Stokes, Saint-Venant, and Navier have come up with and we have found to work well for a range of applications, but that does not mean that they have provided us with a closure for the exact Cauchy momentum equation. Just because their mathematics looks <em>elegant </em>and we have found these equations to work well for a wide range of applications, we still don't know if the above constitutive equation is indeed correct in a physical sense.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In fact, there is still a lively debate as to whether the [katex]-\frac{2}{3}\mu[/katex] term is correct or not. The uniqueness and existence of the Navier-Stokes equations remains an open problem and is one of the seven unsolved problems listed by the Clay Institute, for which there is a 1 000 000 $ award to be claimed by someone able to provide proof of these equations. You can read about this on the Clay Institute <a href="https://www.claymath.org/millennium/navier-stokes-equation/" target="_blank" rel="noopener" title="">website</a> (and share your solution with me; sharing is caring, right? ...).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-putting-it-all-together-the-final-navier-stokes-momentum-equation">Putting it all together: the final Navier-Stokes momentum equation</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Taking the derivative of the above equation, the following result is obtained</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla\cdot\tau = \mu[\nabla\cdot\nabla\mathbf{u} + \nabla(\nabla\cdot\mathbf{u})] - \frac{2}{3}\mu\nabla(\nabla\cdot\mathbf{u})</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Inserting this definition of the viscous stress tensor into [katex]\sigma = -p\mathbf{I} + \tau[/katex] and then into the Cauchy momentum equation, and dividing all terms by the density, the following equation is obtained</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u}\cdot\nabla)\mathbf{u} = -\frac{1}{\rho}\nabla p + \nu\nabla^2\mathbf{u} + \nu\nabla(\nabla\cdot\mathbf{u}) - \frac{2}{3}\nu\nabla(\nabla\cdot\mathbf{u}) + \mathbf{g} +\frac{1}{\rho V}\mathbf{f}_{body}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, [katex]\nu=\mu/\rho[/katex] is the kinematic viscosity. Defining [katex]Q=\nu\nabla(\nabla\cdot\mathbf{u}) - \frac{2}{3}\nu\nabla(\nabla\cdot\mathbf{u}) + \mathbf{g} +\frac{1}{\rho V}\mathbf{f}_{body}[/katex] as a source term, we can write the above equation as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u}\cdot\nabla)\mathbf{u} = -\frac{1}{\rho}\nabla p + \nu\nabla^2\mathbf{u} + Q</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This is the conservation of momentum equation according to Navier, Saint-Venant, and Stokes, or, as we call it, the Navier-Stokes equation. Originally, the Navier-Stokes equation was simply that, i.e. the conservation of momentum, but these days, we also consider the conservation of mass and energy to be part of the set of Navier-Stokes equations, although Navier and Stokes had nothing to do with these conservation laws.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>At this point, it is worthwhile to point out that the incompressible Navier-Stokes equations are obtained by realising that we got [katex]\nabla\cdot\mathbf{u}=0[/katex] from the continuity equation, and so if we insert that into our generalised Navier-Stokes momentum equation, i.e.:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u}\cdot\nabla)\mathbf{u} = -\frac{1}{\rho}\nabla p + \nu\nabla^2\mathbf{u} + \nu\nabla(\underbrace{\nabla\cdot\mathbf{u}}_{=0}) - \frac{2}{3}\nu\nabla(\underbrace{\nabla\cdot\mathbf{u}}_{=0}) + \mathbf{g} +\frac{1}{\rho V}\mathbf{f}_{body}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Removing the zero contributions from our equations results in the final form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u}\cdot\nabla)\mathbf{u} = -\frac{1}{\rho}\nabla p + \nu\nabla^2\mathbf{u} +  \mathbf{g} +\frac{1}{\rho V}\mathbf{f}_{body}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Most of the time, this equation is simplified further by dropping body force terms and the influence of gravity (what we introduced as external forces), and we obtain the following simplified equation, which now only includes the internal forces:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u}\cdot\nabla)\mathbf{u} = -\frac{1}{\rho}\nabla p + \nu\nabla^2\mathbf{u}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-conservation-of-energy">Summary</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>So there you have it: the derivation of the Navier-Stokes equations in just under an hour. That's not too bad! The key take-away messages are as follows:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>If we want to derive any transport equation, we need to consider the Reynolds transport theorem, which tells us how a quantity changes in time and space.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Using the Reynolds transport theorem and applying it for the density, momentum, and energy, provides us with the set of equations that govern fluid dynamics, which we also know as the Navier-Stokes equations these days.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>The Navier-Stokes equations are not exact. The definition of the shear stresses is a constitutive equation that was derived from first principle but making assumptions about how the flow ought to behave. The question is still out whether these equations are indeed correct, despite an overwhelming body of evidence that they work well for a variety of cases.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Navier developed a flawed derivation, but history remembers him kindly. Before we upset the French bastion, we should praise the work of Saint-Venant, who correctly derived what Navier could not.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Stokes was unaware of the work of Saint-Venant and Navier, and if the bloody internet, Google Scholar, and 5G had been invented a tiny bit earlier, Stokes would have been punished for plagiarism</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>To summarise the equations we have developed and looked at in this article, a list is provided below:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>The Reynolds transport theorem</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\mathrm{d}\Phi(t)}{\mathrm{d}t}=\frac{\partial \phi}{\partial t}+\nabla\cdot\phi\mathbf{u}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Conservation of Mass (compressible flow)</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \rho}{\partial t}+\nabla\cdot(\rho\mathbf{u})=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Conservation of Mass (incompressible flow)</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\nabla\cdot\mathbf{u}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Conservation of Momentum (compressible flow)</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u}\cdot\nabla)\mathbf{u} = -\frac{1}{\rho}\nabla p + \nu\nabla^2\mathbf{u} + \nu\nabla(\nabla\cdot\mathbf{u}) - \frac{2}{3}\nu\nabla(\nabla\cdot\mathbf{u}) + \mathbf{g} +\frac{1}{\rho V}\mathbf{f}_{body}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Conservation of Momentum (incompressible flow)</strong>:</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u}\cdot\nabla)\mathbf{u} = -\frac{1}{\rho}\nabla p + \nu\nabla^2\mathbf{u} +  \mathbf{g} +\frac{1}{\rho V}\mathbf{f}_{body}</pre></div>
+<!-- /wp:katex/display-block -->

@@ -1,0 +1,242 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document http://www.reportlab.com
+1 0 obj
+<<
+/F1 2 0 R /F2 3 0 R /F3 4 0 R /F4 5 0 R
+>>
+endobj
+2 0 obj
+<<
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
+>>
+endobj
+3 0 obj
+<<
+/BaseFont /Courier /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
+>>
+endobj
+4 0 obj
+<<
+/BaseFont /Courier-Oblique /Encoding /WinAnsiEncoding /Name /F3 /Subtype /Type1 /Type /Font
+>>
+endobj
+5 0 obj
+<<
+/BaseFont /Courier-Bold /Encoding /WinAnsiEncoding /Name /F4 /Subtype /Type1 /Type /Font
+>>
+endobj
+6 0 obj
+<<
+/Contents 10 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 9 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
+>>
+endobj
+7 0 obj
+<<
+/PageLabels 11 0 R /PageMode /UseNone /Pages 9 0 R /Type /Catalog
+>>
+endobj
+8 0 obj
+<<
+/Author () /CreationDate (D:20240410052903+00'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20240410052903+00'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
+  /Subject (\(unspecified\)) /Title () /Trapped /False
+>>
+endobj
+9 0 obj
+<<
+/Count 1 /Kids [ 6 0 R ] /Type /Pages
+>>
+endobj
+10 0 obj
+<<
+/Length 4162
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 57.02362 717.0236 cm
+q
+BT 1 0 0 1 0 38 Tm .702545 Tw 12 TL /F1 10 Tf 0 0 0 rg (To display code on the same line, you can use ) Tj /F2 10 Tf (dashes) Tj /F1 10 Tf ( to highlight code differently from the written text. If) Tj T* 0 Tw .144353 Tw (you want to show entire code sections, start a new code environment with the ) Tj /F2 10 Tf (..) Tj ( ) Tj (code::) Tj /F1 10 Tf ( block \(make sure) Tj T* 0 Tw 1.208022 Tw (the leave an empty line between this statement and your actual code\). You can optionally provide syntax) Tj T* 0 Tw (highlighting hints, as well as additional options, such as using line numbers.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 699.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (Example of code block without syntax highlighting:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 617.8236 cm
+q
+q
+1 0 0 1 0 0 cm
+q
+1 0 0 1 6.6 6.6 cm
+q
+.662745 .662745 .662745 RG
+.5 w
+.941176 .972549 1 rg
+n -6 -6 480.0283 72 re B*
+Q
+q
+BT 1 0 0 1 0 50 Tm 12 TL /F2 10 Tf 0 0 0 rg (#include ) Tj (<) Tj (iostream) Tj (>) Tj  T* (int main\(\) {) Tj T* (  std::court ) Tj (<) Tj (<) Tj ( "no syntax highlighting applied" ) Tj (<) Tj (<) Tj ( std::endl;) Tj T* (  return 0;) Tj T* (}) Tj T* ET
+Q
+Q
+Q
+Q
+Q
+q
+1 0 0 1 57.02362 597.8236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (Same code example, but now we use C++ syntax highlighting and showing line numbers:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 516.6236 cm
+q
+q
+1 0 0 1 0 0 cm
+q
+1 0 0 1 6.6 6.6 cm
+q
+.662745 .662745 .662745 RG
+.5 w
+.941176 .972549 1 rg
+n -6 -6 480.0283 72 re B*
+Q
+q
+.941176 .972549 1 rg
+n 0 48 12 12 re f*
+.941176 .972549 1 rg
+n 12 48 48 12 re f*
+.941176 .972549 1 rg
+n 60 48 6 12 re f*
+.941176 .972549 1 rg
+n 66 48 6 12 re f*
+.941176 .972549 1 rg
+n 72 48 48 12 re f*
+.941176 .972549 1 rg
+n 120 48 6 12 re f*
+.941176 .972549 1 rg
+n 126 48 0 12 re f*
+.941176 .972549 1 rg
+n 0 36 12 12 re f*
+.941176 .972549 1 rg
+n 12 36 18 12 re f*
+.941176 .972549 1 rg
+n 30 36 6 12 re f*
+.941176 .972549 1 rg
+n 36 36 24 12 re f*
+.941176 .972549 1 rg
+n 60 36 12 12 re f*
+.941176 .972549 1 rg
+n 72 36 6 12 re f*
+.941176 .972549 1 rg
+n 78 36 6 12 re f*
+.941176 .972549 1 rg
+n 84 36 0 12 re f*
+.941176 .972549 1 rg
+n 0 24 12 12 re f*
+.941176 .972549 1 rg
+n 24 24 18 12 re f*
+.941176 .972549 1 rg
+n 42 24 12 12 re f*
+.941176 .972549 1 rg
+n 54 24 24 12 re f*
+.941176 .972549 1 rg
+n 78 24 6 12 re f*
+.941176 .972549 1 rg
+n 84 24 6 12 re f*
+.941176 .972549 1 rg
+n 90 24 6 12 re f*
+.941176 .972549 1 rg
+n 96 24 6 12 re f*
+.941176 .972549 1 rg
+n 102 24 198 12 re f*
+.941176 .972549 1 rg
+n 300 24 6 12 re f*
+.941176 .972549 1 rg
+n 306 24 6 12 re f*
+.941176 .972549 1 rg
+n 312 24 6 12 re f*
+.941176 .972549 1 rg
+n 318 24 6 12 re f*
+.941176 .972549 1 rg
+n 324 24 18 12 re f*
+.941176 .972549 1 rg
+n 342 24 12 12 re f*
+.941176 .972549 1 rg
+n 354 24 24 12 re f*
+.941176 .972549 1 rg
+n 378 24 6 12 re f*
+.941176 .972549 1 rg
+n 384 24 0 12 re f*
+.941176 .972549 1 rg
+n 0 12 12 12 re f*
+.941176 .972549 1 rg
+n 24 12 36 12 re f*
+.941176 .972549 1 rg
+n 60 12 6 12 re f*
+.941176 .972549 1 rg
+n 66 12 6 12 re f*
+.941176 .972549 1 rg
+n 72 12 6 12 re f*
+.941176 .972549 1 rg
+n 78 12 0 12 re f*
+.941176 .972549 1 rg
+n 0 0 12 12 re f*
+.941176 .972549 1 rg
+n 12 0 6 12 re f*
+BT 1 0 0 1 0 50 Tm 12 TL /F2 10 Tf 0 0 0 rg (1 ) Tj .737255 .478431 0 rg (#include) Tj .733333 .733333 .733333 rg ( ) Tj /F3 10 Tf .25098 .501961 .501961 rg (<) Tj (iostream) Tj (>) Tj /F2 10 Tf 0 0 0 rg  T* (2 ) Tj .690196 0 .25098 rg (int) Tj .733333 .733333 .733333 rg ( ) Tj 0 0 1 rg (main) Tj 0 0 0 rg (\(\)) Tj .733333 .733333 .733333 rg ( ) Tj 0 0 0 rg ({) Tj  T* (3 ) Tj (  ) Tj (std) Tj .4 .4 .4 rg (::) Tj 0 0 0 rg (cout) Tj .733333 .733333 .733333 rg ( ) Tj .4 .4 .4 rg (<) Tj (<) Tj .733333 .733333 .733333 rg ( ) Tj .729412 .129412 .129412 rg ("c++ syntax highlighting applied") Tj .733333 .733333 .733333 rg ( ) Tj .4 .4 .4 rg (<) Tj (<) Tj .733333 .733333 .733333 rg ( ) Tj 0 0 0 rg (std) Tj .4 .4 .4 rg (::) Tj 0 0 0 rg (endl) Tj (;) Tj  T* (4 ) Tj (  ) Tj /F4 10 Tf 0 .501961 0 rg (return) Tj /F2 10 Tf .733333 .733333 .733333 rg ( ) Tj .4 .4 .4 rg (0) Tj 0 0 0 rg (;) Tj  T* (5 ) Tj (}) Tj T* ET
+Q
+Q
+Q
+Q
+Q
+ 
+endstream
+endobj
+11 0 obj
+<<
+/Nums [ 0 12 0 R ]
+>>
+endobj
+12 0 obj
+<<
+/S /D /St 1
+>>
+endobj
+xref
+0 13
+0000000000 65535 f 
+0000000073 00000 n 
+0000000134 00000 n 
+0000000241 00000 n 
+0000000346 00000 n 
+0000000459 00000 n 
+0000000569 00000 n 
+0000000773 00000 n 
+0000000860 00000 n 
+0000001117 00000 n 
+0000001176 00000 n 
+0000005390 00000 n 
+0000005431 00000 n 
+trailer
+<<
+/ID 
+[<dfead9e8909a0e5d92ed864cc39043ef><dfead9e8909a0e5d92ed864cc39043ef>]
+% ReportLab generated PDF document -- digest (http://www.reportlab.com)
+
+/Info 8 0 R
+/Root 7 0 R
+/Size 13
+>>
+startxref
+5465
+%%EOF

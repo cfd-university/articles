@@ -1,0 +1,439 @@
+<!-- wp:paragraph -->
+<p>In this article, I want to quick-start our discussion on libraries and introduce a model problem that is simple enough for us to code, yet can be exploited to show how we can develop a library that is solving a real-world CFD problem; solving the linear system of equations [katex]Ax=b[/katex]. While we are limiting ourselves here to the 1D heat diffusion equation, it can be applied to any other equation as well (well, we limit ourselves to symmetric matrices, which typically result from pressure Poisson or diffusion equation in general, but they could be extended, let me know if you are interested in that).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this article, we'll look at the 1D heat equation and discretise it using the finite volume method. We go through it step by step so that you understand exactly how we arrive at [katex]Ax=b[/katex]. We then discuss the different solution algorithms, i.e. implicit and explicit integration and see that in the absence of a time derivative, we need to solve the system implicitly. We discuss boundary conditions as well and see how the equations change. By the end of this article, you'll have a firm grasp on our discretised equation and we can use that knowledge in the next articles to write our library. Let's get started!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this series</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode -->
+[custom_category_posts_list category_slug="how-to-compile-write-and-use-cfd-libraries-in-c"]
+<!-- /wp:shortcode -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">In this article</h2>
+<!-- /wp:heading -->
+
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":6,"blockClientId":"99c6ea58-53cf-4e51-a1a4-03e5d84917e2","content":"Motivation and background","level":2,"anchor":"aioseo-writing-a-linear-algebra-solver-library","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":9,"blockClientId":"f308e57a-a3ea-4890-8922-7f7ba75acb12","content":"Discretising the steady-state heat equation","level":2,"anchor":"aioseo-the-steady-state-heat-equation-discretisation","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":16,"blockClientId":"0fd79b3b-49df-4205-8281-290ba54390fb","content":"Understanding the difference between explicit and implicit time integration","level":2,"anchor":"aioseo-step-2-understanding-explicit-and-implicit-contributions","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":49,"blockClientId":"46ad4555-7337-4d26-8ab2-21c3be763c11","content":"Step 1: Finite volume discretisation","level":3,"anchor":"aioseo-step-1-finite-volume-discretisation","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":69,"blockClientId":"6bd01f63-71e9-4b9f-8f64-9276acf37c9d","content":"Step 2: Rearranging equations into explicit and implicit contributions","level":3,"anchor":"aioseo-step-2-rearranging-equations-into-explicit-and-implicit-contributions","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":87,"blockClientId":"63fed44c-19d4-450b-80b7-429fbe549433","content":"Step 3: Boundary condition treatment","level":3,"anchor":"aioseo-step-4","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":100,"blockClientId":"0c6f2366-dd65-414a-8eaf-026cd64624c8","content":"Equation Summary","level":2,"anchor":"aioseo-equation-summary","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":107,"blockClientId":"c785ffff-3337-4f6a-8f68-ea9b73fcdec0","content":"Summary","level":2,"anchor":"aioseo-summary","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-writing-a-linear-algebra-solver-library">Motivation and background</a></li><li><a href="#aioseo-the-steady-state-heat-equation-discretisation">Discretising the steady-state heat equation</a></li><li><a href="#aioseo-step-2-understanding-explicit-and-implicit-contributions">Understanding the difference between explicit and implicit time integration</a><ul><li><a href="#aioseo-step-1-finite-volume-discretisation">Step 1: Finite volume discretisation</a></li><li><a href="#aioseo-step-2-rearranging-equations-into-explicit-and-implicit-contributions">Step 2: Rearranging equations into explicit and implicit contributions</a></li><li><a href="#aioseo-step-4">Step 3: Boundary condition treatment</a></li></ul></li><li><a href="#aioseo-equation-summary">Equation Summary</a></li><li><a href="#aioseo-summary">Summary</a></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-writing-a-linear-algebra-solver-library">Motivation and background</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>In the next few articles, I want to walk you through the process of writing a library which has purpose and value for real CFD applications. I want to look at writing a linear algebra solver that provides an approximation for [katex]x[/katex] in the linear system [katex]Ax=b[/katex]. This is a common use case, and every CFD solver under the sun will solve this equation at some point, with the exception of purely explicit solvers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>By the end of this series, you will have a simple but effective library to solve the linear system of equations, which you can apply to any discretised equation, as long as an implicit solution is required. In this article, I want to focus on the maths, i.e. discretising our model equation so that we know what we are solving for and why we need a linear system of equation solver. In subsequent articles, we will look at the library structure and the actual implementation of the various classes. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-the-steady-state-heat-equation-discretisation">Discretising the steady-state heat equation</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The steady-state heat equation is a good example to study when developing a linear algebra library to solve the discretised equation [katex]Ax=b[/katex]. In the following, I want to walk through the discretisation process so that we know how we are solving the steady-state heat equation. When we discretise an equation, we first need to pick a suitable approximation theory, and we can choose from either the <a href="https://en.wikipedia.org/wiki/Finite_difference" target="_blank" rel="noopener" title="">finite difference</a>, <a href="https://en.wikipedia.org/wiki/Finite_volume_method" target="_blank" rel="noopener" title="">finite volume</a>, or <a href="https://en.wikipedia.org/wiki/Finite_element_method" target="_blank" rel="noopener" title="finite element">finite element</a> method.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Historically speaking, CFD applications were discretised using the finite difference method, which seeks to find approximations of derivatives through a <a href="https://en.wikipedia.org/wiki/Taylor_series" target="_blank" rel="noopener" title="">Taylor series</a> expansion. Trying to approximate derivatives in cases of discontinuities, i.e. shock-waves, proved to be a difficult task and so the finite volume method has taken over for mainstream CFD solver development. Within the finite volume method, derivatives are reformulated into integral equations, and instead of approximating derivatives, we are only interested in finding fluxes across cell faces, so shock waves are easier to resolve.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The finite element method can be used for CFD applications as well but has been applied to structural problems primarily. While there is a strong research effort ongoing to use the finite element method in CFD applications, applications of the finite element method in commercial CFD solvers remain, to the best of my knowledge, untested.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The steady-state heat diffusion equation is given below, and we seek to solve this equation in 1D using the finite volume method (which is what pretty much all commercial CFD solver would do):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\Gamma\frac{\partial^2 T}{\partial \mathbf{x}^2}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Before we get our hands dirty, though, and derive all the required equations, I want to look at the difference between implicit and explicit time integration techniques.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-step-2-understanding-explicit-and-implicit-contributions">Understanding the difference between explicit and implicit time integration</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Before we continue, I want to look at <a href="https://courses.ansys.com/index.php/courses/time_integration/lessons/implicit-and-explicit-time-integration-methods-lesson-2/" target="_blank" rel="noopener" title="">explicit and implicit numerical schemes</a> first as we need to decide how we want to integrate our equation. While we can only choose implicit in this case, I want to expand on this a bit to show you why. This will also help us understand, in general, how explicit and implicit equations are implemented and solved and we will apply this knowledge shortly to our temperature equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To understand explicit and implicit methods, let's look at an example to clarify this point. Consider the numerical evaluation of the simple advection equation:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial \phi}{\partial t}+a\frac{\partial \phi}{\partial x}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Let's ignore the time derivative for the moment and concentrate on the space derivative, i.e. [katex]a\partial\phi/\partial x[/katex]. We can either calculate the derivative with values from the previous iteration (or initial solution if it is the first time step), or from the next iteration, for which the values of [katex]\phi[/katex] are still unknown. We denote the time level of the previous iteration (or initial solution) with the letter [katex]n[/katex] and the solution at the next time step, i.e. the time level at which we want to obtain a solution in the current iteration with time level [katex]n+1[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Explicit schemes make use of the first definition, i.e. all values are known and we evaluate the derivative at time level [katex]n[/katex]. For implicit schemes, we use values at the next time level [katex]n+1[/katex], even though we don't know the solution for [katex]\phi[/katex] (yet). Thus, we obtain the following discretised equations, assuming a first-order upwind discretisation in space and time (and assuming [katex]a&gt;0[/katex]:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Explicit time integration:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\phi^{n+1}_i-\phi^{n}_i}{\Delta t}+a\frac{\phi^{n}_{i}-\phi^{n}_{i-1}}{\Delta x}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Implicit time integration:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\phi^{n+1}_i-\phi^{n}_i}{\Delta t}+a\frac{\phi^{n+1}_{i}-\phi^{n+1}_{i-1}}{\Delta x}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Let's look at this graphically. The following image shows our (1D) mesh on the x-axis, and we have picked an arbitrary point as our current point in the space loop. We denote this point with the letter [katex]i[/katex] and it provides us with a convenient way of referencing neighbouring nodes as [katex]i+1[/katex] and [katex]i-1[/katex]. The y-axis represents time and we have drawn discrete time levels [katex]n[/katex] and [katex]n+1[/katex]. These are the discrete points in time for which we want to obtain a solution.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":1998,"width":"676px","height":"auto","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2023/11/explicit_and_implicit_stencils-1024x406.png" alt="" class="wp-image-1998" style="width:676px;height:auto"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We can now look at our explicit and implicit equations and draw arrows from values that occur at time level [katex]n[/katex] to [katex]n+1[/katex]. We see the explicit discretisation uses values of [katex]\phi[/katex] at [katex]\phi_{i}^{n}[/katex], [katex]\phi_{i-1}^{n}[/katex], [katex]\phi_{i}^{n+1}[/katex], which are connected in the image above with the orange arrows. The implicit discretisation, on the other hand, has values of [katex]\phi[/katex] at [katex]\phi_{i}^{n}[/katex], [katex]\phi_{i-1}^{n+1}[/katex], [katex]\phi_{i}^{n+1}[/katex], shown by the green arrows.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's also look at this from an equation point of view. It is customary to collect all <em>known quantities</em> (i.e. those at time level [katex]n[/katex]) on the right-hand side of the equation, and then all <em>unknown quantities</em> on the left-hand side of the equations. If we do that, we end up with the following discretised equations:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Explicit time integration:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi_i^{n+1}=\phi_i^n-a\frac{\Delta t}{\Delta x}\left(\phi_i^{n}-\phi_{i-1}^{n}\right)=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Implicit time integration:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi_i^{n+1}\left(\frac{1}{\Delta t}+\frac{a}{\Delta x}\right)+\phi_{i-1}^{n+1}\left(\frac{-a}{\Delta x}\right)=\phi_i^n\left(\frac{1}{\Delta t}\right)</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In the case of the explicit treatment, we see that there is only one unknown quantity on the left-hand side so we can solve this equation directly (explicitly). In the figure above, we only have one quantity at time level [katex]n+1[/katex], respectively. For the implicit treatment, on the other hand, we have now two unknown quantities on the left-hand side and so need to first solve a system of linear equations, and thus we solve the equation indirectly (implicitly).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We commonly express our implicit system in the following form</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>a_e\phi_{i+1}^{n+1}+a_p\phi_i^{n+1}+a_w\phi_{i-1}^{n+1}=b_i</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Comparing terms, we can see that [katex]a_e=0[/katex], [katex]a_p=(1/\Delta t + a/\Delta x)[/katex], [katex]a_w=(-a/\Delta x)[/katex], and [katex]b_i=\phi_i^n (1/\Delta t)[/katex]. But, we could also be writing this in the form [katex]Ax=b[/katex] as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\begin{bmatrix}a_0 &amp; a_1 &amp; &amp; &amp; \dots &amp; 0 \\ a_0 &amp; a_1 &amp; a_2 &amp; &amp; &amp; \vdots \\ &amp; a_1 &amp;a_2 &amp; a_3 &amp; &amp; \\ &amp; &amp; &amp; \ddots &amp; &amp;\\ \vdots &amp; &amp; &amp; a_{k-2} &amp; a_{k-1} &amp; a_{k} \\ 0 &amp; \dots &amp;  &amp; &amp; a_{k-1} &amp; a_{k} \end{bmatrix} \begin{bmatrix}\phi_0 \\ \phi_1 \\ \phi_2 \\ \vdots \\ \phi_{k-1} \\ \phi_{k}\end{bmatrix} = \begin{bmatrix}b_0 \\ b_1 \\ b_2 \\ \vdots \\ b_{k-1} \\ b_{k}\end{bmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In the linear system above, looking at the second row, we have [katex]a_0=a_w[/katex], [katex]a_1=a_p[/katex], and [katex]a_2=a_e[/katex]. Solving this linear system of equations in any way, i.e. [katex]x=A^{-1}b[/katex] will provide a solution for the implicitly discretised equation</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi_i^{n+1}\left(\frac{1}{\Delta t}+\frac{a}{\Delta x}\right)+\phi_{i-1}^{n+1}\left(\frac{-a}{\Delta x}\right)=\phi_i^n\left(\frac{1}{\Delta t}\right)</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>For completeness, we could also write our explicit equation in matrix form. Let's look at the equation again:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\phi_i^{n+1}=\phi_i^n-a\frac{\Delta t}{\Delta x}\left(\phi_i^{n}-\phi_{i-1}^{n}\right)</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we want to bring it into the form</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>a_e\phi_{i+1}^{n+1}+a_p\phi_i^{n+1}+a_w\phi_{i-1}^{n+1}=b_i</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>then we see that we have [katex]a_p=1[/katex], while [katex]a_e=0[/katex] and [katex]a_w=0[/katex] as we do not have any neighbouring cell being evaluated at time level [katex]n+1[/katex]. The right-hand side becomes [katex]b_i=\phi_i^n-(a\Delta t/\Delta x)(\phi_i^{n}-\phi_{i-1}^{n})[/katex] and so we would have a trivial vector matrix problem to solve in the form of:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\begin{bmatrix}1 &amp;0 &amp; &amp; &amp; \dots &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; &amp; &amp; \vdots \\ &amp; 0 &amp;1 &amp; 0 &amp; &amp; \\ &amp; &amp; &amp; \ddots &amp; &amp;\\ \vdots &amp; &amp; &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; \dots &amp;  &amp; &amp; 0 &amp; 1 \end{bmatrix} \begin{bmatrix}\phi_0 \\ \phi_1 \\ \phi_2 \\ \vdots \\ \phi_{k-1} \\ \phi_{k}\end{bmatrix} = \begin{bmatrix}\phi_i^n-(a\Delta t/\Delta x)(\phi_i^{n}-\phi_{boundary}^{n}) \\ \phi_i^n-(a\Delta t/\Delta x)(\phi_i^{n}-\phi_{i-1}^{n}) \\ \phi_i^n-(a\Delta t/\Delta x)(\phi_i^{n}-\phi_{i-1}^{n}) \\ \vdots \\ \phi_i^n-(a\Delta t/\Delta x)(\phi_{k-1}^{n}-\phi_{k-2}^{n}) \\ \phi_i^n-(a\Delta t/\Delta x)(\phi_k^{n}-\phi_{k-1}^{n})\end{bmatrix}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Thus, explicit systems always result in the identity matrix which is trivial to invert. This just means it is easy to compute [katex]A^{-1}[/katex] from [katex]A[/katex] and so we can compute [katex]x=A^{-1}b[/katex]. In the case of the identity matrix, we further have [katex]A=A^{-1}[/katex] and it follows that we can write [katex]x=A b[/katex]. But as we have already seen, there is no need to write all of this out as a matrix and we can just directly solve the equation as it is, however, this notation makes sense if you want to support both explicit and implicit methods and want to switch between them seamlessly.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>With this discussion out of the way, we are ready to discretise our heat diffusion equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-step-1-finite-volume-discretisation">Step 1: Finite volume discretisation</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The first step involves an integration of the equation over small (finite) volumes, which will later represent the cells of our mesh. The equation is written as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\int_V\Gamma\frac{\partial^2 T}{\partial \mathbf{x}^2}\mathrm{d}V=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Using the <a href="https://en.wikipedia.org/wiki/Divergence_theorem" target="_blank" rel="noopener" title="">Gauss (or divergence) theorem</a>, we can transform any volume integral into a surface integral:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\int_V\Gamma\frac{\partial^2 T}{\partial \mathbf{x}^2}\mathrm{d}V=\int_V\Gamma\frac{\partial}{\partial \mathbf{x}}\frac{\partial T}{\partial \mathbf{x}}\mathrm{d}V=\int_A\mathbf{n}\cdot\Gamma\frac{\partial T}{\partial \mathbf{x}}\mathrm{d}A=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The Gauss theorem simply states that instead of checking how much a quantity is changing over a given volume, you can check what goes through its boundaries. Think about a balloon, instead of measuring the volume of the balloon directly (integrate over the shape of the balloon), you could also simply measure the amount of air entering the balloon over the inlet area, and use the density to determine the volume. This is, in a nutshell, what the Gauss theorem allows us to do.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The next step involves turning our integrals into sums. For that, we are going to apply a second-order accurate <a href="https://en.wikipedia.org/wiki/Gaussian_quadrature" target="_blank" rel="noopener" title="">Gaussian Quadrature</a> rule to our integration. This step results in our area integral being replaced by a summation, where we are now seeking the solution at the cell's faces, specifically at their mid-point. This is illustrated in the following image:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":1980,"width":"740px","height":"auto","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2023/11/discretisation_for_three_finite_volumes-1024x336.png" alt="" class="wp-image-1980" style="width:740px;height:auto"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Let's say we are in the centre cell with centroid P. Instead of integrating over the cell volume of P and measuring what the rate of change of temperature is, we apply the Gauss theorem and are only interested in <em>how much</em> temperature enters the cell from the east (e) and west (w) face. We can further state that the normal vector always points outwards of a given cell, so it will point to the right for the east (e) face and the left for the west (w) face. Assuming the coordinate direction is going from the left to the right, then we can write the discretised form of the integral equation above as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\int_A\mathbf{n}\cdot\Gamma\frac{\partial T}{\partial \mathbf{x}}\mathrm{d}A\approx\sum^{faces} \mathbf{n}\cdot\Gamma\frac{\partial T}{\partial \mathbf{x}}A =\Gamma A\frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{e} - \Gamma A\frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{w}=\Gamma A\left[\frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{e} - \frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{w} \right]=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We have transformed our second-order derivative into a first-order derivative, so our next task involves finding an approximation for the derivatives at the faces (e) and (w). To numerically approximate a derivative, you may recall, either from high school or undergraduate studies, that we can approximate a derivative with a limit of the form</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial T}{\partial x}=\lim_{h\rightarrow 0}\frac{T(x+h)-T(x)}{h}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>  We can take this approximation and set [katex]h=\mathrm{d}x[/katex], where [katex]\mathrm{d}x[/katex] is now the size/length of the cell as shown in the Figure above, and obtain</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial T}{\partial x}\approx\frac{T(x+\mathrm{d}x)-T(x)}{\mathrm{d}x}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can now find the derivatives for the east (e) and west (w) faces, respectively, as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{e}\approx\frac{T_E - T_P}{\mathrm{d}x}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>and</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{w}\approx\frac{T_P - T_W}{\mathrm{d}x}</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>All of these quantities are known, so we can directly evaluate the derivatives at the face. Inserting both definitions into our discretised equation (and using the more conventional notation of [katex]\mathrm{d}x=\Delta x[/katex] results in the following form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\Gamma A\left[\frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{e} - \frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{w} \right]\approx\Gamma A\left[\frac{T_E - T_P}{\Delta x} - \frac{T_P - T_W}{\Delta x}\right]=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-step-2-rearranging-equations-into-explicit-and-implicit-contributions">Step 2: Rearranging equations into explicit and implicit contributions</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>To arrive at a linear system of the form [katex]Ax=b[/katex], we need to rearrange the equations in terms of the temperature values. To begin with, we expand the brackets and fractions as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\Gamma A\frac{T_E}{\Delta x}-\Gamma A\frac{T_P}{\Delta x}-\Gamma A\frac{T_P}{\Delta x}+\Gamma A\frac{T_W}{\Delta x}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can now reverse the fraction as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_E\frac{\Gamma A}{\Delta x}-T_P\frac{\Gamma A}{\Delta x}-T_P\frac{\Gamma A}{\Delta x}+T_W\frac{\Gamma A}{\Delta x}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Grouping terms now together</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_E\left(\frac{\Gamma A}{\Delta x}\right)+T_P\left(\frac{-2\Gamma A}{\Delta x}\right)+T_W\left(\frac{\Gamma A}{\Delta x}\right)=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>I am using here the common finite volume notation of east cell (E), west cell (W) and the cell between those two points (P). But, we could have also written the equation in the following form to bring it in line with our advection equation discretisation seen above as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_{i+1}\left(\frac{\Gamma A}{\Delta x}\right)+T_i\left(\frac{-2\Gamma A}{\Delta x}\right)+T_{i-1}\left(\frac{\Gamma A}{\Delta x}\right)=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now we decide if we want to solve this equation implicitly or explicitly. Well, there is only one choice here. We have to solve the equation implicitly. Why? If we tried to solve this equation explicitly, all temperature values would be known and at time level [katex]n[/katex], and so we would have no means to advance this equation to the next time level [katex]n+1[/katex]. Thus, we need to solve this equation implicitly. If you do that, then all of a sudden we only have unknown temperatures at time level [katex]n+1[/katex], and at first it may seem that we have not gained anything. How can we solve this equation now?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We have to look at boundary conditions. Let's set [katex]i=1[/katex] and use an implicit treatment, in this case, we could also write</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_{2}^{n+1}\left(\frac{\Gamma A}{\Delta x}\right)+T_1^{n+1}\left(\frac{-2\Gamma A}{\Delta x}\right)+T_{0}^{n+1}\left(\frac{\Gamma A}{\Delta x}\right)=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The value of [katex]T_i^{n+1}[/katex] is the value of the boundary, and so in reality we have [katex]T_0^n[/katex], i.e. since this is a boundary value, we know this value (either through a Dirichlet or Neumann-type boundary condition). We can look at this also from a graphical point of view, in the following image, we show which nodes are known and unknown. If we have 3 vertices or cells, i.e. 2 on the boundaries and one internal, then even though our matrix will still be a 3 by 3 matrix, the first and last row can be directly solved and so we only have a single equation for a single unknown value of [katex]T[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":2006,"width":"643px","height":"auto","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2023/11/unknowns_in_linear_system_of_equations-1024x331.png" alt="" class="wp-image-2006" style="width:643px;height:auto"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>If we add a second internal cell, then we have a 4 by 4 matrix. We can't solve rows 1 and 4 directly anymore (as either will now contain only one known and two unknown quantities), but we can write out all 4 equations for [katex]T[/katex]. The same observations hold for three or more cells. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is worth pointing out at this point that whenever we have a steady state system, i.e. an equation without a time derivative, we have to solve it implicitly. If we want to solve the equation explicitly for whatever reason, we add a pseudo time derivative to the equation, which, as we reach a steady state solution, vanishes and becomes zero (definition of steady state, i.e. no derivative in time). </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, our final equation looks like the following for internal nodes</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_{i+1}^{n+1}\left(\frac{\Gamma A}{\Delta x}\right)+T_i^{n+1}\left(\frac{-2\Gamma A}{\Delta x}\right)+T_{i-1}^{n+1}\left(\frac{\Gamma A}{\Delta x}\right)=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-step-4">Step 3: Boundary condition treatment</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>For boundary nodes, we have to re-derive our equations. Consider the following arrangements of the boundary cells at the west boundary:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":2011,"width":"414px","height":"auto","sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2023/11/finite_volume_cells_at_boundary-1024x563.png" alt="" class="wp-image-2011" style="width:414px;height:auto"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We can write the equations in the following form again</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\Gamma A\left[\frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{e} - \frac{\partial T}{\partial \mathbf{x}}\Bigm\lvert_{w} \right]\approx\Gamma A\left[\frac{T_E - T_P}{\Delta x} - \frac{T_P - T_b}{\frac{1}{2}\Delta x}\right]=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Expanding brackets we get (and keep in mind that [katex]1/(1/2)=1/0.5=2/1=2[/katex]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\Gamma A\frac{T_E}{\Delta x}-\Gamma A\frac{T_P}{\Delta x}-2\Gamma A\frac{T_P}{\Delta x}+2\Gamma A\frac{T_b}{\Delta x}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Expressing the equations again in terms of temperatures, we get</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_E\frac{\Gamma A}{\Delta x}-T_P\frac{\Gamma A}{\Delta x}-T_P\frac{2\Gamma A}{\Delta x}+T_b\frac{2\Gamma A}{\Delta x}=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Grouping terms results in</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_E\left(\frac{\Gamma A}{\Delta x}\right)+T_P\left(\frac{-3\Gamma A}{\Delta x}\right)+T_b\left(\frac{2\Gamma A}{\Delta x}\right)=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Since [katex]T_b[/katex] is known, we can write the equation in terms of known and unknown contributions as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_E^{n+1}\left(\frac{\Gamma A}{\Delta x}\right)+T_P^{n+1}\left(\frac{-3\Gamma A}{\Delta x}\right)=T_b\left(\frac{-2\Gamma A}{\Delta x}\right)</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-equation-summary">Equation Summary</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's summarise all equations to have them in one convenient place. For internal nodes, that do not contain any boundary nodes, then we have the following discretised equation:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_{E}^{n+1}\left(\frac{\Gamma A}{\Delta x}\right)+T_P^{n+1}\left(\frac{-2\Gamma A}{\Delta x}\right)+T_{W}^{n+1}\left(\frac{\Gamma A}{\Delta x}\right)=0</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>On the boundary on the left side of the domain (west boundary), we have</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_E^{n+1}\left(\frac{\Gamma A}{\Delta x}\right)+T_P^{n+1}\left(\frac{-3\Gamma A}{\Delta x}\right)=T_{W,boundary}\left(\frac{-2\Gamma A}{\Delta x}\right)</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>On the boundary on the right side of the domain (east boundary), we have</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>T_P^{n+1}\left(\frac{-3\Gamma A}{\Delta x}\right)+T_W^{n+1}\left(\frac{\Gamma A}{\Delta x}\right)=T_{E,boundary}\left(\frac{-2\Gamma A}{\Delta x}\right)</pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading" id="aioseo-summary">Summary</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We looked at the model equation (heat diffusion) that we want to solve and how to discretise that using the finite volume method. We explored how we can use either explicit or implicit time integration techniques to advance a discretised equation and how the implicit discretisation results in a linear system of equations in the form of [katex]Ax=b[/katex]. We derived the discretised heat diffusion equation step by step and learned how to treat internal and boundary cells. With that knowledge in hand, we are ready to look at the library that will help us solve the linear system of equations [katex]Ax=b[/katex]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->

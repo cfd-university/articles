@@ -1,0 +1,206 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document http://www.reportlab.com
+1 0 obj
+<<
+/F1 2 0 R /F2 3 0 R /F3 4 0 R
+>>
+endobj
+2 0 obj
+<<
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
+>>
+endobj
+3 0 obj
+<<
+/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
+>>
+endobj
+4 0 obj
+<<
+/BaseFont /Helvetica-Oblique /Encoding /WinAnsiEncoding /Name /F3 /Subtype /Type1 /Type /Font
+>>
+endobj
+5 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 9 0 R /XYZ 63.02362 431.6378 0 ] /Rect [ 466.1336 604.0772 481.8175 613.6772 ] /Subtype /Link /Type /Annot
+>>
+endobj
+6 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 9 0 R /XYZ 63.02362 431.6378 0 ] /Rect [ 533.804 520.0772 538.252 529.6772 ] /Subtype /Link /Type /Annot
+>>
+endobj
+7 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 9 0 R /XYZ 466.1336 612.6772 0 ] /Rect [ 71.91362 417.6378 77.47362 429.6378 ] /Subtype /Link /Type /Annot
+>>
+endobj
+8 0 obj
+<<
+/Border [ 0 0 0 ] /Contents () /Dest [ 9 0 R /XYZ 533.804 528.6772 0 ] /Rect [ 83.03362 417.6378 88.59362 429.6378 ] /Subtype /Link /Type /Annot
+>>
+endobj
+9 0 obj
+<<
+/Annots [ 5 0 R 6 0 R 7 0 R 8 0 R ] /Contents 13 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 12 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 
+  /Trans <<
+
+>> /Type /Page
+>>
+endobj
+10 0 obj
+<<
+/PageLabels 14 0 R /PageMode /UseNone /Pages 12 0 R /Type /Catalog
+>>
+endobj
+11 0 obj
+<<
+/Author () /CreationDate (D:20240410052925+00'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20240410052925+00'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
+  /Subject (\(unspecified\)) /Title () /Trapped /False
+>>
+endobj
+12 0 obj
+<<
+/Count 1 /Kids [ 9 0 R ] /Type /Pages
+>>
+endobj
+13 0 obj
+<<
+/Length 3259
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 57.02362 729.0236 cm
+q
+BT 1 0 0 1 0 26 Tm -0.002841 Tw 12 TL /F1 10 Tf 0 0 0 rg (We can highlight text in ) Tj /F2 10 Tf (bold) Tj /F1 10 Tf ( or ) Tj /F3 10 Tf (italics) Tj /F1 10 Tf (. We can also use superscripts such as H ) Tj /F1 8 Tf -5 Ts (2) Tj /F1 10 Tf 0 Ts ( O and superscripts such as) Tj T* 0 Tw .635397 Tw (E=mc ) Tj /F1 8 Tf 5 Ts (2) Tj /F1 10 Tf 0 Ts (. Notice that this produces a whitespace between the sub- and superscripts. To avoid the additional) Tj T* 0 Tw (whitespace, we have to escape it with the backslash as in H) Tj /F1 8 Tf -5 Ts (2) Tj /F1 10 Tf 0 Ts (O and E=mc) Tj /F1 8 Tf 5 Ts (2) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 675.0236 cm
+q
+BT 1 0 0 1 0 38 Tm .979104 Tw 12 TL /F1 10 Tf 0 0 0 rg (reStructuredTextr also comes with a substitution mechanism so that we can provide an easy-to-remember) Tj T* 0 Tw .386962 Tw (alias that will be substituted with the actual reStrcutredText syntax. We use vertical bars to indicate text that) Tj T* 0 Tw .303667 Tw (should be replaced as in H) Tj /F1 8 Tf -5 Ts (2) Tj /F1 10 Tf 0 Ts (O and E=mc) Tj /F1 8 Tf 5 Ts (2) Tj /F1 10 Tf 0 Ts ( and then provide definitions for them somewhere in the document) Tj T* 0 Tw (\(it doesn't matter if it is at the start or end of the document\).) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 645.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL .888797 Tw (A new paragraph is created by simply adding an empty line between two paragraphs. You can also add a) Tj T* 0 Tw (separating horizontal line if you want using four dashes:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 616.6772 cm
+0 0 0 RG
+n 0 14.17323 m 481.2283 14.17323 l S
+Q
+q
+1 0 0 1 57.02362 550.6772 cm
+q
+BT 1 0 0 1 0 50 Tm .702241 Tw 12 TL /F1 10 Tf 0 0 0 rg (You may want to quote some text in your documentation. You can insert footnotes using the ) Tj /F1 8 Tf 0 .4 .6 rg 5 Ts (1) Tj /F1 10 Tf 0 0 0 rg 0 Ts ( syntax. You) Tj T* 0 Tw .283597 Tw (can then define this footnote at the end of your document. Using a leading # sign ensures that footnotes are) Tj T* 0 Tw .418726 Tw (automatically numbered. If you want to highlight a paragraph visually, for example, to show a quote from an) Tj T* 0 Tw 1.346772 Tw (important person, use an indented paragraph. To show a source, leave an empty line between the block) Tj T* 0 Tw (quote and the source as shown below.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 544.6772 cm
+Q
+q
+1 0 0 1 57.02362 514.6772 cm
+q
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 2 Tm  T* ET
+q
+1 0 0 1 20 18 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (Important messages by an important person) Tj T* ET
+Q
+Q
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 2 Tm 378.4103 0 Td 12 TL /F1 10 Tf 0 0 0 rg (Important person ) Tj /F1 8 Tf 0 .4 .6 rg 5 Ts (1) Tj T* -378.4103 0 Td ET
+Q
+Q
+q
+Q
+Q
+Q
+q
+1 0 0 1 57.02362 514.6772 cm
+Q
+q
+1 0 0 1 57.02362 457.9843 cm
+Q
+q
+1 0 0 1 57.02362 429.6378 cm
+n 0 14.17323 m 481.2283 14.17323 l S
+Q
+q
+1 0 0 1 57.02362 417.6378 cm
+q
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (1\() Tj 0 .4 .6 rg (1) Tj 0 0 0 rg (, ) Tj 0 .4 .6 rg (2) Tj 0 0 0 rg (\)) Tj T* ET
+Q
+Q
+q
+1 0 0 1 91.03937 0 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (Quote of an important person.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+Q
+ 
+endstream
+endobj
+14 0 obj
+<<
+/Nums [ 0 15 0 R ]
+>>
+endobj
+15 0 obj
+<<
+/S /D /St 1
+>>
+endobj
+xref
+0 16
+0000000000 65535 f 
+0000000073 00000 n 
+0000000124 00000 n 
+0000000231 00000 n 
+0000000343 00000 n 
+0000000458 00000 n 
+0000000625 00000 n 
+0000000790 00000 n 
+0000000957 00000 n 
+0000001123 00000 n 
+0000001364 00000 n 
+0000001453 00000 n 
+0000001711 00000 n 
+0000001771 00000 n 
+0000005082 00000 n 
+0000005123 00000 n 
+trailer
+<<
+/ID 
+[<007ac5e2c24314e6794ae3456e5526c3><007ac5e2c24314e6794ae3456e5526c3>]
+% ReportLab generated PDF document -- digest (http://www.reportlab.com)
+
+/Info 11 0 R
+/Root 10 0 R
+/Size 16
+>>
+startxref
+5157
+%%EOF

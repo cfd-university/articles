@@ -1,0 +1,37 @@
+{
+    "name": "The complete guide to structured and unstructured mesh reading using CGNS",
+    "slug": "the-complete-guide-to-structured-and-unstructured-mesh-reading-using-cgns",
+    "description": "Explore how to read and write structured and unstructured grids, along with their boundary conditions and flow data using the CGNS data format.",
+    "articles": {
+        "01_what-is-the-cgns-format-and-how-to-get-started.html": {
+            "heading": "What is the CGNS format and how to get started",
+            "slug": "what-is-the-cgns-format-and-how-to-get-started",
+            "description": "Learn in this article what the CGNS file format is and how it is used in Computational Fluid Dynamics applications."
+        },
+        "02_how-to-inspect-structured-and-unstructured-grids-using-cgns.html": {
+            "heading": "How to inspect structured and unstructured grids using CGNS",
+            "slug": "how-to-inspect-structured-and-unstructured-grids-using-cgns",
+            "description": "Learn how to inspect structured and unstructured CGNS files using the tool cgnslist, the best way to quickly read the data structure stored within CGNS files."
+        },
+        "03_how-to-set-up-a-simple-cgns-based-mesh-reading-library.html": {
+            "heading": "How to set up a simple CGNS-based mesh reading library",
+            "slug": "how-to-set-up-a-simple-cgns-based-mesh-reading-library",
+            "description": "Learn how to create a simple C++ class structure to read any structured or unstructured grid using the CGNS file format."
+        },
+        "04_how-to-read-a-multi-block-structured-mesh-from-a-cgns-file.html": {
+            "heading": "How to read a multi-block structured mesh from a CGNS file",
+            "slug": "how-to-read-a-multi-block-structured-mesh-from-a-cgns-file",
+            "description": "Learn in this article how to read a multi-block structured grid for CFD applications using CGNS, including coordinates, interfaces, and boundary conditions."
+        },
+        "05_how-to-read-a-multi-block-unstructured-mesh-from-a-cgns-file.html": {
+            "heading": "How to read a multi-block unstructured mesh from a CGNS file",
+            "slug": "how-to-read-a-multi-block-unstructured-mesh-from-a-cgns-file",
+            "description": "Learn in this article how to read a multi-block unstructured grid using CGNS, including coordinates, interfaces, element connectivity and boundary conditions."
+        },
+        "06_how-to-test-our-cgns-based-mesh-reading-library.html": {
+            "heading": "How to test our CGNS-based mesh reading library",
+            "slug": "how-to-test-our-cgns-based-mesh-reading-library",
+            "description": "In this final article of this series, learn how to write simple tests that ensure that our CGNS-based mesh reading library code behaves exactly as intended."
+        }
+    }
+}

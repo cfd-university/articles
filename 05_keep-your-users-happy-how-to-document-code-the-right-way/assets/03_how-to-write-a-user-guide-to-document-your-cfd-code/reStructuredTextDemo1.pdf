@@ -1,0 +1,172 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document http://www.reportlab.com
+1 0 obj
+<<
+/F1 2 0 R /F2 3 0 R
+>>
+endobj
+2 0 obj
+<<
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
+>>
+endobj
+3 0 obj
+<<
+/BaseFont /Times-Roman /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
+>>
+endobj
+4 0 obj
+<<
+/Contents 12 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 11 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
+>>
+endobj
+5 0 obj
+<<
+/Outlines 7 0 R /PageLabels 13 0 R /PageMode /UseNone /Pages 11 0 R /Type /Catalog
+>>
+endobj
+6 0 obj
+<<
+/Author () /CreationDate (D:20240410053448+00'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20240410053448+00'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
+  /Subject (\(unspecified\)) /Title (1 Main title) /Trapped /False
+>>
+endobj
+7 0 obj
+<<
+/Count 4 /First 8 0 R /Last 10 0 R /Type /Outlines
+>>
+endobj
+8 0 obj
+<<
+/Count 1 /Dest [ 4 0 R /XYZ 57.02362 651.0236 0 ] /First 9 0 R /Last 9 0 R /Next 10 0 R /Parent 7 0 R 
+  /Title (1.1 Section heading)
+>>
+endobj
+9 0 obj
+<<
+/Dest [ 4 0 R /XYZ 57.02362 600.0236 0 ] /Parent 8 0 R /Title (1.1.1 Sub-section heading)
+>>
+endobj
+10 0 obj
+<<
+/Dest [ 4 0 R /XYZ 57.02362 552.0236 0 ] /Parent 7 0 R /Prev 8 0 R /Title (1.2 Section heading 2)
+>>
+endobj
+11 0 obj
+<<
+/Count 1 /Kids [ 4 0 R ] /Type /Pages
+>>
+endobj
+12 0 obj
+<<
+/Length 1673
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 57.02362 741.0236 cm
+q
+.133333 .133333 .133333 rg
+BT 1 0 0 1 0 4 Tm /F2 20 Tf 24 TL 193.9442 0 Td (1 Main title) Tj T* -193.9442 0 Td ET
+Q
+Q
+q
+1 0 0 1 57.02362 681.0236 cm
+q
+BT 1 0 0 1 0 14 Tm 1.189104 Tw 12 TL /F1 10 Tf 0 0 0 rg (Headings are indicated by non-alphanumeric characters used as underlines under the section title. These) Tj T* 0 Tw (can be any of the following characters: = - ` : ' " ~ ^ _ * + # < >) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 663.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (They must be at least as long as the title itself but typically is just as long as the section title itself.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 630.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf .133333 .133333 .133333 rg (1.1 Section heading) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 612.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (If you want to have a sub-section within a section, use a different underline character.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 582.0236 cm
+q
+BT 1 0 0 1 0 3 Tm 18 TL /F2 15 Tf .133333 .133333 .133333 rg (1.1.1 Sub-section heading) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 564.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (You can have even more sub-sections with a different character.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 531.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf .133333 .133333 .133333 rg (1.2 Section heading 2) Tj T* ET
+Q
+Q
+q
+1 0 0 1 57.02362 501.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL 1.799272 Tw (Using the same underline character as used before by a different section title indicates that the current) Tj T* 0 Tw (section is at the same level.) Tj T* ET
+Q
+Q
+ 
+endstream
+endobj
+13 0 obj
+<<
+/Nums [ 0 14 0 R ]
+>>
+endobj
+14 0 obj
+<<
+/S /D /St 1
+>>
+endobj
+xref
+0 15
+0000000000 65535 f 
+0000000073 00000 n 
+0000000114 00000 n 
+0000000221 00000 n 
+0000000330 00000 n 
+0000000535 00000 n 
+0000000639 00000 n 
+0000000908 00000 n 
+0000000980 00000 n 
+0000001135 00000 n 
+0000001246 00000 n 
+0000001366 00000 n 
+0000001426 00000 n 
+0000003151 00000 n 
+0000003192 00000 n 
+trailer
+<<
+/ID 
+[<454d6dfb97c6e8d79fdb92a4728662b9><454d6dfb97c6e8d79fdb92a4728662b9>]
+% ReportLab generated PDF document -- digest (http://www.reportlab.com)
+
+/Info 6 0 R
+/Root 5 0 R
+/Size 15
+>>
+startxref
+3226
+%%EOF
