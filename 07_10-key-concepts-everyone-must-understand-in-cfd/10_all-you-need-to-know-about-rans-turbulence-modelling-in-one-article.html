@@ -26,9 +26,9 @@
 <h2 class="wp-block-heading">In this article</h2>
 <!-- /wp:heading -->
 
-<!-- wp:shortcode -->
-[TOC]
-<!-- /wp:shortcode -->
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":1,"blockClientId":"98534403-4f91-4cc9-9f04-80b85d8f3c71","content":"Introduction","level":2,"anchor":"aioseo-introduction","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":2,"blockClientId":"c39fd217-a949-4fe8-912b-b8e6ff57ca3a","content":"The fully turbulent Reynolds-averaged Navier-Stokes (RANS) equations","level":2,"anchor":"aioseo-the-fully-turbulent-reynolds-averaged-navier-stokes-rans-equations","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":3,"blockClientId":"46852f9e-1121-415d-8934-cdd8fd6a33b1","content":"The closure problem of RANS","level":3,"anchor":"aioseo-the-closure-problem-of-rans","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":4,"blockClientId":"bf09f1e6-0d21-438f-8afd-985cd8cd3984","content":"Boussinesq's eddy viscosity hypothesis and the turbulent viscosity","level":3,"anchor":"aioseo-boussinesqs-eddy-viscosity-hypothesis-and-the-turbulent-viscosity","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":5,"blockClientId":"d1422f7e-ace4-44aa-90d4-8bfe2c0e8ca7","content":"Computing the turbulent viscosity","level":3,"anchor":"aioseo-computing-the-turbulent-viscosity","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":6,"blockClientId":"4d3e1b8f-63d1-4406-8967-406c4bec7fe4","content":"Prandtl's mixing length model","level":4,"anchor":"aioseo-prandtls-mixing-length-model","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":7,"blockClientId":"f0aa1706-aae3-4540-94b1-d076ce3db3e6","content":"Prandtl's 1-equation model for the turbulent kinetic energy","level":4,"anchor":"aioseo-prandtls-1-equation-model-for-the-turbulent-kinetic-energy","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":8,"blockClientId":"645da943-335a-49b9-8ab0-0cbf44e950e9","content":"The [katex]k-\\varepsilon[/katex] model","level":4,"anchor":"aioseo-the-katexk-varepsilon-katex-model","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":9,"blockClientId":"c00e378c-b14c-40d5-ad2b-fb2e1e55adf5","content":"The [katex]k-\\omega[/katex] model","level":4,"anchor":"aioseo-the-katexk-omega-katex-model","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":10,"blockClientId":"42970510-8c46-4944-a993-7512e8053207","content":"The [katex]k-\\omega[/katex] SST model","level":4,"anchor":"aioseo-the-katexk-omega-katex-sst-model","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":11,"blockClientId":"f21996f2-5b78-47bf-a479-215413ceeaac","content":"The Spalart-Allmaras model","level":4,"anchor":"aioseo-the-spalart-allmaras-model","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":12,"blockClientId":"0836a471-3774-4a03-a577-8ae4b45b3535","content":"The Reynolds stress model","level":4,"anchor":"aioseo-the-reynolds-stress-model","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]},{"id":13,"blockClientId":"5d32d3cc-3265-48ec-a993-0c5e87250983","content":"Let's create our own turbulence model - the STUPID model","level":2,"anchor":"aioseo-lets-create-our-own-turbulence-model-the-stupid-model","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":14,"blockClientId":"02d18051-6ff4-48ee-9b91-9aff8a67cb5b","content":"Summary","level":2,"anchor":"aioseo-summary","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-introduction">Introduction</a></li><li><a href="#aioseo-the-fully-turbulent-reynolds-averaged-navier-stokes-rans-equations">The fully turbulent Reynolds-averaged Navier-Stokes (RANS) equations</a><ul><li><a href="#aioseo-the-closure-problem-of-rans">The closure problem of RANS</a></li><li><a href="#aioseo-boussinesqs-eddy-viscosity-hypothesis-and-the-turbulent-viscosity">Boussinesq&#x27;s eddy viscosity hypothesis and the turbulent viscosity</a></li><li><a href="#aioseo-computing-the-turbulent-viscosity">Computing the turbulent viscosity</a><ul><li><a href="#aioseo-prandtls-mixing-length-model">Prandtl&#x27;s mixing length model</a></li><li><a href="#aioseo-prandtls-1-equation-model-for-the-turbulent-kinetic-energy">Prandtl&#x27;s 1-equation model for the turbulent kinetic energy</a></li><li><a href="#aioseo-the-katexk-varepsilon-katex-model">The [katex]k-\varepsilon[/katex] model</a></li><li><a href="#aioseo-the-katexk-omega-katex-model">The [katex]k-\omega[/katex] model</a></li><li><a href="#aioseo-the-katexk-omega-katex-sst-model">The [katex]k-\omega[/katex] SST model</a></li><li><a href="#aioseo-the-spalart-allmaras-model">The Spalart-Allmaras model</a></li><li><a href="#aioseo-the-reynolds-stress-model">The Reynolds stress model</a></li></ul></li></ul></li><li><a href="#aioseo-lets-create-our-own-turbulence-model-the-stupid-model">Let&#x27;s create our own turbulence model - the STUPID model</a></li><li><a href="#aioseo-summary">Summary</a></li></ul></div>
+<!-- /wp:aioseo/table-of-contents -->
 
 <!-- wp:heading {"level":2} -->
 <h2 class="wp-block-heading">Introduction</h2>
@@ -1371,7 +1371,7 @@ k_t=\frac{1}{2}\left(u'u' + v'v' + w'w'\right)\\[1em]
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>Here, Prandtl is simply equating the Reynolds stresses to the mean flow gradient, multiplied by the turbulent viscosity for correct units. This is coming from Boussinesq. Now Prandtl is saying that the turbulent viscosity can be constructed from a velocity and length scale as [katex]\nu_t=U\cot l[/katex]. Of course, the length scale is Prandtl's mixing length (fine, I'll use English from now on ... <em>boring</em>). Why wouldn't he use it? But what is the mixing length in a physical sense?</p>
+<p>Here, Prandtl is simply equating the Reynolds stresses to the mean flow gradient, multiplied by the turbulent viscosity for correct units. This is coming from Boussinesq. Now Prandtl is saying that the turbulent viscosity can be constructed from a velocity and length scale as [katex]\nu_t=U\cdot l[/katex]. Of course, the length scale is Prandtl's mixing length (fine, I'll use English from now on ... <em>boring</em>). Why wouldn't he use it? But what is the mixing length in a physical sense?</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1386,10 +1386,8 @@ k_t=\frac{1}{2}\left(u'u' + v'v' + w'w'\right)\\[1em]
 <p>The mixing length, then, is analogous to the mean free path. Consider a fluid particle travelling in the flow. Consider a turbulent flow in a water channel where we release some coloured dye into the flow. Well, let's look at this homemade experiment, which will illustrate this much better than my words can:</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:embed {"url":"https://www.youtube.com/watch?v=MOhq3o0UGAQ","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-4-3 wp-has-aspect-ratio"} -->
-<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-4-3 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
-https://www.youtube.com/watch?v=MOhq3o0UGAQ
-</div></figure>
+<!-- wp:embed -->
+<iframe src="https://www.youtube.com/embed/MOhq3o0UGAQ?si=lPlXxbKn1ICWA2ce" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:100%; aspect-ratio:16/9; border:0;"></iframe>
 <!-- /wp:embed -->
 
 <!-- wp:paragraph -->
@@ -1405,7 +1403,7 @@ https://www.youtube.com/watch?v=MOhq3o0UGAQ
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>But I am getting ahead of myself, let us go through the model. So we have established that the turbulent viscosity will be modelled based on a length scale (the mixing length) and a velocity scale, so that we can write the turbulent viscosity as: [katex]\nu_t=U\cot l[/katex]. What is the velocity scale? Well, in turbulence, whenever we want to find a characteristic velocity (other than the freestream velocity) that relates turbulent quantities to the mean flow, we think of velocity gradients.</p>
+<p>But I am getting ahead of myself, let us go through the model. So we have established that the turbulent viscosity will be modelled based on a length scale (the mixing length) and a velocity scale, so that we can write the turbulent viscosity as: [katex]\nu_t=U\cdot l[/katex]. What is the velocity scale? Well, in turbulence, whenever we want to find a characteristic velocity (other than the freestream velocity) that relates turbulent quantities to the mean flow, we think of velocity gradients.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -2368,7 +2366,7 @@ P=\tau^{RANS}:\nabla\mathbf{u}=
 \overline{w'u'} & \overline{w'v'} & \overline{w'w'}
 \end{bmatrix}=
 \begin{bmatrix}
--\frac{\partial u}{\partial x} + \frac{2}{3}k & \nu_t \left( \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \right) & \nu_t \left( \frac{\partial u}{\partial z} + \frac{\partial w}{\partial x} \right) \\[1em]
+2\nu_t\frac{\partial u}{\partial x} + \frac{2}{3}k & \nu_t \left( \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \right) & \nu_t \left( \frac{\partial u}{\partial z} + \frac{\partial w}{\partial x} \right) \\[1em]
 \nu_t \left( \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y} \right) & 2\nu_t\frac{\partial v}{\partial y} + \frac{2}{3}k & \nu_t\left( \frac{\partial v}{\partial z} + \frac{\partial w}{\partial y} \right) \\[1em]
 \nu_t\left( \frac{\partial w}{\partial x} + \frac{\partial u}{\partial z} \right) & \nu_t\left( \frac{\partial w}{\partial y} + \frac{\partial v}{\partial z} \right) & 2\nu_t\frac{\partial w}{\partial z} + \frac{2}{3}k 
 \end{bmatrix}\tag{110}</pre></div>
@@ -2391,7 +2389,7 @@ P=\tau^{RANS}:\nabla\mathbf{u}=
 -\overline{w'u'} & -\overline{w'v'} & -\overline{w'w'}
 \end{bmatrix}=
 \begin{bmatrix}
-\frac{\partial u}{\partial x} - \frac{2}{3}k & -\nu_t \left( \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \right) & -\nu_t \left( \frac{\partial u}{\partial z} + \frac{\partial w}{\partial x} \right) \\[1em]
+-2\nu_t\frac{\partial u}{\partial x} - \frac{2}{3}k & -\nu_t \left( \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \right) & -\nu_t \left( \frac{\partial u}{\partial z} + \frac{\partial w}{\partial x} \right) \\[1em]
 -\nu_t \left( \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y} \right) & -2\nu_t\frac{\partial v}{\partial y} - \frac{2}{3}k & -\nu_t\left( \frac{\partial v}{\partial z} + \frac{\partial w}{\partial y} \right) \\[1em]
 -\nu_t\left( \frac{\partial w}{\partial x} + \frac{\partial u}{\partial z} \right) & -\nu_t\left( \frac{\partial w}{\partial y} + \frac{\partial v}{\partial z} \right) & -2\nu_t\frac{\partial w}{\partial z} - \frac{2}{3}k 
 \end{bmatrix}\tag{111}</pre></div>
@@ -2403,7 +2401,7 @@ P=\tau^{RANS}:\nabla\mathbf{u}=
 
 <!-- wp:katex/display-block -->
 <div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
--\overline{u'u'} = \frac{\partial u}{\partial x} - \frac{2}{3}k \\[1em]
+-\overline{u'u'} = -2\nu_t\frac{\partial u}{\partial x} - \frac{2}{3}k \\[1em]
 -\overline{u'v'} = -\nu_t \left( \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \right) \\[1em]
 -\overline{u'w'} = -\nu_t \left( \frac{\partial u}{\partial z} + \frac{\partial w}{\partial x} \right) \\[1em]
 -\overline{v'u'} = -\nu_t \left( \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y} \right) \\[1em]
@@ -2424,7 +2422,7 @@ P=\tau^{RANS}:\nabla\mathbf{u}=
 <div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
 P=\tau^{RANS}:\nabla\mathbf{u}=
 \begin{bmatrix}
-\frac{\partial u}{\partial x} - \frac{2}{3}k & -\nu_t \left( \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \right) & -\nu_t \left( \frac{\partial u}{\partial z} + \frac{\partial w}{\partial x} \right) \\[1em]
+-2\nu_t\frac{\partial u}{\partial x} - \frac{2}{3}k & -\nu_t \left( \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \right) & -\nu_t \left( \frac{\partial u}{\partial z} + \frac{\partial w}{\partial x} \right) \\[1em]
 -\nu_t \left( \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y} \right) & -2\nu_t\frac{\partial v}{\partial y} - \frac{2}{3}k & -\nu_t\left( \frac{\partial v}{\partial z} + \frac{\partial w}{\partial y} \right) \\[1em]
 -\nu_t\left( \frac{\partial w}{\partial x} + \frac{\partial u}{\partial z} \right) & -\nu_t\left( \frac{\partial w}{\partial y} + \frac{\partial v}{\partial z} \right) & -2\nu_t\frac{\partial w}{\partial z} - \frac{2}{3}k 
 \end{bmatrix}
@@ -2443,7 +2441,7 @@ P=\tau^{RANS}:\nabla\mathbf{u}=
 <!-- wp:katex/display-block -->
 <div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
 P=\sum_{i=1}^3\sum_{j=1}^3\tau^{RANS}_{ij}(\nabla\mathbf{u})_{ij}=\\[1em]
-\left[\frac{\partial u}{\partial x} - \frac{2}{3}k\right]\frac{\partial u}{\partial x} +
+\left[-2\nu_t\frac{\partial u}{\partial x} - \frac{2}{3}k\right]\frac{\partial u}{\partial x} +
 \left[-\nu_t \left( \frac{\partial u}{\partial y} + \frac{\partial v}{\partial x} \right)\right]\frac{\partial u}{\partial y} +
 \left[-\nu_t \left( \frac{\partial u}{\partial z} + \frac{\partial w}{\partial x} \right)\right]\frac{\partial u}{\partial z} + \\[1em]
 \left[-\nu_t \left( \frac{\partial v}{\partial x} + \frac{\partial u}{\partial y} \right)\right]\frac{\partial v}{\partial x} +
@@ -3922,11 +3920,7 @@ A_{characteristic} = \max[\min(шd^2,ш(\kappa\delta)^2),åш]\tag{201}</pre></d
 <p>And of course, it wouldn't be a proper definition for [katex]\nu_t[/katex] if we did not include a new closure coefficient. In case you haven't noticed, all closure coefficients were named after members of the boy band <a href="https://en.wikipedia.org/wiki/BTS" target="_blank" rel="noopener" title="">BTS</a>. Why? Because I can! But also, because I don't understand them, everything about them seems random and chaotic, just like turbulence (catchy tune, though!)</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:embed {"url":"https://youtu.be/XsX3ATc3FbA?si=KqDIQzM18vpWPKzN\u0026t=17","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
-<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
-https://youtu.be/XsX3ATc3FbA?si=KqDIQzM18vpWPKzN&amp;t=17
-</div></figure>
-<!-- /wp:embed -->
+<iframe src="https://www.youtube.com/embed/XsX3ATc3FbA?si=g2m1pBht5Lzx3krR&amp;start=17" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:100%; aspect-ratio:16/9; border:0;"></iframe>
 
 <!-- wp:paragraph -->
 <p>And that is my contribution to the field of RANS turbulence models. One more RANS model the world didn't ask for or indeed need. But what is one more, right?</p>
