@@ -48,7 +48,7 @@
             "slug": "how-to-determine-the-best-stopping-criterion-for-cfd-simulations",
             "description": "Learn how convergence in CFD is judged, what common pitfalls exist, and how we can avoid those with the help of a new convergence judging framework."
         },
-        "10_ive-tried-su2-for-a-week---should-you-too.html": {
+        "10_ive-tried-su2-for-a-week-should-you-too.html": {
             "heading": "I've tried SU2 for a week - should you, too?",
             "slug": "ive-tried-su2-for-a-week-should-you-too",
             "description": "I spent a week with the open-source CFD solver SU2, and this article reflects on my first impression of it. Is it any good? Let's find out together!"

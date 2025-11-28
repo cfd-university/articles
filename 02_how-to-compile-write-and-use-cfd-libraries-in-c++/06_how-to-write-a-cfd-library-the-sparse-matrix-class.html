@@ -2,11 +2,13 @@
 <p>In this article, we will first look at why sparse matrices, as found in CFD applications, really need to be stored with an adequate sparse matrix storage format, by looking at some back of the envelop calculations that show that we can save a significant amount of data by using an appropriate storage format. We then proceed to look at how we would implement the compressed sparse row (CSR) storage format into a matrix class which we will use to store our coefficient matrix of the 1D head diffusion equation.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:block {"ref":2490} /-->
+<!-- wp:paragraph -->
+<p>All developed code and resources in this article are available for download. If you are encountering issues running any of the scripts, please refer to the <a href="https://cfd.university/blog/setting-up-a-programming-environment-to-develop-cfd-codes/#aioseo-notes-on-how-to-run-scripts-downloaded-from-cfd-university" target="_blank" rel="noopener" title="">instructions</a> for running scripts downloaded from this website.</p>
+<!-- /wp:paragraph -->
 
 <!-- wp:list -->
 <ul class="wp-block-list"><!-- wp:list-item -->
-<li><strong>Download</strong>: <a href="https://cfd.university/download/linearalgebralib-part-6-the-sparse-matrix-class/?tmstv=1712896293" title="">linearAlgebraLib-Part-6-The-sparse-matrix-class.zip</a></li>
+<li><strong>Download</strong>: <a href="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/02_how-to-compile-write-and-use-cfd-libraries-in-c%2B%2B/assets/06_how-to-write-a-cfd-library-the-sparse-matrix-class/linearAlgebraLib-Part-6-The-sparse-matrix-class.zip" title="">linearAlgebraLib-Part-6-The-sparse-matrix-class.zip</a></li>
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->
 
@@ -71,7 +73,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"id":2155,"width":"600px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
-<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2023/11/sparse_vs_dense-1024x512.gif" alt="" class="wp-image-2155" style="width:600px"/><figcaption class="wp-element-caption">Source: <a href="https://matteding.github.io/2019/04/25/sparse-matrices/" title="">Sparse Matrices</a></figcaption></figure>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/02_how-to-compile-write-and-use-cfd-libraries-in-c%2B%2B/assets/06_how-to-write-a-cfd-library-the-sparse-matrix-class/sparse_vs_dense-1024x512.gif" alt="" class="wp-image-2155" style="width:600px"/><figcaption class="wp-element-caption">Source: <a href="https://matteding.github.io/2019/04/25/sparse-matrices/" title="">Sparse Matrices</a></figcaption></figure>
 <!-- /wp:image -->
 
 <!-- wp:heading {"level":3} -->
@@ -99,7 +101,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"id":2164,"width":"900px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
-<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2023/11/2d_structured_grid-1024x490.png" alt="" class="wp-image-2164" style="width:900px"/></figure>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/02_how-to-compile-write-and-use-cfd-libraries-in-c%2B%2B/assets/06_how-to-write-a-cfd-library-the-sparse-matrix-class/2d_structured_grid-1024x490.png" alt="" class="wp-image-2164" style="width:900px"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
@@ -139,7 +141,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"id":2158,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
-<figure class="wp-block-image aligncenter size-full"><img src="https://cfd.university/wp-content/uploads/2023/11/matrix_comaprison.png" alt="" class="wp-image-2158"/></figure>
+<figure class="wp-block-image aligncenter size-full"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/02_how-to-compile-write-and-use-cfd-libraries-in-c%2B%2B/assets/06_how-to-write-a-cfd-library-the-sparse-matrix-class/matrix_comaprison.png" alt="" class="wp-image-2158"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
@@ -235,7 +237,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"id":2154,"width":"600px","sizeSlug":"large","linkDestination":"none","align":"center"} -->
-<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://cfd.university/wp-content/uploads/2023/11/coordinate_matrix-1024x512.gif" alt="" class="wp-image-2154" style="width:600px"/><figcaption class="wp-element-caption">Source: <a href="https://matteding.github.io/2019/04/25/sparse-matrices/" target="_blank" rel="noopener" title="">Sparse Matrices</a></figcaption></figure>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/02_how-to-compile-write-and-use-cfd-libraries-in-c%2B%2B/assets/06_how-to-write-a-cfd-library-the-sparse-matrix-class/coordinate_matrix-1024x512.gif" alt="" class="wp-image-2154" style="width:600px"/><figcaption class="wp-element-caption">Source: <a href="https://matteding.github.io/2019/04/25/sparse-matrices/" target="_blank" rel="noopener" title="">Sparse Matrices</a></figcaption></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
@@ -251,7 +253,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"id":2152,"width":"600px","sizeSlug":"full","linkDestination":"none","align":"center"} -->
-<figure class="wp-block-image aligncenter size-full is-resized"><img src="http://cfd.university/wp-content/uploads/2023/11/compressed_row_storage.gif" alt="" class="wp-image-2152" style="width:600px"/><figcaption class="wp-element-caption">Source: <a href="https://matteding.github.io/2019/04/25/sparse-matrices/" target="_blank" rel="noopener" title="">Sparse Matrices</a></figcaption></figure>
+<figure class="wp-block-image aligncenter size-full is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/02_how-to-compile-write-and-use-cfd-libraries-in-c%2B%2B/assets/06_how-to-write-a-cfd-library-the-sparse-matrix-class/compressed_row_storage.gif" alt="" class="wp-image-2152" style="width:600px"/><figcaption class="wp-element-caption">Source: <a href="https://matteding.github.io/2019/04/25/sparse-matrices/" target="_blank" rel="noopener" title="">Sparse Matrices</a></figcaption></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->

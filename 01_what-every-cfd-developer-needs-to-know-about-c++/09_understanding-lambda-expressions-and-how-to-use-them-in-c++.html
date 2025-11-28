@@ -98,10 +98,9 @@ int main()
 <p>On lines 4–5, we define two functions, one to add and one to subtract numbers. Then, in the main body, I have provided two implementations, one using the older C syntax, and the other using C++ syntax. On line 10, we define a pointer called <code>cFunction</code>, which is expecting a single return value of type <code>double</code>, and two function arguments, also of type <code>double</code>. We then set this function pointer equal to the <code>add</code> function, and on line 11, we see how we can now call <code>cFunction</code>, instead of <code>add</code>. On line 13, we see that we can change the function from <code>add()</code> to <code>subtract()</code>, and then when we call it again on line 14, the function call hasn't changed, but the output has (second line of the output). On line 11, we see a result of 3 being printed, whereas on line 14, we see -1 being printed. Everything on lines 17–21 is exactly the same, except that we are using the C++ syntax here, which is less commonly seen in the wild, the reason being that function pointers are mostly replaced by lambda expressions (we'll get to those in a second), or, because people are still programming in C and pretending it to be C++ code because they use a C++ compiler. Let's not get me started on this one! ... (but do feel free to give this short 5-minute video a try, this summarises the issue rather well)</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:embed {"url":"https://www.youtube.com/watch?v=_W4pX_k1AAQ","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
-<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
-https://www.youtube.com/watch?v=_W4pX_k1AAQ
-</div><figcaption class="wp-element-caption">How to not use C++ (or teach, for that matter)</figcaption></figure>
+<!-- wp:embed -->
+<iframe src="https://www.youtube.com/embed/_W4pX_k1AAQ?si=ohsVy0D1ww1HvkTn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:100%; aspect-ratio:16/9; border:0;"></iframe>
+<figcaption class="wp-element-caption">How to not use C++ (or teach, for that matter)</figcaption></figure>
 <!-- /wp:embed -->
 
 <!-- wp:paragraph -->

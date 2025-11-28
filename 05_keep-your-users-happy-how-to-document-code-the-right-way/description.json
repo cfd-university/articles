@@ -1,7 +1,7 @@
 {
     "name": "Keep your users happy: how to document code the right way",
-    "slug": "Learn in this series how to write documentation for your CFD solvers and libraries that doesn’t suck and ensure that users will use and love your work.",
-    "description": "keep-your-users-happy-how-to-document-code-the-right-way",
+    "slug": "keep-your-users-happy-how-to-document-code-the-right-way",
+    "description": "Learn in this series how to write documentation for your CFD solvers and libraries that doesn’t suck and ensure that users will use and love your work.",
     "articles": {
         "01_documenting-code-why-bother-and-how-to-do-it-right.html": {
             "heading": "Documenting code; why bother and how to do it right",

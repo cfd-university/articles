@@ -2,11 +2,13 @@
 <p>When it comes to Computational Fluid Dynamics (CFD) applications, the Conjugate Gradient (CG) method is one of the more used algorithms to solve the linear system of equations [katex]\mathbf{Ax}=\mathbf{b}[/katex]. It offers fast convergence, low storage requirements, and is relatively easy to implement. In this week's article, we'll look at how we can implement this algorithm into our CFD library and use it later to solve our heat diffusion equation.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:block {"ref":2490} /-->
+<!-- wp:paragraph -->
+<p>All developed code and resources in this article are available for download. If you are encountering issues running any of the scripts, please refer to the <a href="https://cfd.university/blog/setting-up-a-programming-environment-to-develop-cfd-codes/#aioseo-notes-on-how-to-run-scripts-downloaded-from-cfd-university" target="_blank" rel="noopener" title="">instructions</a> for running scripts downloaded from this website.</p>
+<!-- /wp:paragraph -->
 
 <!-- wp:list -->
 <ul class="wp-block-list"><!-- wp:list-item -->
-<li><strong>Download</strong>: <a href="https://cfd.university/download/linearalgebralib-part-4-the-conjugate-gradient-class/?tmstv=1712896293" title="">linearAlgebraLib-Part-4-The-Conjugate-Gradient-class.zip</a></li>
+<li><strong>Download</strong>: <a href="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/02_how-to-compile-write-and-use-cfd-libraries-in-c++/assets/04_how-to-write-a-cfd-library-the-conjugate-gradient-class/linearAlgebraLib-Part-4-The-Conjugate-Gradient-class.zip" title="">linearAlgebraLib-Part-4-The-Conjugate-Gradient-class.zip</a></li>
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->
 
@@ -96,18 +98,14 @@
 
 <!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column -->
-<div class="wp-block-column"><!-- wp:embed {"url":"https://www.youtube.com/watch?v=jXShvxPcRl4","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
-<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
-https://www.youtube.com/watch?v=jXShvxPcRl4
-</div></figure>
+<div class="wp-block-column"><!-- wp:embed -->
+<iframe src="https://www.youtube.com/embed/jXShvxPcRl4?si=SGkwxleYYgwJdSWy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:100%; aspect-ratio:16/9; border:0;"></iframe>
 <!-- /wp:embed --></div>
 <!-- /wp:column -->
 
 <!-- wp:column -->
-<div class="wp-block-column"><!-- wp:embed {"url":"https://www.youtube.com/watch?v=MdPhVsgTc1Q","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
-<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
-https://www.youtube.com/watch?v=MdPhVsgTc1Q
-</div></figure>
+<div class="wp-block-column"><!-- wp:embed -->
+<iframe src="https://www.youtube.com/embed/MdPhVsgTc1Q?si=7TAzUne4FiIsihId" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:100%; aspect-ratio:16/9; border:0;"></iframe>
 <!-- /wp:embed --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
@@ -121,7 +119,7 @@ https://www.youtube.com/watch?v=MdPhVsgTc1Q
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"id":2112,"sizeSlug":"full","linkDestination":"none"} -->
-<figure class="wp-block-image size-full"><img src="https://cfd.university/wp-content/uploads/2023/11/conjugate_gradient_algorithm.svg" alt="" class="wp-image-2112"/></figure>
+<figure class="wp-block-image size-full"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/02_how-to-compile-write-and-use-cfd-libraries-in-c++/assets/04_how-to-write-a-cfd-library-the-conjugate-gradient-class/conjugate_gradient_algorithm.svg" alt="" class="wp-image-2112"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
@@ -407,7 +405,7 @@ Vector ConjugateGradient::solve(unsigned maxIterations, double convergenceThresh
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"id":2112,"sizeSlug":"full","linkDestination":"none"} -->
-<figure class="wp-block-image size-full"><img src="http://cfd.university/wp-content/uploads/2023/11/conjugate_gradient_algorithm.svg" alt="" class="wp-image-2112"/></figure>
+<figure class="wp-block-image size-full"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/02_how-to-compile-write-and-use-cfd-libraries-in-c++/assets/04_how-to-write-a-cfd-library-the-conjugate-gradient-class/conjugate_gradient_algorithm.svg" alt="" class="wp-image-2112"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
