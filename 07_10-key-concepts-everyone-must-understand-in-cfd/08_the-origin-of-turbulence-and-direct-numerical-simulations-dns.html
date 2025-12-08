@@ -266,8 +266,8 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
-<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>l=0.22\cdot\left(\frac{5L}{Re_L^{0.5}}\right),\quad \text{laminar, external flow (Re&lt;2300)}\\[1em]
-l=0.22\cdot\left(\frac{0.37L}{Re_L^{0.2}}\right),\quad \text{turbulent, external flow (Re&gt;2300)}\\[1em]
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>l=0.22\cdot\left(\frac{5L}{Re^{0.5}}\right),\quad \text{laminar, external flow (Re&lt;2300)}\\[1em]
+l=0.22\cdot\left(\frac{0.37L}{Re^{0.2}}\right),\quad \text{turbulent, external flow (Re&gt;2300)}\\[1em]
 l=0.038\cdot L_{\text{diameter}},\quad \text{internal flow, circular pipe}</pre></div>
 <!-- /wp:katex/display-block -->
 
@@ -298,9 +298,9 @@ l=0.038\cdot L_{\text{diameter}},\quad \text{internal flow, circular pipe}</pre>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
-<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>U=\frac{Re\,\mu}{\rho D}=\frac{10,000\cdot10^{-3}}{998\cdot L}= 0.1 \frac{m}{s} \\[1em]
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>U=\frac{Re\,\mu}{\rho D}=\frac{10,000\cdot 10^{-3}}{998\cdot 0.1}= 0.1 \frac{m}{s} \\[1em]
 I=0.16 Re^{-1/8}=0.16\cdot10,000^{-1/8}=0.0506\\[1em]
-k=\frac{3}{2}(UI)^2=\frac{3}{2}(0.01\cdot0.0506)^2=3.86\cdot 10^{-5}\frac{m^2}{s^2}\\[1em]
+k=\frac{3}{2}(UI)^2=\frac{3}{2}(0.1\cdot 0.0506)^2=3.86\cdot 10^{-5}\frac{m^2}{s^2}\\[1em]
 l=0.038\cdot D=0.038 \cdot 0.1=0.0038\, m
 </pre></div>
 <!-- /wp:katex/display-block -->
@@ -336,7 +336,7 @@ u_\eta = (\nu\varepsilon)^\frac{1}{4}= (10^{-6}\cdot 10^{-5})^\frac{1}{4}=(10^{-
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
-<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>V_{pipe}=A_{circle}\cdot L = 2\pi r^2\cdot L=2\pi\cdot0.05^2\cdot 1=1.57\cdot 10^{-2}\, m^3</pre></div>
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>V_{pipe}=A_{circle}\cdot L = \pi r^2\cdot L=\pi\cdot0.05^2\cdot 1=7.85\cdot 10^{-3}\, m^3</pre></div>
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
@@ -344,11 +344,11 @@ u_\eta = (\nu\varepsilon)^\frac{1}{4}= (10^{-6}\cdot 10^{-5})^\frac{1}{4}=(10^{-
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
-<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\text{number of cells}=\mathrm{round}\left(\frac{V_{pipe}}{V_{cell}}\right)=\mathrm{round}\left(\frac{1.57\cdot 10^{-2}}{ 1.74\cdot 10^{-10}}\right)\approx 9,000,000</pre></div>
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\text{number of cells}=\mathrm{round}\left(\frac{V_{pipe}}{V_{cell}}\right)=\mathrm{round}\left(\frac{7.85\cdot 10^{-3}}{ 1.74\cdot 10^{-10}}\right)\approx 45,000,000</pre></div>
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>9 million cells isn't too bad to resolve a turbulent flow. But if we now also consider the CFL number, then we can compute the time step. Typically, we want to advect the flow in time with a CFL number of one so that we have a good resolution in time. This means that our time step is:</p>
+<p>45 million cells is still managable with high-performance computing clusters. If we now also consider the CFL number, then we can compute the time step. Typically, we want to advect the flow in time with a CFL number of one so that we have a good resolution in time. This means that our time step is:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -360,11 +360,11 @@ u_\eta = (\nu\varepsilon)^\frac{1}{4}= (10^{-6}\cdot 10^{-5})^\frac{1}{4}=(10^{-
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>In order for the flow to pass through the pipe once, we need to compute the flow for [katex]L/(U\cdot \Delta t)=1800[/katex] time steps. So we solve the flow on our 9 million cell mesh 1800 times. This is still feasible with a good cluster, and we should be able to get results within a few hours if we have about 100 cores available.</p>
+<p>In order for the flow to pass through the pipe once, we need to compute the flow for [katex]L/(U\cdot \Delta t)=1800[/katex] time steps. So we solve the flow on our 45 million cell mesh 1800 times. This is still feasible with a good cluster, and we should be able to get results within a few hours if we have about 100 cores available.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>But what happens if we increase the Reynolds number now to 100,000? In that case, we need now 8,400,000,000 cells, i.e. 8.4 billion cells, and we have to solve the flow here for at least 8120 time steps to get at least one pass of the flow through the pipe. And this is just for a pipe flow at a still moderate Reynolds number.</p>
+<p>But what happens if we increase the Reynolds number now to 100,000? In that case, we need now 4,200,000,000 cells, i.e. 4.2 billion cells, and we have to solve the flow here for at least 8120 time steps to get at least one pass of the flow through the pipe. And this is just for a pipe flow at a still moderate Reynolds number.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -372,7 +372,7 @@ u_\eta = (\nu\varepsilon)^\frac{1}{4}= (10^{-6}\cdot 10^{-5})^\frac{1}{4}=(10^{-
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This means that we have to resort to modelling the effects of turbulence. And this is where the CFD literature offers us a plethora of different modelling strategies, all with varying degrees of complexity and grid requirements. In the remainder of this article, I want to shine a light on these different turbulence modelling approaches and show which can be used for what kind of flow simulation.</p>
+<p>This means that we have to resort to modelling the effects of turbulence. And this is where the CFD literature offers us a plethora of different modelling strategies, all with varying degrees of complexity and grid requirements. In this article, as well as the following ones in this series, I want to shine a light on these different turbulence modelling approaches and show which can be used for what kind of flow simulation.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
