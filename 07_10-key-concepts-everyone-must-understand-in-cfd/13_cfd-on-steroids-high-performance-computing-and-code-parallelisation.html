@@ -2997,7 +2997,7 @@ int main(int argc, char* argv[]) {
 </li>
 <!-- /wp:list-item -->
 <!-- wp:list-item -->
-<li><strong>Lines 38-39</strong>: We set the boundary conditions. We set the left boudnary at [katex]x=0[/katex] to [katex]T(0,t)=0[/katex] and the right boundary at [katex]x=1[/katex] to [katex]T(1,t)=1[/katex]. In other words, we essentially have set the boundary condition to be [katex]T(x,t)=x[/katex], i.e. the value of [katex]x[/katex] is the value we set in our temperature array. We will see later why this is advantageous. To see why it is important that we set <code>T1</code> and not <code>T0</code> here, see the explanation given for lines 43-50.
+<li><strong>Lines 38-39</strong>: We set the boundary conditions. We set the left boundary at [katex]x=0[/katex] to [katex]T(0,t)=0[/katex] and the right boundary at [katex]x=1[/katex] to [katex]T(1,t)=1[/katex]. In other words, we essentially have set the boundary condition to be [katex]T(x,t)=x[/katex], i.e. the value of [katex]x[/katex] is the value we set in our temperature array. We will see later why this is advantageous. To see why it is important that we set <code>T1</code> and not <code>T0</code> here, see the explanation given for lines 43-50.
 
 </li>
 <!-- /wp:list-item -->
@@ -5059,7 +5059,7 @@ The only difference here is that we receive data now into the <code>rightBoundar
 </li>
 <!-- /wp:list-item -->
 <!-- wp:list-item -->
-<li><strong>Line 122</strong>: We explicitly update the value at <code>T1[i]</code> with <code>i = 0</code> using the received <code>leftBoundaryValue</code>. Originally, we had <code>T0[i - 1]</code> here, but if <code>i = 0</code>, then <code>i - 1</code> would result in an out-of-bounds memory request, crashing the program. But, with <code>leftBoudnaryValue</code> now available, we can replace this value and manually update the value of <code>T1</code> at the inter-processor boundary.
+<li><strong>Line 122</strong>: We explicitly update the value at <code>T1[i]</code> with <code>i = 0</code> using the received <code>leftBoundaryValue</code>. Originally, we had <code>T0[i - 1]</code> here, but if <code>i = 0</code>, then <code>i - 1</code> would result in an out-of-bounds memory request, crashing the program. But, with <code>leftboundaryValue</code> now available, we can replace this value and manually update the value of <code>T1</code> at the inter-processor boundary.
 
 </li>
 <!-- /wp:list-item -->
