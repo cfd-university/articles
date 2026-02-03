@@ -62,6 +62,11 @@
             "heading": "Mesh generation in CFD: All you need to know in one article",
             "slug": "mesh-generation-in-cfd-all-you-need-to-know-in-one-article",
             "description": "Learn all there is to know about mesh generation in CFD, from structured to unstructured algorithms and why mesh quality is so important."
+        },
+        "13_cfd-on-steroids-high-performance-computing-and-code-parallelisation.html": {
+            "heading": "CFD on Steroids: High-performance computing and code parallelisation",
+            "slug": "cfd-on-steroids-high-performance-computing-and-code-parallelisation",
+            "description": "Learn all there is to know about code parallelisation for CFD applications; from domain decomposition to parallelisation frameworks like MPI, CUDA, and OpenMP."
         }
     }
 }
