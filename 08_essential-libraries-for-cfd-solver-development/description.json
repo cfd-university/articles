@@ -1,0 +1,12 @@
+{
+    "name": "Essential CFD Libraries",
+    "slug": "essential-cfd-libraries",
+    "description": "This series explores a collection of libraries that will make writing CFD solver easier, faster, and more fun.",
+    "articles": {
+        "01_eigen-the-swiss-arm-knife-of-cfd-libraries.html": {
+            "heading": "Eigen: The Swiss Army Knife of CFD libraries",
+            "slug": "eigen-the-swiss-arm-knife-of-cfd-libraries",
+            "description": "Eigen is a linear algebra library that supports matrix and vector operations, which will help you write cleaner and more performant CFD solvers."
+        }
+    }
+}

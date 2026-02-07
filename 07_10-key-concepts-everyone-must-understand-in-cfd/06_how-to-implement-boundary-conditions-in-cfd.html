@@ -58,7 +58,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Boundary conditions are hard. If you believe they aren't, then you either have never implemented them yourself or have done any simulations where the adverse effects of boundary conditions become an issue. If you want to challenge yourself, go and set up a channel flow with Large Eddy Simulations. But no cheating; periodic boundary conditions aren't allowed. You will realise that there are as many different boundary conditions you can impose at the inlet as there are probably RANS turbulence models available, and some are better than others but not necessarily more correct.</p>
+<p>Boundary conditions are hard. If you believe they aren't, then you either have never implemented them yourself or never have done any simulations where the adverse effects of boundary conditions become an issue. If you want to challenge yourself, go and set up a channel flow with Large Eddy Simulations. But no cheating; periodic boundary conditions aren't allowed. You will realise that there are as many different boundary conditions you can impose at the inlet as there are probably RANS turbulence models available, and some are better than others but not necessarily more correct.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -88,7 +88,7 @@
 <!-- /wp:quote -->
 
 <!-- wp:paragraph -->
-<p>You would think that 30+ years later, we would have solved all of these issues. We haven't. Sure, we have made some advances in specific areas, such as inlet boundary conditions for scale-resolving turbulent flows, but we are still struggling with very fundamental problems. If you have ever worked with Fluent, for example, then you might have encountered reverse flow on the outlet. Once that happens, your convergence is affected, so the developers at Fluent have implemented a fix.</p>
+<p>You would think that 30+ years later, we would have solved all of these issues. We haven't. Sure, we have made some advances in specific areas, such as inlet boundary conditions for scale-resolving turbulent flows, but we are still struggling with very fundamental problems. If you have ever worked with Fluent, for example, then you might have encountered reverse flow at the outlet. Once that happens, your convergence is affected, so the developers at Fluent have implemented a fix.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -808,6 +808,947 @@ b=\frac{1}{4}</pre></div>
 
 <!-- wp:paragraph -->
 <p>I have just shown one layer of ghost cells here, but for higher-order numerical schemes on unstructured grids, your stencil will be much larger. That means that we have to construct even more ghost cells. You see, on unstructured grids, the complexity quickly escalates, but we are not really gaining anything. We have to resort to second-order interpolation, so our higher-order scheme would lose accuracy near the boundaries anyway. It is simpler to just use a lower-order scheme here, which likely has the same accuracy but less computational cost.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":2} -->
+<h2 class="wp-block-heading" id="aioseo-how-to-implement-boundary-conditions-for-implicit-time-integration">How to implement boundary conditions for implicit time integration</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Thus far, we have looked at how to treat Dirichlet, Neumann, and Robin-type boundary conditions, and the discussion has been accurate to this point. However, the way that I have presented boundary conditions thus far will only really allow you to deal with explicit time integration schemes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Why is that? When we deal with a purely explicit time integration scheme, we have an equation of the form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi^{n+1}=\phi^n + \Delta t\left[\text{advection}(\phi^n) + \text{diffusion}(\phi^n) + \text{sources}(\phi^n)\right] </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, advection(), diffusion(), and sources() are some operators to discretise the various terms in our Navier-Stokes equation. The defining characteristic of a fully explicit time integration is that we have a single unknown on the left-hand side of the equation, in this case, [katex]\phi[/katex] at the <em>next time level</em>, i.e. [katex]\phi^{n+1}[/katex], while all other variables are known and on the right-hand side of the equation, in this case, [katex]\phi[/katex] at the <em>current time level</em>, i.e. [katex]\phi^n[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this case, [katex]\phi^n[/katex] is either taken from the initial condition, if we are just starting our simulation, or from the previously computed time level, if we have already computed some time steps as part of our simulation. For an implicit time integration, at least one (or all) of the terms on the right-hand side is/are evaluated at the next time level, i.e. we have at least one dependency on [katex]\phi^{n+1}[/katex]. For a fully implicit system of equations, for example, we get:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi^{n+1}=\phi^n + \Delta t\left[\text{advection}(\phi^{n+1}) + \text{diffusion}(\phi^{n+1}) + \text{sources}(\phi^{n+1})\right] </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In this case, it is typically customary to group all known variables on the right-hand side, i.e. those depending on the previous time level (all terms containing [katex]\phi^n[/katex]), and all unknowns on the left-hand side, i.e. those depending on the current time level (all terms containing [katex]\phi^{n+1}[/katex]). This would result in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi^{n+1} - \Delta t\left[\text{advection}(\phi^{n+1}) + \text{diffusion}(\phi^{n+1}) + \text{sources}(\phi^{n+1})\right]=\phi^n  </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This type of system then leads to a linear system of equations, of the form [katex]\mathbf{Ax}=\mathbf{b}[/katex], as we have seen in the previous article, and we need to solve this now. Solving a linear system of equations poses its very own challenges, especially near boundaries. Since we are solving [katex]\mathbf{Ax}=\mathbf{b}[/katex], we need to impose boundary conditions directly into our coefficient matrix [katex]\mathbf{A}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While that is no more complicated than what we have already discussed up to this point, if you have never done it, you might be wondering how to do that, and so in this section, I want to shine some light on that, as this is something that catches me out every now or then (I just spent a week debugging my coefficient matrix only to realise that I must have had a stroke while implementing the Neumann boundary conditions. We shall not speak of this blunder again, and you shall not examine my git history!)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In the following section, we will look at how we can implement our two fundamental boundary types (Dirichlet and Neumann) using no mesh modifications and the ghost cell approach.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-implicit-time-integration-without-mesh-modifications">Implicit time integration without mesh modifications</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We'll start with the approach that doesn't require mesh modifications. As it turns out, Dirichlet boundary conditions are pretty straightforward to implement, at least if we assume a finite-difference type data structure, that is, we store our variables at nodes/vertices. This is straightforward, as we will see shortly, because we can impose boundary conditions directly at the location where we store our variables.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Once we start to adopt a finite-volume type data structure, though, we store data at cell centroids, which are not on the boundaries, and so, we have to make changes to our discretisation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While it does sound like vertex/node-based discretisation is easier to achieve, it's not; we are just shifting problems around. While it may indeed be easier to impose some boundary conditions with a node-based discretisation, we end up with an array of other issues. For example, think of corner points, where two different boundary conditions meet. Which one are we imposing here?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This is an issue for which there are solutions available, but it just goes to show that no matter what we do with our boundaries, they will make sure that we suffer from <a href="https://www.nhs.uk/mental-health/conditions/post-traumatic-stress-disorder-ptsd/overview/" target="_blank" rel="noopener" title="">PTSD</a>. There is no free lunch.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Anyways, after these <em>encouraging</em> words, if you are up for it, let's look at these boundary conditions. Boy, how I look forward to writing this ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-dirichlet-boundary-conditions">Dirichlet boundary conditions</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's recall what our goal is with Dirichlet-type boundary conditions. We have some value [katex]\phi_{Dirichlet}[/katex] that we want to impose on boundaries. Looking at the following, simple, 1D domain, we can see that our goal, for example, is to impose some Dirichlet value on the west boundary, that is, at node/vertex 1.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":"500px","sizeSlug":"large","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/06_how-to-implement-boundary-conditions-in-cfd/implicit_boundary_condition_imposition_node_based.png" alt="A 1D domain with 5 nodes; 2 on the boundaries, and 3 on the internal domain. Dirichlet boundary conditions are applied on the left (first node), while Neumann boundary conditions are applied on the right (last node). Below the 1D domain is a sketch of the 5  by 5 coefficient matrix, the vector x, and the right-hand side b vector that would be used to solve the linear system Ax=b." class="wp-image-5550" style="width:500px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Below the 1D domain, we see the individual matrices and vectors of the linear system of equations that arises from our discretisation, i.e. [katex]\mathbf{Ax}=\mathbf{b}[/katex]. We see that we have the same number of rows (and columns for the coefficient matrix) as we have grid points, which would be true for 2D and 3D grids as well (i.e. if we have 1 million cells in our mesh, and we store information at cell centroids, then we have a 1 million by 1 million coefficient matrix, and two vectors of length 1 million for [katex]\mathbf{x}[/katex] and [katex]\mathbf{b}[/katex], respectively).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On the internal domain, that is, on nodes 2-4, we go about our discretisation as per usual, and find the coefficient that we want to impose in our coefficient matrix. But what happens at the boundaries? Well, we need to focus our attention now on node/vertex 1.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we were dealing with an explicit time integration, we would simply set the value of [katex]\phi[/katex] to [katex]\phi_{Dirichlet}[/katex]. We can write this as [katex]\phi_1=\phi_{Dirichlet}[/katex]. So, the goal of the Dirichlet boundary condition is to impose a fixed value on the boundary.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's take that to our linear system of equations now. How do we translate that to [katex]\mathbf{Ax}=\mathbf{b}[/katex]? Well, here, [katex]\mathbf{x}[/katex] is the vector that will contain the solution of our unknowns after we have solved this system of equations. We want this vector to contain the correct values at the boundaries as well, so essentially, what we are saying is that the first entry at index/row 1 of [katex]\mathbf{x}[/katex] should contain [katex]\phi_{Dirichlet}[/katex] after we have finished solving our linear system of equations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, if we were to simply write this into our vector, that is, we set [katex]x_1=\phi_{Dirichlet}[/katex], we would not be imposing this boundary condition at all! Why? Well, let's say, for a moment, that we can easily invert [katex]\mathbf{A}[/katex]. Either the matrix is very small, or we have found a Nobel Prize-worthy inversion algorithm (only to realise that mathematicians are not eligible for Nobel Prizes) that allows us to rewrite our system of equations as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\mathbf{x}=\mathbf{A^{-1}b} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we now set [katex]x_1=\phi_{Dirichlet}[/katex], it would be completely ignored by this system, as [katex]x_1[/katex] is computed from the first row of [katex]\mathbf{A}[/katex] and the entire right-hand side vector [katex]\mathbf{b}[/katex]. And, even if we have not found a Nobel Prize-worthy inversion algorithm and we continue to use an iterative procedure, this iterative procedure will still aim to find a solution to the above equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, you may then argue, why don't we just set something like [katex]x_1=\phi_{Dirichlet}[/katex], knowing full well that this will not impose boundary conditions correctly, but we still solve [katex]\mathbf{Ax}=\mathbf{b}[/katex] and then overwrite whatever (incorrect) solution has been obtained at [katex]x_1[/katex] with the correct value of [katex]\phi_{Dirichlet}[/katex]?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Well, this certainly sounds plausible, but that has a pretty big problem. You see, when we discretise our governing equations with our numerical schemes, and we start to fill our coefficient matrix [katex]\mathbf{A}[/katex] based on our discretisation, if we do not impose the boundary conditions correctly here, we are no longer solving the governing equation we are trying to solve.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, we have to impose our boundary condition in such a way that the solution vector [katex]\mathbf{x}[/katex] in [katex]\mathbf{Ax}=\mathbf{b}[/katex] will contain the correct boundary value after the simulation has completed. In the case of Dirichlet-type boundary conditions, this is thankfully easy to achieve.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's look at [katex]\mathbf{Ax}=\mathbf{b}[/katex] again carefully. If we want the first entry in [katex]\mathbf{x}[/katex] to be [katex]\phi{Dirichlet}[/katex], then the easiest way to achieve that is to set the first row and column in the coefficient matrix [katex]\mathbf{A}[/katex] to 1, i.e. we have [katex]A_{11}=1[/katex], while setting the first entry in the right-hand side vector [katex]\mathbf{b}[/katex] to [katex]\phi_{Dirichlet}[/katex], i.e. we have [katex]b_1=\phi_{Dirichlet}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we impose the boundary conditions this way, then we are guaranteed to get the correct value in our solution vector [katex]\mathbf{x}[/katex]. To make this clear, [katex]A_{11}[/katex] is set to 1, while all other columns for the first row are zero. We can write this precisely for the first node as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+A_{1j}=
+\begin{cases}
+1\qquad j=1\\
+0\qquad j\ne 1 
+\end{cases} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If this is the case, then our linear system of equations [katex]\mathbf{Ax}=\mathbf{b}[/katex] can be written for the first boundary node as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+A_{11}\cdot x_1 = b_1 \\
+1\cdot x_1 = \phi_{Dirichlet}\\
+x_1 = \phi_{Dirichlet}/1\\
+x_1 = \phi_{Dirichlet} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>It doesn't matter what is in the right-hand side vector [katex]\mathbf{b}[/katex], as long as it contains the correct value at [katex]b_1[/katex], since all other columns in the coefficient matrix are set to zero, and so whatever else is in [katex]\mathbf{b}[/katex], will be multiplied by zero, except what is stored at [katex]b_1[/katex] (which is [katex]\phi_{Dirichlet}[/katex]).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What I have assumed thus far is that the nodes/vertices in our mesh coincide with the location where we store our solution variables as well. This is typical for finite difference approximations, but not for finite-volume discretisations. When we are dealing with finite volumes, we typically store our variables at cell-centroids. If we adapt our 1D domain example from above, where we now store variables at the cell centroids, we obtain the following domain:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":"500px","sizeSlug":"large","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/06_how-to-implement-boundary-conditions-in-cfd/implicit_boundary_condition_imposition_centroid_based.png" alt="A 1D domain with 6 nodes; 2 on the boundaries, and 43 on the internal domain. Dirichlet boundary conditions are applied on the left (first node), while Neumann boundary conditions are applied on the right (last node). Below the 1D domain is a sketch of the 4 by 4 coefficient matrix, the vector x, and the right-hand side b vector that would be used to solve the linear system Ax=b." class="wp-image-5550" style="width:500px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>In this case, the boundary conditions are no longer imposed directly at the same location where our variables are stored, and so, we cannot simply set [katex]A_{11}=1[/katex] and [katex]b_1=\phi_{Dirichlet}[/katex]. If life was only that simple ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Instead, we have to modify our discretisation and work the boundary conditions directly into our discretisation. Let's consider first-order and second-order derivatives; these are the ones you will usually find in CFD (e.g. advection, divergence, and pressure gradient representing first-order derivatives, and diffusion representing second-order derivatives). For first-order derivatives, we have the following finite-volume discretisation:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial x}\rightarrow \int_v\frac{\partial \phi}{\partial x}\mathrm{d}V = \int_S\vec{n}\cdot \phi \mathrm{d}S\approx \sum_k^{nFaces}\vec{n}_k\cdot\phi_k\cdot S_k </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If you need a refresher on this discretisation, and why on earth I get away with murder for changing a volume to a surface integral, you may want to catch up on my <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/how-to-discretise-the-navier-stokes-equations/#aioseo-the-finite-volume-method" target="_blank" rel="noopener" title="">finite-volume</a> write-up.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's consider the following sketch of a single cell, showing all of its dimensions, as well as a boundary on the left-hand side of the cell:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":"300px","sizeSlug":"large","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/06_how-to-implement-boundary-conditions-in-cfd/single_cell_with_dimensions.png" alt="A single cell showing the dimensions dx and dy (width and height of the cell), as well as distances to the centroid (dx/2 and dy/2, respectively)." class="wp-image-5550" style="width:300px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>We can see the surface area in 2D is just the height of the cell (i.e. [katex]S=\Delta y[/katex]), and, if this is a 1D example, then we simply set it to [katex]S=\Delta y=1[/katex], and we can ignore it in our discretisation. We see that the normal vectors point outwards from the cell, and we see that we have interpolated values for [katex]\phi[/katex] on the cell's faces. Well, on the east face, we do have an interpolated value [katex]\phi_{i+\frac{1}{2}}[/katex], on the west face, we have the boundary value [katex]\phi_b[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you need a refresher on how to get those interpolated values, I got you covered as well. See my write-up on <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/space-and-time-integration-schemes-for-cfd-applications/#aioseo-numerical-schemes-for-finite-volume-discretisation" target="_blank" rel="noopener" title="">interpolation schemes</a> for the finite-volume method.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In any case, let's write out our discretisation. For that, we need to know what [katex]\phi_{i+1/2}[/katex] is. For first-order derivatives, for example, the advection term, we use an upwind-based discretisation. In the simplest form, we say that we set [katex]\phi_{i+1/2}[/katex] to [katex]\phi_i[/katex] if the local velocity in the x-direction is positive (and along the x-axis), or we set it to [katex]\phi_{i+1}[/katex] if the local velocity is negative (against the x-axis). We can write this as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{i+\frac{1}{2}}=
+\begin{cases}
+\phi_i &u_x \gt 0 \\
+\phi_{i+1} &u_x \lt 0
+\end{cases} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This type of logic may be best implemented with <code>if/else</code> statements in code, which isn't great for our discretisation. So, instead, we can write this in a more compact form as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{i+\frac{1}{2}} = \text{max}(sign(u_x), 0)\phi_i + \text{min}(sign(u_x), 0)\phi_{i+1} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, I am using the [katex]sign(x)[/katex] <a href="https://en.wikipedia.org/wiki/Sign_function" target="_blank" rel="noopener" title="">function</a>, which does what it says: it returns the sign (but limits the value to 1). So, a value of [katex]u_x=6.3[/katex] would be [katex]sign(u_x=6.3)=1[/katex], whereas a value of [katex]u_x=-0.7[/katex] would be [katex]sign(u_x=-0.7)=-1[/katex]. Thus, if [katex]u_x \gt 0[/katex], then the first term in the above equation will evaluate to [katex]\mathrm{max}(1, 0)=1[/katex], while the second term will evaluate to [katex]\mathrm{min}(1, 0)=0[/katex]. It will be reversed if [katex]u_x \lt 0[/katex]. In this way, we automatically get the correct value for [katex]\phi_{i+\frac{1}{2}}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we are dealing with, for example, the pressure gradient, we are typically OK to use a central differencing scheme as an approximation, and so could write here:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{i+\frac{1}{2}}=\frac{\phi_i + \phi_{i+1}}{2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>While this works for the pressure, it pretty much always diverges if we try to use this for the velocity, especially the advection (non-linear) term. If you want to know why, we'll need to talk about <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/explicit-vs-implicit-time-integration-and-the-cfl-condition/#aioseo-von-neumann" target="_blank" rel="noopener" title="">von Neumann's stability analysis</a>. Would you believe it, I have a write-up on that, too. Wow, today must be your lucky day. Have you played the lottery already?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we take the central differencing approach, and we set [katex]\vec{n}=1[/katex] at the east face (pointing along the x-direction) and [katex]\vec{n}=-1[/katex] at the west face (pointing against the x-direction), then we can start to write our discretised equation as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\sum_k^{nFaces}\vec{n}_k\cdot\phi_k\cdot S_k=1\cdot\phi_{i+\frac{1}{2}}S + (-1)\cdot \phi_b\cdot S = \frac{\phi_i + \phi_{i+1}}{2}S-\phi_b\cdot S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now we have to find all unknowns and collect them on the left-hand side of the equation (that is, all [katex]\phi[/katex] values that are unknown), and place all known values on the right-hand side of the equation. This results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\phi_i + \phi_{i+1}}{2}S=\phi_b\cdot S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We know what [katex]\phi_b[/katex] is; this is the boundary value we set and want to impose in our simulation, so it moves to the right-hand side. Since this is an implicit discretisation, we don't know the values of [katex]\phi[/katex] on the internal domain, and we obtain these from our linear system of equations. Let's bring this equation into coefficient form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_i\left[\frac{S}{2}\right] + \phi_{i+1}\left[\frac{S}{2}\right] = \phi_b S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In our linear system [katex]\mathbf{Ax}=\mathbf{b}[/katex], where we have [katex]\mathbf{x}=\mathbf{\phi}[/katex] now, we would set [katex]A_{11}=S/2[/katex] and [katex]A_{12}=S/2[/katex]. Furthermore, we have [katex]b_1=\phi_b S[/katex], and the values of [katex]\phi_1,\ \phi_2,\,...,\,\phi_n[/katex] will be stored in the solution vector [katex]\mathbf{x}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we discretised a second-order derivative with the finite-volume discretisation, then we would have:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial^2 \phi}{\partial x^2}\rightarrow\int_V\frac{\partial^2 \phi}{\partial x^2}\mathrm{d}V=\int_S\vec{n}\cdot\frac{\partial \phi}{\partial x}\mathrm{d}S\approx\sum_k^{nFaces}\vec{n}\cdot\frac{\partial \phi}{\partial x}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>The derivative [katex]\partial \phi/\partial x[/katex] will be evaluated at the face as well, that is, at [katex]i+1/2[/katex]. Since diffusion itself is a process that has no preferred direction of travel, we do not have to worry about upwinding here. In fact, these types of second-order derivatives have an elliptic behaviour, and you may ask yourself, what is elliptic behaviour, and WHERE IS MY WRITE-UP?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Steady-on, no need to scream, I think someone had too much CFD (fun?) for one day, perhaps take a break? As your CFD doctor, I would usually only recommend a few milligrams of dopamin release when visiting my website, but if you can't stop, you can enjoy my write-up at your own risk: <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/what-are-hyperbolic-parabolic-and-elliptic-equations-in-cfd/#aioseo-elliptic-flows" target="_blank" rel="noopener" title="">Elliptic flows</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, the derivative at the east face can be evaluated as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial x}\bigg|_{i+\frac{1}{2}}=\frac{\phi_{i+1}-\phi_{i}}{\Delta x} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We also have to find the derivative at the boundary face, that is, what is [katex]\partial \phi/\partial x[/katex] at [katex]i-1/2[/katex]? Well, we don't have a value for [katex]\phi_{i-1}[/katex], however, we do have the value at [katex]\phi_b[/katex]. This value is not a distance of [katex]\Delta x[/katex] away from [katex]\phi_i[/katex], but rather half that, i.e. [katex]\Delta x/2[/katex]. Therefore, we can find this derivative at the west face as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial x}\bigg|_{i-\frac{1}{2}}=\frac{\phi_{i}-\phi_{b}}{\Delta x/2}=2\frac{\phi_{i}-\phi_{b}}{\Delta x} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>With both of these two derivatives now available, we can discretise our second-order derivative near boundaries again as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\sum_k^{nFaces}\vec{n}\cdot\frac{\partial \phi}{\partial x}S=(1)\frac{\phi_{i+1}-\phi_{i}}{\Delta x}S + (-1)2\frac{\phi_{i}-\phi_{b}}{\Delta x} S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now we proceed as before, we collect terms on the left-hand side which are unknown, and those which are known on the right-hand side, and we end up with:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\phi_{i+1}-\phi_{i}}{\Delta x}S-2\frac{S\phi_i}{\Delta x}=-\frac{2S\phi_b}{\Delta x} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can bring this again in coefficient from, which provides us with:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_i\left[-3\frac{S}{\Delta x}\right] + \phi_{i+1}\left[\frac{S}{\Delta x}\right] = -\frac{2S\phi_b}{\Delta x} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>And, again, we can now populate our coefficient matrix with [katex]A_{11}=-3S/\Delta x[/katex] and [katex]A_{12}=S/\Delta x[/katex], while the right-hand side vector is [katex]b_1=-2S\phi_b/\Delta x[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>We can repeat this now for any of the other faces, though, in a general sense, we would simply keep the normal vector [katex]\vec{n}[/katex] in the discretisation (here I have inserted the values of +1 and -1 already), which means that we can apply the same procedure to unstructured grids just as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Additionally, the Navier-Stokes equation consists of a few terms, and each of them will be discretised on its own. This means that if we use a centroid-based discretisation, we may have to add coefficients to [katex]\mathbf{A}[/katex] and values to our right-hand side vector [katex]\mathbf{b}[/katex] a few times.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, we could either write out the coefficients for the entire discretised equation (which textbooks typically do, and this is a sure way to lose overview very quickly) or we can apply the boundary conditions on a per-term basis (advection, diffusion, sources, etc.). This is typically much easier to comprehend (at least in my opinion), and it also aligns better with how you would actually <em>want to</em> implement this.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I say I want to, as this would promote a modular design (we can add as many or as few terms as we want, without having to re-derive our equations if something changes), but let's be honest, it is mostly academics who write CFD solvers, and they rarely think about good software design. (I am not even 40, where is all of that cynicism coming from? ... I should see a (real) doctor ...).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Anyhow, I think we have covered Dirichlet-type boundary conditions now extensively, and we can move on. I tried to be more explanatory here, as I have found classical CFD textbooks to be surprisingly vague on the details here. All it takes is just a bit of derivations, which aren't difficult, but we just need to know what we are doing here. With that said, let's now turn to Neumann-type boundary conditions, which require even more derivations. Oh, the joy that is to come!</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 class="wp-block-heading" id="aioseo-neumann-boundary-conditions">Neumann boundary conditions</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Let's return to our sketch using a node-based discretisation. Here, we said that we wanted to apply the Neumann boundary conditions on the right-hand side of the domain, as shown in the figure below, which I have repeated here for convenience:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":"500px","sizeSlug":"large","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/06_how-to-implement-boundary-conditions-in-cfd/implicit_boundary_condition_imposition_node_based.png" alt="A 1D domain with 5 nodes; 2 on the boundaries, and 3 on the internal domain. Dirichlet boundary conditions are applied on the left (first node), while Neumann boundary conditions are applied on the right (last node). Below the 1D domain is a sketch of the 5  by 5 coefficient matrix, the vector x, and the right-hand side b vector that would be used to solve the linear system Ax=b." class="wp-image-5550" style="width:500px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>When we dealt with the Dirichlet-type boundary condition, in this particular case (i.e. with a node-based discretisation), we saw that we can just easily impose that through the coefficient matrix and the right-hand side vector. But, for Neumann-type boundary conditions, that is not the case, unfortunately.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Neumann boundary conditions require us to derive the required matrix coefficients and right-hand side vector component for each operator separately. So, if we are dealing with the Navier-Stokes equations of the form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\underbrace{\frac{\partial \mathbf{u}}{\partial t}}_{\text{Term 1}} + \underbrace{(\mathbf{u}\cdot\nabla )\mathbf{u}}_{\text{Term 2}} = \underbrace{-\frac{1}{\rho}\nabla p}_{\text{Term 3}} + \underbrace{\nu\nabla^2\mathbf{u}}_{\text{Term 4}} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Then, we have to derive the Neumann condition for each of these 4 terms and apply that to our coefficient matrix. To complicate things further, the above equation cannot be solved as it is, but rather, we have to discretise this equation. In the process, we have to make choices about our numerical schemes, and changing a numerical scheme means we are solving a different discretised equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thus, for each scheme that we implement, we have to derive a corresponding Neumann-type condition. Having said that, typically we can discretise the pressure gradient (term 3) and diffusion operator (term 4) with a central scheme and don't (for incompressible flows anyways) and don't have to worry about ever having to change that. The time derivative is also simple (it is very similar to a Dirichlet-type boundary condition), and so the burden, really, is only with the non-linear advective operator (term 2).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, in the sketch above, we want to apply the Neumann-type boundary condition to the right of the domain. Let's do that and start easy. Let's start with the time derivative. If we discretised the time derivative, using a first-order forward finite-difference approximation (as we are node-based here, though I should point out this is a common choice, but not the only permissible one). That is, we can use finite volumes for node-based discretisation and centroid-based discretisation for finite-difference methods. Just for completeness, we get:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \mathbf{u}}{\partial t}\approx \frac{\mathbf{u}_i^{n+1} - \mathbf{u}_i^{n}}{\Delta t} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now we collect terms again and write unknowns on the left-hand side and known terms on the right-hand side, and we arrive at:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\mathbf{u}_i^{n+1}\left[\frac{1}{\Delta t}\right]=\mathbf{u}_i^{n}\left[\frac{1}{\Delta t}\right] </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Referring to the sketch above, we want to impose the Neumann boundary conditions now at the last node with ID 5, so that the coefficient matrix has to be set at location [katex]i=5[/katex] and [katex]j=5[/katex]. This results in [katex]A_{55}=1/\Delta t[/katex], and the right-hand side vector at location [katex]i=5[/katex] becomes [katex]b_5=1/\Delta t[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For completeness, to show what happens with higher-order time derivatives, a popular choice here is the second-order backwards scheme, which can be written as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \mathbf{u}}{\partial t}\approx \frac{3\mathbf{u}_i^{n+1} - 4\mathbf{u}_i^{n} + \mathbf{u}_i^{n}}{2\Delta t} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we collect terms on the left-hand side again that are unknown, and known terms on the right-hand side, we end up with:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\mathbf{u}_i^{n+1}\left[\frac{3}{2\Delta t}\right] = \mathbf{u}_i^{n}\left[\frac{4}{2\Delta t}\right] - \mathbf{u}_i^{n-1}\left[\frac{1}{2\Delta t}\right] </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>And thus, we write into our coefficient matrix [katex]A_{55}=3/(2\Delta t)[/katex] and into our right-hand side vector [katex]b_5=\mathbf{u}_i^{n}[4/(2\Delta t)] - \mathbf{u}_i^{n-1}[1/(2\Delta t)][/katex]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Perhaps now you can see why I say that the time derivative is very similar to a Dirichlet-type boundary condition, with the difference that we are not setting a value of 1 in the coefficient matrix, but rather the coefficient that comes out from our discretisation. Well, it will become, perhaps, even clearer when we deal with different operators. So, let's look at the diffusion operator. We can discretise the diffusion term (term 4 in our Navier-Stokes equation, ignoring the viscosity and only focusing on the derivative here) as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\nabla^2\mathbf{u}=\frac{\partial^2 u}{\partial x^2} \approx \frac{u_{i+1}^{n+1}-2u_{i}^{n+1}+u_{i-1}^{n+1}}{(\Delta x)^2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now we have to make an uncomfortable realisation! Thus far in your life, you may have been living under the impression that boundary conditions are imposed on the boundaries and that's that. You left them alone, computed solutions on the interior domain, and then updated boundary conditions afterwards. For explicit schemes, this is the case. But not for implicit schemes.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>No, when we deal with implicit schemes, you see, we do have to compute the solution on the boundaries as well! I don't know about you, but when I first had this realisation, it made me feel very uncomfortable, as if someone told me Santa Claus didn't exist. I don't know why, it just did. So, Neumann boundary conditions are imposed as a constraint on our linear system of equations; we do not update any boundary condition after we are done with the computation; rather, they naturally arise as part of the solution.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, let's remind ourselves what Neumann boundary conditions are. We said that these represent gradients that are normal to the boundary edges, which we can express as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial n}=\phi_{Neumann} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can discretise this with a classical central scheme, now using [katex]\phi=u[/katex], as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial u}{\partial n}\rightarrow \frac{u^{n+1}_{i+1} - u^{n+1}_{i-1}}{2\Delta x}=u_{Neumann} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we are at location [katex]i=5[/katex], where we want to impose the Neumann-type boundary condition in the above sketched domain, then inserting this into our discretised Neumann condition will give us [katex]i+1=5+1=6[/katex] and [katex]i-1=5-1=4[/katex] for the locations. Clearly, there is no node at [katex]i=6[/katex], so what do we do? Well, let us write the discretised form of the Neumann condition so that we place all unknowns (i.e. in this case, not in time, but rather in space, that is, [katex]i+1[/katex] quantities are unknown and [katex]i-1[/katex] are known) on the left-hand side:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+u^{n+1}_{i+1}=u^{n+1}_{i-1} + 2u_{Neumann}\Delta x </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>So far so good, now let's turn our attention back to our discretised stencil, we had:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial^2 u}{\partial x^2} \approx \frac{u_{i+1}^{n+1}-2u_{i}^{n+1}+u_{i-1}^{n+1}}{(\Delta x)^2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Remember what our goal here is: we want to compute the solution on the boundary, that is, at location [katex]i=5[/katex], in a way that imposes our Neumann boundary condition. Well, if we want to solve the above discretised form of the diffusion operator, we have the same issue as with the derivative of the Neumann boundary condition; we have a term that is evaluated at [katex]i+1[/katex] in our discretised equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But, here comes the trick: We already know what [katex]u^{n+1}_{i+1}[/katex] is; we just derived an expression for it with the help of the Neumann boundary condition! So, we can insert this expression into our discretised form and have:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{u^{n+1}_{i-1} + 2u_{Neumann}\Delta x -2u_{i}^{n+1}+u_{i-1}^{n+1}}{(\Delta x)^2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can now go about our usual business. First, let's collect unknowns (this time referred to as unknown in time again, i.e. all quantities at time level [katex]n+1[/katex]) again on the left-hand side and everything else on the right-hand side. This results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{u^{n+1}_{i-1} -2u_{i}^{n+1}+u_{i-1}^{n+1}}{(\Delta x)^2}=\frac{-2u_{Neumann}\Delta x}{(\Delta x)^2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Let's bring this again into coefficient form:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+u_{i}^{n+1}\left[\frac{-2}{(\Delta x)^2}\right] + u_{i-1}^{n+1}\left[\frac{2}{(\Delta x)^2}\right] = \frac{-2u_{Neumann}\Delta x}{(\Delta x)^2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can even clean up the right-hand side a bit if we want:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+u_{i}^{n+1}\left[\frac{-2}{(\Delta x)^2}\right] + u_{i-1}^{n+1}\left[\frac{2}{(\Delta x)^2}\right] = \frac{-2u_{Neumann}}{\Delta x} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This is now the equation we have to solve on the boundary, in our example, at [katex]i=5[/katex]. Thus, in our coefficient matrix, we set [katex]A_{55}=-2/(\Delta x)^2[/katex] but now we also have to set [katex]A_{54}=2/(\Delta x)^2[/katex]. In the coefficient matrix [katex]\mathbf{A}[/katex], the row index is determined by the node (or cell) index, in this case [katex]i=5[/katex], and the column index is determined by the individual node/cell IDs within our discretised equation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For example, the coefficient for [katex]u_i^{n+1}[/katex] needs to be placed in column 5, because this velocity value is evaluated at location [katex]i[/katex]. But, the coefficient for [katex]u_{i-1}^{n+1}[/katex] (remember that this term is coming from the discretised equation for node [katex]i=5[/katex], so we are still in row 5) is evaluated at [katex]i-1=5-1=4[/katex], thus, we need to store the coefficient now at row 5 and column 4.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, in general, each row in a matrix represents a cell or node, and then any column in that row represents any neighbouring coefficients we have to set due to our stencil (in this case, we had [katex]i-1[/katex] in our stencil, and since the row is fixed to 5 as we are writing the discretised equation for node 5, and [katex]i-1[/katex] tells us in which column we have to place coefficients).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But that's it, this is how you impose Neumann boundary conditions. We can generalise this procedure as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list  -->
+<ul class="wp-block-list">
+
+<!-- wp:list-item -->
+<li>First, discretise the Neumann boundary condition, i.e. the derivative at the boundary of interest, and solve it for the unknown variable that is beyond the boundary
+
+</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>Next, discretise each operator at the boundary
+
+</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>Insert the Neumann condition from the first step into your discretised operators at the boundaries
+
+</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>Solve the modified discretisation at boundaries
+
+</li>
+<!-- /wp:list-item -->
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>There is one important consequence of this. Let's look at our sketched domain again. We said that we impose Dirichlet-type boundary conditions on the left side of the domain and Neumann-type boundary conditions on the right side of the domain. We saw that the Dirichlet-type boundary conditions only modify [katex]A_{11}[/katex], while the Neumann boundary conditions modified [katex]A_{55}[/katex] <strong>and</strong> [katex]A_{54}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Why is this important? Well, if you only use Dirichlet-type boundary conditions, and you implemented a simple equation, something like the heat diffusion equation, then you get a symmetric matrix. Symmetric matrices can be easily solved with something like a Conjugate Gradient method. But these Conjugate Gradient methods, while being extremely popular, require a symmetric matrix. If you now, all of a sudden, insert a Neumann boundary condition, your matrix becomes asymmetric, and your Conjugate Gradient solver goes on strike.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this case, this is easily fixed by using an extended Conjugate Gradient method, e.g. something like the Bi-Conjugate Gradient (Stabilised) versions (also often abbreviated to BiCGStab or BCGS), but it is one of these bugs where your solver is working fine, you haven't touched anything about the linear system of equation solver but you implement a new boundary condition and all of a sudden your solver stops working.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Naturally, you spend hours debugging your new implementation, which has nothing to do with the issue. It happened to me in the past, and I thought I would mention it here because that can easily trip someone up when using just the plan conjugate gradient method.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What about the advection (non-linear) term? Well, as it turns out, it is actually not that bad here. When it comes to CFD, and we want to simulate anything of engineering interest, we typically resort to an upwind discretisation here. For example, using a finite-difference approximation, we can discretise the advection term using a first-order upwind scheme as</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+u\frac{\partial u}{\partial x} = \text{max}(u^n_i, 0)\frac{u^{n+1}_{i} - u^{n+1}_{i-1}}{\Delta x} + \text{min}(u^n_i, 0)\frac{u^{n+1}_{i+1} - u^{n+1}_{i}}{\Delta x} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now, let's analyse this scheme for a moment, specifically, what happens on the right side of the domain. If we assume that the flow is coming in from the left side of the domain and then going to the right side of the domain, it stands to reason that the flow on the right side of the domain is leaving, not entering. We would only have flow entering the domain if we had reverse flow.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, as a rule of thumb, we should never place open boundaries like inlets and outlets near regions of flows that are still developing. So, for the sake of argument, let's say that the flow has developed and it is uniformly flowing out at the boundary. This means that the above discretisation can assume and [katex]u\gt 0[/katex]. This means [katex]\text{min}(u,0)[/katex] will always be 0 in this case on the boundary, and so we could write our discretised equation on the boundary as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+u\frac{\partial u}{\partial x} = \text{max}(u^n_i, 0)\frac{u^{n+1}_{i} - u^{n+1}_{i-1}}{\Delta x} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we make this assumption, then we no longer have any dependence on [katex]i+1[/katex]. It naturally vanishes if outflow is assumed and reverse flow is suppressed. In the opening of this article, I mentioned that ANSYS Fluent will allow you to suppress reverse flow by artificially implementing walls where reverse flow is detected. It does make sense all of a sudden, doesn't it? If we have no reverse flow, well, then the above discretisation is never violated, making our implementation effort really easy.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For completeness, I should add that there are other schemes that depend on upwinding, but have a larger stencil, and thus a dependence on [katex]i+1[/katex] may still exist near boundaries. For example, the <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/space-and-time-integration-schemes-for-cfd-applications/#aioseo-muscl-scheme" target="_blank" rel="noopener" title="">MUSCL scheme</a> or <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/space-and-time-integration-schemes-for-cfd-applications/#aioseo-quick-scheme" target="_blank" rel="noopener" title="">QUICK scheme</a>, both of which we reviewed in the <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/space-and-time-integration-schemes-for-cfd-applications/" target="_blank" rel="noopener" title="">numerical schemes article</a>, may have this dependence. If this is the case, we can opt for a lower-order scheme near the boundary to get rid of this dependence, or we can use the ghost cell approach, which we will look at in the next section.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>However, before we jump there, I want to comment on the finite-volume type of grid arrangement, that is, when the variables we are interested in are stored at cell centroids. Let's remind ourselves of the sketch I provided before for this case:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":"500px","sizeSlug":"large","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/06_how-to-implement-boundary-conditions-in-cfd/implicit_boundary_condition_imposition_centroid_based.png" alt="A 1D domain with 6 nodes; 2 on the boundaries, and 43 on the internal domain. Dirichlet boundary conditions are applied on the left (first node), while Neumann boundary conditions are applied on the right (last node). Below the 1D domain is a sketch of the 4 by 4 coefficient matrix, the vector x, and the right-hand side b vector that would be used to solve the linear system Ax=b." class="wp-image-5550" style="width:500px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>If we are now on the right-hand side of the domain and we want to impose Neumann boundary conditions, then we proceed just like before, with minor adjustments.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For a diffusion-type operator, that is, a second-order derivative, we had the following finite-volume approximation (again, most commonly used for centroid-based discretisations):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial^2 \phi}{\partial x^2}\rightarrow\int_V\frac{\partial^2 \phi}{\partial x^2}\mathrm{d}V=\int_S\vec{n}\cdot\frac{\partial \phi}{\partial x}\mathrm{d}S\approx\sum_k^{nFaces}\vec{n}\cdot\frac{\partial \phi}{\partial x}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>If we discretise this operator on the right side of the domain, we get:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\sum_k^{nFaces}\vec{n}\cdot\frac{\partial \phi}{\partial x}S=(1)\frac{\partial \phi}{\partial x}\bigg|_{i+\frac{1}{2}}S+(-1)\frac{\partial \phi}{\partial x}\bigg|_{i-\frac{1}{2}}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>However, you may already be ahead of everyone else and realise that the derivative [katex]\partial \phi/\partial x[/katex], which we evaluate at location [katex]i+1/2[/katex] is on the east boundary face. Since the Neumann boundary condition imposes a derivative at exactly that location, that is:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial x}\bigg|_{east}=\frac{\partial \phi}{\partial x}\bigg|_{i+\frac{1}{2}}=\phi_{Neumann} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can simply substitute the Neumann boundary condition in this discretisation and get:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\sum_k^{nFaces}\vec{n}\cdot\frac{\partial \phi}{\partial x}S=(1)\phi_{Neumann}S+(-1)\frac{\partial \phi}{\partial x}\bigg|_{i-\frac{1}{2}}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now we can carry out the rest of the discretisation. First of all, let's discretise the derivative in the second term as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial x}\bigg|_{i-\frac{1}{2}}\approx\frac{\phi_i^{n+1}-\phi_{i-1}^{n+1}}{\Delta x} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Inserting this results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\sum_k^{nFaces}\vec{n}\cdot\frac{\partial \phi}{\partial x}S=(1)\phi_{Neumann}S+(-1)\frac{\phi_i^{n+1}-\phi_{i-1}^{n+1}}{\Delta x}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now let's collect terms again and place unknowns on the left-hand side and knowns on the right-hand side:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_i^{n+1}\left[\frac{-S}{\Delta x}\right] + \phi_{i-1}^{n+1}\left[\frac{S}{\Delta x}\right] = -\phi_{Neumann}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now we can insert that again into our coefficient matrix as [katex]A_{55}=-S/\Delta x[/katex], [katex]A_{54}=S/\Delta x[/katex], and into our right-hand side vector [katex]b_5=-\phi_{Neumann}S[/katex]</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What about first-order derivatives? Well, we had the following discretisation for a finite-volume-based discretisation:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial x}\rightarrow \int_v\frac{\partial \phi}{\partial x}\mathrm{d}V = \int_S\vec{n}\cdot \phi \mathrm{d}S\approx \sum_k^{nFaces}\vec{n}_k\cdot\phi_k\cdot S_k </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Let's write out the summation for our 1D example. We get:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\sum_k^{nFaces}\vec{n}_k\cdot\phi_k\cdot S_k=(1)\phi_{i+\frac{1}{2}}S+(-1)\phi_{i-\frac{1}{2}}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Cleaning up the right-hand side, we can further simplify this as (I think simplify is a strong word here!):</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\sum_k^{nFaces}\vec{n}_k\cdot\phi_k\cdot S_k=\phi_{i+\frac{1}{2}}S - \phi_{i-\frac{1}{2}}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Now the central question here is how do we approximate [katex]\phi[/katex] on the boundary, that is, at location [katex]i+1/2[/katex]. If we use an upwind discretisation again, then the same discussion as before applies. We can assume the flow has fully developed, and so, upwinding would then dictate, for a first-order approximation, that [katex]\phi_{i+1/2}^{n+1}=\phi_{i}^{n+1}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>When upwinding is involved, Neumann boundary conditions typically do not pose any issues, as we assume that the upwind direction is into the domain, and so all variables we need in our stencil are located inside the domain, not outside.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But let's assume we are dealing with the divergence operator or pressure gradient. In this case, we do not typically use upwinding, and so our stencil may still include values that go beyond our boundary. For example, for the divergence ([katex]\nabla\cdot \mathbf{u}[/katex]) or pressure gradient ([katex]\nabla p[/katex]), both of which result in first-order derivatives, we typically use the central scheme to approximate their values at faces. For location [katex]i+1/2[/katex], we may write:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{i+\frac{1}{2}}=\frac{\phi_i^{n+1} + \phi_{i+1}^{n+1}}{2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>So now, we have again a dependence on [katex]i+1[/katex], which we need to get rid of. We use, again, the definition of the Neumann boundary condition to do so. First, we write out the discretised operation as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial x}\approx \frac{\phi_{i+1}^{n+1}-\phi_i^{n+1}}{\Delta x}=\phi_{Neumann} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Solving this for the value at [katex]i+1[/katex] results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{i+1}^{n+1} = \phi_i^{n+1} + \phi_{Neumann}\Delta x </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can insert this into our central scheme and obtain:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{i+\frac{1}{2}}=\frac{\phi_i^{n+1} + \phi_{i+1}^{n+1}}{2} = \frac{\phi_i^{n+1} + \phi_i^{n+1} + \phi_{Neumann}\Delta x}{2} = \frac{2\phi_i^{n+1} + \phi_{Neumann}\Delta x}{2} = \phi_i^{n+1} + \frac{\phi_{Neumann}\Delta x}{2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can insert this into our discretised equation and obtain:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\sum_k^{nFaces}\vec{n}_k\cdot\phi_k\cdot S_k=\phi_{i+\frac{1}{2}}^{n+1}S - \phi_{i-\frac{1}{2}}^{n+1}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\sum_k^{nFaces}\vec{n}_k\cdot\phi_k\cdot S_k = \left(\phi_i^{n+1} + \frac{\phi_{Neumann}\Delta x}{2}\right)S - \phi_{i-\frac{1}{2}}^{n+1}S </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>To approximate [katex]\phi_{i-1/2}^{n+1}[/katex], we use the central scheme again and get:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{i-\frac{1}{2}}=\frac{\phi_i^{n+1} + \phi_{i-1}^{n+1}}{2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Inserting this into our discretisation results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\left(\phi_i^{n+1} + \frac{\phi_{Neumann}\Delta x}{2}\right)S - \frac{\phi_i^{n+1} + \phi_{i-1}^{n+1}}{2}S=0 </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can now sort this equation again and store knowns on the right-hand side and unknowns on the left-hand side, which gives us:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_i^{n+1} S - \frac{\phi_i^{n+1} + \phi_{i-1}^{n+1}}{2}S=-\frac{\phi_{Neumann}S\Delta x}{2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Writing this in coefficient form results in:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_i^{n+1}\left[\frac{S}{2}\right] + \phi_{i-1}^{n+1}\left[\frac{-S}{2}\right]=-\frac{\phi_{Neumann}S\Delta x}{2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>And so, we have found our matrix coefficients and right-hand side vector again, with [katex]A_{55}=S/2[/katex], [katex]A_{54}=-S/2[/katex], and [katex]b_5=-\phi_{Neumann}S\Delta x/2[/katex], respectively.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In some cases, you may come across a different derivation. For example, we can arrive at exactly the same discretised equation on the boundary by assuming that the Neumann boundary condition can be discretised as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial x}\approx\frac{\phi_{i+\frac{1}{2}}-\phi_i}{\Delta x/2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>Here, instead of taking the derivative between [katex]i[/katex] and [katex]i+1[/katex], over a cell distance [katex]\Delta x[/katex], we say that we evaluate the derivative between [katex]i[/katex] and [katex]i+1/2[/katex], i.e. half a cell distance [katex]\Delta x/2[/katex]. If you solve this now for [katex]\phi_{i+1/2}[/katex], you can directly insert that into the discretised equation, no need to first compute [katex]\phi_{i+1/2}[/katex] through a central interpolation scheme.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>You will obtain exactly the same results, I thought I just mentioned it here, as some people will derive it this way.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Good, I think this should give you sufficient knowledge for how to implement boundary conditions using either Dirichlet-type or Neumann-type boundary conditions. If you have to implement Robin-type boundary conditions, well, then you simply have to mix both Dirichlet and Neumann together. This will result in more terms, but the methodology is exactly the same as what we have discussed; the only difference being that you will now have contributions due to Dirichlet <strong>and</strong> Neumann in your coefficient matrix and right-hand side vector.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Now that we have an idea of what it takes to implement these conditions without modifying our mesh, I want to now look at the ghost cell approach and discuss how we can implement Dirichlet and Neumann boundary conditions here.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading" id="aioseo-implicit-time-integration-with-the-ghost-cell-approach">Implicit time integration with the ghost cell approach</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you were reading the article thus far and you were really getting into the ghost cell approach, then I have bad news for you! They don't work for implicit time integration schemes, or at least not without (severe?!) limitations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Let's remind ourselves what we did in explicit schemes, and let's use our 1D domain again as an example, as sketched now with ghost cells below:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"width":"500px","sizeSlug":"large","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/06_how-to-implement-boundary-conditions-in-cfd/ghost_cells_implicit_time_integration.png" alt="A 1D domain showing the ghost cell approach with one ghost cell beyond the left and right boundary, respectively. It is indicated that a Dirichlet-type boundary condition is used on the left, while a Neumann-type boundary condition is used on the right." class="wp-image-5550" style="width:500px"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Let's start on the left with our Dirichlet-type boundary conditions, where we want to impose [katex]\phi_0=\phi_{Dirichlet}[/katex]. When we were dealing with the ghost cell approach previously, I said that we can impose this value implicitly by enforcing the following condition:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{Dirichlet}=\frac{\phi_{-1}+\phi_1}{2} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We can solve this for our ghost cell now:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{-1}=2\phi_{Dirichlet} - \phi_{1} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>In our simulation, this is what we do, i.e. we set the value of the ghost cell for each (explicit) time step and then the value [katex]\phi_0[/katex] will automatically contain the value [katex]\phi_{Dirichlet}[/katex].</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On the right of the domain, where we want to impose Neumann-type boundary conditions, we can first discretise our Neumann-type boundary condition on the right of the domain as:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\frac{\partial \phi}{\partial n}=\phi_{Neumann}\rightarrow \frac{\phi_{NX+1}-\phi_{NX-1}}{2\Delta x}=\phi_{Neumann} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>We then solve this again for our ghost cell:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:katex/display-block -->
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>
+\phi_{NX+1} = 2\Delta x\phi_{Neumann} + \phi_{NX-1} </pre></div>
+<!-- /wp:katex/display-block -->
+
+<!-- wp:paragraph -->
+<p>This is what we, again, impose on our solution vector, and this will then ensure that [katex]\phi_{NX}[/katex] receives the correct boundary treatment. For this reason, ghost cells are a very lucrative approach, as they essentially require you to only modify some value beyond your domain (which you would not export as part of the solution anyway); they are just there to help us compute the solution. For the rest of the computation, we can just treat our domain as if it didn't have any boundary conditions, which makes our life extremely easy.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Well, but here is the problem: Notice how we always update [katex]\phi[/katex] directly. In our linear system of equations, i.e. [katex]\mathbf{Ax}=\mathbf{b}[/katex], we have that [katex]\phi=\mathbf{x}[/katex], that is, [katex]\mathbf{x}[/katex] is the vector containing the solution. When we solve [katex]\mathbf{Ax}=\mathbf{b}[/katex], we have to do so iteratively. At each iteration, the solution vector [katex]\mathbf{x}[/katex] is updated. All of its values. So, if we set part of this vector to contain a specific value at the beginning of the iterative process, those values will eventually be lost.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One could think of imposing or fixing these ghost cell values, then at each iteration, but that would mean that your iterative algorithm would now also have to handle boundary conditions, and generalising that isn't straightforward. Furthermore, it would also mean that you couldn't use any off-the-shelf algorithms to solve [katex]\mathbf{Ax}=\mathbf{b}[/katex], and we really like to use efficient libraries to do that for us when writing our own CFD solvers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Now, I said that ghost cells can be combined with implicit time integration methods, but that their use is severely limited. The limited application areas where it does work are in the area of matrix-free algorithms. These algorithms, surprise surprise, do not form the matrix [katex]\mathbf{A}[/katex] explicitly. This has various advantages, mostly that you don't have to store the matrix in memory, but, as with everything, there are trade-offs. Yes, we don't need to store the matrix, but that means we have to repeatedly compute its coefficient at every time step.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Furthermore, we have gained so much experience with solving [katex]\mathbf{Ax}=\mathbf{b}[/katex], and the verdict is that matrix-free algorithms, such as the Jacobi or Gauss-Seidel (with or without successive overrelaxation (SOR)), belong in the classroom, not in your CFD solver. It is easy to get started with them, and you can quickly solve your own linear system of equations, and for that, they are brilliant, but don't write a CFD solver using the Jacobi method, please! (and please don't tell my former PhD supervisor that I said this, it'll be our secret!)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>No, the gold standard are Krylov subspace methods, like the Conjugate Gradient method (and its derivatives), Generalised Minimal Residual (GMRES), or methods falling under the Multigrid umbrella (and there are several variations, including combinations with Krylov subspace methods). Don't let other people tell you otherwise; people have strong opinions on this matter (I just noticed that I also told you what to believe, so, perhaps, if you take my advice, don't listen to me, I suppose?)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>So, what is the solution then? What if you really want to use ghost cells in your solver? Well, the solution is simple: Either limit yourself to matrix-free algorithms, which also means you have to implement the whole [katex]\mathbf{Ax}=\mathbf{b}[/katex] solving part yourself, or continue to use ghost cells, but switch to a non-ghost cell approach for all implicit calculations.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For example, if you write an incompressible Navier-Stokes solver using explicit time integration, you may only need to solve the pressure Poisson solver with an implicit system. Actually, I just realised this is exactly what I did in my PhD (ghost cells + explicit time integration + matrix-free Gauss-Seidel for the pressure Poisson solver). It works, it satisfies your supervisor's strong opinions about how to solve the pressure Poisson solver, and you are allowed to graduate.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I exaggerate here a bit; I was allowed to use other methods, but to this day, I have a (friendly) disagreement about how to solve linear systems of equations and still I debate this topic every now and then with my former supervisor (and I'm glad we do!). In fairness, this disagreement led to a new incompressible algorithm in which we discovered a new governing equation for the pressure, and it worked really well. I probably still need to publish that eventually ...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In any case, this should be it for our discussion on treating boundary conditions for implicit systems of equations. Let's now discuss what I like to call derived boundary conditions, i.e. those that you would typically set in a general-purpose CFD solver.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
