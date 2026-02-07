@@ -1,6 +1,6 @@
 {
     "name": "Essential CFD Libraries",
-    "slug": "essential-cfd-libraries",
+    "slug": "essential-libraries-for-cfd-solver-development",
     "description": "This series explores a collection of libraries that will make writing CFD solver easier, faster, and more fun.",
     "articles": {
         "01_eigen-the-swiss-arm-knife-of-cfd-libraries.html": {
