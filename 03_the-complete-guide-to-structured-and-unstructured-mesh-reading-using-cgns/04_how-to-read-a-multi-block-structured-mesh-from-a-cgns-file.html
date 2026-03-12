@@ -145,7 +145,7 @@ cl.exe /nologo /EHsc /std:c++20 .\build\main.obj .\build\readMeshBase.obj .\buil
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>At the moment, we are compiling and linking both the library code and the <code>main.cpp</code> file at the same time. Once the library is completed, we are going to split both of these into separate compilation steps, i.e. we'll compile the library code first into a static or dynamic library and we will then link our main.cpp file against that library, similar to <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">how we set up our final library structure</a> for our previous linear algebra solver library.</p>
+<p>At the moment, we are compiling and linking both the library code and the <code>main.cpp</code> file at the same time. Once the library is completed, we are going to split both of these into separate compilation steps, i.e. we'll compile the library code first into a static or dynamic library and we will then link our main.cpp file against that library, similar to <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">how we set up our final library structure</a> for our previous linear algebra solver library.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":4} -->
@@ -443,7 +443,7 @@ CGNSDLL int cg_zone_read(int fn, int B, int Z, char *zonename, cgsize_t *size);"
 <!-- /wp:kevinbatdorf/code-block-pro -->
 
 <!-- wp:paragraph -->
-<p>Now, all functions inside the class will have the correct <code>__declspec</code> directive set and we don't have to prepend any of the function names inside the class with the <code>MESHREADERLIB_EXPORT </code>preprocessor directive. We discussed the <code>__declspec</code> directives in more depth in the article on <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">compiling the linear algebra library</a> in the previous series, so have a look if you need a refresher.</p>
+<p>Now, all functions inside the class will have the correct <code>__declspec</code> directive set and we don't have to prepend any of the function names inside the class with the <code>MESHREADERLIB_EXPORT </code>preprocessor directive. We discussed the <code>__declspec</code> directives in more depth in the article on <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">compiling the linear algebra library</a> in the previous series, so have a look if you need a refresher.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":4} -->

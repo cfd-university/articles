@@ -41,7 +41,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>First of all, our code is currently compiled into one executable, but I want to separate the library code from any code that is merely calling the mesh reading classes. For this, similar to what we did with our <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">linear algebra solver library</a>, we are going to write new build scripts for Windows and UNIX that will compile the library code into either a <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/understanding-static-dynamic-and-header-only-c-libraries" target="_blank" rel="noopener" title="">static or dynamic library</a> first. We are then going to use that compiled library to inject it into the <code>main.cpp</code> file, which should be compiled separately from the library code.</p>
+<p>First of all, our code is currently compiled into one executable, but I want to separate the library code from any code that is merely calling the mesh reading classes. For this, similar to what we did with our <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">linear algebra solver library</a>, we are going to write new build scripts for Windows and UNIX that will compile the library code into either a <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/understanding-static-dynamic-and-header-only-c-libraries" target="_blank" rel="noopener" title="">static or dynamic library</a> first. We are then going to use that compiled library to inject it into the <code>main.cpp</code> file, which should be compiled separately from the library code.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -85,7 +85,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>As discussed in my article on <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/understanding-static-dynamic-and-header-only-c-libraries" target="_blank" rel="noopener" title="">static, dynamic, and header-only libraries</a>, a static library gathers all the compiled object files of the library code and puts that into a convenient archive, which we said can be thought of as a simple zip archive. This static library, or archive, will then be injected into the final executable of any code that wants to use this library. Thus, the executable will have all of the compiled source files available and can resolve function calls to the library. </p>
+<p>As discussed in my article on <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/understanding-static-dynamic-and-header-only-c-libraries" target="_blank" rel="noopener" title="">static, dynamic, and header-only libraries</a>, a static library gathers all the compiled object files of the library code and puts that into a convenient archive, which we said can be thought of as a simple zip archive. This static library, or archive, will then be injected into the final executable of any code that wants to use this library. Thus, the executable will have all of the compiled source files available and can resolve function calls to the library. </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":4} -->
@@ -235,7 +235,7 @@ rm build/*.o
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Returning back to my article on <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/understanding-static-dynamic-and-header-only-c-libraries" target="_blank" rel="noopener" title="">static, dynamic, and header-only libraries</a>, a dynamic library stores compiled code in an archive if you want, similar to how we store compiled code for static libraries. The structure is slightly different, but we don't have to get held up on semantics here.</p>
+<p>Returning back to my article on <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/understanding-static-dynamic-and-header-only-c-libraries" target="_blank" rel="noopener" title="">static, dynamic, and header-only libraries</a>, a dynamic library stores compiled code in an archive if you want, similar to how we store compiled code for static libraries. The structure is slightly different, but we don't have to get held up on semantics here.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -311,7 +311,7 @@ Remove-Item build\*.obj
 <!-- /wp:kevinbatdorf/code-block-pro -->
 
 <!-- wp:paragraph -->
-<p>Lines 2-5 are the same as before, i.e. we are simply copying all required dependencies (libraries) into the same folder our executable will live in so it can find all of its dependencies. Lines 8-11 compile the code again, the only difference being that we are passing the pre-processor directive of <code>/DCOMPILEDLL</code> to the source files. This is required in the class header files to mark functions either for import or export. We have talked about this in more length both at the <a href="https://cfd.university/learn/the-complete-guide-to-structured-and-unstructured-mesh-reading-using-cgns/how-to-set-up-a-simple-cgns-based-mesh-reading-library" target="_blank" rel="noopener" title="">beginning of this series</a> and in our <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">previous series on compiling a linear algebra solver library</a>, which you may want to look through for a refresher.</p>
+<p>Lines 2-5 are the same as before, i.e. we are simply copying all required dependencies (libraries) into the same folder our executable will live in so it can find all of its dependencies. Lines 8-11 compile the code again, the only difference being that we are passing the pre-processor directive of <code>/DCOMPILEDLL</code> to the source files. This is required in the class header files to mark functions either for import or export. We have talked about this in more length both at the <a href="https://cfd.university/learn/the-complete-guide-to-structured-and-unstructured-mesh-reading-using-cgns/how-to-set-up-a-simple-cgns-based-mesh-reading-library" target="_blank" rel="noopener" title="">beginning of this series</a> and in our <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">previous series on compiling a linear algebra solver library</a>, which you may want to look through for a refresher.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

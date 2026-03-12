@@ -1,5 +1,5 @@
 <!-- wp:paragraph -->
-<p>In this article, we look at how we can test the <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/" target="_blank" rel="noopener" title="">linear algebra solver library</a> we developed previously. In particular, we will look at how we can write unit, integration, and system tests that ensure our code is working using both white-box and black-box testing. This will provide our code with additional resistance against regressions (bugs) and generally forms the basis of any software testing approach.</p>
+<p>In this article, we look at how we can test the <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/" target="_blank" rel="noopener" title="">linear algebra solver library</a> we developed previously. In particular, we will look at how we can write unit, integration, and system tests that ensure our code is working using both white-box and black-box testing. This will provide our code with additional resistance against regressions (bugs) and generally forms the basis of any software testing approach.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -37,7 +37,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Some time ago, we developed a <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c" target="_blank" rel="noopener" title="">library to help us solve the linear system of equations</a> that can be classically expressed by [katex]Ax=b[/katex]. We did perform some tests on it, which, if you remember, was to solve the <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-discretising-the-model-equation/#aioseo-the-steady-state-heat-equation-discretisation" target="_blank" rel="noopener" title="">1D, steady-state heat diffusion equation</a>. We picked this example because there is an analytic solution we can construct if we set the boundary conditions appropriately. <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications/how-to-get-started-with-software-testing-for-cfd-codes" target="_blank" rel="noopener" title="">Based on our previous discussions</a>, we would classify this test as <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications/how-to-get-started-with-software-testing-for-cfd-codes" target="_blank" rel="noopener" title="">a system test</a>, but we did not provide any unit or integration tests.</p>
+<p>Some time ago, we developed a <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c" target="_blank" rel="noopener" title="">library to help us solve the linear system of equations</a> that can be classically expressed by [katex]Ax=b[/katex]. We did perform some tests on it, which, if you remember, was to solve the <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-discretising-the-model-equation/#aioseo-the-steady-state-heat-equation-discretisation" target="_blank" rel="noopener" title="">1D, steady-state heat diffusion equation</a>. We picked this example because there is an analytic solution we can construct if we set the boundary conditions appropriately. <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications/how-to-get-started-with-software-testing-for-cfd-codes" target="_blank" rel="noopener" title="">Based on our previous discussions</a>, we would classify this test as <a href="https://cfd.university/learn/the-complete-guide-to-software-testing-for-cfd-applications/how-to-get-started-with-software-testing-for-cfd-codes" target="_blank" rel="noopener" title="">a system test</a>, but we did not provide any unit or integration tests.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -45,7 +45,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>For this, we have to supplement the <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-basic-library-structure/#aioseo-required-classes" target="_blank" rel="noopener" title="">system test we have already created</a> with some unit and integration tests, which is what we will focus on in this article. We will also dick a little deeper into some additional pain points that we may come across in cross-platform development, especially on Windows, and look at possible issues and solutions to compile dynamic-linked libraries (DLLs) and how to use them in our test code.</p>
+<p>For this, we have to supplement the <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-basic-library-structure/#aioseo-required-classes" target="_blank" rel="noopener" title="">system test we have already created</a> with some unit and integration tests, which is what we will focus on in this article. We will also dick a little deeper into some additional pain points that we may come across in cross-platform development, especially on Windows, and look at possible issues and solutions to compile dynamic-linked libraries (DLLs) and how to use them in our test code.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -61,7 +61,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>So then, let's look at some test code. We are working with the <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code/" target="_blank" rel="noopener" title="">final version</a> of the linear algebra solver library that we developed towards the end of the <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/" target="_blank" rel="noopener" title="">series on how to write a linear algebra solver library</a>. However, we are going to make some modifications before we get started with writing tests.</p>
+<p>So then, let's look at some test code. We are working with the <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code/" target="_blank" rel="noopener" title="">final version</a> of the linear algebra solver library that we developed towards the end of the <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/" target="_blank" rel="noopener" title="">series on how to write a linear algebra solver library</a>. However, we are going to make some modifications before we get started with writing tests.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1213,7 +1213,7 @@ TEST(MatrixVectorMultiplicationTest, MatrixVectorMultiplication) {
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>The system test that we use in this case is <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-basic-library-structure/#aioseo-required-classes" target="_blank" rel="noopener" title="">the same test we provided in the original write-up</a> for the linear algebra solver library. You may wish to read up on the original test to remind yourself what the code is doing.</p>
+<p>The system test that we use in this case is <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-basic-library-structure/#aioseo-required-classes" target="_blank" rel="noopener" title="">the same test we provided in the original write-up</a> for the linear algebra solver library. You may wish to read up on the original test to remind yourself what the code is doing.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1581,7 +1581,7 @@ private:
 <!-- /wp:kevinbatdorf/code-block-pro -->
 
 <!-- wp:paragraph -->
-<p>When we introduced the dynamic library for the linear algebra solver library, we <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing/#aioseo-necessary-library-modifications" target="_blank" rel="noopener" title="">discussed how we had to modify the library</a> in order to work as a dynamic library. This resulted in the rat tail we see in the code above, i.e. lines 3-13, which ensures that we are exporting the library during compilation and importing it during linking if we are on Windows and compiling a dynamic library. In all other cases, the <code>EXPORT</code> macro is an empty string and so won't modify our code at all.</p>
+<p>When we introduced the dynamic library for the linear algebra solver library, we <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing/#aioseo-necessary-library-modifications" target="_blank" rel="noopener" title="">discussed how we had to modify the library</a> in order to work as a dynamic library. This resulted in the rat tail we see in the code above, i.e. lines 3-13, which ensures that we are exporting the library during compilation and importing it during linking if we are on Windows and compiling a dynamic library. In all other cases, the <code>EXPORT</code> macro is an empty string and so won't modify our code at all.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
