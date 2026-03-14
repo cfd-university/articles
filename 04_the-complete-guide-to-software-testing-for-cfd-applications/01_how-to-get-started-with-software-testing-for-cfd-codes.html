@@ -205,7 +205,7 @@ int main() {
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We have already seen the <code>assert</code> keyword in several other places in our previous projects on writing a <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c" target="_blank" rel="noopener" title="">linear algebra solver</a> and <a href="https://cfd.university/learn/the-complete-guide-to-structured-and-unstructured-mesh-reading-using-cgns" target="_blank" rel="noopener" title="">mesh reading library</a>, which made sure that certain conditions were met before continuing. We learned that this is the <a href="https://www.martinfowler.com/ieeeSoftware/failFast.pdf" target="_blank" rel="noopener" title="">fail-fast approach</a>. Automated tests together with the fail-fast approach give us the best protection against software bugs. If you follow this approach rigorously, you will find it to be very difficult to write code that contains any bugs.  </p>
+<p>We have already seen the <code>assert</code> keyword in several other places in our previous projects on writing a <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c" target="_blank" rel="noopener" title="">linear algebra solver</a> and <a href="https://cfd.university/learn/the-complete-guide-to-structured-and-unstructured-mesh-reading-using-cgns" target="_blank" rel="noopener" title="">mesh reading library</a>, which made sure that certain conditions were met before continuing. We learned that this is the <a href="https://www.martinfowler.com/ieeeSoftware/failFast.pdf" target="_blank" rel="noopener" title="">fail-fast approach</a>. Automated tests together with the fail-fast approach give us the best protection against software bugs. If you follow this approach rigorously, you will find it to be very difficult to write code that contains any bugs.  </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -493,7 +493,7 @@ public:
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Another typical example is that of a <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-the-sparse-matrix-class" target="_blank" rel="noopener" title="">linear algebra library</a>, something we looked at already. We have a vector and matrix class and we want to make sure that all operators are working correctly. If we want to test that the vector-matrix multiplication is working correctly, we need to test two separate classes in conjunction, and thus a vector-matrix multiplication test would be, by definition, an integration test.</p>
+<p>Another typical example is that of a <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-the-sparse-matrix-class" target="_blank" rel="noopener" title="">linear algebra library</a>, something we looked at already. We have a vector and matrix class and we want to make sure that all operators are working correctly. If we want to test that the vector-matrix multiplication is working correctly, we need to test two separate classes in conjunction, and thus a vector-matrix multiplication test would be, by definition, an integration test.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
@@ -501,7 +501,7 @@ public:
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>The highest level we can achieve with automated testing is system tests, sometimes also referred to as end-to-end tests. These are entirely behaviorally driven and test that the observed behaviour of the code is correct. We have already written one system test, which you may not have realised. When we implemented the linear algebra solver library, we wrote a function to test the <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-the-conjugate-gradient-class" target="_blank" rel="noopener" title="">conjugate gradient algorithm</a> implementation. Specifically, <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-basic-library-structure" target="_blank" rel="noopener" title="">we implemented a 1D heat equation code</a>, which we used as a test.</p>
+<p>The highest level we can achieve with automated testing is system tests, sometimes also referred to as end-to-end tests. These are entirely behaviorally driven and test that the observed behaviour of the code is correct. We have already written one system test, which you may not have realised. When we implemented the linear algebra solver library, we wrote a function to test the <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-the-conjugate-gradient-class" target="_blank" rel="noopener" title="">conjugate gradient algorithm</a> implementation. Specifically, <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-basic-library-structure" target="_blank" rel="noopener" title="">we implemented a 1D heat equation code</a>, which we used as a test.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

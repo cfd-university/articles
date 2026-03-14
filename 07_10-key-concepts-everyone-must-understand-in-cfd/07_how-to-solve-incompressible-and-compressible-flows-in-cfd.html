@@ -1397,7 +1397,7 @@ C:\quad w,\,w,\,\frac{1}{2}\left(w+\sqrt{w^2+4\beta}\right),\,\frac{1}{2}\left(w
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Chorin gave us the artificial compressibility method (ACM), and if you ever walk the Monaco Formula 1 track, you will lots of appreciation for the ACM. They have placed road signs everywhere and even created a medal of honour that any citizen receives who understands the ACM. Don't believe me? Here is proof (go on, you have my permission to have a virtual walk around Monaco on google earth, I'll wait here ...) </p>
+<p>Chorin gave us the artificial compressibility method (ACM), and if you ever walk the Monaco Formula 1 track, you will see lots of appreciation for the ACM. They have placed road signs everywhere and even created a medal of honour that any citizen receives who understands the ACM. Don't believe me? Here is proof (go on, you have my permission to have a virtual walk around Monaco on google earth, I'll wait here ...) </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:columns -->
@@ -1487,7 +1487,7 @@ C:\quad w,\,w,\,\frac{1}{2}\left(w+\sqrt{w^2+4\beta}\right),\,\frac{1}{2}\left(w
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>We simplify the pressure gradient term, as [katex]\Delta t[/katex] appears both in the nominator and denominator. It will vanish and so we are left with:</p>
+<p>We simplify the pressure gradient term, as [katex]\Delta t[/katex] appears both in the numerator and denominator. It will vanish and so we are left with:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1513,7 +1513,7 @@ C:\quad w,\,w,\,\frac{1}{2}\left(w+\sqrt{w^2+4\beta}\right),\,\frac{1}{2}\left(w
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>Go ahead and solve for [katex]\mathbf{u}^*[/katex] and [katex]\mathbf{u}^{**}[/katex] as we did before, and insert into modify the equation until you recover the momentum equation. You will always get back to that equation.</p>
+<p>Go ahead and solve for [katex]\mathbf{u}^*[/katex] and [katex]\mathbf{u}^{**}[/katex] as we did before, and substitute them until you recover the momentum equation. You will always get the original momentum equation back.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1521,7 +1521,7 @@ C:\quad w,\,w,\,\frac{1}{2}\left(w+\sqrt{w^2+4\beta}\right),\,\frac{1}{2}\left(w
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Anyways, so why does this fractional step procedure help us? Well, as we have so any idiot (me) can split the equation in as many fractional steps as they want. The genius idea of Chorin was to isolate the pressure, and the pressure only (as we saw, we only have two fractional steps). This means that the first fractional step depends only on the velocity field, which we can solve. However, the second fractional step consisted of the pressure that we did not know. But let's have another look at Chorin's second fractional step. We saw it was given as:</p>
+<p>Anyways, so why does this fractional step procedure help us? Well, any idiot (me) can split the equation in as many fractional steps as they want. The genius idea of Chorin was to isolate the pressure, and the pressure only (as we saw, we only have two fractional steps). This means that the first fractional step depends only on the velocity field, which we can solve. However, the second fractional step consisted of the pressure that we did not know. But let's have another look at Chorin's second fractional step. We saw it was given as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1610,7 +1610,7 @@ C:\quad w,\,w,\,\frac{1}{2}\left(w+\sqrt{w^2+4\beta}\right),\,\frac{1}{2}\left(w
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>The scalar equations for [katex]\mathbf{u}=[u,\, v,\, w[/katex] can then be written as:</p>
+<p>The scalar equations for [katex]\mathbf{u}=[u,\, v,\, w][/katex] can then be written as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1805,7 +1805,7 @@ w^{n+1}_{i,j,k}=w^*_{i,j,k} -\frac{\Delta t}{\rho}\frac{p^{n+1}_{i,j,k+1}-p^{n+1
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>To follow the textbook derivation as given by Patankar in his 1980 book <em>Numerical Heat Transfer and Fluid Flow</em> (which is also repeated in Versteeg and Malalasekera's book, well, their book has pretty much copied and pasted chapter 4-6 from Patankar's book, which appears in chapter 4-6 in their book), we need to start by discretising the momentum equation. I'll do a one-dimension consideration here, which we will later generalise to three dimensions.</p>
+<p>To follow the textbook derivation as given by Patankar in his 1980 book <em>Numerical Heat Transfer and Fluid Flow</em> (which is also repeated in Versteeg and Malalasekera's book, well, their book has pretty much copied and pasted chapter 4-6 from Patankar's book, which appears in chapter 4-6 in their book), we need to start by discretising the momentum equation. I'll do a one-dimensional consideration here, which we will later generalise to three dimensions.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

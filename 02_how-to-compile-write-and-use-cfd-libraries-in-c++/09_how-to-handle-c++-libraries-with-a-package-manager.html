@@ -59,7 +59,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Most will be familiar with the term API. It is used quite frequently in programming circles and stands for Application Programming Interface. Even if you have not come across this term, you will have implemented an API if you followed along in this series. The API is nothing else than the name of the functions and their arguments that our library exposes. For example, our <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-the-vector-class" target="_blank" rel="noopener" title="">Vector</a> class defined functions such as <code>unsigned size() const;</code>, <code>unsigned size() const;</code>, <code>double operator*(const Vector &amp;other);</code>, etc. The collection of all of these function names and their argument forms the API. It is what other people have to call to use our library.</p>
+<p>Most will be familiar with the term API. It is used quite frequently in programming circles and stands for Application Programming Interface. Even if you have not come across this term, you will have implemented an API if you followed along in this series. The API is nothing else than the name of the functions and their arguments that our library exposes. For example, our <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-the-vector-class" target="_blank" rel="noopener" title="">Vector</a> class defined functions such as <code>unsigned size() const;</code>, <code>unsigned size() const;</code>, <code>double operator*(const Vector &amp;other);</code>, etc. The collection of all of these function names and their argument forms the API. It is what other people have to call to use our library.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -148,7 +148,7 @@ int main() {
 <p>The following talk goes much more into details of what issues arise for compiled libraries and why package managers for C++ are more difficult to maintain. It is a somewhat longer talk but does give a pretty good overview.</p>
 <!-- /wp:paragraph -->
 
-<iframe src="https://www.youtube.com/embed/rrcngYMAJ-w?si=XjmbZxWosJm1-c6m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:100%; aspect-ratio:16/9; border:0;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/rrcngYMAJ-w?si=XjmbZxWosJm1-c6m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:100%; aspect-ratio:16/9; border:0;"></iframe>
 
 <!-- wp:heading -->
 <h2 class="wp-block-heading" id="aioseo-an-overview-of-available-package-managers">An overview of available package managers for C++</h2>
@@ -190,10 +190,8 @@ int main() {
 <p>We will look into the most common use case of Conan in the next section, but if you want to get a better overview of the matter, I'd recommend this talk which provides you with some more background and how to use Conan but also what changed when Conan 2.0 was introduced (and there were a few changes)</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:embed {"url":"https://www.youtube.com/watch?v=NM-xp3tob2Q","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio","style":{"spacing":{"margin":{"right":"0","left":"0","top":"0","bottom":"0"}}}} -->
-<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0"><div class="wp-block-embed__wrapper">
-https://www.youtube.com/watch?v=NM-xp3tob2Q
-</div></figure>
+<!-- wp:embed -->
+<iframe src="https://www.youtube-nocookie.com/embed/NM-xp3tob2Q?si=6Nd-RFTld5YdZF2d" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="width:100%; aspect-ratio:16/9; border:0;"></iframe>
 <!-- /wp:embed -->
 
 <!-- wp:heading {"level":3} -->
@@ -201,7 +199,7 @@ https://www.youtube.com/watch?v=NM-xp3tob2Q
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Who came up with that name? Seriously? I can never remember in which order the letters should be and they don't seem to abbreviate anything, or at least not to anything that is openly shared on their website (I get that the pkg part probably means package, but vc? Anyone?). Oh wait, what are you saying? Microsoft is developing <a href="https://vcpkg.io/en/" target="_blank" rel="noopener" title="">vcpkg</a>? The same people <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">who introduced non-standard C++ statements</a> for dynamic libraries that only work on Windows? So the same people who can't build libraries the way everyone else is (without having to hack C++) are developing a tool to manage and handle our libraries? Well, I think the name is perfect, actually! And surely this tool will provide a smooth journey when dealing with dependencies (if you don't get sarcasm, read on, it gets much worse, the name is not the only issue ...).</p>
+<p>Who came up with that name? Seriously? I can never remember in which order the letters should be and they don't seem to abbreviate anything, or at least not to anything that is openly shared on their website (I get that the pkg part probably means package, but vc? Anyone?). Oh wait, what are you saying? Microsoft is developing <a href="https://vcpkg.io/en/" target="_blank" rel="noopener" title="">vcpkg</a>? The same people <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-compiling-and-testing" target="_blank" rel="noopener" title="">who introduced non-standard C++ statements</a> for dynamic libraries that only work on Windows? So the same people who can't build libraries the way everyone else is (without having to hack C++) are developing a tool to manage and handle our libraries? Well, I think the name is perfect, actually! And surely this tool will provide a smooth journey when dealing with dependencies (if you don't get sarcasm, read on, it gets much worse, the name is not the only issue ...).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -220,10 +218,8 @@ https://www.youtube.com/watch?v=NM-xp3tob2Q
 <p>There is a much more in-depth talk that shows how to use this tool which you may want to check out if you want to get a better overview of what this tool can do for you.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:embed {"url":"https://www.youtube.com/watch?v=3vXOKkv3ND0","type":"video","providerNameSlug":"youtube","responsive":true,"className":"wp-embed-aspect-16-9 wp-has-aspect-ratio"} -->
-<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
-https://www.youtube.com/watch?v=3vXOKkv3ND0
-</div></figure>
+<!-- wp:embed -->
+<iframe src="https://www.youtube-nocookie.com/embed/3vXOKkv3ND0?si=WSq_NE_Bbxdx-YeX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen screen style="width:100%; aspect-ratio:16/9; border:0;"></iframe>
 <!-- /wp:embed -->
 
 <!-- wp:heading {"level":3} -->
@@ -255,7 +251,7 @@ https://www.youtube.com/watch?v=3vXOKkv3ND0
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>EasyBuild follows the philosophy of building everything, and I mean <em>everything</em>, from scratch. Say you want to install the <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code" target="_blank" rel="noopener" title="">CGNS library as we did in the previous article</a>, then EasyBuild would look at the requirements that are needed to build CGNS (this is similar to what Conan calls a recipe) and then build these. But you don't just need hdf5 and zlib installed, you also need a compiler, and a compiler will need some additional dependencies. So, before you even build any library, EasyBuild will compile a compiler for your specific platform. See, I told you, we build <em>everything</em> from scratch.</p>
+<p>EasyBuild follows the philosophy of building everything, and I mean <em>everything</em>, from scratch. Say you want to install the <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code" target="_blank" rel="noopener" title="">CGNS library as we did in the previous article</a>, then EasyBuild would look at the requirements that are needed to build CGNS (this is similar to what Conan calls a recipe) and then build these. But you don't just need hdf5 and zlib installed, you also need a compiler, and a compiler will need some additional dependencies. So, before you even build any library, EasyBuild will compile a compiler for your specific platform. See, I told you, we build <em>everything</em> from scratch.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -271,7 +267,7 @@ https://www.youtube.com/watch?v=3vXOKkv3ND0
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>We looked at how to compile and build the CGNS library ourselves <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code" target="_blank" rel="noopener" title="">in the previous article</a>, so I wanted to pick up this example and show you how to do that with either Conan or vgkpcf. We use a simple example project which has the following structure</p>
+<p>We looked at how to compile and build the CGNS library ourselves <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code" target="_blank" rel="noopener" title="">in the previous article</a>, so I wanted to pick up this example and show you how to do that with either Conan or vgkpcf. We use a simple example project which has the following structure</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:kevinbatdorf/code-block-pro {"code":"root\n├── build/\n├── main.cpp\n└── CMakeLists.txt","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003eroot\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e├── build/\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e├── \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003emain\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e.\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ecpp\u003c/span\u003e\u003c/span\u003e\n\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e└── \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eCMakeLists\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e.\u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003etxt\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"cpp","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","enableMaxHeight":false,"seeMoreType":"","seeMoreString":"","seeMoreAfterLine":"","seeMoreTransition":false,"highestLineNumber":4,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
@@ -597,7 +593,7 @@ error: Failed to download from mirror set" style="color:#D4D4D4;display:none" ar
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Why is vgfth downloading MinGW as a dependency in the first place? MinGW is a GNU compiler that essentially makes UNIX tools available on Windows. Why is a package manager developed by Microsoft downloading UNIX compilers to compile the libraries you have requested? We saw in the <a href="https://cfd.university/learn/how-to-compiler-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code" target="_blank" rel="noopener" title="">previous article</a> that zlib can be compiled natively on Windows using its own <code>cl</code> compiler. So why does it need MinGW? It bamboozles me, and I don't have a good answer here.</p>
+<p>Why is vgfth downloading MinGW as a dependency in the first place? MinGW is a GNU compiler that essentially makes UNIX tools available on Windows. Why is a package manager developed by Microsoft downloading UNIX compilers to compile the libraries you have requested? We saw in the <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-integrate-external-cfd-libraries-in-your-code" target="_blank" rel="noopener" title="">previous article</a> that zlib can be compiled natively on Windows using its own <code>cl</code> compiler. So why does it need MinGW? It bamboozles me, and I don't have a good answer here.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
