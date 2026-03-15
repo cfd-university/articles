@@ -96,4 +96,43 @@ Section headings can be modified but only to correct typos. Articles sometimes l
 
 ### Acknolwedgement
 
-This is currently under development (well, that is fancy talk for saying I have it somewhere on my never ending todo list). I want to give acknowledgement to anyone contributing to improving the articles. For the moment, I will keep track of it manually, but the idea is that anyone contributing will appear on the website as well as a contributor, not jsut on github. Bear with me as I work through my todo list, it is coming.
+Credit where credit is due! If you help to improve the articles, you will be listed at the bottom of the articles in the acknolwedgement section (it will only show up once at least one person is listed as a contributor).
+
+If you prepare a pull request, please also change the meta data in the ```description.json``` file for that series/blog. For example, if you make changes to the first article in the ```07_10-key-concepts-everyone-must-understand-in-cfd``` series, then, modify the ```description.json``` file in ```07_10-key-concepts-everyone-must-understand-in-cfd/description.json```. Look for the article you have modified, for the first article, that would be:
+
+```json
+"01_how-to-derive-the-navier-stokes-equations-from-start-to-end.html": {
+    "heading": "How to Derive the Navier-Stokes Equations: From start to end",
+    "slug": "how-to-derive-the-navier-stokes-equations",
+    "description": "If you want to know how to derive the Navier-Stokes equations, look no further; this article derives them from start to end, with explanations and no omissions!"
+},
+```
+
+You will have to add a new entry called ```contributions```, which is a key value map (dictionary), where the key is your name (that will show up on the website) and the value is a link to your social media, personal website, etc. (try to avoid your only fans account *if possible*). An example is shown below:
+
+```json
+"01_how-to-derive-the-navier-stokes-equations-from-start-to-end.html": {
+    "heading": "How to Derive the Navier-Stokes Equations: From start to end",
+    "slug": "how-to-derive-the-navier-stokes-equations",
+    "description": "If you want to know how to derive the Navier-Stokes equations, look no further; this article derives them from start to end, with explanations and no omissions!",
+    "contributors": {
+        "Tom-Robin Teschner": "https://github.com/tomrobin-teschner"
+    }
+},
+```
+
+If someone already contributed, simply add your name to the list:
+
+```json
+"01_how-to-derive-the-navier-stokes-equations-from-start-to-end.html": {
+    "heading": "How to Derive the Navier-Stokes Equations: From start to end",
+    "slug": "how-to-derive-the-navier-stokes-equations",
+    "description": "If you want to know how to derive the Navier-Stokes equations, look no further; this article derives them from start to end, with explanations and no omissions!",
+    "contributors": {
+        "Tom-Robin Teschner": "https://github.com/tomrobin-teschner",
+        "Milo Edwards": "https://www.youtube.com/@milo_edwards"
+    }
+},
+```
+
+Keep in mind this is ```json```, don't forget to add commas where necessary. If in doubt, throw the entire ```description.json``` file into a json validation tool like [jsonlint](https://jsonlint.com/) and see if it is valid before submitting a pull request. But, if you can do a pull request, you probably know how to handle JSON. Apologies for insulting your inteligence ...
