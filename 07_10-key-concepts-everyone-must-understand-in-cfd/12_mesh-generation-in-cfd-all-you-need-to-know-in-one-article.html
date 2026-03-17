@@ -45,7 +45,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Contrast that with changes in the numerical scheme, or turbulence model, or linear system of equation solver; these may affect the overall accuracy or global convergence rate, but probably not much more. Thus, you have to spend a lot of time and energy on getting a grid that will allow you to get a result in the first place, and when you are just starting out, your simulations may be diverging rather than converging.</p>
+<p>Contrast that with changes in the numerical scheme, or turbulence model, or linear system equation solver; these may affect the overall accuracy or global convergence rate, but probably not much more. Thus, you have to spend a lot of time and energy on getting a grid that will allow you to get a result in the first place, and when you are just starting out, your simulations may be diverging rather than converging.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -115,7 +115,7 @@
 </li>
 <!-- /wp:list-item -->
 <!-- wp:list-item -->
-<li>If you have access to a HPC cluster or cloud computing facility with 10 cores, you will find reasons why you need access to 100 cores. If you get 100 cores, you will find reasons why you need access to 1000 cores. If you get 1000 cores, you will find reasons why you need access to 10000 cores. If you get 10000 cores, you will find reasons why you need access to 100000 cores. Can you spot a pattern?
+<li>If you have access to an HPC cluster or cloud computing facility with 10 cores, you will find reasons why you need access to 100 cores. If you get 100 cores, you will find reasons why you need access to 1000 cores. If you get 1000 cores, you will find reasons why you need access to 10000 cores. If you get 10000 cores, you will find reasons why you need access to 100000 cores. Can you spot a pattern?
 
 </li>
 <!-- /wp:list-item -->
@@ -131,7 +131,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Here is a simple calculation I did for one of my simulations: I was simulating the flow past small cylindrical tubes using <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/the-introduction-to-large-eddy-simulations-les-i-wish-i-had/" target="_blank" rel="noopener" title="">large-eddy simulations (LES)</a>. The simulation took 20 days to run on 128 cores. The energy that was required to power and cool the HPC cluster emitted as much CO2 as me driving in a small compact-sized car for about 2000km (I think that is about 1.618 gallon-miles/square-$, rounded, of course, to the nearest milli-Farenheit in imperial units, <em>I think ...</em>).</p>
+<p>Here is a simple calculation I did for one of my simulations: I was simulating the flow past small cylindrical tubes using <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/the-introduction-to-large-eddy-simulations-les-i-wish-i-had/" target="_blank" rel="noopener" title="">large-eddy simulations (LES)</a>. The simulation took 20 days to run on 128 cores. The energy that was required to power and cool the HPC cluster emitted as much CO2 as me driving in a small compact-sized car for about 2000km (I think that is about 1.618 gallon-miles/square-$, rounded, of course, to the nearest milli-Fahrenheit in imperial units, <em>I think ...</em>).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -139,7 +139,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>So let's review some common types of mesh generation approaches. The following figure shows the nose section of an aircraft, and a few of the most important mesh generation techniques are used all in one single mesh:</p>
+<p>So let's review some common types of mesh generation approaches. The following figure shows the nose section of an aircraft, and a few of the most important mesh generation techniques are used all in a single mesh:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"width":"600px","sizeSlug":"large","align":"center"} -->
@@ -195,7 +195,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Post processing is another issue. If you want to visualise higher-order elements, you need to have software that can visualise them for you. As of the time of writing, support for higher-order elements is sparse but some software do support higher-order elements. Suffice it to say, while higher-order elements are the norm for structural simulations, they have yet to become fully adopted in the CFD world.</p>
+<p>Post-processing is another issue. If you want to visualise higher-order elements, you need to have software that can visualise them for you. As of the time of writing, support for higher-order elements is sparse but some software do support higher-order elements. Suffice it to say, while higher-order elements are the norm for structural simulations, they have yet to become fully adopted in the CFD world.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -219,7 +219,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"width":"800px","sizeSlug":"large","align":"center"} -->
-<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/12_mesh-generation-in-cfd-all-you-need-to-know-in-one-article/germans-smiling-after-victory.png" alt="Famous german people smiling." class="wp-image-5550" style="width:800px"/></figure>
+<figure class="wp-block-image aligncenter size-large is-resized"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/12_mesh-generation-in-cfd-all-you-need-to-know-in-one-article/germans-smiling-after-victory.png" alt="Famous German people smiling." class="wp-image-5550" style="width:800px"/></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
@@ -391,7 +391,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>If I have a quad-dominant surface mesh and I want to connect that to my tetra-dominant volume mesh, then I need to connect my quads from the surface mesh with triangles from my tetrahedra. Thus, I need a connecting element that has both triangle and quad surfaces. This is why I need pyramids. Prism elements serve exactly the same purpose, only that they connect a triangle surface mesh with tetrahedra in the farfield, while allowing for nicely stacked layers between the surface and farfield mesh.</p>
+<p>If I have a quad-dominant surface mesh and I want to connect that to my tetra-dominant volume mesh, then I need to connect my quads from the surface mesh with triangles from my tetrahedra. Thus, I need a connecting element that has both triangle and quad surfaces. This is why I need pyramids. Prism elements serve exactly the same purpose, only that they connect a triangle surface mesh with tetrahedra in the far field, while allowing for nicely stacked layers between the surface and far field mesh.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1299,7 +1299,7 @@ Q_{volume-ratio} = \frac{V_1}{V_0}\tag{21}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>For any other part of the mesh, e.g. the surface mesh and the farfield, our area/volume ratio may be larger, and typically a value of 4 is acceptable. You may say this is a rather large value, and it is, but you will also find that if you create a mesh manually and you have to adjust spacings on complex geometries to get an acceptable area/volume ratio, a value of 4 can be difficult to achieve, or at least, it will require a lot of manual fine-tuning.</p>
+<p>For any other part of the mesh, e.g. the surface mesh and the far field, our area/volume ratio may be larger, and typically a value of 4 is acceptable. You may say this is a rather large value, and it is, but you will also find that if you create a mesh manually and you have to adjust spacings on complex geometries to get an acceptable area/volume ratio, a value of 4 can be difficult to achieve, or at least, it will require a lot of manual fine-tuning.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1431,7 +1431,7 @@ Q_{volume-ratio} = \frac{V_1}{V_0}\tag{21}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Typically, we see this in the form of a structured (Cartesian) background mesh that locally adapts to curvatures in geometry by placing a few triangles (2D) or tetrahedra (3D) between the Cartesian mesh in the farfield and the mesh near solid boundaries, if there are any. A few mesh generators also introduced quad-dominant unstructured mesh generation algorithms, most commonly based on the advancing front method that we will look at later.</p>
+<p>Typically, we see this in the form of a structured (Cartesian) background mesh that locally adapts to curvatures in geometry by placing a few triangles (2D) or tetrahedra (3D) between the Cartesian mesh in the far field and the mesh near solid boundaries, if there are any. A few mesh generators also introduced quad-dominant unstructured mesh generation algorithms, most commonly based on the advancing front method that we will look at later.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1652,7 +1652,7 @@ Q_{volume-ratio} = \frac{V_1}{V_0}\tag{21}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>The outside of the engine is also meshed with an O-grid, again, to resolve the curvature without introducing low-quality elements here, as, for example, a pure H-grid would do. The rest of the farfield is resolved using H-grids, pretty much. No need to overcomplicate things here; if we can use them, we may as well.</p>
+<p>The outside of the engine is also meshed with an O-grid, again, to resolve the curvature without introducing low-quality elements here, as, for example, a pure H-grid would do. The rest of the far field is resolved using H-grids, pretty much. No need to overcomplicate things here; if we can use them, we may as well.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1716,7 +1716,7 @@ Q_{volume-ratio} = \frac{V_1}{V_0}\tag{21}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>People attempted to create equations that would generate the mesh based on some update process, and since the underlying equations we used were partial differential equations, we (creatively!) label this approach, wait for it, partial differential equation-based mesh generation. We will look at them as well in this section, but there are a few things we need to look at first.</p>
+<p>People attempted to create equations that would generate the mesh based on some update process, and since the underlying equations we used were partial differential equations, we (creatively!) label this approach, wait for it, partial differential equation-based mesh generation. We will look at it as well in this section, but there are a few things we need to look at first.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -2968,7 +2968,7 @@ y_\eta \approx \frac{x_{i,j} - x_{i,j-1}}{\Delta \eta} \quad \text{or} \quad y_\
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This is when researchers were pondering the following question: <em>"If the governing equation of fluid mechanics is used to advance a simulation in time and space, can a similar set of equations be found that advance a mesh from an initial boundary (the geometry) into the farfield?"</em>. The search for the perfect equation was one, and people were trying different types of partial differential equations (PDEs).</p>
+<p>This is when researchers were pondering the following question: <em>"If the governing equation of fluid mechanics is used to advance a simulation in time and space, can a similar set of equations be found that advance a mesh from an initial boundary (the geometry) into the far field?"</em>. The search for the perfect equation was one, and people were trying different types of partial differential equations (PDEs).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -3001,7 +3001,7 @@ y_\eta \approx \frac{x_{i,j} - x_{i,j-1}}{\Delta \eta} \quad \text{or} \quad y_\
 <!-- /wp:list -->
 
 <!-- wp:paragraph -->
-<p>What does that mean in practice? Think of the flow around an airfoil, for example. The boundaries here are the edges around the airfoil, as well as the edges describing the farfield of the domain (your inlet, outlet, or farfield boundaries). So, if we have a BVP (elliptic, parabolic), we need to specify the point distribution on all boundaries. We also need an initial mesh to begin with.</p>
+<p>What does that mean in practice? Think of the flow around an airfoil, for example. The boundaries here are the edges around the airfoil, as well as the edges describing the far field of the domain (your inlet, outlet, or far field boundaries). So, if we have a BVP (elliptic, parabolic), we need to specify the point distribution on all boundaries. We also need an initial mesh to begin with.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -3017,7 +3017,7 @@ y_\eta \approx \frac{x_{i,j} - x_{i,j-1}}{\Delta \eta} \quad \text{or} \quad y_\
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We also have to specify a direction, i.e. do we want to mesh the inside of the airfoil, or do we want to march the mesh into the farfield. If we select the farfield, then the hyperbolic mesh generator will create cells around the airfoil, layer by layer, in an O-grid type fashion. Notice how we have not specified the location of the farfield boundaries; these will be automatically generated as the mesh marches into the farfield.</p>
+<p>We also have to specify a direction, i.e. do we want to mesh the inside of the airfoil, or do we want to march the mesh into the far field. If we select the far field, then the hyperbolic mesh generator will create cells around the airfoil, layer by layer, in an O-grid type fashion. Notice how we have not specified the location of the far field boundaries; these will be automatically generated as the mesh marches into the far field.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -3801,7 +3801,7 @@ x_\xi x_\eta + y_\xi y_\eta = 0\tag{127}</pre></div>
 <!-- /wp:video -->
 
 <!-- wp:paragraph -->
-<p>What do we think? Is it good? Is it bad? Well, certainly it has improved the mesh in the farfield, but near the trailing edge of the airfoil, we certainly have some problematic cells. In reality, we will need to impose some constraints, for example, to reduce the strength of the mesh generator near solid boundaries.</p>
+<p>What do we think? Is it good? Is it bad? Well, certainly it has improved the mesh in the far field, but near the trailing edge of the airfoil, we certainly have some problematic cells. In reality, we will need to impose some constraints, for example, to reduce the strength of the mesh generator near solid boundaries.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -4084,7 +4084,7 @@ i,j-1 = \text{bottom}\tag{130}</pre></div>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>The simplest approach we can think of is one where we insert points at random. As is so often the case in CFD, the simplest approach is rarely the best. Let's see why. In the figure shown below, we have a square domain with a cylinder on the inside. We want to generate a mesh so that the cylinder on the inside is connected to the boundaries in the farfield.</p>
+<p>The simplest approach we can think of is one where we insert points at random. As is so often the case in CFD, the simplest approach is rarely the best. Let's see why. In the figure shown below, we have a square domain with a cylinder on the inside. We want to generate a mesh so that the cylinder on the inside is connected to the boundaries in the far field.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:image {"width":"700px","sizeSlug":"large","align":"center"} -->
@@ -4108,7 +4108,7 @@ i,j-1 = \text{bottom}\tag{130}</pre></div>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Well, how about we just use a structured grid? We could just place a structured grid through our domain, remove any points that are out of bounds (e.g. inside our cylinder), and then snap points close to the cylinder to its surface. We can then turn all of our structured quad elements into triangles (2D) or hexa elements into 6 pyramids (3D). Anyone who has ever dealt with pyramids will now want to shoot me for the last sentence ...</p>
+<p>Well, how about we just use a structured grid? We could just place a structured grid through our domain, remove any points that are out of bounds (e.g. inside our cylinder), and then snap points close to the cylinder onto its surface. We can then turn all of our structured quad elements into triangles (2D) or hexa elements into 6 pyramids (3D). Anyone who has ever dealt with pyramids will now want to shoot me for the last sentence ...</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -4235,7 +4235,7 @@ i,j-1 = \text{bottom}\tag{130}</pre></div>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>Here, we can see the size field function being applied during mesh generation. On the left, we can see the entire domain and how elements get smaller as we approach the airfoil. A close-up view is provided on the right, showing the mesh around the airfoil itself. Thus, the size field provides us with a mechanism to easily blend between different grid spacings on boundaries (e.g. here the farfield and the airfoil), and whenever you see a grid like this, it is likely that a size field function was used in the background.</p>
+<p>Here, we can see the size field function being applied during mesh generation. On the left, we can see the entire domain and how elements get smaller as we approach the airfoil. A close-up view is provided on the right, showing the mesh around the airfoil itself. Thus, the size field provides us with a mechanism to easily blend between different grid spacings on boundaries (e.g. here the far field and the airfoil), and whenever you see a grid like this, it is likely that a size field function was used in the background.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -4489,7 +4489,7 @@ Q_{skewness}=\max\left(\frac{60.3^\circ-60^\circ}{180^\circ - 60^\circ}\, , \,\f
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>I'd say the advancing front method is the preferred method these days to generate unstructured grids, especially surface grids. We may then combine these 2D surface grids with either a 3D advancing front method, or, more commonly used, with an octree approach, where we try to retain as many hex elements in the farfield as possible. This is the approach taken by many commercial and open-source software generators, where the transition between the surface mesh and the hexa-dominant farfield is achieved through polhedral cells.</p>
+<p>I'd say the advancing front method is the preferred method these days to generate unstructured grids, especially surface grids. We may then combine these 2D surface grids with either a 3D advancing front method, or, more commonly used, with an octree approach, where we try to retain as many hex elements in the far field as possible. This is the approach taken by many commercial and open-source software generators, where the transition between the surface mesh and the hexa-dominant far field is achieved through polyhedral cells.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
