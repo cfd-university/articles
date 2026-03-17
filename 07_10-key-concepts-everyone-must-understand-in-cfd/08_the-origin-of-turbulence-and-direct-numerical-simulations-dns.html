@@ -2,7 +2,7 @@
 <!-- https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/the-origin-of-turbulence-and-direct-numerical-simulations-dns/ -->
 
 <!-- wp:paragraph -->
-<p>CFD is all nice and fun as long as we stay with 2D, laminar flows. As soon as we turn to 3D, turbulent flows, things start to get serious! Turbulence modelling is one of the most fundamental aspects of CFD, and if you want to have any chance of setting up a simulation that accurately&nbsp;<em>models</em>&nbsp;the flow you are interested in, you will need a firm grasp of the different levels of turbulence modelling.</p>
+<p>CFD is all nice and fun as long as we stay with 2D, laminar flows. As soon as we turn to 3D, turbulent flows, things start to get serious! Turbulence modelling is one of the most fundamental aspects of CFD, and if you want any chance of setting up a simulation that accurately&nbsp;<em>models</em>&nbsp;the flow you are interested in, you will need a firm grasp of the different levels of turbulence modelling.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -10,7 +10,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This article will provide the foundation we need to understand turbulence from a physical point of view. In subsequent articles, we will look at different modelling approaches that do resolve all turbulent scales but instead opt to model them to trade accuracy for computational efficiency, or speed.</p>
+<p>This article will provide the foundation needed to understand turbulence from a physical point of view. In subsequent articles, we will look at different modelling approaches that do not resolve all turbulent scales but instead opt to model them to trade accuracy for computational efficiency, or speed.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -557,7 +557,7 @@ u_\eta = (\nu\varepsilon)^\frac{1}{4}= (10^{-6}\cdot 10^{-5})^\frac{1}{4}=(10^{-
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>We start our discussion with how turbulence is generated in a physical sense. First of all, we assume that our flow is laminar, i.e. we have a well-aligned flow. This flow transitions into a chaotic, turbulent flow through various mechanisms. There are 4 main transition mechanisms which we will look at below in order.</p>
+<p>We start our discussion with how turbulence is generated in a physical sense. First of all, we assume that our flow is laminar, i.e. we have a well-aligned flow. This flow transitions into a chaotic, turbulent flow through various mechanisms. There are four main transition mechanisms which we will look at below in order.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":4} -->
@@ -567,7 +567,7 @@ u_\eta = (\nu\varepsilon)^\frac{1}{4}= (10^{-6}\cdot 10^{-5})^\frac{1}{4}=(10^{-
 <!-- wp:columns -->
 <div class="wp-block-columns"><!-- wp:column {"width":"33.33%"} -->
 <div class="wp-block-column" style="flex-basis:33.33%"><!-- wp:image {"id":5273,"sizeSlug":"full","linkDestination":"none"} -->
-<figure class="wp-block-image size-full"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/08_the-origin-of-turbulence-and-direct-numerical-simulations-dns/natural_transition.png" alt="This figures shows a boundary layer and how it naturally transitions from laminar to turbulence through a series of waves and instabilities" class="wp-image-5273"/></figure>
+<figure class="wp-block-image size-full"><img src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/07_10-key-concepts-everyone-must-understand-in-cfd/assets/08_the-origin-of-turbulence-and-direct-numerical-simulations-dns/natural_transition.png" alt="This figure shows a boundary layer and how it naturally transitions from laminar to turbulence through a series of waves and instabilities" class="wp-image-5273"/></figure>
 <!-- /wp:image --></div>
 <!-- /wp:column -->
 
@@ -1002,7 +1002,7 @@ plt.show()
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>We say that at low wave numbers (to the left on the x-axis), we have some energy input that is feeding the energy cascade, i.e. turbulence. This energy is coming from the non-linear term, which produces the Reynolds stresses, and it is these Reynolds stresses that <em>produce</em> turbulence at the lowest wave numbers (largest eddy sizes). Energy is then cascaded down to the highest wave numbers (smallest eddy sizes) where all turbulence is eventually <em>destroyed</em> through viscous heating.</p>
+<p>We say that at low wave numbers (to the left on the x-axis), we have some energy input that is feeding the energy cascade, i.e. driving turbulence. This energy is coming from the non-linear term, which produces the Reynolds stresses, and it is these Reynolds stresses that <em>produce</em> turbulence at the lowest wave numbers (largest eddy sizes). Energy is then cascaded down to the highest wave numbers (smallest eddy sizes) where all turbulence is eventually <em>destroyed</em> through viscous heating.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1022,11 +1022,11 @@ plt.show()
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Furthermore, since we have to conserve momentum, if we <em>generate more</em> turbulence, i.e. we increase the magnitude of the Reynolds stresses, our mean flow gradients of the non-linear term have to reduce, as energy is taken away from them and fed into the Reynolds stresses. Momentum is conserved, which means that the sum of the mean flow gradient of the non-linear term and the Reynolds stresses has to stay constant (as both are coming from the non-linear term).</p>
+<p>Furthermore, since we have to conserve momentum, if we <em>generate more</em> turbulence, i.e. we increase the magnitude of the Reynolds stresses, the mean flow gradients of the non-linear term have to decrease, as energy is taken away from them and fed into the Reynolds stresses. Momentum is conserved, which means that the sum of the mean flow gradient of the non-linear term and the Reynolds stresses has to stay constant (as both are coming from the non-linear term).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This is where turbulence is coming from, and it just highlights once more the importance of capturing this term accurately through our numerical schemes!</p>
+<p>This is where turbulence comes from, and it just highlights once more the importance of capturing this term accurately through our numerical schemes!</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -1047,7 +1047,7 @@ plt.show()
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>Large Eddy Simulations (LES)</li>
+<li>Large-Eddy Simulations (LES)</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
@@ -1416,7 +1416,7 @@ u'w' &amp; v'w' &amp; w'w'
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Clearly, we need to introduce some modelling into our flow, to make more complex cases computable, and this will be the focus of the next two articles, looking at Large Eddy Simulations (LES) and Reynolds-averaged Navier-Stokes (RANS) simulations.</p>
+<p>Clearly, we need to introduce some modelling into our flow, to make more complex cases computable, and this will be the focus of the next two articles, looking at Large-Eddy Simulations (LES) and Reynolds-averaged Navier-Stokes (RANS) simulations.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

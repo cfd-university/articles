@@ -38,7 +38,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>But you are probably here to get some clarity on what the difference is, and you probably want to know when to use which. So, let me give you an idea of what the main difference is. First of all, both explicit and implicit time integration refers to how we treat the time derivative in the Navier-Stokes equations (or, for that matter, in any other partial or ordinary differential equation).</p>
+<p>But you are probably here to get some clarity on what the difference is, and you probably want to know when to use which. So, let me give you an idea of what the main difference is. First of all, both explicit and implicit time integration refer to how we treat the time derivative in the Navier-Stokes equations (or, for that matter, in any other partial or ordinary differential equation).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -54,7 +54,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Contrast this with implicit time integration. Here, there is no maximum allowable time step, and you can use as large of a time step as you want. You only need to make sure that your time step is small enough to still resolve the frequencies you are interested in. Say you are investigating some form of periodic motion, for example, the vortex shedding around a cylinder, as shown below:</p>
+<p>Contrast this with implicit time integration. Here, there is no maximum allowable time step, and you can use as large a time step as you want. You only need to make sure that your time step is small enough to still resolve the frequencies you are interested in. Say you are investigating some form of periodic motion, for example, the vortex shedding around a cylinder, as shown below:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:embed -->
@@ -62,7 +62,7 @@
 <!-- /wp:embed -->
 
 <!-- wp:paragraph -->
-<p>You need to ensure that your time step is small enough so that you capture this periodic motion. If you set your time step larger, then your simulation will still be stable, but you may run into convergence issues, and certainly, the results you are going to obtain aren't going to be time accurate (at best, you can hope for some form of time-averaged solution).</p>
+<p>You need to ensure that your time step is small enough so that you capture this periodic motion. If you set your time step larger, then your simulation will still be stable, but you may run into convergence issues, and certainly, the results will not be time-accurate (at best, you can hope for some form of time-averaged solution).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -70,11 +70,11 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Well, I should say that you can also restore the non-linear behaviour using implicit methods. But, to achieve that, you need to solve a <a href="https://personal.math.ubc.ca/~anstee/math104/newtonmethod.pdf" target="_blank" rel="noopener" title="">Newton-Rhapson</a> method within each time step, where you solve [katex]\mathbf{Ax}=\mathbf{b}[/katex] within each Newton-Rhapson iteration (i.e. several times for each time step). The cost this requires isn't worth the pain, so you practically won't find anyone working on that (well, a handful have made it their research focus; let us wish them well on their journey to <a href="https://en.wikipedia.org/wiki/Valhalla" target="_blank" rel="noopener" title="">Valhalla</a> and return to reality).</p>
+<p>Well, I should say that you can also restore the non-linear behaviour using implicit methods. But, to achieve that, you need to solve a <a href="https://personal.math.ubc.ca/~anstee/math104/newtonmethod.pdf" target="_blank" rel="noopener" title="">Newton-Raphson</a> method within each time step, where you solve [katex]\mathbf{Ax}=\mathbf{b}[/katex] within each Newton-Raphson iteration (i.e. several times for each time step). The cost this requires isn't worth the pain, so you practically won't find anyone working on that (well, a handful have made it their research focus; let us wish them well on their journey to <a href="https://en.wikipedia.org/wiki/Valhalla" target="_blank" rel="noopener" title="">Valhalla</a> and return to reality).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Some people (possibly those trying to justify a Newton-Rhapson approach?!) are arguing that even explicit methods are linearised (while others insist that it is fully non-linear). In the end, what you believe depends on the type of schemes you use and the experience you have with them. At least, this is from what I can observe. Why make arguments rooted in maths when you can loudly proclaim your beliefs? After all, we are doing religion, sorry, I meant to say science, after all ...</p>
+<p>Some people (possibly those trying to justify a Newton-Raphson approach?!) are arguing that even explicit methods are linearised (while others insist that it is fully non-linear). In the end, what you believe depends on the type of schemes you use and the experience you have with them. At least, this is from what I can observe. Why make arguments rooted in maths when you can loudly proclaim your beliefs? After all, we are doing religion, sorry, I meant to say science, after all ...</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -126,7 +126,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>The appearance of the factor in front of the parenthesis [katex]u\Delta t/\Delta x[/katex] is known as the <a href="https://en.wikipedia.org/wiki/Courant%E2%80%93Friedrichs%E2%80%93Lewy_condition" target="_blank" rel="noopener" title="">Courant-Friedrichs-Lewy</a>, or CFL number. Thus, we could have also written the above equation as:</p>
+<p>The factor in front of the parenthesis [katex]u\Delta t/\Delta x[/katex] is known as the <a href="https://en.wikipedia.org/wiki/Courant%E2%80%93Friedrichs%E2%80%93Lewy_condition" target="_blank" rel="noopener" title="">Courant-Friedrichs-Lewy</a>, or CFL number. Thus, we could have also written the above equation as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -146,7 +146,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>We haven't said anything about the velocity [katex]u[/katex] in front of the second fraction. Is this velocity evaluated at [katex]n[/katex] or [katex]n+1[/katex]? Well, this goes back to our friends in Valhalla. If we set it to [katex]u^n[/katex], then we have linearised our system and can evaluate [katex]\mathbf{Ax}=\mathbf{b}[/katex] directly. But, we we set it to [katex]u^{n+1}[/katex], then we have a fully non-linear system and need to use a Newton-Rhapson method, requiring several evaluations of [katex]\mathbf{Ax}=\mathbf{b}[/katex] per time step.</p>
+<p>We haven't said anything about the velocity [katex]u[/katex] in front of the second fraction. Is this velocity evaluated at [katex]n[/katex] or [katex]n+1[/katex]? Well, this goes back to our friends in Valhalla. If we set it to [katex]u^n[/katex], then we have linearised our system and can evaluate [katex]\mathbf{Ax}=\mathbf{b}[/katex] directly. But, we set it to [katex]u^{n+1}[/katex], then we have a fully non-linear system and need to use a Newton-Raphson method, requiring several evaluations of [katex]\mathbf{Ax}=\mathbf{b}[/katex] per time step.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -355,7 +355,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>We will see that explicit schemes are, at best, bounded by their CFL number, while implicit schemes do not have the same limitation. before we investigate the stability of various numerical schemes on these equations, let us first review Euler's formula, as we will make heavy use of it.</p>
+<p>We will see that explicit schemes are, at best, bounded by their CFL number, while implicit schemes do not have the same limitation. Before we investigate the stability of various numerical schemes on these equations, let us first review Euler's formula, as we will make heavy use of it.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
@@ -1067,7 +1067,7 @@ G=\frac{1}{1-\frac{\mathrm{CFL}}{2}(e^{I\theta}-e^{-I\theta})}</pre></div>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>The Peclect number defines the ratio between convection and diffusion within a flow and can be used to identify which condition should be used. For [katex]Pe=0[/katex], we have pure diffusion, and as we approach this value, our max allowable CFL number will be closer to 0.5 for explicit time integration, while it increases to 1 for [katex]Pe\rightarrow\infty[/katex]</li>
+<li>The Péclet number defines the ratio between convection and diffusion within a flow and can be used to identify which condition should be used. For [katex]Pe=0[/katex], we have pure diffusion, and as we approach this value, our max allowable CFL number will be closer to 0.5 for explicit time integration, while it increases to 1 for [katex]Pe\rightarrow\infty[/katex]</li>
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->
 
@@ -1510,7 +1510,7 @@ G=\frac{1}{1-\frac{\mathrm{CFL}}{2}(e^{I\theta}-e^{-I\theta})}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This is where local time stepping comes in. Now we say that each cell can march at their own time step size to accelerate convergence. Now, doing this will destroy any time accuracy, as we are no longer marching at the same time step, and so we can't do this for unsteady simulation. The only time local time stepping works is when we want to use time stepping to march to a steady state solution. For a steady state, there is no dependence on the time, by definition, and so we let each cell converge as quickly as they can to the steady state by using their optimal time step size.</p>
+<p>This is where local time stepping comes in. Now we say that each cell can march at its own time step size to accelerate convergence. Now, doing this will destroy any time accuracy, as we are no longer marching at the same time step, and so we can't do this for unsteady simulations. The only time local time stepping works is when we want to use time stepping to march to a steady state solution. For a steady state, there is no dependence on the time, by definition, and so we let each cell converge as quickly as they can to the steady state by using their optimal time step size.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1606,7 +1606,7 @@ G=\frac{1}{1-\frac{\mathrm{CFL}}{2}(e^{I\theta}-e^{-I\theta})}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Finally, there is turbulence modelling. If you are interested in running scale-resolved simulations, such as large-eddy Simulations (LES) or Direct Numerical Simulations (DNS), then you likely do not only have to obey the CFL number but also other local time step size restrictions, as you want to resolve turbulence in time (which is the whole point of using LES and DNS compared to RANS, which is steady state by definition).</p>
+<p>Finally, there is turbulence modelling. If you are interested in running scale-resolved simulations, such as Large-Eddy Simulations (LES) or Direct Numerical Simulations (DNS), then you likely do not only have to obey the CFL number but also other local time step size restrictions, as you want to resolve turbulence in time (which is the whole point of using LES and DNS compared to RANS, which is steady state by definition).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1646,7 +1646,7 @@ G=\frac{1}{1-\frac{\mathrm{CFL}}{2}(e^{I\theta}-e^{-I\theta})}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>The academic who involved me then submitted the proposal to the European Space Agency to apply for some funding. It was rejected (thankfully), but the quintessential academic that he was, he thought, "I have already written up this proposal, which is about 20 pages, and it even has some CFD results (which I constantly stressed were <em>very</em> preliminary (coarse grid, no <a href="https://cfd.university/blog/how-to-manage-uncertainty-in-cfd-the-grid-convergence-index/" target="_blank" rel="noopener" title="">grid dependency study</a> and all that jazz), why not publish that in a journal?"</p>
+<p>The academic who involved me in the project then submitted the proposal to the European Space Agency to apply for some funding. It was rejected (thankfully), but the quintessential academic that he was, he thought, "I have already written up this proposal, which is about 20 pages, and it even has some CFD results (which I constantly stressed were <em>very</em> preliminary (coarse grid, no <a href="https://cfd.university/blog/how-to-manage-uncertainty-in-cfd-the-grid-convergence-index/" target="_blank" rel="noopener" title="">grid dependency study</a> and all that jazz), why not publish that in a journal?"</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1658,11 +1658,11 @@ G=\frac{1}{1-\frac{\mathrm{CFL}}{2}(e^{I\theta}-e^{-I\theta})}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This brings me to the main use of implicit methods: General purpose CFD solver. If you want to support a large user base without a specific application in mind, you need to go implicit. They may or may not enjoy the added ability to freely choose the CFL number. But more likely, they see CFD as a tool, one they have no interest in learning in detail but rather just use in their workflow, and they probably don't even know what explicit or implicit time stepping means, what the von Neumann stability analysis is, and what the CFL number is.</p>
+<p>This brings me to the main use of implicit methods: General-purpose CFD solvers. If you want to support a large user base without a specific application in mind, you need to go implicit. They may or may not enjoy the added ability to freely choose the CFL number. But more likely, they see CFD as a tool, one they have no interest in learning in detail but rather just use in their workflow, and they probably don't even know what explicit or implicit time stepping means, what the von Neumann stability analysis is, and what the CFL number is.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This is fine, not everyone wants or need to know, but if you want them to use your tool, you better make sure you have unconditional stability baked into your solver, otherwise they may run it with a time step that is to large and see their simulation crashing. They do that a few times until they decide you are an incompetent software developer and move on ...</p>
+<p>This is fine, not everyone wants or need to know, but if you want them to use your tool, you better make sure you have unconditional stability baked into your solver, otherwise they may run it with a time step that is too large and see their simulation crashing. They do that a few times until they decide you are an incompetent software developer and move on ...</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -1678,7 +1678,7 @@ G=\frac{1}{1-\frac{\mathrm{CFL}}{2}(e^{I\theta}-e^{-I\theta})}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This means explicit methods are limited in the max allowable time step size they can use, which s typically limited to a CFL number of 1 for convection-dominant flows, i.e. one where the Reynolds number is much larger than 1 (if your flow is turbulent, it is convection-dominant). For viscous cases, the max allowable (viscous) CFL number reduces to 0.5 and is defined slightly differently.</p>
+<p>This means explicit methods are limited in the max allowable time step size they can use, which is typically limited to a CFL number of 1 for convection-dominant flows, i.e. one where the Reynolds number is much larger than 1 (if your flow is turbulent, it is convection-dominant). For viscous cases, the max allowable (viscous) CFL number reduces to 0.5 and is defined slightly differently.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1686,7 +1686,7 @@ G=\frac{1}{1-\frac{\mathrm{CFL}}{2}(e^{I\theta}-e^{-I\theta})}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We also looked at a graphical representation of the CFL number and how we can develop some intuition where this max allowable CFL number of 1 is coming from, as well as why implicit schemes do not have this limitation, and finally reviewed some time stepping techniques that are available to us to accelerate convergence.</p>
+<p>We also looked at a graphical representation of the CFL number and how we can develop some intuition where this max allowable CFL number of 1 comes from, as well as why implicit schemes do not have this limitation, and finally reviewed some time stepping techniques that are available to us to accelerate convergence.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

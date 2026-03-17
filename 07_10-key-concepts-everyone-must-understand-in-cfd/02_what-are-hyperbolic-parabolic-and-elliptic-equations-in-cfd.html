@@ -14,7 +14,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This leads to wildly different solution strategies for the incompressible and compressible Navier-Stokes equations, and it is not uncommon for researchers to specialise in either compressible or incompressible flows and then stick with it, as the discretisation procedure for both are so different that it feels like learning an entire new field switching from incompressible to compressible flows, and vice versa.</p>
+<p>This leads to wildly different solution strategies for the incompressible and compressible Navier-Stokes equations, and it is not uncommon for researchers to specialise in either compressible or incompressible flows and then stick with it, as the discretisation procedure for each is so different that it feels like learning an entire new field switching from incompressible to compressible flows, and vice versa.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -66,7 +66,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>OK, so might be saying, this is all good and interesting, but what can I actually acomplish knowing that my equations are hyperbolic, parabolic, and elliptic? Well, for starters, there are entire classes of schemes that only work with certain PDEs, and then there are other algorithms that work particularily well with one class, but not so much with others.</p>
+<p>OK, so you might be saying, this is all good and interesting, but what can I actually accomplish knowing that my equations are hyperbolic, parabolic, and elliptic? Well, for starters, there are entire classes of schemes that only work with certain PDEs, and then there are other algorithms that work particularly well with one class, but not so much with others.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -82,7 +82,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>So then, let's jump into classifying some PDEs; we'll first look into the general mathematical description to build up an understanding of where the terms hyperbolic, parabolic, and elliptic come from, how to classify a PDE in a mathematical sense, and then we pivot to the governing equations of fluid dynamics, where we now have to deal with entirely different equations (and also, we have a system of equations, instead of a single equation). Excited? Yes, me too, I can barely hold my excitement, let's get started with the nerdy talk!</p>
+<p>So then, let's jump into classifying some PDEs; we'll first look into the general mathematical description to build up an understanding of where the terms hyperbolic, parabolic, and elliptic come from, how to classify a PDE in a mathematical sense, and then we pivot to the governing equations of fluid dynamics, where we now have to deal with entirely different equations (and also, we have a system of equations, instead of a single equation). Excited? Yes, me too. I can barely hold my excitement, let's get started with the nerdy talk!</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -114,7 +114,7 @@
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>So, creating adjectives from the nouns hyperbola, parabola, and ellipse, we arrive at hyperbolic, parabolic, and elliptic. So far, so good, but what on earth does the plane-cone intersection have to do with our quest to classify PDEs that are relevant for fluid mechanics? Some of you may thing: <em>Oh, I know, this looks like the Mach cone</em>, sure, it does, but it has nothing to do with that (or, at least, this is not the reason why we are picking this problem from mathematics to classify our equation).</p>
+<p>So, creating adjectives from the nouns hyperbola, parabola, and ellipse, we arrive at hyperbolic, parabolic, and elliptic. So far, so good, but what on earth does the plane-cone intersection have to do with our quest to classify PDEs that are relevant for fluid mechanics? Some of you may think: <em>Oh, I know, this looks like the Mach cone</em>, sure, it does, but it has nothing to do with that (or, at least, this is not the reason why we are picking this problem from mathematics to classify our equation).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -210,7 +210,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>Looks familiar? Yes, this is almost identical to our conic section equation, where only the last two terms are different, though they don't play a role in determining the discriminant, i.e. if we were to calculate it for the above equation, we see that both [katex]f[/katex] and [katex]g[/katex] do not play a role in determining the solution of the discriminant:</p>
+<p>Looks familiar? Yes, this is almost identical to our conic section equation, where only the last two terms are different, though they don't play a role in determining the discriminant, i.e. if we were to calculate it for the above equation, we see that both [katex]f[/katex] and [katex]g[/katex] do not play a role in determining the value of the discriminant:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -231,7 +231,7 @@
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>[katex]\Delta&lt;0[/katex]: We obtain an elliptical equation</li>
+<li>[katex]\Delta&lt;0[/katex]: We obtain an elliptic equation</li>
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->
 
@@ -274,7 +274,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Hyperbolic PDEs have distinct characteristics (two different roots of the discriminant, i.e. [katex]\Delta&gt;0[/katex]), parabolic have real characteristics which have the same value (the same root of the discriminant, i.e. [katex]\Delta=0[/katex]), while elliptic equations have no real characteristics, or rather, only imaginary characteristics. Knowing that elliptic equations have [katex]\Delta&lt;0[/katex], if we inserted that into our quadratic equation, we get the square root of a negative number, and hence a complex number with imaginary components.</p>
+<p>Hyperbolic PDEs have distinct characteristics (two different roots of the discriminant, i.e. [katex]\Delta&gt;0[/katex]), parabolic PDEs have real characteristics which have the same value (the same root of the discriminant, i.e. [katex]\Delta=0[/katex]), while elliptic equations have no real characteristics, or rather, only imaginary characteristics. Knowing that elliptic equations have [katex]\Delta&lt;0[/katex], if we inserted that into our quadratic equation, we get the square root of a negative number, and hence a complex number with imaginary components.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -408,7 +408,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>So let's then quickly discuss why this approach is rubbish. The first and most obvious point is that life is not steady state, adiabatic, irrotational, two-dimensional, and supersonic. The general Navier-Stokes equations are unsteady, allow for heat transfer, rotational, three-dimensional, and work for subsonic and supersonic, incompressible and compressible, laminar and turbulent flows alike!</p>
+<p>So let's then quickly discuss why this approach is rubbish. The first and most obvious point is that life is not steady-state, adiabatic, irrotational, two-dimensional, and supersonic. The general Navier-Stokes equations are unsteady, allow for heat transfer, rotational, three-dimensional, and work for subsonic and supersonic, incompressible and compressible, laminar and turbulent flows alike!</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -460,7 +460,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We'll do the classification twice, once for the time-dependent (unsteady) and time-independent (steady state) flow. We'll see how this time-dependence will be crucial in determining the type. We will also do the classification based on incompressible flows, which makes life a bit more difficult for us compared to compressible flows. If you understand the incompressible case, compressible flows are easy to classify but not vice versa.</p>
+<p>We'll do the classification twice, once for the time-dependent (unsteady) and time-independent (steady-state) flow. We'll see how this time-dependence will be crucial in determining the type. We will also do the classification based on incompressible flows, which makes life a bit more difficult for us compared to compressible flows. If you understand the incompressible case, compressible flows are easy to classify but not vice versa.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":5} -->
@@ -1309,7 +1309,7 @@ n_y</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>If we are interested in a steady state solution, we simply run the simulation until all transient behaviour has washed out and we are left with a flow that does not change in time, or where there is still a transient behaviour but we can average the solution to obtain a more steady-state-like behaviour.</p>
+<p>If we are interested in a steady-state solution, we simply run the simulation until all transient behaviour has washed out and we are left with a flow that does not change in time, or where there is still a transient behaviour but we can average the solution to obtain a more steady-state-like behaviour.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1329,7 +1329,7 @@ n_y</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>In other words, if I know that my solution ought to be steady state, and I just want to march as quickly to that solution as possible, then why not set a time step in each cell that maximises the convergence, i.e. set the time-step to a value that sets the under-relaxation factor in each cell to the same (max) value? This is what is known as local time stepping, where each cell gets its own timestep size. It has proven to work well, except in the case of OpenFOAM, where it is implemented but is not working, as with so many other things in OpenFOAM.</p>
+<p>In other words, if I know that my solution ought to be steady-state, and I just want to march as quickly to that solution as possible, then why not set a time step in each cell that maximises the convergence, i.e. set the time-step to a value that sets the under-relaxation factor in each cell to the same (max) value? This is what is known as local time stepping, where each cell gets its own timestep size. It has proven to work well, except in the case of OpenFOAM, where it is implemented but is not working, as with so many other things in OpenFOAM.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1421,7 +1421,7 @@ n_y</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Finally, we looked at hyperbolic, parabolic, and elliptic equations and what their solution looked like. I hope that this will help you to develop an intuition for how these equations behave and what the physical importance of these characters is. Before we close, I want to return one last time to the classical textbook definition we have seen a few times above. By now, you should understand it in its entirety, otherwise I have done a poor job in explaining it! Here it is:</p>
+<p>Finally, we looked at hyperbolic, parabolic, and elliptic equations and what their solutions looked like. I hope that this will help you to develop an intuition for how these equations behave and what the physical importance of these equation types is. Before we close, I want to return one last time to the classical textbook definition we have seen a few times above. By now, you should understand it in its entirety, otherwise I have done a poor job in explaining it! Here it is:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

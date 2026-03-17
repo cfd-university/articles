@@ -2,11 +2,11 @@
 <!-- https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/how-to-solve-incompressible-and-compressible-flows-in-cfd/ -->
 
 <!-- wp:paragraph -->
-<p>This article will take a deep dive into how to solve the Navier-Stokes equations numerically. We will look at the differences between compressible and incompressible flows and what solution algorithms exist to solve them. Along the way, we will also look at the difference between the conservative and primitive (or non-conservative) variable formulation. We will see (through an example and a derivation) why we really want to use conservative variables for compressible flows while primitive variables are preferred for incompressible flows.</p>
+<p>This article will take a deep dive into how to solve the Navier-Stokes equations numerically. We will look at the differences between compressible and incompressible flows and what solution algorithms exist to solve them. Along the way, we will also look at the difference between the conservative and primitive (or non-conservative) variable formulations. We will see (through an example and a derivation) why we really want to use conservative variables for compressible flows while primitive variables are preferred for incompressible flows.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>And then, there is the scientific misconduct that no one is talking about; the SIMPLE algorithm. We will discuss the SIMPLE algoirithm, and its friends (SIMPLEC, PISO, PIMPLE), and why these really are just inferior and plagiarised description of the pressure projection method of Chorin. We will derive the equations from scratch, and by the end of the article, you will be able to see how all of these methods are one and the same. We have a wild journey ahead of us, did you bring a hot cup of tea? You will need it! Let's get going. </p>
+<p>And then, there is the scientific misconduct that no one is talking about; the SIMPLE algorithm. We will discuss the SIMPLE algorithm, and its friends (SIMPLEC, PISO, PIMPLE), and why these really are just inferior and plagiarised descriptions of the pressure projection method of Chorin. We will derive the equations from scratch, and by the end of the article, you will be able to see how all of these methods are one and the same. We have a wild journey ahead of us. Did you bring a hot cup of tea? You will need it! Let's get going. </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -126,7 +126,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>This equation is known as the Burgers equation, named after the Dutch physicist Johannes Martinus Burgers, and it is an important model equation in CFD. It allows us to study how numerical schemes behave to non-linearities, as the second term is fully non-linear. We could create a linear equation out of this by saying that the [katex]u[/katex] in front of the space derivative is a constant and set [katex]u=a[/katex]. If we were to do that, then we have obtained the linear advection equation, which is another important model equation in CFD.</p>
+<p>This equation is known as the Burgers equation, named after the Dutch physicist Johannes Martinus Burgers, and it is an important model equation in CFD. It allows us to study how numerical schemes behave in the presence of non-linearities, as the second term is fully non-linear. We could create a linear equation out of this by saying that the [katex]u[/katex] in front of the spatial derivative is a constant and set [katex]u=a[/katex]. If we were to do that, then we have obtained the linear advection equation, which is another important model equation in CFD.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -795,7 +795,7 @@ q_z = -\kappa \frac{\partial T}{\partial z}</pre></div>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Let's start our discussion with why we want to use different algorithms for incompressible flows. At the beginning of this article, we said that incompressible flows are those where the density does not change. We also saw that there are materials, such as water, that behave like an incompressible fluid due to their low compressibility factor [katex]\beta[/katex]. This means that if we were to use any equation of state, for example, the ideal gas law, we have a functional relation between the pressure [katex]p[/katex] and the density [katex]\rho[/katex] as:</p>
+<p>Let's start our discussion with why we want to use different algorithms for incompressible flows. At the beginning of this article, we said that incompressible flows are those where the density does not change. We also saw that there are materials, such as water, that behave like incompressible fluids due to their low compressibility factor [katex]\beta[/katex]. This means that if we were to use any equation of state, for example, the ideal gas law, we have a functional relation between the pressure [katex]p[/katex] and the density [katex]\rho[/katex] as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -973,11 +973,11 @@ q_z = -\kappa \frac{\partial T}{\partial z}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Well, the equation above no longer represents the continuity equation. But, if we weaken the equation a bit, we can insist that the above equation is still valid. We can say that the equation is only valid in the limit of steady-state flows. Steady-state flows require, by definition, that there are no changes in time. If there are no more changes in time, then we have [katex]\partial p/\partial\tau = 0[/katex]. So the time derivative of the pressure will vanish, and we recover the continuity equation of an incompressible flow, i.e. [katex]\nabla\cdot (\rho\mathbf{\rho})[/katex].</p>
+<p>Well, the equation above no longer represents the continuity equation. But, if we weaken the equation a bit, we can insist that the above equation is still valid. We can say that the equation is only valid in the limit of steady-state flows. Steady-state flows require, by definition, that there are no changes in time. If there are no more changes in time, then we have [katex]\partial p/\partial\tau = 0[/katex]. So the time derivative of the pressure will vanish, and we recover the continuity equation of an incompressible flow, i.e. [katex]\nabla\cdot (\rho\mathbf{u})[/katex].</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This doesn't mean that the time history itself is completely wrong; if you look at an animation of the artificial compressibility method, it will appear as if it resolves the transient behaviour correctly. However, if you were to take measurements that depend on the timestep, like measuring frequencies, these would be all wrong now. Thus, we only resolve a physically meaningful flow field once the time derivative vanishes and the flow has settled for a steady-state solution.</p>
+<p>This doesn't mean that the time history itself is completely wrong; if you look at an animation of the artificial compressibility method, it will appear as if it resolves the transient behaviour correctly. However, if you were to take measurements that depend on the time step, like measuring frequencies, these would be all wrong now. Thus, we only resolve a physically meaningful flow field once the time derivative vanishes and the flow has settled for a steady-state solution.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1134,7 +1134,7 @@ q_z = -\kappa \frac{\partial T}{\partial z}</pre></div>
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>Does this vector equation look familiar? Yes, it is almost identical to the vector equation we saw in the discussion on compressible flows. The difference here is that we use primitive or non-conserved variables. So we no longer deal with the inviscid and viscous fluxes [katex]\mathbf{F}^{Inv}[/katex] and [katex]\mathbf{G}^{Visc}[/katex] but rather with the primitive variables [katex]\mathbf{U}[/katex] directly. To see that these matrixes give us the right scalar equation again, we can write out the vector equation as:</p>
+<p>Does this vector equation look familiar? Yes, it is almost identical to the vector equation we saw in the discussion on compressible flows. The difference here is that we use primitive or non-conserved variables. So we no longer deal with the inviscid and viscous fluxes [katex]\mathbf{F}^{Inv}[/katex] and [katex]\mathbf{G}^{Visc}[/katex] but rather with the primitive variables [katex]\mathbf{U}[/katex] directly. To see that these matrices give us the right scalar equation again, we can write out the vector equation as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1349,7 +1349,7 @@ C:\quad w,\,w,\,\frac{1}{2}\left(w+\sqrt{w^2+4\beta}\right),\,\frac{1}{2}\left(w
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Let's return to our airfoil example above, where we calculated the number of timesteps required to resolve one vortex shedding cycle or period. We said that our time step is calculated as:</p>
+<p>Let's return to our airfoil example above, where we calculated the number of time steps required to resolve one vortex shedding cycle or period. We said that our time step is calculated as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1545,7 +1545,7 @@ C:\quad w,\,w,\,\frac{1}{2}\left(w+\sqrt{w^2+4\beta}\right),\,\frac{1}{2}\left(w
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>If you look up the pressure projection method in the literature, you will also hear that we have used the Helmholtz-Hodge decomposition, where we have separated the velocity field into an irrotational and sinusoidal part. Instead of saying "we can decompose the velocity field", people also say that "the velocity field is projected onto an irrotational and sinusodial space".</p>
+<p>If you look up the pressure projection method in the literature, you will also hear that we have used the Helmholtz-Hodge decomposition, where we have separated the velocity field into an irrotational and sinusoidal part. Instead of saying "we can decompose the velocity field", people also say that "the velocity field is projected onto an irrotational and sinusoidal space".</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1628,7 +1628,7 @@ w^*_{i,j,k} = w^n_{i,j,k} + \Delta t\left[ -\mathrm{upwind}(w) + \mathrm{diffusi
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>There is one small problem here, can you spot it? We no longer have a time derivative, so we are unable to use a simple explicit time integration. As we have discussed in my <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-discretising-the-model-equation/" target="_blank" rel="noopener" title="">article on how to discretise the steady state heat diffusion equation</a>, i.e. [katex]\alpha(\partial^2 T/\partial x^2)=0[/katex], whenever we want to obtain the solution to an equation where there is no time derivative, we have to use an implicit discretisation. This means we are now evaluating the pressure in the equation above at [katex]p^{n+1}[/katex].</p>
+<p>There is one small problem here, can you spot it? We no longer have a time derivative, so we are unable to use a simple explicit time integration. As we have discussed in my <a href="https://cfd.university/learn/how-to-compile-write-and-use-cfd-libraries-in-c/how-to-write-a-cfd-library-discretising-the-model-equation/" target="_blank" rel="noopener" title="">article on how to discretise the steady-state heat diffusion equation</a>, i.e. [katex]\alpha(\partial^2 T/\partial x^2)=0[/katex], whenever we want to obtain the solution to an equation where there is no time derivative, we have to use an implicit discretisation. This means we are now evaluating the pressure in the equation above at [katex]p^{n+1}[/katex].</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1781,7 +1781,7 @@ w^{n+1}_{i,j,k}=w^*_{i,j,k} -\frac{\Delta t}{\rho}\frac{p^{n+1}_{i,j,k+1}-p^{n+1
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Chorin introduced the notion of pressure projection methods, and we said it was a projection method because we decomposed (or projected) the velocity into an irrotational and sinusoidal part (or irrotational and sinusoidal space). We can write this as [katex]\mathbf{u}=\mathbf{u}^\mathrm{irrotational} + \mathbf{u}^\mathrm{sinusodial}[/katex]. Keep this decomposition/projection in mind for later.</p>
+<p>Chorin introduced the notion of pressure projection methods, and we said it was a projection method because we decomposed (or projected) the velocity into an irrotational and sinusoidal part (or irrotational and sinusoidal space). We can write this as [katex]\mathbf{u}=\mathbf{u}^\mathrm{irrotational} + \mathbf{u}^\mathrm{sinusoidal}[/katex]. Keep this decomposition/projection in mind for later.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1789,7 +1789,7 @@ w^{n+1}_{i,j,k}=w^*_{i,j,k} -\frac{\Delta t}{\rho}\frac{p^{n+1}_{i,j,k+1}-p^{n+1
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>For crying out loud, SIMPLE, SIMPLER, SIMPLEC, PISO, and all of these variants all use the same fundamental building blocks, and all derive from Chorin's pressure projection. We call these methods <em>approximate</em> projection method, and this approximation actually makes SIMPLE and co less rigorous compared to Chorin's method! The reason we have so many variants of SIMPLE (i.e. SIMPER and SIMPLEC) is because of the approximations made in SIMPLE, and each new variant tries to bring back some rigour into the algorithm.</p>
+<p>For crying out loud, SIMPLE, SIMPLER, SIMPLEC, PISO, and all of these variants all use the same fundamental building blocks, and all derive from Chorin's pressure projection. We call these methods <em>approximate</em> projection methods, and this approximation actually makes SIMPLE and co less rigorous compared to Chorin's method! The reason we have so many variants of SIMPLE (i.e. SIMPLER and SIMPLEC) is because of the approximations made in SIMPLE, and each new variant tries to bring back some rigour into the algorithm.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1817,7 +1817,7 @@ w^{n+1}_{i,j,k}=w^*_{i,j,k} -\frac{\Delta t}{\rho}\frac{p^{n+1}_{i,j,k+1}-p^{n+1
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>In the SIMPLE algorithm, we assume an implicit discretisation for the velocity. Thus, all velocity components are evaluated at time level [katex]n+1[/katex]. Since we can only solve for one variable per equation, we can't have an implicit treatment for the pressure, and it is evaluated at time level [katex]n[/katex] (in other words, we assume the pressure to be known, either from the previous timestep or the initial solution). This is what SI in SIMPLE stands for: semi-implicit. It is implicit for velocity but explicit for pressure. The equation can be written as:</p>
+<p>In the SIMPLE algorithm, we assume an implicit discretisation for the velocity. Thus, all velocity components are evaluated at time level [katex]n+1[/katex]. Since we can only solve for one variable per equation, we can't have an implicit treatment for the pressure, and it is evaluated at time level [katex]n[/katex] (in other words, we assume the pressure to be known, either from the previous time step or the initial solution). This is what SI in SIMPLE stands for: semi-implicit. It is implicit for velocity but explicit for pressure. The equation can be written as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1886,7 +1886,7 @@ b_i-\frac{1}{\rho}\frac{p^n_{i+1}-p^n_{i-1}}{2\Delta x}</pre></div>
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>Now we say that velocities and coefficients at the east and west location, i.e. at [katex]i+1[/katex] and [katex]i-1[/katex], respectively, are neighbour coefficients to the central coefficient [katex]a_p[/katex] at location [katex]i[/katex]. We therefore write these neighbouring coefficients as:</p>
+<p>Now we say that velocities and coefficients at the east and west location, i.e. at [katex]i+1[/katex] and [katex]i-1[/katex], respectively, are neighbouring coefficients to the central coefficient [katex]a_p[/katex] at location [katex]i[/katex]. We therefore write these neighbouring coefficients as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1907,7 +1907,7 @@ b_i-\frac{1}{\rho}\frac{p^n_{i+1}-p^n_{i-1}}{2\Delta x}</pre></div>
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>Bringing the summation on the right-hand side, we obtain:</p>
+<p>Bringing the summation to the right-hand side, we obtain:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -2073,7 +2073,7 @@ b_i -
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
-<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{u}=\mathbf{u}^\text{irrotational}+\mathbf{u}^\text{sinusodial}</pre></div>
+<div class="wp-block-katex-display-block katex-eq" data-katex-display="true"><pre>\mathbf{u}=\mathbf{u}^\text{irrotational}+\mathbf{u}^\text{sinusoidal}</pre></div>
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
@@ -2370,7 +2370,7 @@ b_n-\frac{1}{\rho}\frac{p_{\text{right boundary}}-p_{n-1}}{2\Delta x}\\[1em]
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>If we expand these matrixes, for example, for a simple 1D grid with 5 nodes, then we have:</p>
+<p>If we expand these matrices, for example, for a simple 1D grid with 5 nodes, then we have:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -2520,7 +2520,7 @@ u_1 \\[1em] u_2 \\[1em] u_3 \\[1em] u_4 \\[1em] u_5
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Regardless of which form you implement, you will see that the SIMPLE algorithm doesn't work, at least not until we have made some modifications. You see, we made crude approximations to the momentum equation, such as linearisation and dropping some terms entirely. While we derived the equation for an unsteady problem, the resolution of the SIMPLE algorithm in time isn't great due to all the simplifications made. Coupled with convergence issues, it is best used for steady state problems only.</p>
+<p>Regardless of which form you implement, you will see that the SIMPLE algorithm doesn't work, at least not until we have made some modifications. You see, we made crude approximations to the momentum equation, such as linearisation and dropping some terms entirely. While we derived the equation for an unsteady problem, the resolution of the SIMPLE algorithm in time isn't great due to all the simplifications made. Coupled with convergence issues, it is best used for steady-state problems only.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -2695,11 +2695,11 @@ u_1 \\[1em] u_2 \\[1em] u_3 \\[1em] u_4 \\[1em] u_5
 
 <!-- wp:list -->
 <ul class="wp-block-list"><!-- wp:list-item -->
-<li>Incompressible and  compressible flows require different solution algorithm due to the density changing its behaviour. We differentiate between density-based descriptions, where we solve for the density and then use an equation of state to link it to the pressure, and pressure-based descriptions, where the density is may be constant, and we link pressure and velocity through some iterative procedure.</li>
+<li>Incompressible and  compressible flows require different solution algorithm due to the density changing its behaviour. We differentiate between density-based descriptions, where we solve for the density and then use an equation of state to link it to the pressure, and pressure-based descriptions, where the density may be constant, and we link pressure and velocity through some iterative procedure.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>We saw that we have conservative and non-conservative (primitive) variable formulations, and we prefer conservative variables for compressible flows, especially when we have discontinuouties in our flow (e.g. shock waves). For smooth data, the variable description does not matter and we prefer primitive variables for incompressible flows. They make life easier.</li>
+<li>We saw that we have conservative and non-conservative (primitive) variable formulations, and we prefer conservative variables for compressible flows, especially when we have discontinuities in our flow (e.g. shock waves). For smooth data, the variable description does not matter and we prefer primitive variables for incompressible flows. They make life easier.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
@@ -2716,7 +2716,7 @@ u_1 \\[1em] u_2 \\[1em] u_3 \\[1em] u_4 \\[1em] u_5
 <!-- /wp:list -->
 
 <!-- wp:paragraph -->
-<p>It is common for people specialising in CFD to pick on flow regime (i.e. incompressible or compressible) and then sticking with it. To the best of my judgement, this is due to differences in variable formulation and solution algorithms, as well as differences in numerical schemes (e.g. shock-capturing schemes for compressible flows vs. upwind-based schemes for incompressible flows). It almost feels like both incompressible and compressible flows have almost nothing in common.</p>
+<p>It is common for people specialising in CFD to pick one flow regime (i.e. incompressible or compressible) and then stick with it. To the best of my judgement, this is due to differences in variable formulation and solution algorithms, as well as differences in numerical schemes (e.g. shock-capturing schemes for compressible flows vs. upwind-based schemes for incompressible flows). It almost feels like both incompressible and compressible flows have almost nothing in common.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

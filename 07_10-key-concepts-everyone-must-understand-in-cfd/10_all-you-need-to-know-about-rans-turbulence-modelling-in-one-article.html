@@ -75,7 +75,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>We have actually already derived the full RANS equations in the article on the origin of turbulence and DNS, when we looked at <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/the-origin-of-turbulence-and-direct-numerical-simulations-dns/#aioseo-how-is-turbulence-generated" target="_blank" rel="noopener" title="">how turbulence is generated in a mathematical sense.</a>. Let's summarise the equations here, but feel free to go through the derivation in the above-linked article, to make sure these equations fell familiar.</p>
+<p>We have actually already derived the full RANS equations in the article on the origin of turbulence and DNS, when we looked at <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/the-origin-of-turbulence-and-direct-numerical-simulations-dns/#aioseo-how-is-turbulence-generated" target="_blank" rel="noopener" title="">how turbulence is generated in a mathematical sense.</a>. Let's summarise the equations here, but feel free to go through the derivation in the above-linked article, to make sure these equations feel familiar.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -136,7 +136,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>Decomposing the flow field into its mean and fluctuating field is the first step in deriving suitable equations we can use for steady state turbulence calculations. We see that the mean (time-averaged) flow field [katex]\bar{\phi}[/katex] appears in our Reynolds decomposition, so eventually, we want to be solving for this quantity. To do that, we need to insert the Reynolds decomposition [katex]\phi=\bar{\phi} + \phi'[/katex] into our governing equations.</p>
+<p>Decomposing the flow field into its mean and fluctuating fields is the first step in deriving suitable equations we can use for steady-state turbulence calculations. We see that the mean (time-averaged) flow field [katex]\bar{\phi}[/katex] appears in our Reynolds decomposition, so eventually, we want to be solving for this quantity. To do that, we need to insert the Reynolds decomposition [katex]\phi=\bar{\phi} + \phi'[/katex] into our governing equations.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -170,7 +170,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Thus, let us write the above shown non-conservative 1D momentum equation in conservative form (only the advective non-linear term will change):</p>
+<p>Thus, let us write the non-conservative 1D momentum equation shown above in conservative form (only the advective non-linear term will change):</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -179,7 +179,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>At this point, since the momentum equation is written for the instantaneous velocity ([katex]U[/katex]) and pressure ([katex]P[/katex]) field, we can insert Reynolds decomposition for the velocity and pressure. This results in the following equation:</p>
+<p>At this point, since the momentum equation is written for the instantaneous velocity ([katex]U[/katex]) and pressure ([katex]P[/katex]) field, we can insert the Reynolds decomposition for the velocity and pressure. This results in the following equation:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -344,7 +344,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This is the equation we are solving when we deal with RANS turbulence modelling. It is rather common to solve the RANS equation in steady state mode, in which case the time derivative vanishes. In this case, the RANS momentum equation becomes:</p>
+<p>This is the equation we are solving when we deal with RANS turbulence modelling. It is rather common to solve the RANS equation in steady-state mode, in which case the time derivative vanishes. In this case, the RANS momentum equation becomes:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -513,7 +513,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Let's remind ourselves what the goal here is. We want to find and equation for the Reynolds stresses, that is, [katex]\overline{u'u'}[/katex], [katex]\overline{u'v'}[/katex], [katex]\overline{u'w'}[/katex], [katex]\overline{v'v'}[/katex], [katex]\overline{v'w'}[/katex], and [katex]\overline{w'w'}[/katex]. Thus, we need to have some form of equation that can compute these quantities, e.g. [katex]\overline{u'u'} = f(\mathbf{x},t)[/katex], where we need to determine the function [katex]f(\mathbf{x},t)[/katex].</p>
+<p>Let's remind ourselves what the goal here is. We want to find an equation for the Reynolds stresses, that is, [katex]\overline{u'u'}[/katex], [katex]\overline{u'v'}[/katex], [katex]\overline{u'w'}[/katex], [katex]\overline{v'v'}[/katex], [katex]\overline{v'w'}[/katex], and [katex]\overline{w'w'}[/katex]. Thus, we need to have some form of equation that can compute these quantities, e.g. [katex]\overline{u'u'} = f(\mathbf{x},t)[/katex], where we need to determine the function [katex]f(\mathbf{x},t)[/katex].</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1212,7 +1212,7 @@ k_t=\frac{1}{2}\left(u'u' + v'v' + w'w'\right)\\[1em]
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>But that is one big problem in turbulence modelling. Yes, the dimensions are correct, so the expression is <em>mathematically</em> correct, but that doesn't mean that it is <em>physically</em>. Let's say we multiply a force [katex]F[/katex] with units of [katex]N/m^2[/katex] by the number of bread produced, per year, in Germany. This is then expressed as [katex]F\cdot N_{bread}[/katex] and it has units of [katex]NB/m^2[/katex], where [katex]NB[/katex], of course, is the famous Newton-bread unit (and flavour!).</p>
+<p>But that is one big problem in turbulence modelling. Yes, the dimensions are correct, so the expression is <em>mathematically</em> correct, but that doesn't mean that it is <em>physically</em> meaningful. Let's say we multiply a force [katex]F[/katex] with units of [katex]N/m^2[/katex] by the number of bread produced, per year, in Germany. This is then expressed as [katex]F\cdot N_{bread}[/katex] and it has units of [katex]NB/m^2[/katex], where [katex]NB[/katex], of course, is the famous Newton-bread unit (and flavour!).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1220,7 +1220,7 @@ k_t=\frac{1}{2}\left(u'u' + v'v' + w'w'\right)\\[1em]
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>It is complete nonesense, of course, and while you may find this example a bit farfetched, turbulence modelling is full of examples where an approach may seem to make sense, but if you peek behind the curtains and try to understand the model in a bit more detail, you realise that it is full of flaws and shortcomings. We don't even need to investigate the equations in much detail, we can simply apply a given RANS model for different types of flow, and we will realise that some RANS model fail spectacularly while other perform well for the same case.</p>
+<p>It is complete nonesense, of course, and while you may find this example a bit farfetched, turbulence modelling is full of examples where an approach may seem to make sense, but if you peek behind the curtains and try to understand the model in a bit more detail, you realise that it is full of flaws and shortcomings. We don't even need to investigate the equations in much detail, we can simply apply a given RANS model for different types of flow, and we will realise that some RANS models fail spectacularly while other perform well for the same case.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1980,7 +1980,7 @@ C_{1\varepsilon}\frac{\varepsilon}{k}2\nu_t\mathbf{S}:\nabla\mathbf{u} - C_{2\va
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>In other words, we have constructed an update equation for [katex]\varepsilon[/katex] which we can iteratively solve until values for [katex]\varepsilon[/katex] no longer change (which is the case when we have converged to a steady state solution). The update equation was constructed for the quantity appearing in the time derivative, and so if we want to construct an equation for [katex]\varepsilon[/katex], our goal is to manipulate the Navier-Stokes equations so that the rate of dissipation of the turbulent kinetic energy [katex]\varepsilon[/katex] appears in the time derivative.</p>
+<p>In other words, we have constructed an update equation for [katex]\varepsilon[/katex] which we can iteratively solve until values for [katex]\varepsilon[/katex] no longer change (which is the case when we have converged to a steady-state solution). The update equation was constructed for the quantity appearing in the time derivative, and so if we want to construct an equation for [katex]\varepsilon[/katex], our goal is to manipulate the Navier-Stokes equations so that the rate of dissipation of the turbulent kinetic energy [katex]\varepsilon[/katex] appears in the time derivative.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -2197,7 +2197,7 @@ C_{1\varepsilon}\frac{\varepsilon}{k}2\nu_t\mathbf{S}:\nabla\mathbf{u} - C_{2\va
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>It has shown the be robust, work well for a broad range of flows, and ultimately, this is what counts. We can end up in endless debates on the meaning of turbulence and how to treat it, but in the meantime, engineers have real-world problems to which they need answers, and Jones and Launder provided such an answer.</p>
+<p>It has shown to be robust, work well for a broad range of flows, and ultimately, this is what counts. We can end up in endless debates on the meaning of turbulence and how to treat it, but in the meantime, engineers have real-world problems to which they need answers, and Jones and Launder provided such an answer.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -2205,7 +2205,7 @@ C_{1\varepsilon}\frac{\varepsilon}{k}2\nu_t\mathbf{S}:\nabla\mathbf{u} - C_{2\va
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>The units for the turbulent kinetic energy and rate of dissipation for the turbulent kinetic energy are [katex]m^2/s^2[/katex] and [katex]m^2/s^3[/katex]. If we squared the turbulent kinetic energy, we get units of [katex]k^2\,[m^4/s^4][/katex]. If we divide this by the dissipation, we get units of [katex]k^2/\varepsilon\,[m^2/s][/katex]. Perfect, this is the same units as our turbulent kinematic viscosity and so we can write:</p>
+<p>The units for the turbulent kinetic energy and rate of dissipation for the turbulent kinetic energy are [katex]m^2/s^2[/katex] and [katex]m^2/s^3[/katex]. If we squared the turbulent kinetic energy, we get units of [katex]k^2\,[m^4/s^4][/katex]. If we divide this by the dissipation, we get units of [katex]k^2/\varepsilon\,[m^2/s][/katex]. Perfect, these are the same units as those of our turbulent kinematic viscosity and so we can write:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -3943,7 +3943,7 @@ A_{characteristic} = \max[\min(шd^2,ш(\kappa\delta)^2),åш]\tag{201}</pre></d
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>While I have <em>ridiculed</em> some authors and models, that was mostly for entertainment (how else would I keep your attention span for this long?!). I know and understand that we have to make these modelling assumptions and that closure coefficients are a necessary evil. While they are annoying to work with, we also know that RANS turbulence model works really well for a lot of applications, just not all, but we can't expect that from equations butchered this badly. If anything, it is a miracle that RANS works as well as it does!</p>
+<p>While I have <em>ridiculed</em> some authors and models, that was mostly for entertainment (how else would I keep your attention span for this long?!). I know and understand that we have to make these modelling assumptions and that closure coefficients are a necessary evil. While they are annoying to work with, we also know that RANS turbulence models work really well for a lot of applications, just not all, but we can't expect that from equations butchered this badly. If anything, it is a miracle that RANS works as well as it does!</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -3955,7 +3955,7 @@ A_{characteristic} = \max[\min(шd^2,ш(\kappa\delta)^2),åш]\tag{201}</pre></d
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>This brings us to the end. What have we learned? Turbulence is an inherently 3D and unsteady phenomenon, yet RANS modelling allows us to model turbulence in lower dimensions in steady state conditions. We are seeking a time-averaged result of the quantities of interest, and this allows us to vastly speed up computational times.</p>
+<p>This brings us to the end. What have we learned? Turbulence is an inherently 3D and unsteady phenomenon, yet RANS modelling allows us to model turbulence in lower dimensions in steady-state conditions. We are seeking a time-averaged result of the quantities of interest, and this allows us to vastly speed up computational times.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -3971,7 +3971,7 @@ A_{characteristic} = \max[\min(шd^2,ш(\kappa\delta)^2),åш]\tag{201}</pre></d
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Finally, I also showed you how quickly we can come up with our own turbulence model. Sure, the model we derived is pointless and serves no other purpose than showing how to set up your own RANS model, but by going through the motion, you may understand other turbulence models better now by just looking at their equations.</p>
+<p>Finally, I also showed you how quickly we can come up with our own turbulence model. Sure, the model we derived is pointless and serves no other purpose than showing how to set up your own RANS model, but by going through the motions, you may understand other turbulence models better now by just looking at their equations.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

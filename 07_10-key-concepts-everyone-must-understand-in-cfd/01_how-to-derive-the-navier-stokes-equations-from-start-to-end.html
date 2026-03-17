@@ -46,7 +46,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>If you look up the Navier-Stokes equation in a textbook, you will find the equation provided but not derived. Some will go to the extent of deriving it, but either they start their derivation with an intermediate equation from which you have no idea where this is coming, or they jump so many steps that you can't follow the derivation.</p>
+<p>If you look up the Navier-Stokes equation in a textbook, you will find the equation provided but not derived. Some will go to the extent of deriving it, but either they start their derivation with an intermediate equation from which you have no idea where this is coming from, or they jump so many steps that you can't follow the derivation.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -54,7 +54,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>I love it when text books that have somewhere around 500 pages (or more) say that deriving the Navier-Stokes equation in detail is beyond the scope of the book. Really? You found 500 pages of other things to write about, surely you could add an additional 10 pages to derive those equation, no?</p>
+<p>I love it when text books that have somewhere around 500 pages (or more) say that deriving the Navier-Stokes equation in detail is beyond the scope of the book. Really? You found 500 pages of other things to write about, surely you could add an additional 10 pages to derive those equations, no?</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -66,7 +66,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We will start with a review of vector calculus, as we will use these concept extensively throughout the rest of the discussion. If you are already familiar with it, great, skip it, otherwise, read through it, it'll only take a few more minutes anyway. Afterwards, we jump straight in and derive the Reynolds transport theorem, which underpins all governing equations and transport equations in fluid mechanics. Knowing this theorem allows us to derive the conservation of mass and momentum, which we will do afterwards.</p>
+<p>We will start with a review of vector calculus, as we will use this concept extensively throughout the rest of the discussion. If you are already familiar with it, great, skip it, otherwise, read through it, it'll only take a few more minutes anyway. Afterwards, we jump straight in and derive the Reynolds transport theorem, which underpins all governing equations and transport equations in fluid mechanics. Knowing this theorem allows us to derive the conservation of mass and momentum, which we will do afterwards.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -74,7 +74,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>In this section, we will only review the most essential vector calculus that we need in the rest of the article. If we need something more specific, we will introduce when and if needed, but the things covered in this section will pop up throughout the derivation process, so I thought of covering it at the beginning of the article.</p>
+<p>In this section, we will only review the most essential vector calculus that we need in the rest of the article. If we need something more specific, we will introduce it when and if needed, but the things covered in this section will pop up throughout the derivation process, so I thought of covering it at the beginning of the article.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
@@ -228,7 +228,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>The curl operator is of great significance in fluid mechanics. Applied to the velocity vector, it produces vorticity, i.e. a rotational flow component. It is only defined for vector quantities as given as:</p>
+<p>The curl operator is of great significance in fluid mechanics. Applied to the velocity vector, it produces vorticity, i.e. a rotational flow component. It is only defined for vector quantities and is given by:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -252,7 +252,7 @@
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>Consider the circle on the left, which is shown for some point in time at [katex]t[/katex]. You could think that the circular boundary we see is the boundary of a collection of atoms. Let's assume that we are now imparting a force on these atoms, and as a result, they start to move. Intuitively, we can say that these atoms will not move in a static fashion but rather. in a fluid sense, and thus, after some time [katex]t+\Delta t[/katex], the boundary of all the atoms has changed as seen on the right-hand side of the figure.</p>
+<p>Consider the circle on the left, which is shown for some point in time at [katex]t[/katex]. You could think that the circular boundary we see is the boundary of a collection of atoms. Let's assume that we are now imparting a force on these atoms, and as a result, they start to move. Intuitively, we can say that these atoms will not move in a static fashion but rather in a fluid sense, and thus, after some time [katex]t+\Delta t[/katex], the boundary of all the atoms has changed as seen on the right-hand side of the figure.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -260,7 +260,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>There are two types of flow properties</p>
+<p>There are two types of flow properties:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:list -->
@@ -554,7 +554,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>This form is particularly useful if we want to derive a differential form of the Reynolds transport theorem. This can be achieved by requiring that the control volumes we are looking at to become zero, i.e. [katex]V \rightarrow 0[/katex]. In this case, we obtain</p>
+<p>This form is particularly useful if we want to derive a differential form of the Reynolds transport theorem. This can be achieved by requiring that the control volumes we are looking at to become infinitesimally small, i.e. [katex]V \rightarrow 0[/katex]. In this case, we obtain</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -562,7 +562,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>This is the final (differential) form of the Gauss (or divergence) theorem. Together with its integral form stated above, it is used in pretty much any equation we solve in CFD, from our conservation laws of mass, momentum, and energy to turbulence models, passive scalars, multiphase equations, and so on. Deriving any transport equation without the Reynolds transport theorem would be very difficult.</p>
+<p>This is the final (differential) form of the Reynolds transport theorem. Together with its integral form stated above, it is used in pretty much any equation we solve in CFD, from our conservation laws of mass, momentum, and energy to turbulence models, passive scalars, multiphase equations, and so on. Deriving any transport equation without the Reynolds transport theorem would be very difficult.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -598,7 +598,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>We have made two changes here. The first change is the usage of a partial derivative [katex]\partial/\partial t[/katex] instead of an ordinary derivative [katex]\mathrm{d}/\mathrm{d} t[/katex]. We do that as [katex]\rho[/katex] can not just change in time but also in space. Thus, we need to use the partial derivative whenever we have a derivative that depends on more than one variable.</p>
+<p>We have made two changes here. The first change is the usage of a partial derivative [katex]\partial/\partial t[/katex] instead of an ordinary derivative [katex]\mathrm{d}/\mathrm{d} t[/katex]. We do that as [katex]\rho[/katex] cannot just change in time but also in space. Thus, we need to use the partial derivative whenever we have a derivative that depends on more than one variable.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1179,7 +1179,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>Here, [katex]\mathbf{S}[/katex] represents the symmetric (strain) part, and [katex]\mathbf{\Omega}[/katex] the anti-symemtric (rotational) part. After we have dropped [katex]\mathbf{\Omega}[/katex], we can write our constitutive equation for the shear stresses of a fluid in the following form:</p>
+<p>Here, [katex]\mathbf{S}[/katex] represents the symmetric (strain) part, and [katex]\mathbf{\Omega}[/katex] the anti-symmetric (rotational) part. After we have dropped [katex]\mathbf{\Omega}[/katex], we can write our constitutive equation for the shear stresses of a fluid in the following form:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1247,7 +1247,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Therefore, if we expect a change in density, Stokes was saying that this will result in dilatation, and its effect contributes to the shear stresses. Since he decomposed the velocity into its translational, rotational, and dilatational part, its makes sense then (from a mathematical perspective), to include this additional term in our shear stress definition. This is done in the following:</p>
+<p>Therefore, if we expect a change in density, Stokes was saying that this will result in dilatation, and its effect contributes to the shear stresses. Since he decomposed the velocity into its translational, rotational, and dilatational part, it makes sense then (from a mathematical perspective), to include this additional term in our shear stress definition. This is done in the following:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1363,7 +1363,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>So there you have it: the derivation of the Navier-Stokes equations in just under an hour. That's not too bad! The key take-away messages are as follows:</p>
+<p>So there you have it: the derivation of the Navier-Stokes equations in just under an hour. That's not too bad! The key takeaway messages are as follows:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:list -->
@@ -1372,11 +1372,11 @@
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>Using the Reynolds transport theorem and applying it for the density, momentum, and energy, provides us with the set of equations that govern fluid dynamics, which we also know as the Navier-Stokes equations these days.</li>
+<li>Applying the Reynolds transport theorem to density, momentum, and energy, provides us with the set of equations that govern fluid dynamics, which we also know as the Navier-Stokes equations these days.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>The Navier-Stokes equations are not exact. The definition of the shear stresses is a constitutive equation that was derived from first principle but making assumptions about how the flow ought to behave. The question is still out whether these equations are indeed correct, despite an overwhelming body of evidence that they work well for a variety of cases.</li>
+<li>The Navier-Stokes equations are not exact. The definition of the shear stresses is a constitutive equation that was derived from first principles but making assumptions about how the flow ought to behave. The question is still out whether these equations are indeed correct, despite an overwhelming body of evidence that they work well for a variety of cases.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->

@@ -58,7 +58,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>But then, I was introduced to the world of high-performance computing (HPC). HPC to an aspiring CFD practitioner is like the discovery of Viagra for a retired Person; it's a game changer (or starter?). All of a sudden, I was able to run simulations in less than an hour that would otherwise take me days. This was reason enough to get acquainted with HPC, even though there was a step learning curve (I also had an HPC assignment due, which <em>likely</em> contributed to my motivation).</p>
+<p>But then, I was introduced to the world of high-performance computing (HPC). HPC to an aspiring CFD practitioner is like the discovery of Viagra for a retired Person; it's a game changer (or starter?). All of a sudden, I was able to run simulations in less than an hour that would otherwise take me days. This was reason enough to get acquainted with HPC, even though there was a steep learning curve (I also had an HPC assignment due, which <em>likely</em> contributed to my motivation).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -90,7 +90,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>While the Raspberry Pi example is good to understand how a cluster works, if we need serious computing power, as we do for CFD applications, we really want to use dedicated hardware. All major chip manufacturers offer dedicated compute hardware to build clusters, and these are somewhat different to what you would find in PCs and laptops. The main difference is speed and performance. They have more cores, more memory, and a network connection so fast that it would melt your router (<em>maybe</em>).</p>
+<p>While the Raspberry Pi example is good to understand how a cluster works, if we need serious computing power, as we do for CFD applications, we really want to use dedicated hardware. All major chip manufacturers offer dedicated compute hardware to build clusters, and these are somewhat different from what you would find in PCs and laptops. The main difference is speed and performance. They have more cores, more memory, and a network connection so fast that it would melt your router (<em>maybe</em>).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -158,7 +158,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>The speed-up, then, is coming from the fact that for each individual processor, it seems like the problem size is only 2.5 million cells, rather than the full 10 million cells, and so in an ideal world, we would expect (or rather, hope) that we can a 4-times faster simulation with 4 processors compared to a single processor simulation (e.g. SISD).</p>
+<p>The speed-up, then, is coming from the fact that for each individual processor, it seems like the problem size is only 2.5 million cells, rather than the full 10 million cells, and so in an ideal world, we would expect (or rather, hope) that we can get a 4-times faster simulation with 4 processors compared to a single processor simulation (e.g. SISD).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
@@ -166,7 +166,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Multiple instruction, single data (MISD) is a concept that only really exists for completeness in Flynn's taxonomy. While this <em>parallelisation</em> does exist in the real world, it does not make sense in the world of high-performance computing. The reason is that MISD performs multiple different instructions, but all on the same data. If we take the example from before, each processor gets the full 10 million cells mesh. If they all have to operate on it, we won't see a speed-up.</p>
+<p>Multiple instruction, single data (MISD) is a concept that only really exists for completeness in Flynn's taxonomy. While this <em>parallelisation</em> does exist in the real world, it does not make sense in the world of high-performance computing. The reason is that MISD performs multiple different instructions, but all on the same data. If we take the example from before, each processor gets the full 10-million-cell mesh. If they all have to operate on it, we won't see a speed-up.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -186,7 +186,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>With MIMD, we open ourselves up to multiphysics problems. The simplest and most studied one would be Fluid-Structure Interactions (FSI). Here, we solve a CFD problem and couple that with an FEA solver. Both the CFD and FEA solver have their own data to work on (multiple data). A CFD solver also would have different instructions compared to a FEA solver (multiple instructions), e.g. there is no "solve continuity equation" in the FEA solver, nor is there a "compute displacements and von Mises stresses" in the CFD solver.</p>
+<p>With MIMD, we open ourselves up to multiphysics problems. The simplest and most studied one would be Fluid-Structure Interactions (FSI). Here, we solve a CFD problem and couple that with an FEA solver. Both the CFD and FEA solver have their own data to work on (multiple data). A CFD solver would also have different instructions compared to a FEA solver (multiple instructions), e.g. there is no "solve continuity equation" in the FEA solver, nor is there a "compute displacements and von Mises stresses" in the CFD solver.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->

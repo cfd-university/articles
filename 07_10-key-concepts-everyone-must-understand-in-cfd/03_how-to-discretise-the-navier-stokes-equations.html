@@ -2,7 +2,7 @@
 <!-- https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/what-are-hyperbolic-parabolic-and-elliptic-equations-in-cfd/ -->
 
 <!-- wp:paragraph -->
-<p>In our article on <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/how-to-derive-the-navier-stokes-equations/" target="_blank" rel="noopener" title="">how to derive the Navier-Stokes equations from scratch</a>, I showed you how we can derive the governing equations of fluid mechanics. Once we have found an equation that we want to solve, and we do not have an analytic solution available, we have to approximate a solution to that equation, for which we have three possible methods available to us: the finite difference method, the finite volume method, and the fine element method.</p>
+<p>In our article on <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/how-to-derive-the-navier-stokes-equations/" target="_blank" rel="noopener" title="">how to derive the Navier-Stokes equations from scratch</a>, I showed you how we can derive the governing equations of fluid mechanics. Once we have found an equation that we want to solve, and we do not have an analytic solution available, we have to approximate a solution to that equation, for which we have three possible methods available to us: the finite difference method, the finite volume method, and the finite element method.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -64,15 +64,15 @@
 <!-- /wp:list -->
 
 <!-- wp:paragraph -->
-<p>The <a href="https://en.wikipedia.org/wiki/Finite_difference_method" target="_blank" rel="noopener" title="">finite difference method</a> approximates gradients directly. We find an equivalent expression that approximate first- and second-order derivatives, which we use to replace the symbolic derivatives in the Navier-Stokes equations. This is a quick and simple solution to a complex problem. However, across discontinuities (e.g. shock waves), gradients become infinitly large, and so a solution is difficult to obtain.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Finite_difference_method" target="_blank" rel="noopener" title="">finite difference method</a> approximates gradients directly. We find an equivalent expression that approximates first- and second-order derivatives, which we use to replace the symbolic derivatives in the Navier-Stokes equations. This is a quick and simple solution to a complex problem. However, across discontinuities (e.g. shock waves), gradients become infinitely large, and so a solution is difficult to obtain.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Most of the initial research on CFD, which began in ernest in the 1950s, was devoted to finding suitable numerical schemes that could treat the non-linear (advective) term in the Navier-Stokes equations. It was not until the 1980s that numerical schemes were introduced that could treat these non-linearities well (which we call high-resolution schemes these days). </p>
+<p>Most of the initial research on CFD, which began in earnest in the 1950s, was devoted to finding suitable numerical schemes that could treat the non-linear (advective) term in the Navier-Stokes equations. It was not until the 1980s that numerical schemes were introduced that could treat these non-linearities well (which we call high-resolution schemes these days). </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>The <a href="https://en.wikipedia.org/wiki/Finite_volume_method" target="_blank" rel="noopener" title="">finite volume method</a> makes use of the fact that we can rewrite a differential equation as an integral equation, i.e. we replace derivatives by integrals. Once we have an integral equation, solving discontinuities (shock waves) become not just a possibility but an integral part of the method. This makes this method a prime candidate for fluid mechanics application and it is the de facto standard for CFD applications.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Finite_volume_method" target="_blank" rel="noopener" title="">finite volume method</a> makes use of the fact that we can rewrite a differential equation as an integral equation, i.e. we replace derivatives by integrals. Once we have an integral equation, solving discontinuities (shock waves) becomes not just a possibility but an integral part of the method. This makes this method a prime candidate for fluid mechanics applications and it is the de facto standard for CFD applications.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -80,7 +80,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>In this article, then, I want to look at each method and show how we can use them to discretise the Navier-Stokes equations. By the end of this article, you should be ablet o take your equations you want to solve and write them in an algebraic form. This form can now be solved using either an explicit or implicit time stepping method, which will be covered in the next article.</p>
+<p>In this article, then, I want to look at each method and show how we can use them to discretise the Navier-Stokes equations. By the end of this article, you should be able to take your equations you want to solve and write them in an algebraic form. This form can now be solved using either an explicit or implicit time stepping method, which will be covered in the next article.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -88,7 +88,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>As stated above, the finite difference method approximates gradients directly. This approximaton is done through the Taylor series expansion, which provides us with a mechanism to replace symbolic derivatives with numeric approximations. Thus, once we undersand the Taylor series expansion, we can go straight to our Navier-Stokes equations, discretise, and solve them.</p>
+<p>As stated above, the finite difference method approximates gradients directly. This approximation is done through the Taylor series expansion, which provides us with a mechanism to replace symbolic derivatives with numeric approximations. Thus, once we understand the Taylor series expansion, we can go straight to our Navier-Stokes equations, discretise, and solve them.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
@@ -100,7 +100,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>I have talked about the Taylor series expansion a few times already on this website, but it is wirth introducing it in the context of the finite difference method again to show its importance. We last looked at the Taylor series in the derivation of the navier-Stokes equation article, and I'll reuse some of that material here and expand on it. If you feel comfortable with the Taylor series already, you can skip this section.</p>
+<p>I have talked about the Taylor series expansion a few times already on this website, but it is worth introducing it in the context of the finite difference method again to show its importance. We last looked at the Taylor series in the derivation of the Navier-Stokes equation article, and I'll reuse some of that material here and expand on it. If you feel comfortable with the Taylor series already, you can skip this section.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -172,11 +172,11 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>While it would require some explaining to arrive at this expresson, for our intent and purposes, it is sufficient to accept that we have to introduce a weighting where the first derivative has the strongest weight, while each subsequent derivative will influence the predicted value of [katex]T{t+\Delta t)[/katex] less and less.</p>
+<p>While it would require some explaining to arrive at this expression, for our intents and purposes, it is sufficient to accept that we have to introduce a weighting where the first derivative has the strongest weight, while each subsequent derivative will influence the predicted value of [katex]T(t+\Delta t)[/katex] less and less.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We can generalise the above expression for any quantity, and in fluid dynamics, such a generic quantity is tyically deonted by [katex]\phi[/katex]. The above expression thus becomes (only writing out the first derivatives now, but there are infinitly many, as expressed by the final term):</p>
+<p>We can generalise the above expression for any quantity, and in fluid dynamics, such a generic quantity is tyically denoted by [katex]\phi[/katex]. The above expression thus becomes (only writing out the first derivatives now, but there are infinitely many, as expressed by the final term):</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -192,7 +192,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>This is useful if we know some quantity in space at a location [katex]x[/katex], and we want to know its value around the neighbourhood of [katex]x[/katex]. We can also reverse the Taylor series and predict value in the past:</p>
+<p>This is useful if we know some quantity in space at a location [katex]x[/katex], and we want to know its value around the neighbourhood of [katex]x[/katex]. We can also reverse the Taylor series and predict values in the past:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -473,7 +473,7 @@
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>We looked at the Taylor series expansion, and one nice thing about it is that the more terms we include in our approxiation, the higher the order of our approximation will be. Constructing higher-order approximation requires a bit more background reading, but it is something we can easily achieve once we know how. This makes the finite difference method a very lucrative method for turbulence modelling research, especially direct numerical simulations (DNS). </li>
+<li>We looked at the Taylor series expansion, and one nice thing about it is that the more terms we include in our approxiation, the higher the order of our approximation will be. Constructing higher-order approximations requires a bit more background reading, but it is something we can easily achieve once we know how. This makes the finite difference method a very lucrative method for turbulence modelling research, especially direct numerical simulations (DNS). </li>
 <!-- /wp:list-item --></ul>
 <!-- /wp:list -->
 
@@ -1114,7 +1114,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>If we have a quick look into the finite difference method section, we can see that our aproximations to the derivatives are equivalent to our finite difference method approximations. This is a good thing, this means that our finite difference method and finite volume method are consistent.</p>
+<p>If we have a quick look into the finite difference method section, we can see that our approximations to the derivatives are equivalent to our finite difference method approximations. This is a good thing. This means that our finite difference method and finite volume method are consistent.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1334,7 +1334,7 @@
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>This can be shortend to:</p>
+<p>This can be shortened to:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
