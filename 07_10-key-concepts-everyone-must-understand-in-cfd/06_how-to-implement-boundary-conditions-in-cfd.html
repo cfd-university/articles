@@ -2,19 +2,19 @@
 <!-- https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/how-to-implement-boundary-conditions-in-cfd/ -->
 
 <!-- wp:paragraph -->
-<p>In this series thus far, we have looked at the governing equations of CFD, how to discretise them and what their character is. We have looked at different numerical schemes and how they influence various properties, such as accuracy. Eventually, we need to talk about boundary conditions, as every simulation will have to truncate the simulation domain somewhere.</p>
+<p>In this series thus far, we have looked at the governing equations of CFD, how to discretise them and what their characteristics are. We have looked at different numerical schemes and how they influence various properties, such as accuracy. Eventually, we need to talk about boundary conditions, as every simulation will have to truncate the simulation domain somewhere.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Thus, in this article, we take a deep dive into the (fascinating?!) world of boundary conditions, and I promise you, you might think they are easy and straightforward (I've been there), but they are not. The devil is in the detail, and by the end of this article, you will have an appreciation for what common issues, solved and unsolved, exist when we have to deal with boundary conditions.</p>
+<p>Thus, in this article, we take a deep dive into the (fascinating?!) world of boundary conditions. I promise you, you might think they are easy and straightforward (I've been there), but they are not. The devil is in the details, and by the end of this article, you will have an appreciation for what common issues, both solved and unsolved, arise when we deal with boundary conditions.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>In the process, we will see that there really are only three different types of boundary conditions, and if you understand them, you can model any kind of boundary. In most cases, we don't even need the third, so just knowing two, really, is all you need. With these two (or three) fundamental types of boundary conditions, we can derive boundary conditions like walls, symmetry planes, inlets, outlets, and so on, which are just different combinations of these two fundamental types of boundary conditions for the flow variables we are solving for.</p>
+<p>In the process, we will see that there really are only three different types of boundary conditions, and if you understand them, you can model any kind of boundary. In most cases, we don't even need the third, so really, just knowing two is all you need. With these two (or three) fundamental types of boundary conditions, we can derive boundary conditions like walls, symmetry planes, inlets, outlets, and so on, which are just different combinations of these two fundamental types of boundary conditions for the flow variables we are solving for.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>I can't make boundary conditions look sexy, but I can tell you about all of the dead bodies it has been hiding and its troubled past (and future), if that is something you are interested in, get the popcorn, we have a journey in front of us!</p>
+<p>I can't make boundary conditions look sexy, but I can tell you about all of the dead bodies they have been hiding and their troubled past (and future), if that is something you are interested in, get the popcorn. We have a journey in front of us!</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -58,7 +58,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Boundary conditions are hard. If you believe they aren't, then you either have never implemented them yourself or never have done any simulations where the adverse effects of boundary conditions become an issue. If you want to challenge yourself, go and set up a channel flow with Large Eddy Simulations. But no cheating; periodic boundary conditions aren't allowed. You will realise that there are as many different boundary conditions you can impose at the inlet as there are probably RANS turbulence models available, and some are better than others but not necessarily more correct.</p>
+<p>Boundary conditions are hard. If you believe they aren't, then you either have never implemented them yourself or have never done any simulations where the adverse effects of boundary conditions become an issue. If you want to challenge yourself, go and set up a channel flow with Large Eddy Simulations. But no cheating; periodic boundary conditions aren't allowed. You will realise that there are as many different boundary conditions you can impose at the inlet as there are probably RANS turbulence models available, and some are better than others but not necessarily more correct.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -128,7 +128,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>For a steady state RANS simulation, this might be OK, but you will still have to impose boundary conditions for your RANS model. If you are solving this flow with the [katex]k-\omega[/katex] SST model, for example, you will need to impose boundary conditions at the inlet for the turbulent kinetic energy [katex]k[/katex] and the specific dissipation rate [katex]\omega[/katex]. Are you confident that you can impose correct values for these quantities? And is a uniform distribution of [katex]k[/katex] and [katex]\omega[/katex] across the inlet plane a good approximation or would you expect these quantities to be non-uniformly distributed?</p>
+<p>For a steady-state RANS simulation, this might be OK, but you will still have to impose boundary conditions for your RANS model. If you are solving this flow with the [katex]k-\omega[/katex] SST model, for example, you will need to impose boundary conditions at the inlet for the turbulent kinetic energy [katex]k[/katex] and the specific dissipation rate [katex]\omega[/katex]. Are you confident that you can impose correct values for these quantities? And is a uniform distribution of [katex]k[/katex] and [katex]\omega[/katex] across the inlet plane a good approximation or would you expect these quantities to be non-uniformly distributed?</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -136,7 +136,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Thankfully, the values of [katex]k[/katex] and [katex]\omega[/katex] are not very sensitive to changes, so you will still get fairly good results in most cases, even if you can't accurately describe these values at the inlet. This is one positive attribute of RANS models. But once you want to resolve more turbulence, rather than modelling it, i.e. we are talking about scale-resolving turbulence such as Detached-eddy Simulations (DES), Scale-adaptative Simulations (SAS), Large-eddy Simulations (LES), or god forbid, even Direct Numerical Simulations (DNS), then the above discussed issues become a real problem!</p>
+<p>Thankfully, the values of [katex]k[/katex] and [katex]\omega[/katex] are not very sensitive to changes, so you will still get fairly good results in most cases, even if you can't accurately describe these values at the inlet. This is one positive attribute of RANS models. But once you want to resolve more turbulence, rather than modelling it, i.e. we are talking about scale-resolving turbulence such as Detached-Eddy Simulations (DES), Scale-Adaptive Simulations (SAS), Large-Eddy Simulations (LES), or god forbid, even Direct Numerical Simulations (DNS), then the above discussed issues become a real problem!</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -144,15 +144,15 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>The simplest approach is to give up before we even start, waive a white flag and pretend that there is no turbulence at the inlet. In this case, we set all turbulence to zero and only impose freestream conditions for velocity, pressure, and potentially temperature. This is the simplest approach and, in some cases, a good approximation. Wind tunnels are able to suck away unwanted boundary layers, so as long as we place our inlet at exactly the position where the boundary layer is sucked away and we develop a new boundary layer, we should be golden, right?</p>
+<p>The simplest approach is to give up before we even start, wave a white flag and pretend that there is no turbulence at the inlet. In this case, we set all turbulence to zero and only impose freestream conditions for velocity, pressure, and potentially temperature. This is the simplest approach and, in some cases, a good approximation. Wind tunnels are able to suck away unwanted boundary layers, so as long as we place our inlet at exactly the position where the boundary layer is sucked away and we develop a new boundary layer, we should be golden, right?</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Perhaps, and thinking only about the velocity, this is likely a good approximation. But what about the pressure? We looked at <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/what-are-hyperbolic-parabolic-and-elliptic-equations-in-cfd/#aioseo-elliptic-flows" target="_blank" rel="noopener" title="">elliptic flows in an earlier article</a> within this series, and the pressure is, for the most part, governed by an elliptic behaviour. What that means is that a change in pressure in one point of the flow will instantly propagate throughout the domain. This is why your flow starts turning around an obstacle before it has even reached it. Look at the streamlines around an airfoil, as shown in the above-linked article, to see what I mean.</p>
+<p>Perhaps, and thinking only about the velocity, this is likely a good approximation. But what about the pressure? We looked at <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/what-are-hyperbolic-parabolic-and-elliptic-equations-in-cfd/#aioseo-elliptic-flows" target="_blank" rel="noopener" title="">elliptic flows in an earlier article</a> within this series, and the pressure is, for the most part, governed by elliptic behaviour. What that means is that a change in pressure at one point of the flow will instantly propagate throughout the domain. This is why your flow starts turning around an obstacle before it has even reached it. Look at the streamlines around an airfoil, as shown in the above-linked article, to see what I mean.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>What this means for our simulation is that by placing an inlet somewhere, we restrict the propagation of pressure (waves) only in a direction away from the inlet. The pressure isn't allowed to go beyond the inlet, influence the velocity upstream of the inlet itself, and, as a result, change the velocity profile that would otherwise develop at the inlet. This may seem like a small thing, but always remember that the Navier-Stokes equations are non-linear. A small change can have large consequences. After all, turbulence is created by microscopic surface roughness (natural transition).</p>
+<p>What this means for our simulation is that by placing an inlet somewhere, we restrict the propagation of pressure (waves) only in a direction away from the inlet. The pressure isn't allowed to go beyond the inlet, influence the velocity upstream of the inlet itself, and, as a result, change the velocity profile that would otherwise develop at the inlet. This may seem like a small thing, but always remember that the Navier-Stokes equations are nonlinear. A small change can have large consequences. After all, turbulence is created by microscopic surface roughness (natural transition).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -160,7 +160,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Of course, if you are dealing with supersonic flows, your pressure is <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/what-are-hyperbolic-parabolic-and-elliptic-equations-in-cfd/#aioseo-hyperbolic-flows" target="_blank" rel="noopener" title="">hyperbolic</a>, meaning that it has a preferred direction of travel, unlike elliptic flows, where it is travelling in all directions, and so imposing an inlet here is easier. While you have gained simplicity at the inlet, you have shifted the problem to the numerical schemes, which now have to deal with strong non-linearities. We saw in the last article how to tackle those. Alas, not every flow is supersonic, so we are stuck with elliptic pressure-induced boundary issues.</p>
+<p>Of course, if you are dealing with supersonic flows, your pressure behaves <a href="https://cfd.university/learn/10-key-concepts-everyone-must-understand-in-cfd/what-are-hyperbolic-parabolic-and-elliptic-equations-in-cfd/#aioseo-hyperbolic-flows" target="_blank" rel="noopener" title="">hyperbolically</a>, meaning that it has a preferred direction of travel, unlike elliptic flows, where it is travelling in all directions, and so imposing an inlet here is easier. While you have gained simplicity at the inlet, you have shifted the problem to the numerical schemes, which now have to deal with strong non-linearities. We saw in the last article how to tackle those. Alas, not every flow is supersonic, so we are stuck with elliptic pressure-induced boundary issues.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -2348,7 +2348,7 @@ u_{out, corrected}=u_{out}\cdot r_m</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Boundary conditions only get more complicated as we increase the modelling complexity. The more we want to resolve, the more unknown quantities we have to prescribe at the inlet for which we typically don't have any reasonable values or estimates at hand. Scale-resolved turbulence modelling is the prime example here. Imposing physically correct fluctuations at the inlet for Large-eddy Simulations (LES) and Direct Numerical Simulations (DNS) are still unsolved questions, even though some progress has been made here.</p>
+<p>Boundary conditions only get more complicated as we increase the modelling complexity. The more we want to resolve, the more unknown quantities we have to prescribe at the inlet for which we typically don't have any reasonable values or estimates at hand. Scale-resolved turbulence modelling is the prime example here. Imposing physically correct fluctuations at the inlet for Large-Eddy Simulations (LES) and Direct Numerical Simulations (DNS) are still unsolved questions, even though some progress has been made here.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
