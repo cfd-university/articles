@@ -10,7 +10,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>So, while I will throw the same integrals at you in this article, I am going to slow things down. There will be lots of analogies and explanations before we even look at any equations. My goal with this article is to give you an intuition of what LES really is, not to bury you in yet more cryptic integrals. By the end of the article, you will (finally?!) understand LES from start to end.</p>
+<p>So, while I will throw the same integrals at you in this article, I am going to slow things down. There will be lots of analogies and explanations before we even look at any equations. My goal with this article is to give you an intuition of what LES really is, not to bury you in yet more cryptic integrals. By the end of the article, you will (finally?!) understand LES from start to finish.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -22,7 +22,7 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>And, for what it matters, I recommend a strong brew of black tea with 2 sugars and a dash of milk. You'll need it. Have yours ready? Good, then let's begin our journey!</p>
+<p>And, for what it's worth, I recommend a strong brew of black tea with 2 sugars and a dash of milk. You'll need it. Have yours ready? Good, then let's begin our journey!</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -37,8 +37,8 @@
 <h2 class="wp-block-heading">In this article</h2>
 <!-- /wp:heading -->
 
-<!-- wp:aioseo/table-of-contents {"headings":[{"id":10,"blockClientId":"bc9eb759-ebf3-4b62-97c7-cdcd00baf51b","content":"Introduction","level":2,"anchor":"aioseo-how-is-turbulence-modelled-in-cfd","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":14,"blockClientId":"9fa32e13-ab19-4492-b2bd-d1a81c09b129","content":"The main idea behind Large Eddy Simulations (LES)","level":2,"anchor":"aioseo-the-main-idea-behind-large-eddy-simulations-les","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":37,"blockClientId":"fad20364-94be-48ed-b61d-217c9c9b756d","content":"The need for local filtering","level":3,"anchor":"aioseo-the-need-for-local-filtering","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":108,"blockClientId":"332a8acf-dfa7-4542-a212-611413acf937","content":"The filtered Navier-Stokes equations","level":3,"anchor":"aioseo-the-filtered-navier-stokes-equations","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":160,"blockClientId":"70d13c46-3452-422d-aebf-07847ea2e595","content":"Modelling approaches for the unresolved subgrid scale turbulent eddies","level":3,"anchor":"aioseo-modelling-approaches-for-the-unresolved-subgrid-scale-turbulent-eddies","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":172,"blockClientId":"6af9ef61-a807-491a-a84d-dc47ec280518","content":"The Smagorinsky model","level":4,"anchor":"aioseo-the-smagorinsky-model","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":231,"blockClientId":"2b1b23d6-d738-4d65-877b-da89380291fc","content":"Comparing the Smagorinsky model with Prandtl's mixing length model","level":5,"anchor":"aioseo-comparing-the-smagorinsky-model-with-prandtls-mixing-length-model","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":254,"blockClientId":"d9587b73-5e56-4876-86f5-675e3410babb","content":"Improving upon the Smagorinsky subgrid scale model","level":4,"anchor":"aioseo-improving-upon-the-smagorinsky-subgrid-scale-model","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":259,"blockClientId":"d64dbae9-afbb-4741-8d90-87ed7b81b1ee","content":"Modifying the length scale: Van Driest damping function","level":5,"anchor":"aioseo-modifying-the-length-scale-van-driest-damping-function","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":276,"blockClientId":"8b1a6194-1d2e-4597-a8af-3d5ebfe796d1","content":"Dynamic calculation of the model constant Cs: Germano's dynamic subgrid-scale model","level":5,"anchor":"aioseo-dynamic-calculation-of-the-model-constant-cs-germanos-dynamic-subgrid-scale-model","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":334,"blockClientId":"eead76c4-1cf5-40f2-aede-7efdf9088544","content":"Modifying the velocity scale: Wall adaptive local eddy (WALE) viscosity model","level":5,"anchor":"aioseo-modifying-the-velocity-scale-wall-adaptive-local-eddy-wale-viscosity-model","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":378,"blockClientId":"779bb7c1-fe26-494e-8bc7-4cdc0ae019f0","content":"Removing the subgrid-scale model alltogether: Implicit Large Eddy Simulations (ILES)","level":5,"anchor":"aioseo-removing-the-subgrid-scale-model-alltogether-implicit-large-eddy-simulations-iles","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":384,"blockClientId":"982b7b76-0d50-4a2a-8942-d99b8461b81a","content":"A transport equation-based approach: The one equation subgrid-scale model","level":5,"anchor":"aioseo-a-transport-equation-based-approach-the-one-equation-subgrid-scale-model","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]}]},{"id":426,"blockClientId":"20b09bac-917c-4e1d-ac8e-873eacc22cff","content":"Summary","level":2,"anchor":"aioseo-summary","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
-<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-how-is-turbulence-modelled-in-cfd">Introduction</a></li><li><a href="#aioseo-the-main-idea-behind-large-eddy-simulations-les">The main idea behind Large Eddy Simulations (LES)</a><ul><li><a href="#aioseo-the-need-for-local-filtering">The need for local filtering</a></li><li><a href="#aioseo-the-filtered-navier-stokes-equations">The filtered Navier-Stokes equations</a></li><li><a href="#aioseo-modelling-approaches-for-the-unresolved-subgrid-scale-turbulent-eddies">Modelling approaches for the unresolved subgrid scale turbulent eddies</a><ul><li><a href="#aioseo-the-smagorinsky-model">The Smagorinsky model</a><ul><li><a href="#aioseo-comparing-the-smagorinsky-model-with-prandtls-mixing-length-model">Comparing the Smagorinsky model with Prandtl&#x27;s mixing length model</a></li></ul></li><li><a href="#aioseo-improving-upon-the-smagorinsky-subgrid-scale-model">Improving upon the Smagorinsky subgrid scale model</a><ul><li><a href="#aioseo-modifying-the-length-scale-van-driest-damping-function">Modifying the length scale: Van Driest damping function</a></li><li><a href="#aioseo-dynamic-calculation-of-the-model-constant-cs-germanos-dynamic-subgrid-scale-model">Dynamic calculation of the model constant Cs: Germano&#x27;s dynamic subgrid-scale model</a></li><li><a href="#aioseo-modifying-the-velocity-scale-wall-adaptive-local-eddy-wale-viscosity-model">Modifying the velocity scale: Wall adaptive local eddy (WALE) viscosity model</a></li><li><a href="#aioseo-removing-the-subgrid-scale-model-alltogether-implicit-large-eddy-simulations-iles">Removing the subgrid-scale model alltogether: Implicit Large Eddy Simulations (ILES)</a></li><li><a href="#aioseo-a-transport-equation-based-approach-the-one-equation-subgrid-scale-model">A transport equation-based approach: The one equation subgrid-scale model</a></li></ul></li></ul></li></ul></li><li><a href="#aioseo-summary">Summary</a></li></ul></div>
+<!-- wp:aioseo/table-of-contents {"headings":[{"id":10,"blockClientId":"bc9eb759-ebf3-4b62-97c7-cdcd00baf51b","content":"Introduction","level":2,"anchor":"aioseo-how-is-turbulence-modelled-in-cfd","order":0,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":14,"blockClientId":"9fa32e13-ab19-4492-b2bd-d1a81c09b129","content":"The main idea behind Large Eddy Simulations (LES)","level":2,"anchor":"aioseo-the-main-idea-behind-large-eddy-simulations-les","order":1,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":37,"blockClientId":"fad20364-94be-48ed-b61d-217c9c9b756d","content":"The need for local filtering","level":3,"anchor":"aioseo-the-need-for-local-filtering","order":2,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":108,"blockClientId":"332a8acf-dfa7-4542-a212-611413acf937","content":"The filtered Navier-Stokes equations","level":3,"anchor":"aioseo-the-filtered-navier-stokes-equations","order":3,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":160,"blockClientId":"70d13c46-3452-422d-aebf-07847ea2e595","content":"Modelling approaches for the unresolved subgrid scale turbulent eddies","level":3,"anchor":"aioseo-modelling-approaches-for-the-unresolved-subgrid-scale-turbulent-eddies","order":4,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":172,"blockClientId":"6af9ef61-a807-491a-a84d-dc47ec280518","content":"The Smagorinsky model","level":4,"anchor":"aioseo-the-smagorinsky-model","order":5,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":231,"blockClientId":"2b1b23d6-d738-4d65-877b-da89380291fc","content":"Comparing the Smagorinsky model with Prandtl's mixing length model","level":5,"anchor":"aioseo-comparing-the-smagorinsky-model-with-prandtls-mixing-length-model","order":6,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]},{"id":254,"blockClientId":"d9587b73-5e56-4876-86f5-675e3410babb","content":"Improving upon the Smagorinsky subgrid scale model","level":4,"anchor":"aioseo-improving-upon-the-smagorinsky-subgrid-scale-model","order":7,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[{"id":259,"blockClientId":"d64dbae9-afbb-4741-8d90-87ed7b81b1ee","content":"Modifying the length scale: Van Driest damping function","level":5,"anchor":"aioseo-modifying-the-length-scale-van-driest-damping-function","order":8,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":276,"blockClientId":"8b1a6194-1d2e-4597-a8af-3d5ebfe796d1","content":"Dynamic calculation of the model constant Cs: Germano's dynamic subgrid-scale model","level":5,"anchor":"aioseo-dynamic-calculation-of-the-model-constant-cs-germanos-dynamic-subgrid-scale-model","order":9,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":334,"blockClientId":"eead76c4-1cf5-40f2-aede-7efdf9088544","content":"Modifying the velocity scale: Wall adaptive local eddy (WALE) viscosity model","level":5,"anchor":"aioseo-modifying-the-velocity-scale-wall-adaptive-local-eddy-wale-viscosity-model","order":10,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":378,"blockClientId":"779bb7c1-fe26-494e-8bc7-4cdc0ae019f0","content":"Removing the subgrid-scale model altogether: Implicit Large Eddy Simulations (ILES)","level":5,"anchor":"aioseo-removing-the-subgrid-scale-model-altogether-implicit-large-eddy-simulations-iles","order":11,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]},{"id":384,"blockClientId":"982b7b76-0d50-4a2a-8942-d99b8461b81a","content":"A transport equation-based approach: The one equation subgrid-scale model","level":5,"anchor":"aioseo-a-transport-equation-based-approach-the-one-equation-subgrid-scale-model","order":12,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]}]}]},{"id":426,"blockClientId":"20b09bac-917c-4e1d-ac8e-873eacc22cff","content":"Summary","level":2,"anchor":"aioseo-summary","order":13,"editedContent":"","editedLevel":0,"editedOrder":0,"hidden":false,"headings":[]}]} -->
+<div class="wp-block-aioseo-table-of-contents"><ul><li><a href="#aioseo-how-is-turbulence-modelled-in-cfd">Introduction</a></li><li><a href="#aioseo-the-main-idea-behind-large-eddy-simulations-les">The main idea behind Large Eddy Simulations (LES)</a><ul><li><a href="#aioseo-the-need-for-local-filtering">The need for local filtering</a></li><li><a href="#aioseo-the-filtered-navier-stokes-equations">The filtered Navier-Stokes equations</a></li><li><a href="#aioseo-modelling-approaches-for-the-unresolved-subgrid-scale-turbulent-eddies">Modelling approaches for the unresolved subgrid scale turbulent eddies</a><ul><li><a href="#aioseo-the-smagorinsky-model">The Smagorinsky model</a><ul><li><a href="#aioseo-comparing-the-smagorinsky-model-with-prandtls-mixing-length-model">Comparing the Smagorinsky model with Prandtl&#x27;s mixing length model</a></li></ul></li><li><a href="#aioseo-improving-upon-the-smagorinsky-subgrid-scale-model">Improving upon the Smagorinsky subgrid scale model</a><ul><li><a href="#aioseo-modifying-the-length-scale-van-driest-damping-function">Modifying the length scale: Van Driest damping function</a></li><li><a href="#aioseo-dynamic-calculation-of-the-model-constant-cs-germanos-dynamic-subgrid-scale-model">Dynamic calculation of the model constant Cs: Germano&#x27;s dynamic subgrid-scale model</a></li><li><a href="#aioseo-modifying-the-velocity-scale-wall-adaptive-local-eddy-wale-viscosity-model">Modifying the velocity scale: Wall adaptive local eddy (WALE) viscosity model</a></li><li><a href="#aioseo-removing-the-subgrid-scale-model-altogether-implicit-large-eddy-simulations-iles">Removing the subgrid-scale model altogether: Implicit Large Eddy Simulations (ILES)</a></li><li><a href="#aioseo-a-transport-equation-based-approach-the-one-equation-subgrid-scale-model">A transport equation-based approach: The one equation subgrid-scale model</a></li></ul></li></ul></li></ul></li><li><a href="#aioseo-summary">Summary</a></li></ul></div>
 <!-- /wp:aioseo/table-of-contents -->
 
 <!-- wp:heading -->
@@ -154,7 +154,7 @@
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>We have all been there; it is Friday evening, and you are craving for some snacks, ice cream, chocolate, or all of the them combined. Your local 24/7-ish shop is just down the road, but you are too lazy to walk the 10 minutes, so you take your cycle instead and arrive at the shop within 2 minutes. On the way back, it takes you 2.5 minutes, and since you enjoy CFD and have a tendency to overanalyse everything, you completely forget about the snacks that you just bought and get to work analysing why your average speed decreased.</p>
+<p>We have all been there; it is Friday evening, and you are craving some snacks, ice cream, chocolate, or all of them combined. Your local 24/7-ish shop is just down the road, but you are too lazy to walk the 10 minutes, so you take your cycle instead and arrive at the shop within 2 minutes. On the way back, it takes you 2.5 minutes, and since you enjoy CFD and have a tendency to overanalyse everything, you completely forget about the snacks that you just bought and get to work analysing why your average speed decreased.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:separator -->
@@ -212,7 +212,7 @@
 <!-- /wp:separator -->
 
 <!-- wp:paragraph -->
-<p>It turns out, your average speed decreased because you buy snacks every Friday and exercise too little (well, you study CFD, what do you expect?). The 2 minute ride was already too much and so you slowed down on your return journey. Anyhow, it go you thinking about averages and how averaging isn't always as simple and straight forward as it may seem.</p>
+<p>It turns out, your average speed decreased because you buy snacks every Friday and exercise too little (well, you study CFD, what do you expect?). The two-minute ride was already too much and so you slowed down on your return journey. Anyhow, it got you thinking about averages and how averaging isn't always as simple and straight forward as it may seem.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -820,11 +820,11 @@ plt.show()
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>The same is the case for our subgrid scale viscosity [katex]\nu_{SGS}[/katex]. We can't measure it, as it accounts for the viscous dissipation that happens on length scales smaller than our grid size, so we have to decompose our subgrid scale viscosity into quantities that we can obtain or compute.</p>
+<p>The same is the case for our subgrid-scale viscosity [katex]\nu_{SGS}[/katex]. We can't measure it, as it accounts for the viscous dissipation that happens on length scales smaller than our grid size, so we have to decompose our subgrid-scale viscosity into quantities that we can obtain or compute.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>If we are tasked with finding suitable quantities that can be used to compute [katex]\nu_{SGS}[/katex], the first thing we would do is to look at its units, to figure out which other quantities we know that combine to the same units. So, for [katex]\nu_{SGS}[/katex], i.e. the kinematic subgrid scale viscosity, we have units of:</p>
+<p>If we are tasked with finding suitable quantities that can be used to compute [katex]\nu_{SGS}[/katex], the first thing we would do is to look at its units, to figure out which other quantities we know that combine to the same units. So, for [katex]\nu_{SGS}[/katex], i.e. the kinematic subgrid-scale viscosity, we have units of:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1037,7 +1037,7 @@ plt.show()
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>OK, let's take stock of what we have so far. In our quest to come up with an eddy viscosity model, we said that the additional dissipation that we loose by making our grid larger so that the smallest eddies are no longer resolved can be modelled by computing a subgrid-scale viscosity [katex]\nu_{SGS}=U\cdot l[/katex]. We have found an expression for the characteristic velocity [katex]U=\sqrt{2S_{ij}S_{ij}}\cdot l[/katex]. Plugging that into our equation for the subgrid scale viscosity, we get:</p>
+<p>OK, let's take stock of what we have so far. In our quest to come up with an eddy viscosity model, we said that the additional dissipation that we loose by making our grid larger so that the smallest eddies are no longer resolved can be modelled by computing a subgrid-scale viscosity [katex]\nu_{SGS}=U\cdot l[/katex]. We have found an expression for the characteristic velocity [katex]U=\sqrt{2S_{ij}S_{ij}}\cdot l[/katex]. Plugging that into our equation for the subgrid-scale viscosity, we get:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1089,7 +1089,7 @@ plt.show()
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>All that is left todo for us is to insert the definition of the characteristic length scale [katex]l[/katex], i.e. [katex]l=C_s\Delta[/katex] into our definition for the subgrid scale viscosity. If we do that. we arrive at:</p>
+<p>All that is left todo for us is to insert the definition of the characteristic length scale [katex]l[/katex], i.e. [katex]l=C_s\Delta[/katex] into our definition for the subgrid-scale viscosity. If we do that. we arrive at:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1135,7 +1135,7 @@ plt.show()
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>This new subgrid scale viscosity accounts for all of the unresolved eddies that would add viscous dissipation to the flow, that we are no longer resolving. We just looked at the first (and simplest) approach to compute this subgrid scale viscosity, which we called the Smagorinsky subgrid scale model. For the sake of completeness, let's put that here as well again:</p>
+<p>This new subgrid-scale viscosity accounts for all of the unresolved eddies that would add viscous dissipation to the flow, that we are no longer resolving. We just looked at the first (and simplest) approach to compute this subgrid-scale viscosity, which we called the Smagorinsky subgrid scale model. For the sake of completeness, let's put that here as well again:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1332,7 +1332,7 @@ A^+=26</pre></div>
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>This leads us to the modified subgrid scale viscosity as:</p>
+<p>This leads us to the modified subgrid-scale viscosity as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1377,7 +1377,7 @@ A^+=26</pre></div>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>The car is moving at a higher speed compared to the bulk  of the cars surrounding it: The car picking its way through traffic, potentially breaking traffic laws (e.g. undertaking, driving faster than the speed limit, weaving, etc.)</li>
+<li>The car is moving at a higher speed compared to the bulk  of the cars surrounding it: The car is picking its way through traffic, potentially breaking traffic laws (e.g. undertaking, driving faster than the speed limit, weaving, etc.)</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
@@ -1386,7 +1386,7 @@ A^+=26</pre></div>
 <!-- /wp:list -->
 
 <!-- wp:paragraph -->
-<p>Can we just stop for a moment and admire the absolut fever dream that is the Nissan Juke?</p>
+<p>Can we just stop for a moment and admire the absolute fever dream that is the Nissan Juke?</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:embed -->
@@ -1406,11 +1406,11 @@ A^+=26</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Let's remind ourselves again how we got the this single scale approach. In the LES, we filtered the Navier-Stokes equations with a single filter and, as a result, we obtained some unresolved subgrid scales which we now model with, for example, the Smagorinsky model. The importance here is that we use a single filter and thus have to find a single length and velocity scale to model the unresolved scales. Again, this is like the single (zoomed-in) image approach to measure a car's average speed.</p>
+<p>Let's remind ourselves again how we got this single-scale approach. In the LES, we filtered the Navier-Stokes equations with a single filter and, as a result, we obtained some unresolved subgrid scales which we now model with, for example, the Smagorinsky model. The importance here is that we use a single filter and thus have to find a single length and velocity scale to model the unresolved scales. Again, this is like the single (zoomed-in) image approach to measure a car's average speed.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>If we were to introduce a second filter now into the Navier-Stokes equations, and we make the second filter much larger than the first filter, then we get some additional information about the unresolved scales. This is like zooming out and getting additional average speed information of the traffic surround the car of which we are measuring the average speed.</p>
+<p>If we were to introduce a second filter now into the Navier-Stokes equations, and we make the second filter much larger than the first filter, then we get some additional information about the unresolved scales. This is like zooming out and getting additional average speed information of the traffic surrounding the car of which we are measuring the average speed.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1731,7 +1731,7 @@ g_{23}=\frac{\partial V}{\partial z}</pre></div>
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>Because the numerator goes to zero, it doesn't really matter what the strain rate is doing. Zero divided by a non-zero value will still be zero, and thus, the WALE subgrid-scale model achieves better near-wall treatment through a modified velocity scale that naturally vanishes at the wall (opposed to having to impose a damping function, such as the van Driest damping function, which modifies the length scale to achieve a vanishing subgrid scale viscosity).</p>
+<p>Because the numerator goes to zero, it doesn't really matter what the strain rate is doing. Zero divided by a non-zero value will still be zero, and thus, the WALE subgrid-scale model achieves better near-wall treatment through a modified velocity scale that naturally vanishes at the wall (opposed to having to impose a damping function, such as the van Driest damping function, which modifies the length scale to achieve a vanishing subgrid-scale viscosity).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1783,7 +1783,7 @@ g_{23}=\frac{\partial V}{\partial z}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":5} -->
-<h5 class="wp-block-heading" id="aioseo-removing-the-subgrid-scale-model-alltogether-implicit-large-eddy-simulations-iles">Removing the subgrid-scale model alltogether: Implicit Large Eddy Simulations (ILES)</h5>
+<h5 class="wp-block-heading" id="aioseo-removing-the-subgrid-scale-model-altogether-implicit-large-eddy-simulations-iles">Removing the subgrid-scale model altogether: Implicit Large Eddy Simulations (ILES)</h5>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
@@ -1832,11 +1832,11 @@ g_{23}=\frac{\partial V}{\partial z}</pre></div>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>Germano's dynamic subgrid-scale model: Calculate [katex]C_s[/katex] dynamically so that it adjusts the strength of the additional subgrid scale viscosity based on the flow type</li>
+<li>Germano's dynamic subgrid-scale model: Calculate [katex]C_s[/katex] dynamically so that it adjusts the strength of the additional subgrid-scale viscosity based on the flow type</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>The wall-adaptive local eddy (WALE) subgrid-scale model: This modifies the velocity scale [katex]U[/katex] so that it becomes zero near the wall so that the additional subgrid scale viscosity vanishes near the wall to restore the correct physical behaviour.</li>
+<li>The wall-adaptive local eddy (WALE) subgrid-scale model: This modifies the velocity scale [katex]U[/katex] so that it becomes zero near the wall so that the additional subgrid-scale viscosity vanishes near the wall to restore the correct physical behaviour.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
@@ -1853,7 +1853,7 @@ g_{23}=\frac{\partial V}{\partial z}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Thus, if the turbulent kinetic energy (per unit mass) of the subgrid-scale has units of [katex][m^2/s^2][/katex], then taking the square root will give us the correct units of a velocity. Thus, for our subgrid scale viscosity model, we can express it with [katex]k_{SGS}[/katex] as:</p>
+<p>Thus, if the turbulent kinetic energy (per unit mass) of the subgrid-scale has units of [katex][m^2/s^2][/katex], then taking the square root will give us the correct units of a velocity. Thus, for our subgrid-scale viscosity model, we can express it with [katex]k_{SGS}[/katex] as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1978,7 +1978,7 @@ S=P_{SGS}-\varepsilon_{SGS}</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Finally, we saw the occurance of the subgrid scale viscosity [katex]\nu_{SGS}[/katex] in the transport equation for the production and dissipation term. We insert our Boussinesq eddy viscosity assumption here, that is, [katex]\nu_{SGS}=(C_s\Delta)\sqrt{k_{SGS}}[/katex]. Doing this and putting everything together, we arrive at the final transport equation:</p>
+<p>Finally, we saw the occurance of the subgrid-scale viscosity [katex]\nu_{SGS}[/katex] in the transport equation for the production and dissipation term. We insert our Boussinesq eddy viscosity assumption here, that is, [katex]\nu_{SGS}=(C_s\Delta)\sqrt{k_{SGS}}[/katex]. Doing this and putting everything together, we arrive at the final transport equation:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
