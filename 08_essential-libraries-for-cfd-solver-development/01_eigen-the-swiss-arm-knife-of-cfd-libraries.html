@@ -778,7 +778,7 @@ cmake -B build/ -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE='build/ge
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>In Eigen, we have several of these aliases or typedefs, and the general structure is: <code>Matrix</code> (or <code>Vector</code>) + <code>size</code> + <code>type</code>. The size is a number between 2 and 4, and the size is the first letter of the type to be used, that is, <code>i</code> for <code>int</code>, <code>f</code> for <code>float</code>, <code>d</code> for <code>double</code>. As an example, <code>Eigen::Matrix3d</code> would define a 3-by-3 matrix using doubles. <code>Eigen::Vector3i</code> would define a column vector with 3 doubles, while <code>Eigen::RowVector3i</code> would create the corresponding row vector.</p>
+<p>In Eigen, we have several of these aliases or typedefs, and the general structure is: <code>Matrix</code> (or <code>Vector</code>) + <code>size</code> + <code>type</code>. The size is a number between 2 and 4, and the size is the first letter of the type to be used, that is, <code>i</code> for <code>int</code>, <code>f</code> for <code>float</code>, <code>d</code> for <code>double</code>. As an example, <code>Eigen::Matrix3d</code> would define a 3-by-3 matrix using doubles. <code>Eigen::Vector3i</code> would define a column vector with 3 integers, while <code>Eigen::RowVector3i</code> would create the corresponding row vector.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -2322,7 +2322,7 @@ Laplacian:
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Then, on lines 75-78, I can now set the values to specific values as I wish, without having to loop over the matrix. Instead of the <code>setConstant(value)</code> function, I could have also used <code>setOnes(0)</code>, but the <code>setConstant(value)</code> method is more general, hence I have used it here.</p>
+<p>Then, on lines 75-78, I can now set the values to specific values as I wish, without having to loop over the matrix. Instead of the <code>setConstant(value)</code> function, I could have also used <code>setOnes()</code>, but the <code>setConstant(value)</code> method is more general, hence I have used it here.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
