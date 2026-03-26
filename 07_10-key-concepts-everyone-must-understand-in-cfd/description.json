@@ -6,67 +6,106 @@
         "01_how-to-derive-the-navier-stokes-equations-from-start-to-end.html": {
             "heading": "How to Derive the Navier-Stokes Equations: From start to end",
             "slug": "how-to-derive-the-navier-stokes-equations",
-            "description": "If you want to know how to derive the Navier-Stokes equations, look no further; this article derives them from start to end, with explanations and no omissions!"
+            "description": "If you want to know how to derive the Navier-Stokes equations, look no further; this article derives them from start to end, with explanations and no omissions!",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }
         },
         "02_what-are-hyperbolic-parabolic-and-elliptic-equations-in-cfd.html": {
             "heading": "What are Hyperbolic, parabolic, and elliptic equations in CFD?",
             "slug": "what-are-hyperbolic-parabolic-and-elliptic-equations-in-cfd",
-            "description": "What are hyperbolic, parabolic, and elliptic equations in CFD? Learn how to classify them and what they physically represent with examples and derivations."
+            "description": "What are hyperbolic, parabolic, and elliptic equations in CFD? Learn how to classify them and what they physically represent with examples and derivations.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }
         },
         "03_how-to-discretise-the-navier-stokes-equations.html": {
             "heading": "How to discretise the Navier-Stokes equations",
             "slug": "how-to-discretise-the-navier-stokes-equations",
-            "description": "Learn how to discretise the Navier-Stokes equation using both the finite difference and finite volume method with explicit and implicit time integration."
+            "description": "Learn how to discretise the Navier-Stokes equation using both the finite difference and finite volume method with explicit and implicit time integration.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }
         },
         "04_explicit-vs-implicit-time-integration-and-the-cfl-condition.html": {
             "heading": "Explicit vs. Implicit time integration and the CFL condition",
             "slug": "explicit-vs-implicit-time-integration-and-the-cfl-condition",
-            "description": "Explore the main differences between explicit and implicit time integration techniques, how it relates to the CFL number, and how to ensure stability."
+            "description": "Explore the main differences between explicit and implicit time integration techniques, how it relates to the CFL number, and how to ensure stability.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }                    
         },
         "05_space-and-time-integration-schemes-for-cfd-applications.html": {
             "heading": "Space and time integration schemes for CFD applications",
             "slug": "space-and-time-integration-schemes-for-cfd-applications",
-            "description": "Learn the most common schemes used in finite difference and finite volume CFD solvers, as well as how to integrate in time using explicit and implicit schemes."
+            "description": "Learn the most common schemes used in finite difference and finite volume CFD solvers, as well as how to integrate in time using explicit and implicit schemes.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }        
         },
         "06_how-to-implement-boundary-conditions-in-cfd.html": {
             "heading": "How to implement boundary conditions in CFD",
             "slug": "how-to-implement-boundary-conditions-in-cfd",
-            "description": "Learn how to implement boundary conditions for CFD applications and what challenges we face when dealing with open boundary conditions."
+            "description": "Learn how to implement boundary conditions for CFD applications and what challenges we face when dealing with open boundary conditions.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }        
         },
         "07_how-to-solve-incompressible-and-compressible-flows-in-cfd.html": {
             "heading": "How to solve incompressible and compressible flows in CFD",
             "slug": "how-to-solve-incompressible-and-compressible-flows-in-cfd",
-            "description": "Learn what challenges exist in solving incompressible and compressible flows and what algorithms exist to solve these equations, all in one article."
+            "description": "Learn what challenges exist in solving incompressible and compressible flows and what algorithms exist to solve these equations, all in one article.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }        
         },
         "08_the-origin-of-turbulence-and-direct-numerical-simulations-dns.html": {
             "heading": "The origin of turbulence and Direct Numerical Simulations (DNS)",
             "slug": "the-origin-of-turbulence-and-direct-numerical-simulations-dns",
-            "description": "Learn where turbulence is coming from, both from a physical and mathematical point of view, and how to explicitly resolve it using Direct Numerical Simulations."
+            "description": "Learn where turbulence is coming from, both from a physical and mathematical point of view, and how to explicitly resolve it using Direct Numerical Simulations.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }        
         },
         "09_the-introduction-to-large-eddy-simulations-les-i-wish-i-had.html": {
             "heading": "The introduction to Large Eddy Simulations (LES) I wish I had",
             "slug": "the-introduction-to-large-eddy-simulations-les-i-wish-i-had",
-            "description": "Learn everything there is to know about Large Eddy Simulations in a single article. From Smagorinsky's humble beginnings to advanced subgrid-scale models."
+            "description": "Learn everything there is to know about Large Eddy Simulations in a single article. From Smagorinsky's humble beginnings to advanced subgrid-scale models.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }        
         },
         "10_all-you-need-to-know-about-rans-turbulence-modelling-in-one-article.html": {
             "heading": "All you need to know about RANS turbulence modelling in one article",
             "slug": "all-you-need-to-know-about-rans-turbulence-modelling-in-one-article",
-            "description": "Learn all there is to know about classical RANS turbulence modelling in CFD in just one single article, including how to create your own RANS model"
+            "description": "Learn all there is to know about classical RANS turbulence modelling in CFD in just one single article, including how to create your own RANS model",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }        
         },
         "11_advanced-rans-and-hybrid-ransles-turbulence-modelling-in-cfd.html": {
             "heading": "Advanced RANS and hybrid RANS/LES turbulence modelling in CFD",
             "slug": "advanced-rans-and-hybrid-rans-les-turbulence-modelling-in-cfd",
-            "description": "Take a deep dive into advanced RANS modelling techniques in CFD, including transitional RANS modelling, DES, DDES, IDDES, SAS, and WMLES."
+            "description": "Take a deep dive into advanced RANS modelling techniques in CFD, including transitional RANS modelling, DES, DDES, IDDES, SAS, and WMLES.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }        
         },
         "12_mesh-generation-in-cfd-all-you-need-to-know-in-one-article.html": {
             "heading": "Mesh generation in CFD: All you need to know in one article",
             "slug": "mesh-generation-in-cfd-all-you-need-to-know-in-one-article",
-            "description": "Learn all there is to know about mesh generation in CFD, from structured to unstructured algorithms and why mesh quality is so important."
+            "description": "Learn all there is to know about mesh generation in CFD, from structured to unstructured algorithms and why mesh quality is so important.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }        
         },
         "13_cfd-on-steroids-high-performance-computing-and-code-parallelisation.html": {
             "heading": "CFD on Steroids: High-performance computing and code parallelisation",
             "slug": "cfd-on-steroids-high-performance-computing-and-code-parallelisation",
-            "description": "Learn all there is to know about code parallelisation for CFD applications; from domain decomposition to parallelisation frameworks like MPI, CUDA, and OpenMP."
+            "description": "Learn all there is to know about code parallelisation for CFD applications; from domain decomposition to parallelisation frameworks like MPI, CUDA, and OpenMP.",
+            "contributors": {
+                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+            }        
         }
     }
 }
