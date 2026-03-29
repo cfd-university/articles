@@ -573,7 +573,7 @@ u_\eta = (\nu\varepsilon)^\frac{1}{4}= (10^{-6}\cdot 10^{-5})^\frac{1}{4}=(10^{-
 
 <!-- wp:column {"width":"66.66%"} -->
 <div class="wp-block-column" style="flex-basis:66.66%"><!-- wp:paragraph -->
-<p>As the velocity increases, the nonlinear term will start to introduce small fluctuations. These fluctuations then feed into the so-called Tollmien-Schlichting waves, which grow alongside the flow within a laminar boundary layer.</p>
+<p>As the velocity increases, the non-linear term will start to introduce small fluctuations. These fluctuations then feed into the so-called Tollmien-Schlichting waves, which grow alongside the flow within a laminar boundary layer.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -766,7 +766,7 @@ u_\eta = (\nu\varepsilon)^\frac{1}{4}= (10^{-6}\cdot 10^{-5})^\frac{1}{4}=(10^{-
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Since the fluctuating component goes to zero when time-averaged, this means that taking the time average of any linear term, containing either the velocity or pressure, will just return the time-averaged component of either the velocity or pressure. So nothing changes for the linear terms. But let's have a look at the nonlinear term. Here, we have:</p>
+<p>Since the fluctuating component goes to zero when time-averaged, this means that taking the time average of any linear term, containing either the velocity or pressure, will just return the time-averaged component of either the velocity or pressure. So nothing changes for the linear terms. But let's have a look at the non-linear term. Here, we have:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -986,11 +986,11 @@ plt.show()
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>The above equation represents the time-averaged form of the momentum equation decomposed into its mean and fluctuation pressure and velocity components. The nonlinear term produced an additional term, i.e. [katex]\partial (u'u')/\partial x[/katex], which we call the Reynolds stresses, or the Reynolds stress tensor (in two or three dimension, we will get a 2 by 2, and a 3 by 3 tensor, respectively).</p>
+<p>The above equation represents the time-averaged form of the momentum equation decomposed into its mean and fluctuation pressure and velocity components. The non-linear term produced an additional term, i.e. [katex]\partial (u'u')/\partial x[/katex], which we call the Reynolds stresses, or the Reynolds stress tensor (in two or three dimension, we will get a 2 by 2, and a 3 by 3 tensor, respectively).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We know that the Reynolds stress tensor is constructed of velocity fluctuations, which, by definition, are only present for a turbulent flow (for a laminar flow, [katex]u'=0[/katex]). Therefore, we can say that the Reynolds stresses are an indicator of the level of turbulence in our flow. We also know that the Reynolds stresses were produced by time averaging the nonlinear term. This means that it is the nonlinear term that produces turbulence, in a mathematical sense.</p>
+<p>We know that the Reynolds stress tensor is constructed of velocity fluctuations, which, by definition, are only present for a turbulent flow (for a laminar flow, [katex]u'=0[/katex]). Therefore, we can say that the Reynolds stresses are an indicator of the level of turbulence in our flow. We also know that the Reynolds stresses were produced by time averaging the non-linear term. This means that it is the non-linear term that produces turbulence, in a mathematical sense.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1002,11 +1002,11 @@ plt.show()
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>We say that at low wave numbers (to the left on the x-axis), we have some energy input that is feeding the energy cascade, i.e. driving turbulence. This energy is coming from the nonlinear term, which produces the Reynolds stresses, and it is these Reynolds stresses that <em>produce</em> turbulence at the lowest wave numbers (largest eddy sizes). Energy is then cascaded down to the highest wave numbers (smallest eddy sizes) where all turbulence is eventually <em>destroyed</em> through viscous heating.</p>
+<p>We say that at low wave numbers (to the left on the x-axis), we have some energy input that is feeding the energy cascade, i.e. driving turbulence. This energy is coming from the non-linear term, which produces the Reynolds stresses, and it is these Reynolds stresses that <em>produce</em> turbulence at the lowest wave numbers (largest eddy sizes). Energy is then cascaded down to the highest wave numbers (smallest eddy sizes) where all turbulence is eventually <em>destroyed</em> through viscous heating.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This means that the energy is taken out of a turbulent flow at the smallest length scales through the dissipative term in the Navier-Stokes equation, i.e. [katex]\nu\nabla^2\mathbf{U}[/katex]. An interesting problem starts to occur when we use a mesh that can not resolve the smallest length scales (which is commonly the case). In this case, we have an imbalance between the energy produced at the largest eddy sizes through the nonlinear term and the energy destroyed at the smallest eddy sizes through the dissipative term.</p>
+<p>This means that the energy is taken out of a turbulent flow at the smallest length scales through the dissipative term in the Navier-Stokes equation, i.e. [katex]\nu\nabla^2\mathbf{U}[/katex]. An interesting problem starts to occur when we use a mesh that can not resolve the smallest length scales (which is commonly the case). In this case, we have an imbalance between the energy produced at the largest eddy sizes through the non-linear term and the energy destroyed at the smallest eddy sizes through the dissipative term.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1014,19 +1014,19 @@ plt.show()
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This also explains why the central scheme, which we have looked at now in a few articles, can't be used to approximate the nonlinear term in the Navier-Stokes equation; it is just not dissipative enough! If we do resolve all turbulent flow scales, then the central scheme can be used again for the nonlinear term, and sometimes we do exactly that (though we can still make use of high-resolution schemes, and people also do that).</p>
+<p>This also explains why the central scheme, which we have looked at now in a few articles, can't be used to approximate the non-linear term in the Navier-Stokes equation; it is just not dissipative enough! If we do resolve all turbulent flow scales, then the central scheme can be used again for the non-linear term, and sometimes we do exactly that (though we can still make use of high-resolution schemes, and people also do that).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>So, to summarise, in a mathematical sense, we can see by time-averaging the Navier-Stokes momentum equation that turbulence is produced by the nonlinear term. The time averaging produces a new term that we have labelled the Reynolds stresses. Since the Reynolds stresses are correlated through the continuity equation, we know that the Reynolds stresses are non-zero.</p>
+<p>So, to summarise, in a mathematical sense, we can see by time-averaging the Navier-Stokes momentum equation that turbulence is produced by the non-linear term. The time averaging produces a new term that we have labelled the Reynolds stresses. Since the Reynolds stresses are correlated through the continuity equation, we know that the Reynolds stresses are non-zero.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Furthermore, since we have to conserve momentum, if we <em>generate more</em> turbulence, i.e. we increase the magnitude of the Reynolds stresses, the mean flow gradients of the nonlinear term have to decrease, as energy is taken away from them and fed into the Reynolds stresses. Momentum is conserved, which means that the sum of the mean flow gradient of the nonlinear term and the Reynolds stresses has to stay constant (as both are coming from the nonlinear term).</p>
+<p>Furthermore, since we have to conserve momentum, if we <em>generate more</em> turbulence, i.e. we increase the magnitude of the Reynolds stresses, the mean flow gradients of the non-linear term have to decrease, as energy is taken away from them and fed into the Reynolds stresses. Momentum is conserved, which means that the sum of the mean flow gradient of the non-linear term and the Reynolds stresses has to stay constant (as both are coming from the non-linear term).</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>This is where turbulence is comes from, and it just highlights once more the importance of capturing this term accurately through our numerical schemes!</p>
+<p>This is where turbulence comes from, and it just highlights once more the importance of capturing this term accurately through our numerical schemes!</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -1084,7 +1084,7 @@ plt.show()
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>We can see from the figure above that DNS models the entire spectrum. The energy production (through the nonlinear term, where mean flow gradients transfer some of their energy to the Reynolds stresses) is captured, and the turbulent energy is cascaded down to smaller eddies, until all eddies dissipate into heat. This happens when the local Reynolds number, based on the flow's viscosity, the diameter of the eddy as a characteristic length, and the velocity based on the angular velocity of the eddy, reaches a value of 1, i.e. when viscosity starts to dominate.</p>
+<p>We can see from the figure above that DNS models the entire spectrum. The energy production (through the non-linear term, where mean flow gradients transfer some of their energy to the Reynolds stresses) is captured, and the turbulent energy is cascaded down to smaller eddies, until all eddies dissipate into heat. This happens when the local Reynolds number, based on the flow's viscosity, the diameter of the eddy as a characteristic length, and the velocity based on the angular velocity of the eddy, reaches a value of 1, i.e. when viscosity starts to dominate.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -1230,7 +1230,7 @@ P=\bar{p} + p'</pre></div>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>In our discussion on where turbulence is coming from in a mathematical sense, we derived the mean flow equations, which showed us that turbulence is <em>generated</em> by the nonlinear term. Inserting the Reynolds decomposition for the nonlinear velocity term resulted in additional Reynolds stresses. The equation we obtained was given, in one dimension, as:</p>
+<p>In our discussion on where turbulence is coming from in a mathematical sense, we derived the mean flow equations, which showed us that turbulence is <em>generated</em> by the non-linear term. Inserting the Reynolds decomposition for the non-linear velocity term resulted in additional Reynolds stresses. The equation we obtained was given, in one dimension, as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
@@ -1246,7 +1246,7 @@ P=\bar{p} + p'</pre></div>
 <!-- /wp:katex/display-block -->
 
 <!-- wp:paragraph -->
-<p>This is the form you will commonly see in the literature, where the Reynolds stresses are now given as [katex]\rho\overline{u'u'}[/katex]. As alluded to above, this is a one-dimensional equation, but if we were to write this for a three-dimensional case, we would now gain additional nonlinear terms in the y and z directions, containing velocity fluctuations in the y and z directions as well. For each additional nonlinear term, we have to add one additional Reynolds stress term, and thus our three-dimensional, mean flow momentum equations can be written as:</p>
+<p>This is the form you will commonly see in the literature, where the Reynolds stresses are now given as [katex]\rho\overline{u'u'}[/katex]. As alluded to above, this is a one-dimensional equation, but if we were to write this for a three-dimensional case, we would now gain additional non-linear terms in the y and z directions, containing velocity fluctuations in the y and z directions as well. For each additional non-linear term, we have to add one additional Reynolds stress term, and thus our three-dimensional, mean flow momentum equations can be written as:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:katex/display-block -->
