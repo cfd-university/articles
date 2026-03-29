@@ -2,16 +2,24 @@ This repository contains the raw HTML of all articles hosted on [cfd.university]
 
 Having all articles on GitHub allows for collaborative improvements of articles. If you have found issues, inconsistencies, or errors with the articles, please feel free to open up a new issue.
 
-Articles on [cfd.university](https://cfd.university) are pulled weekly (Tuesday at 8am GMT) from this repository, at which the cache will be flushed and rebuild as well. Critical changes can be pushed quicker, but will require me to do that manually. 
+Articles on [cfd.university](https://cfd.university) are pulled weekly (Tuesday at 8am GMT) from this repository, at which the cache will be flushed and rebuilt as well. Critical changes can be pushed quicker, but will require me to do that manually. 
 
 The articles are licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
 ## Contribution guideline
 
-Depending on how comfortable you feel with raw HTML, you can either:
+Depending on how comfortable you feel with git/GitHub and raw HTML, you can either:
 
-1. Make changes directly to the raw HTML and submit a pull request
+1. Fork this repository and make changes directly to the raw HTML and submit a pull request.
 2. Open an issue and state what needs fixing/changing. I can then make those changes myself. In this case, you don't need to touch the HTML yourself.
+
+## Spelling rules
+
+Use British English for all spelling/corrections, but feel free to ignore the following spellings (because I am proudly inconsistent):
+
+- metre -> meter
+- centre -> center
+- aeroplane -> airplane
 
 ## Article structure
 
