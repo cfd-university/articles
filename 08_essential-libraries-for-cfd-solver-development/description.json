@@ -6,7 +6,10 @@
         "01_eigen-the-swiss-arm-knife-of-cfd-libraries.html": {
             "heading": "Eigen: The Swiss Army Knife of CFD libraries",
             "slug": "eigen-the-swiss-arm-knife-of-cfd-libraries",
-            "description": "Eigen is a linear algebra library that supports matrix and vector operations, which will help you write cleaner and more performant CFD solvers."
+            "description": "Eigen is a linear algebra library that supports matrix and vector operations, which will help you write cleaner and more performant CFD solvers.",
+            "contributors": {
+                "Tarun Ramprakash": "https://github.com/ramtarun02"
+            }
         }
     }
 }
