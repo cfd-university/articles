@@ -1312,6 +1312,14 @@ infinity norm of vector 3:
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
+<p>There is a catch here, though. We may have [katex]\text{Re}\gg 1[/katex] for the freestream properties of the flow. However, that doesn't mean that this is given everywhere in the flow. For example, near the wall, the velocity decelerates and approaches zero, so that diffusion may dominate.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If we are using explicit time stepping (i.e. we are limited in our max CFL number), then we should compute both the inviscid and viscous CFL numbers and choose the smaller one. However, if we use implicit time-stepping and thus are not limited in the CFL number, we typically don't care about the viscous contribution and only consider the inviscid part. This is commonly done in general-purpose CFD solvers.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
 <p>You may be saying that it is, perhaps, wasteful to compute the time step in each cell only to then advance the solution with the smallest time step. Indeed, if we have a large separation in cell sizes (perhaps some small inflation layers near walls and then some larger elements in the farfield), we will have a large difference between the smallest and largest computed time step. Some cells may then have [katex]\text{CFL}\ll 1[/katex]. This will result in slow convergence.</p>
 <!-- /wp:paragraph -->
 
