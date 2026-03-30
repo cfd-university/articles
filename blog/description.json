@@ -11,7 +11,7 @@
         "02_should-you-specialise-in-cfd-and-get-a-university-degree.html": {
             "heading": "Should you specialise in CFD and get a university degree?",
             "slug": "should-you-specialise-in-cfd-and-get-a-university-degree",
-            "description": "CFD is an fascinating area of study. Discover if it is worth specialising in this field and which universities offer specialised MSc degrees in CFD."
+            "description": "CFD is a fascinating area of study. Discover if it is worth specialising in this field and which universities offer specialised MSc degrees in CFD."
         },
         "03_setting-up-a-programming-environment-to-develop-cfd-codes.html": {
             "heading": "Setting up a programming environment to develop CFD codes",
@@ -56,7 +56,10 @@
         "11_what-is-numerical-dissipation-in-cfd-and-why-do-we-need-it.html": {
             "heading": "What is numerical dissipation in CFD and why do we need it?",
             "slug": "what-is-numerical-dissipation-in-cfd-and-why-do-we-need-it",
-            "description": "This article clarifies the role of numerical dissipation once and for all by reviewing its origin, mitigation strategies, and applications."
+            "description": "This article clarifies the role of numerical dissipation once and for all by reviewing its origin, mitigation strategies, and applications.",
+            "contributors": {
+                "Ali Eken": "https://github.com/alieken1"
+            }
         }
     }
 }
