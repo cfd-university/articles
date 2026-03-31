@@ -4,8 +4,6 @@ Having all articles on GitHub allows for collaborative improvements of articles.
 
 Articles on [cfd.university](https://cfd.university) are pulled weekly (Tuesday at 8am GMT) from this repository, at which the cache will be flushed and rebuilt as well. Critical changes can be pushed quicker, but will require me to do that manually. 
 
-The articles are licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
-
 ## Contribution guideline
 
 Depending on how comfortable you feel with git/GitHub and raw HTML, you can either:
@@ -70,33 +68,9 @@ Here are a few rules I use when typing equations to make them consistent:
 
 ### Code
 
-Ah, now that is a bit of a challenge. I have used the [code block pro](https://code-block-pro.com/) plugin in WordPress, which I believe is one of the best features in the entire WordPress landscape! Unfortunately, it only works natively in WordPress, so we have to use a bot of a workaround.
+Changing code snippets is in the current form dangerous, and changes may break the HTML. I am currently migrating from WordPress-based code rendering (a slight nightmare) to native Python + [Pygments](https://pygments.org/) rendering (pure joy). If you want to make changes to the code, you will need to use my markdown converter [MDlicious2](https://github.com/cfd-university/MDLicious2), which is a markdown to HTML converter but with additional features that bring some structure to HTML articles (like figure/table captions, equation numbers, cross referencing ability, etc.)
 
-1. Go to the [coding playground](https://code-block-pro.com/themes?theme=slack-dark&lang=cpp)
-2. Paste in the code that you want to add (or probably modify).
-3. Select the correct programming language from the right menu.
-4. Select the correct styling from the left. cfd.university uses ```slack-dark```.
-5. Once the code has been edited, right click on the code and go to the inspect menu.
-6. You will have to find the parent ```div``` element, which start with ```<div class="leading-normal" style="opacity: 1;"><pre class="font-fira" style="background-color: transparent;">```. Copy the entire element, this is the HTML code that you can now paste into the HTML of the article.
-7. This is probably one of the few, if not only element, that cannot be placed in a wordpress block, as the code block pro editor generates the HTML comments dynamically based on the code. So, whatever code you get by copying the HTML is what you can place in the article, no need to add further HTML comments.
-
-Example, the following HTML was copied from the code block pro editor:
-
-```html
-<div class="leading-normal" style="opacity: 1;"><pre class="font-fira" style="background-color: transparent;"><span class="line"><span style="color: #C586C0">#include</span><span style="color: #569CD6"> </span><span style="color: #CE9178">&lt;iostream&gt;</span></span>
-<span class="line"><span style="color: #569CD6">int</span><span style="color: #E6E6E6"> </span><span style="color: #DCDCAA">main</span><span style="color: #E6E6E6">() {</span></span>
-<span class="line"><span style="color: #E6E6E6">   std::cout </span><span style="color: #D4D4D4">&lt;&lt;</span><span style="color: #E6E6E6"> </span><span style="color: #CE9178">"Hello cfd.university"</span><span style="color: #E6E6E6"> </span><span style="color: #D4D4D4">&lt;&lt;</span><span style="color: #E6E6E6"> std::endl;</span></span>
-<span class="line"><span style="color: #E6E6E6">   </span><span style="color: #C586C0">return</span><span style="color: #E6E6E6"> </span><span style="color: #B5CEA8">0</span><span style="color: #E6E6E6">;</span></span>
-<span class="line"><span style="color: #E6E6E6">}</span></span></pre></div>
-```
-
-This will render as follows:
-
-<div class="leading-normal" style="opacity: 1;"><pre class="font-fira" style="background-color: transparent;"><span class="line"><span style="color: #C586C0">#include</span><span style="color: #569CD6"> </span><span style="color: #CE9178">&lt;iostream&gt;</span></span>
-<span class="line"><span style="color: #569CD6">int</span><span style="color: #E6E6E6"> </span><span style="color: #DCDCAA">main</span><span style="color: #E6E6E6">() {</span></span>
-<span class="line"><span style="color: #E6E6E6">   std::cout </span><span style="color: #D4D4D4">&lt;&lt;</span><span style="color: #E6E6E6"> </span><span style="color: #CE9178">"Hello cfd.university"</span><span style="color: #E6E6E6"> </span><span style="color: #D4D4D4">&lt;&lt;</span><span style="color: #E6E6E6"> std::endl;</span></span>
-<span class="line"><span style="color: #E6E6E6">   </span><span style="color: #C586C0">return</span><span style="color: #E6E6E6"> </span><span style="color: #B5CEA8">0</span><span style="color: #E6E6E6">;</span></span>
-<span class="line"><span style="color: #E6E6E6">}</span></span></pre></div>
+If there are errors in code and you feel not comfortable working through this, open an issue instead and I can do all changes separately.
 
 ### Section headings
 
@@ -104,7 +78,7 @@ Section headings can be modified but only to correct typos. Articles sometimes l
 
 ### Acknolwedgement
 
-Credit where credit is due! If you help to improve the articles, you will be listed at the bottom of the articles in the acknolwedgement section (it will only show up once at least one person is listed as a contributor).
+Credit where credit is due! If you help to improve the articles, you will be listed in the acknolwedgement section, which automatically appears once contributors exist. 
 
 If you prepare a pull request, please also change the meta data in the ```description.json``` file for that series/blog. For example, if you make changes to the first article in the ```07_10-key-concepts-everyone-must-understand-in-cfd``` series, then, modify the ```description.json``` file in ```07_10-key-concepts-everyone-must-understand-in-cfd/description.json```. Look for the article you have modified, for the first article, that would be:
 
@@ -144,3 +118,5 @@ If someone already contributed, simply add your name to the list:
 ```
 
 Keep in mind this is ```json```, don't forget to add commas where necessary. If in doubt, throw the entire ```description.json``` file into a json validation tool like [jsonlint](https://jsonlint.com/) and see if it is valid before submitting a pull request. But, if you can do a pull request, you probably know how to handle JSON. Apologies for insulting your inteligence ...
+
+By default, I will use your full name (please provide that with a pull request or issue) and link to your github page unless you tell me you do not want to be mentioned in the acknoledgement section.
