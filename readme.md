@@ -18,16 +18,17 @@ Use British English for all spelling/corrections, but feel free to ignore the fo
 - metre -> meter
 - centre -> center
 - aeroplane -> airplane
+- aerofoil -> airfoil
 
 ## Article structure
 
 cfd.university was born on WordPress. WordPress does annotate the HTML and so you will find a lot of comments that have no influence now, as the website is now running using Python + Flask + Docker + :yellow_heart:.
 
-Any changes made should continue to use this styling for consitency (though I have no plan to go back to WordPress. I'm glad I left that mess behind).
+Any changes made should continue to use this styling for consistency (though I have no plan to go back to WordPress. I'm glad I left that mess behind).
 
 ### Text changes
 
-Text changes should be pretty straight forward. Edit the text you need. If you need a new paragraph, enclose it in a ```<p>``` tag as:
+Text changes should be pretty straightforward. Edit the text you need. If you need a new paragraph, enclose it in a ```<p>``` tag as:
 
 ```html
 <!-- wp:paragraph -->
@@ -35,7 +36,7 @@ Text changes should be pretty straight forward. Edit the text you need. If you n
 <!-- /wp:paragraph -->
 ```
 
-Keep the wordpress paragraph comments as well. Each paragraph cannot have more than 550 characters (excluding the ```<p></p>``` tags and comments).
+Keep the WordPress paragraph comments as well. Each paragraph cannot have more than 550 characters (excluding the ```<p></p>``` tags and comments).
 
 ### Equations
 
@@ -45,11 +46,11 @@ All equations displayed on cfd.university use standard [LaTeX syntax](https://ww
 Newton's second law states [katex]\mathbf{F}=m\mathbf{a}[/katex], from which we can derive the momentum equation.
 ```
 
-If you want to make sure your equation is free of syntax errors, you can type them on [katex](https://katex.org/) directly and see how they render.
+If you want to make sure your equation is free of syntax errors, you can type it on [katex](https://katex.org/) directly and see how they render.
 
-The ```[katex]``` and ```[/katex]``` tags are a left-over from WordPress. WordPress would scan each article before displaying it and convert all text inside these tags to equations using katex, an online equation rendering service. I have replicated that functionality so old HTML articles will render correctly. Therefore, we need to use this non-standard HTML syntax.
+The ```[katex]``` and ```[/katex]``` tags are a left-over from WordPress. WordPress would scan each article before displaying it and convert all text inside these tags to equations using katex, an online equation rendering service. I have replicated that functionality, so old HTML articles will render correctly. Therefore, we need to use this non-standard HTML syntax.
 
-If you want to place the equation on a new line, you can enclose that with a ```div```:
+If you want to place the equation on a new line, you can enclose it with a ```div```:
 
 ```html
 <!-- wp:katex/display-block -->
@@ -57,20 +58,22 @@ If you want to place the equation on a new line, you can enclose that with a ```
 <!-- /wp:katex/display-block -->
 ```
 
-The ```div``` and ```pre``` tags need to be present, with the same classes and atributes. Internally, these will then be rendered with katex again.
+The ```div``` and ```pre``` tags need to be present, with the same classes and attributes. Internally, these will then be rendered with katex again.
 
 Here are a few rules I use when typing equations to make them consistent:
 
 - Scalars use a normal font face, vectors and matrices use a bold font face. As we can see in the example above, the force F and acceleration a are vectors, and so they get a bold font face using the ```\mathbf{}``` syntax (math bold face). The mass m is a scalar and is written without any styling.
-- If you use parenthesis, start and end them with a leading ```\left``` and trailing ```\right``` identifier. This ensures parenthesis automatically scale to the correct size. For example, ```\left( \frac{1}{2} \right)```. Since we are using a fraction here, the standard parenthesis ```()``` would be too small, ```\left``` and ```\right``` scale them to the size of the fraction.
-- When working with multiline equations, I almost always append a ```[1em]``` to the line break command, i.e. ```\\[1em]```. This gives just a bit of breathing room, especially when fractions are involved. I only deviate from that if the equations are rather compact. If in doubt, end a line in ```\\[1em]```. The exception here are matrices, for which I usally always just use a simple line break of ```\\```.
+- If you use parentheses, start and end them with a leading ```\left``` and trailing ```\right``` identifier. This ensures parentheses automatically scale to the correct size. For example, ```\left( \frac{1}{2} \right)```. Since we are using a fraction here, the standard parentheses ```()``` would be too small, ```\left``` and ```\right``` scale them to the size of the fraction.
+- When working with multiline equations, I almost always append a ```[1em]``` to the line break command, i.e. ```\\[1em]```. This gives just a bit of breathing room, especially when fractions are involved. I only deviate from that if the equations are rather compact. If in doubt, end a line in ```\\[1em]```. The exception here is matrices, for which I usually always just use a simple line break of ```\\```.
 - When working with differentials (mostly in integrals, e.g. dx in an integral like int(x)dx), the differential is never italic but always straight. So, a differential is not ```dx``` but always ```\mathrm{d}x```, where ```\mathrm{}``` removes (math rm) the math styling. It works the same way as ```\text{d}x```, but I prefer the math version, i.e. ```\mathrm{}```.
 
 ### Code
 
-Changing code snippets is in the current form dangerous, and changes may break the HTML. I am currently migrating from WordPress-based code rendering (a slight nightmare) to native Python + [Pygments](https://pygments.org/) rendering (pure joy). If you want to make changes to the code, you will need to use my markdown converter [MDlicious2](https://github.com/cfd-university/MDLicious2), which is a markdown to HTML converter but with additional features that bring some structure to HTML articles (like figure/table captions, equation numbers, cross referencing ability, etc.)
+I am currently moving from legacy WordPress code listings to Python + [Pygments](https://pygments.org/)-based code listings. Making changes to existing code listings is dangerous, as it may break formatting and style.
 
-If there are errors in code and you feel not comfortable working through this, open an issue instead and I can do all changes separately.
+For the moment, the best option is to open a new issue if there are issues with the code, which I can then manually change. Eventually, all code snippets will be replaced by the Python + Pygments-based workflow.
+
+Eventually, this will be all replaced, and code snippets will be converted in standard markdown syntax to HTML. I am using the [MDLicious2](https://github.com/cfd-university/MDLicious2) Markdown to HTML converter, and you can interactively convert Markdown text to HTML using the [HTML preview](https://cfd.university/preview) on cfd.university.
 
 ### Section headings
 
