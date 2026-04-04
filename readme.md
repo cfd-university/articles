@@ -48,7 +48,7 @@ Newton's second law states [katex]\mathbf{F}=m\mathbf{a}[/katex], from which we 
 
 If you want to make sure your equation is free of syntax errors, you can type it on [katex](https://katex.org/) directly and see how they render.
 
-The ```[katex]``` and ```[/katex]``` tags are a left-over from WordPress. WordPress would scan each article before displaying it and convert all text inside these tags to equations using katex, an online equation rendering service. I have replicated that functionality, so old HTML articles will render correctly. Therefore, we need to use this non-standard HTML syntax.
+The ```[katex]``` and ```[/katex]``` tags are a left-over from WordPress. WordPress would scan each article before displaying it and convert all text inside these tags into equations using KaTeX, an online equation-rendering service. I have replicated that functionality, so old HTML articles will render correctly. Therefore, we need to use this non-standard HTML syntax.
 
 If you want to place the equation on a new line, you can enclose it with a ```div```:
 
@@ -77,13 +77,13 @@ Eventually, this will be all replaced, and code snippets will be converted in st
 
 ### Section headings
 
-Section headings can be modified but only to correct typos. Articles sometimes link to specific sections, so changing the link text would have adverse consequences. Don't change link text, even if they have typos. I can do that manually if need be.
+Section headings can be modified, but only to correct typos. Articles sometimes link to specific sections, so changing the link text would have adverse consequences. Don't change link text, even if they have typos. I can do that manually if need be.
 
-### Acknolwedgement
+### Acknowledgement
 
-Credit where credit is due! If you help to improve the articles, you will be listed in the acknolwedgement section, which automatically appears once contributors exist. 
+Credit where credit is due! If you help to improve the articles, you will be listed in the acknowledgement section, which automatically appears once contributors exist. 
 
-If you prepare a pull request, please also change the meta data in the ```description.json``` file for that series/blog. For example, if you make changes to the first article in the ```07_10-key-concepts-everyone-must-understand-in-cfd``` series, then, modify the ```description.json``` file in ```07_10-key-concepts-everyone-must-understand-in-cfd/description.json```. Look for the article you have modified, for the first article, that would be:
+If you prepare a pull request, please also change the metadata in the ```description.json``` file for that series/blog. For example, if you make changes to the first article in the ```07_10-key-concepts-everyone-must-understand-in-cfd``` series, then modify the ```description.json``` file in ```07_10-key-concepts-everyone-must-understand-in-cfd/description.json```. Look for the article you have modified, for the first article, that would be:
 
 ```json
 "01_how-to-derive-the-navier-stokes-equations-from-start-to-end.html": {
@@ -93,7 +93,7 @@ If you prepare a pull request, please also change the meta data in the ```descri
 },
 ```
 
-You will have to add a new entry called ```contributions```, which is a key value map (dictionary), where the key is your name (that will show up on the website) and the value is a link to your social media, personal website, etc. (try to avoid your only fans account *if possible*). An example is shown below:
+You will have to add a new entry called ```contributions```, which is a key value map (dictionary), where the key is your name (that will show up on the website) and the value is a link to your social media, personal website, etc. (try to avoid your OnlyFans account *if possible*). An example is shown below:
 
 ```json
 "01_how-to-derive-the-navier-stokes-equations-from-start-to-end.html": {
@@ -120,6 +120,6 @@ If someone already contributed, simply add your name to the list:
 },
 ```
 
-Keep in mind this is ```json```, don't forget to add commas where necessary. If in doubt, throw the entire ```description.json``` file into a json validation tool like [jsonlint](https://jsonlint.com/) and see if it is valid before submitting a pull request. But, if you can do a pull request, you probably know how to handle JSON. Apologies for insulting your inteligence ...
+Keep in mind this is ```json```, don't forget to add commas where necessary. If in doubt, throw the entire ```description.json``` file into a JSON validation tool like [jsonlint](https://jsonlint.com/) and see if it is valid before submitting a pull request. But if you can do a pull request, you probably know how to handle JSON. Apologies for insulting your intelligence...
 
-By default, I will use your full name (please provide that with a pull request or issue) and link to your github page unless you tell me you do not want to be mentioned in the acknoledgement section.
+By default, I will use your full name (please provide that with a pull request or issue) and link to your github page unless you tell me you do not want to be mentioned in the acknowledgement section.
