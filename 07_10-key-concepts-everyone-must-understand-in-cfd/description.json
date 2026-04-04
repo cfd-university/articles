@@ -96,7 +96,8 @@
             "slug": "mesh-generation-in-cfd-all-you-need-to-know-in-one-article",
             "description": "Learn all there is to know about mesh generation in CFD, from structured to unstructured algorithms and why mesh quality is so important.",
             "contributors": {
-                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+                "Alexander Schukmann": "https://github.com/aleksandrShukman",
+                "Ben Cullen": "https://github.com/Ben2200"
             }        
         },
         "13_cfd-on-steroids-high-performance-computing-and-code-parallelisation.html": {
