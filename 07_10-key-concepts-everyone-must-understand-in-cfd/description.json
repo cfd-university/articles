@@ -69,7 +69,8 @@
             "slug": "the-origin-of-turbulence-and-direct-numerical-simulations-dns",
             "description": "Learn where turbulence is coming from, both from a physical and mathematical point of view, and how to explicitly resolve it using Direct Numerical Simulations.",
             "contributors": {
-                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+                "Alexander Schukmann": "https://github.com/aleksandrShukman",
+                "Rama Chavali": "https://github.com/rama-chavali"
             }        
         },
         "10_the-introduction-to-large-eddy-simulations-les-i-wish-i-had.html": {
@@ -77,7 +78,8 @@
             "slug": "the-introduction-to-large-eddy-simulations-les-i-wish-i-had",
             "description": "Learn everything there is to know about Large Eddy Simulations in a single article. From Smagorinsky's humble beginnings to advanced subgrid-scale models.",
             "contributors": {
-                "Alexander Schukmann": "https://github.com/aleksandrShukman"
+                "Alexander Schukmann": "https://github.com/aleksandrShukman",
+                "Rama Chavali": "https://github.com/rama-chavali"
             }        
         },
         "11_all-you-need-to-know-about-rans-turbulence-modelling-in-one-article.html": {
