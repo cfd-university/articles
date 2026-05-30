@@ -1,5 +1,5 @@
 <!-- wp:paragraph -->
-<p>This article will look into smart pointers and why we should use them over raw pointers in C++. Smart pointers are fundamental building blocks in C++ and after 2014, ever C++ programmer should be using smart pointers instead of raw pointers, there are no excuses for raw pointers (anymore). Throughout this article, we explore how we would use smart pointers in real CFD applications, where we look at creating a solver class based on either the SIMPLE or PISO algorithm. We explore how smart pointers can be used in conjunction with the factory design pattern to create clean code and also touch upon two import C++ concepts, namely copy elision and return value optimisation, to help us with memory management.</p>
+<p>This article will look into smart pointers and why we should use them over raw pointers in C++. Smart pointers are fundamental building blocks in C++ and after 2014, every C++ programmer should be using smart pointers instead of raw pointers, there are no excuses for raw pointers (anymore). Throughout this article, we explore how we would use smart pointers in real CFD applications, where we look at creating a solver class based on either the SIMPLE or PISO algorithm. We explore how smart pointers can be used in conjunction with the factory design pattern to create clean code and also touch upon two important C++ concepts, namely copy elision and return value optimisation, to help us with memory management.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -335,7 +335,7 @@ int main()
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>If you are unaware, the the <a href="https://en.wikipedia.org/wiki/Ariane_flight_V88" target="_blank" rel="noopener" title="">Ariane 5 rocket explode just after launch</a> due to a conversion issue from a 64-bit floating point number to a 16-bit unsigned integer. The issue was that the conversion happened with values that were too great to represent by a 16-bit unsigned integer and so an overflow occurred, bringing down the rocket. Aerospace and astronautical companies are known for their distrust of the programmers' abilities to handle memory correctly (probably for good reasons!) and usually put guidelines in place that prohibit code that could easily lead to memory bugs. Take a look at the <a href="https://www.stroustrup.com/JSF-AV-rules.pdf" target="_blank" rel="noopener" title="">Joint Strike Fighter Air Vehicle C++ Coding Standart by Lookheed Martin</a>, for example, which is accessible to the public. On page 59, they state:</p>
+<p>If you are unaware, the <a href="https://en.wikipedia.org/wiki/Ariane_flight_V88" target="_blank" rel="noopener" title="">Ariane 5 rocket exploded just after launch</a> due to a conversion issue from a 64-bit floating point number to a 16-bit unsigned integer. The issue was that the conversion happened with values that were too great to represent by a 16-bit unsigned integer and so an overflow occurred, bringing down the rocket. Aerospace and astronautical companies are known for their distrust of the programmers' abilities to handle memory correctly (probably for good reasons!) and usually put guidelines in place that prohibit code that could easily lead to memory bugs. Take a look at the <a href="https://www.stroustrup.com/JSF-AV-rules.pdf" target="_blank" rel="noopener" title="">Joint Strike Fighter Air Vehicle C++ Coding Standard by Lockheed Martin</a>, for example, which is accessible to the public. On page 59, they state:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:quote -->
@@ -353,7 +353,7 @@ int main()
 
 <!-- wp:paragraph -->
 <p><strong>Rationale</strong>: repeated allocation (new/malloc) and deallocation (delete/free) from the free store/heap can result in free store/heap fragmentation and hence non-deterministic delays in free store/heap access. See Alloc.doc for alternatives.</p>
-<!-- /wp:paragraph --><cite><a href="https://www.stroustrup.com/JSF-AV-rules.pdf" target="_blank" rel="noopener" title="">Joint Strike Fighter Air Vehicle C++ Coding Standart by Lookheed Martin</a></cite></blockquote>
+<!-- /wp:paragraph --><cite><a href="https://www.stroustrup.com/JSF-AV-rules.pdf" target="_blank" rel="noopener" title="">Joint Strike Fighter Air Vehicle C++ Coding Standard by Lockheed Martin</a></cite></blockquote>
 <!-- /wp:quote -->
 
 <!-- wp:paragraph -->
@@ -610,7 +610,7 @@ int main()
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
-<li>Descretisation schemes in space</li>
+<li>Discretisation schemes in space</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->

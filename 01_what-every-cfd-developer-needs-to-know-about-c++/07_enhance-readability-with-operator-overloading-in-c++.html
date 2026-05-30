@@ -1,5 +1,5 @@
 <!-- wp:paragraph -->
-<p>In this article, we will look at why operator overloading is providing nice syntactic sugar for our code and how you would write your code differently in C++ compared to C, where operator overloading is not available. This helps us to appreciate the simplicity overloaded operator bring to our code, by not only ensuring we have to write less code, but also by making our code much more intention-revealing. We look at some useful examples that you may encounter in CFD applications, as well as how OpenFOAM makes heavy use of them to provide their nice and easy-to-read equation syntax.</p>
+<p>In this article, we will look at why operator overloading is providing nice syntactic sugar for our code and how you would write your code differently in C++ compared to C, where operator overloading is not available. This helps us to appreciate the simplicity overloaded operators bring to our code, by not only ensuring we have to write less code, but also by making our code much more intention-revealing. We look at some useful examples that you may encounter in CFD applications, as well as how OpenFOAM makes heavy use of them to provide their nice and easy-to-read equation syntax.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -209,7 +209,7 @@ int main()
 <!-- /wp:kevinbatdorf/code-block-pro -->
 
 <!-- wp:paragraph -->
-<p>Beautiful, <em>isn't it?</em> On line 6, we call the <code>operator+()</code> function, as we have defined it. Well, if this was the use case, then I would be 0discouraged from using overloaded operators because this is no better than having an <code>add()</code> function. The function names would be different, but I'd argue that <code>add()</code> looks better than <code>operator+()</code>. No, overloaded operators, as the name suggests, allow us to provide a different meaning to the operator itself, so we can replace line 6 here with the following call:</p>
+<p>Beautiful, <em>isn't it?</em> On line 6, we call the <code>operator+()</code> function, as we have defined it. Well, if this was the use case, then I would be discouraged from using overloaded operators because this is no better than having an <code>add()</code> function. The function names would be different, but I'd argue that <code>add()</code> looks better than <code>operator+()</code>. No, overloaded operators, as the name suggests, allow us to provide a different meaning to the operator itself, so we can replace line 6 here with the following call:</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:kevinbatdorf/code-block-pro {"code":"Vector c = a + b;","codeHTML":"\u003cpre class=\u0022shiki dark-plus\u0022 style=\u0022background-color: #1E1E1E\u0022 tabindex=\u00220\u0022\u003e\u003ccode\u003e\u003cspan class=\u0022line\u0022\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eVector\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ec\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e = \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003ea\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e + \u003c/span\u003e\u003cspan style=\u0022color: #9CDCFE\u0022\u003eb\u003c/span\u003e\u003cspan style=\u0022color: #D4D4D4\u0022\u003e;\u003c/span\u003e\u003c/span\u003e\u003c/code\u003e\u003c/pre\u003e","language":"javascript","theme":"dark-plus","bgColor":"#1E1E1E","textColor":"#D4D4D4","fontSize":".875rem","fontFamily":"Code-Pro-JetBrains-Mono","lineHeight":"1.25rem","clampFonts":false,"lineNumbers":true,"headerType":"none","disablePadding":false,"footerType":"none","seeMoreType":"","seeMoreString":"","seeMoreTransition":false,"highestLineNumber":1,"highlightingHover":false,"lineHighlightColor":"rgba(234, 191, 191, 0.2)","copyButton":true,"copyButtonType":"heroicons","useTabs":false} -->
@@ -609,7 +609,7 @@ int main()
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Finally, let's look again at an example straight from OpenFOAM to see operating overloading in practice. Whenever we want to compute fluxes through a face, we compute [math]flux = \phi_f \cdot n S_f[/math]. Here, [math]\phi_f[/math] is the velocity vector interpolated to the face connecting two cells and [math]n S_f[/math] is the normal vector of that face multiplied by the area of that face.</p>
+<p>Finally, let's look again at an example straight from OpenFOAM to see operator overloading in practice. Whenever we want to compute fluxes through a face, we compute [math]flux = \phi_f \cdot n S_f[/math]. Here, [math]\phi_f[/math] is the velocity vector interpolated to the face connecting two cells and [math]n S_f[/math] is the normal vector of that face multiplied by the area of that face.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
