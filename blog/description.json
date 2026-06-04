@@ -24,9 +24,9 @@
             "description": "Discover why every general-purpose CFD solver is switching to GPUs by learning the key differences between GPUs and CPUs that make them so powerful!"
         },
         "05_can-chatgpt-write-fully-functional-cfd-solvers.html": {
-            "heading": "Can ChatGPT write fully functional CFD solvers?",
+            "heading": "The role of AI in for CFD solver development",
             "slug": "can-chatgpt-write-fully-functional-cfd-solvers",
-            "description": "Explore whether ChatGPT is capable of producing production-grade CFD solvers or if it fails miserably, as well as how to best use generative AI tools for coding"
+            "description": "This article explores how good AI is for generating CFD solvers and announces the cfd.university AI coding challenge."
         },
         "06_the-6-biggest-and-unsolved-challenges-in-cfd.html": {
             "heading": "The 6 biggest and unsolved challenges in CFD",
