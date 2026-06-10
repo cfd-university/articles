@@ -6,7 +6,10 @@
         "01_how-to-get-started-with-computational-fluid-dynamics-cfd.html": {
             "heading": "How to get started with Computational Fluid Dynamics (CFD)",
             "slug": "how-to-get-started-with-computational-fluid-dynamics-cfd",
-            "description": "The best way to learn CFD from scratch requires a good collection of resources. This is a complete guide for the best books, online resources and CFD software."
+            "description": "The best way to learn CFD from scratch requires a good collection of resources. This is a complete guide for the best books, online resources and CFD software.",
+            "contributors": {
+                "Ben Cullen": "https://github.com/Ben2200"
+            }
         },
         "02_should-you-specialise-in-cfd-and-get-a-university-degree.html": {
             "heading": "Should you specialise in CFD and get a university degree?",
