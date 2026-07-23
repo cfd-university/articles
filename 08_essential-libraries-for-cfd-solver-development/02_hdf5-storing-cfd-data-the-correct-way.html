@@ -13,11 +13,34 @@
 
 <h2 id="in-this-series">In this series</h2>
 
-<p>[custom<em>category</em>posts<em>list category</em>slug="essential-cfd-libraries"]</p>
+[custom_category_posts_list category_slug="essential-cfd-libraries"]
 
 <h2 id="in-this-article">In this article</h2>
 
-<p>[TOC]</p>
+<ul>
+<li><a href="#in-this-series">In this series</a></li>
+<li><a href="#in-this-article">In this article</a></li>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#introducing-the-hdf5-format">Introducing the HDF5 format</a>
+<ul>
+<li><a href="#the-structure-of-an-hdf5-file">The structure of an HDF5 file</a></li>
+</ul>
+</li>
+<li><a href="#hdf5-code-examples">HDF5 code examples</a>
+<ul>
+<li><a href="#writing-mesh">Writing mesh</a></li>
+<li><a href="#writing-solution-data">Writing solution data</a></li>
+<li><a href="#linking-mesh-and-solution-files">Linking mesh and solution files</a></li>
+<li><a href="#interlude-how-can-i-inspect-my-hdf5-files">Interlude: How can I inspect my HDF5 files</a></li>
+<li><a href="#adding-attributes-to-datasets-primitive-types">Adding attributes to datasets (primitive types)</a></li>
+<li><a href="#adding-attributes-to-datasets-compound-types">Adding attributes to datasets (compound types)</a></li>
+<li><a href="#interfacing-with-post-processors-reading-hdf5-files-in-paraview">Interfacing with post-processors: Reading HDF5 files in Paraview</a></li>
+<li><a href="#creating-restart-files">Creating restart files</a></li>
+<li><a href="#finally-the-syntax-makes-sense-highfive-the-wrapper-library">Finally, the syntax makes sense: HighFive, the wrapper library</a></li>
+</ul>
+</li>
+<li><a href="#summary">Summary</a></li>
+</ul>
 
 <h2 id="introduction">Introduction</h2>
 
@@ -133,7 +156,7 @@
 <p>Let's look at a concrete example, one that we will implement later as well in HDF5:</p>
 
 <figure class="wp-block-image aligncenter size-large is-resized">
-<img alt="common file structure for an HDF5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/02_hdf5/file_structure.png" style="width:600px"/>
+<img alt="common file structure for an HDF5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/file_structure.png" style="width:600px"/>
 <figcaption class="wp-element-caption"><strong>Figure 1</strong></figcaption>
 
 </figure>
@@ -865,7 +888,7 @@
 <p>In my case, I also needed to install Qt (<code>pip install PyQt6-Qt6</code>) to get it to work; your experience may differ. Below is a screenshot of HDF5view after opening the <code>master.h5</code> file. </p>
 
 <figure class="wp-block-image aligncenter size-large is-resized">
-<img alt="a screenshot of HDF5view, showing how the master.h5 file from the previous example can be expected" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/02_hdf5/hdf5view.png" style="width:500px"/>
+<img alt="a screenshot of HDF5view, showing how the master.h5 file from the previous example can be expected" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/hdf5view.png" style="width:500px"/>
 <figcaption class="wp-element-caption"><strong>Figure 2</strong></figcaption>
 
 </figure>
@@ -1104,7 +1127,7 @@ Next, we specify the chara</p>
 <p>If we now open this file in hdf5view, we see the following:</p>
 
 <figure class="wp-block-image aligncenter size-large is-resized">
-<img alt="a screenshot of HDF5view, showing the units of x in the master.h5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/02_hdf5/hdf5view_units_x.png" style="width:500px"/>
+<img alt="a screenshot of HDF5view, showing the units of x in the master.h5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/hdf5view_units_x.png" style="width:500px"/>
 <figcaption class="wp-element-caption"><strong>Figure 3</strong></figcaption>
 
 </figure>
@@ -1256,7 +1279,7 @@ Next, we specify the chara</p>
 <p>And that's it. We can now inspect the 0 group in HDF5view again and see the following information:</p>
 
 <figure class="wp-block-image aligncenter size-large is-resized">
-<img alt="a screenshot of HDF5view, showing the units of the 0 group in the master.h5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/02_hdf5/hdf5view_units_s.png" style="width:500px"/>
+<img alt="a screenshot of HDF5view, showing the units of the 0 group in the master.h5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/hdf5view_units_s.png" style="width:500px"/>
 <figcaption class="wp-element-caption"><strong>Figure 4</strong></figcaption>
 
 </figure>
@@ -2191,7 +2214,7 @@ For unstructured grids, we specify the element type we want to write, e.g. <code
 <p>And, with that done, we can now open this file in Paraview and read it. Here is what it will look like after opening it successfully in Paraview:</p>
 
 <figure class="wp-block-image aligncenter size-large is-resized">
-<img alt="common file structure for an HDF5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/02_hdf5/paraview.png" style="width:800px"/>
+<img alt="common file structure for an HDF5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/paraview.png" style="width:800px"/>
 <figcaption class="wp-element-caption"><strong>Figure 5</strong></figcaption>
 
 </figure>
