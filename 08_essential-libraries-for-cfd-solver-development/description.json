@@ -10,6 +10,11 @@
             "contributors": {
                 "Tarun Ramprakash": "https://github.com/ramtarun02"
             }
+        },
+        "02_hdf5-storing-cfd-data-the-correct-way.html": {
+            "heading": "HDF5: Storing CFD data the correct way",
+            "slug": "hdf5-storing-cfd-data-the-correct-way",
+            "description": "Storing and retrieving large amounts of CFD data is difficult, unless you know how to use HDF5. Let me introduce you to your new, best, boring friend."
         }
     }
 }
