@@ -1,6 +1,5 @@
-<p><!-- Name: HDF5: Storing CFD data the correct way -->
-<!-- Source: https://cfd.university/learn/essential-libraries-for-cfd-solver-development/hdf5-storing-cfd-data-the-correct-way --></p>
-
+<!-- Name: HDF5: Storing CFD data the correct way -->
+<!-- Source: https://cfd.university/learn/essential-libraries-for-cfd-solver-development/hdf5-storing-cfd-data-the-correct-way -->
 <p>In this article, we take a deep dive into the HDF5 file format and see how we can use it to read and write data that we would typically collect during a CFD simulation.</p>
 
 <p>The best part about HDF5 is that it is really easy to learn. It has a very clear design philosophy, which you'll instantly understand. Mapping that to HDF5's API is also not a huge mental effort, and I can guarantee you that, by the end of this article, you'll know not just simple, but also advanced techniques to write HDF5 files, which likely cover most, if not all, of your use cases.</p>
@@ -13,9 +12,7 @@
 
 <h2 id="in-this-series">In this series</h2>
 
-<!-- wp:shortcode -->
 [custom_category_posts_list category_slug="essential-libraries-for-cfd-solver-development"]
-<!-- /wp:shortcode -->
 
 <h2 id="in-this-article">In this article</h2>
 
@@ -158,7 +155,7 @@
 <p>Let's look at a concrete example, one that we will implement later as well in HDF5:</p>
 
 <figure class="wp-block-image aligncenter size-large is-resized">
-<img alt="common file structure for an HDF5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/file_structure.png" style="width:600px"/>
+<img alt="common file structure for an HDF5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/file_structure.png" style="width:800px"/>
 <figcaption class="wp-element-caption"><strong>Figure 1</strong></figcaption>
 
 </figure>
@@ -890,7 +887,7 @@
 <p>In my case, I also needed to install Qt (<code>pip install PyQt6-Qt6</code>) to get it to work; your experience may differ. Below is a screenshot of HDF5view after opening the <code>master.h5</code> file. </p>
 
 <figure class="wp-block-image aligncenter size-large is-resized">
-<img alt="a screenshot of HDF5view, showing how the master.h5 file from the previous example can be expected" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/hdf5view.png" style="width:500px"/>
+<img alt="a screenshot of HDF5view, showing how the master.h5 file from the previous example can be expected" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/hdf5view.png" style="width:800px"/>
 <figcaption class="wp-element-caption"><strong>Figure 2</strong></figcaption>
 
 </figure>
@@ -1129,7 +1126,7 @@ Next, we specify the chara</p>
 <p>If we now open this file in hdf5view, we see the following:</p>
 
 <figure class="wp-block-image aligncenter size-large is-resized">
-<img alt="a screenshot of HDF5view, showing the units of x in the master.h5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/hdf5view_units_x.png" style="width:500px"/>
+<img alt="a screenshot of HDF5view, showing the units of x in the master.h5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/hdf5view_units_x.png" style="width:800px"/>
 <figcaption class="wp-element-caption"><strong>Figure 3</strong></figcaption>
 
 </figure>
@@ -1281,7 +1278,7 @@ Next, we specify the chara</p>
 <p>And that's it. We can now inspect the 0 group in HDF5view again and see the following information:</p>
 
 <figure class="wp-block-image aligncenter size-large is-resized">
-<img alt="a screenshot of HDF5view, showing the units of the 0 group in the master.h5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/hdf5view_units_s.png" style="width:500px"/>
+<img alt="a screenshot of HDF5view, showing the units of the 0 group in the master.h5 file" class="wp-image-5550" src="https://raw.githubusercontent.com/cfd-university/articles/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/02_hdf5/hdf5view_units_s.png" style="width:800px"/>
 <figcaption class="wp-element-caption"><strong>Figure 4</strong></figcaption>
 
 </figure>
