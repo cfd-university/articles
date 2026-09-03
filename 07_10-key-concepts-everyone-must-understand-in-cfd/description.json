@@ -40,7 +40,8 @@
             "slug": "the-complete-guide-to-linear-system-of-equation-solvers-in-cfd",
             "description": "Learn how to solve implicit equations using matrix-free, Krylov subspace, and multigrid methods, with preconditioning, for linear and non-linear equations.",
             "contributors": {
-                "Yagna Chennupati": "https://www.linkedin.com/in/yagna-chennupati-4908841a6/"
+                "Yagna Chennupati": "https://www.linkedin.com/in/yagna-chennupati-4908841a6/",
+                "Kane Scipioni": "https://github.com/kSkip"
             }           
         },
         "06_space-and-time-integration-schemes-for-cfd-applications.html": {
