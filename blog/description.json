@@ -63,6 +63,11 @@
             "contributors": {
                 "Ali Eken": "https://github.com/alieken1"
             }
+        },
+        "12_did-openai-solve-the-navier-stokes-millenium-prize-problem.html": {
+            "heading": "Did OpenAI solve the Navier-Stokes Millenium Prize problem?",
+            "slug": "did-openai-solve-the-navier-stokes-millenium-prize-problem",
+            "description": "OpenAI announced they have found a solution to the Navier-Stokes Millenium Prize problem. Have they just made CFD obsolete? Read on and find out."
         }
     }
 }
