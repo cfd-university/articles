@@ -4,12 +4,35 @@ Having all articles on GitHub allows for collaborative improvements of articles.
 
 Articles on [cfd.university](https://cfd.university) are pulled weekly (Tuesday at 8am GMT) from this repository, at which the cache will be flushed and rebuilt as well. Critical changes can be pushed quicker, but will require me to do that manually. 
 
+## Licensing
+
+(c) 2026 Tom-Robin Teschner. All articles remain the copyright of the author.
+
+This repository contains two kinds of material, licensed differently:
+
+| Material | Licence |
+|---|---|
+| Article prose, figures, equations | [CC BY-NC-SA 4.0](LICENSE.md) |
+| Source code (listings in articles, and the "Download Resources" bundles) | [MIT](LICENSE-CODE.md) |
+
+**In plain terms.** You may read, copy, translate and build on the articles freely, and you may share what you build as long as you credit the author, do not sell it, and release it under the same licence. You may use the code in anything at all, including closed-source commercial solvers, with no restriction beyond keeping the copyright notice.
+
+### Additional permissions
+
+Notwithstanding the NonCommercial term, I explicitly permit the following without needing to ask:
+
+- Use in teaching at educational institutions, including fee-charging degree programmes.
+- Use for internal training within a company or organisation.
+
+In both cases, attribution must be given and the material must not itself be sold. For any other commercial use, please [get in touch](https://cfd.university/).
+
+### Naming
+
+Derivative works may not use the *cfd.university* name, logo or branding, or imply that they are endorsed by or affiliated with cfd.university. CC BY 4.0 already requires you to indicate that you have modified the material; please make that clear.
+
 ## Contribution guideline
 
-Depending on how comfortable you feel with git/GitHub and raw HTML, you can either:
-
-1. Fork this repository and make changes directly to the raw HTML and submit a pull request.
-2. Open an issue and state what needs fixing/changing. I can then make those changes myself. In this case, you don't need to touch the HTML yourself.
+Corrections and improvements are very welcome; see [CONTRIBUTING.md](CONTRIBUTING.md) for how to submit them, the writing style guide, and the licensing terms that apply to contributions.
 
 ## Spelling rules
 
