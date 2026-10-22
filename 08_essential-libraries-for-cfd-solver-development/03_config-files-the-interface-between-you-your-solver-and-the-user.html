@@ -1,5 +1,6 @@
 <!-- Name: Config files: the interface between you, your solver, and the user -->
 <!-- Source: https://cfd.university/learn/essential-libraries-for-cfd-solver-development/config-files-the-interface-between-you-your-solver-and-the-user/ -->
+
 <p>Everyone believes reading input files is a simple task. Are you one of them? Look closer, and you realise that there are issues you haven't even thought about; issues that may come back to haunt you long after you have settled on a specific file type in your solver to use.  </p>
 
 <p>CFD solvers need to read input files: solver settings, meshing parameters, boundary conditions, the list goes on. Once a simulation is done, we need to store not just data, but possibly also some metadata, e.g. the parameters used in a simulation over a parametric range.</p>
@@ -17,7 +18,7 @@
 <p>All developed code and resources in this article are available for download. If you are encountering issues running any of the scripts, please refer to the <a href="https://cfd.university/blog/setting-up-a-programming-environment-to-develop-cfd-codes/#aioseo-notes-on-how-to-run-scripts-downloaded-from-cfd-university" rel="noopener noreferrer" target="_blank">instructions</a> for running scripts downloaded from this website.</p>
 
 <ul>
-<li><strong>Download</strong>: <a href="https://github.com/cfd-university/articles/raw/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/03_io/io-examples.zip" rel="noopener noreferrer" target="_blank">IO examples</a></li>
+<li><strong>Download</strong>: <a href="https://github.com/cfd-university/articles/raw/refs/heads/main/08_essential-libraries-for-cfd-solver-development/assets/03_fileIO/fileIO-examples.zip" rel="noopener noreferrer" target="_blank">IO examples</a></li>
 </ul>
 
 <h2 id="in-this-series">In this series</h2>
@@ -5075,7 +5076,7 @@ meshing.numPointsX,meshing.numPointsY,boundaryConditions.north,boundaryCondition
 
 <p>I didn't even bother to read the documentation this time, I think I already saw enough. But, I mention it here as yet another HDF5 imposter so you can carry forward my opinionated views at the next cocktail party where, inevitably, the conversation will switch to file formats at some point (mostly because you have a great urge to discuss it with people who <em>do not share</em> the same obsessions as you).</p>
 
-<p>I mean, we are now, what, 3 hours into this article and you are still reading. I know there is something wrong with me for writing this long about file formats, but for you, there is still hope, you should get checked out by a professional before it is too late (and CFD starts to consume your life).</p>
+<p>I mean, we are now, what, 2 hours into this article and you are still reading. I know there is something wrong with me for writing this long about file formats, but for you, there is still hope, you should get checked out by a professional before it is too late (and CFD starts to consume your life).</p>
 
 <p>Now that I have shown you all there is to know about file formats, would it surprise you that I actually once wrote a standard to write my very own file format? No? Good, because that's what I did. Another one of my weird passions I developed during Covid. Now, I thought, for a bit of fun, I would actually write a parser library for this file format, but the standard sits on a private GitHub repo and was never completed (it is like 80% written). I am not sure if I have it in me to complete the remaining 20%, so let's not bother.</p>
 
@@ -5516,4 +5517,3 @@ meshing.numPointsX,meshing.numPointsY,boundaryConditions.north,boundaryCondition
 <p>I have worked with different solvers, different ways of setting up simulations. As the saying goes: <em>I have seen things</em> (and I can't unsee them!). So, this article is my contribution to let you learn from that shared experience. My hope with this article is not that we start to rewrite the ANSYS user interface, or make OpenFOAM accept non SI-units in their input file system (it won't happen), but instead, that we make informed decisions on how we want to present a human with a way to interact with our solvers.</p>
 
 <p>You have the knowledge now, use it. And, of course, if you ever need to parse a CSV file, there should be no question, <a href="https://github.com/cfd-university/Excelnt" rel="noopener noreferrer" target="_blank">Exceln't</a> is the way to go, of course!</p>
-
