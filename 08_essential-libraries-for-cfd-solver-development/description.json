@@ -15,6 +15,11 @@
             "heading": "HDF5: Storing CFD data the correct way",
             "slug": "hdf5-storing-cfd-data-the-correct-way",
             "description": "Storing and retrieving large amounts of CFD data is difficult, unless you know how to use HDF5. Let me introduce you to your new, best, boring friend."
+        },
+        "03_config-files-the-interface-between-you-your-solver-and-the-user.html": {
+            "heading": "Config files: the interface between you, your solver, and the user",
+            "slug": "hdf5-storing-cfd-data-the-correct-way",
+            "description": "You may have never thought about how to best interface your solver with a user, this article will show you which formats are available and which one to use."
         }
     }
 }
